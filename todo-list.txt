@@ -1,5 +1,6 @@
 Next:
--set up a canvas
+-separate game into multiple webpages
 -set up a layered game
+    --look into AngularJS for generating the canvases
 -make main menu in which only option is to choose number of players
 -initialize game by randomly picking questions and money amounts
