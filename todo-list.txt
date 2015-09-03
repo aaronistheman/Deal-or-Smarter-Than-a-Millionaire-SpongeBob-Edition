@@ -1,1 +1,5 @@
-
+Next:
+-set up a canvas
+-set up a layered game
+-make main menu in which only option is to choose number of players
+-initialize game by randomly picking questions and money amounts
