@@ -1,1 +1,9 @@
+/*
+    Author: Aaron Kaloti
+    Release number: 0.1
+*/
 
+body {
+    /* background: #d3d3d3; */
+    background-image: url(../images/background-texture.jpg);
+}
