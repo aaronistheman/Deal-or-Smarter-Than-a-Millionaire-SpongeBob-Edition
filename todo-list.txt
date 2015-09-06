@@ -1,6 +1,7 @@
 Next:
--use PHP to choose number of players
-    --see if bootstrap can be used for the main menu
--set up a layered game
-    --look into AngularJS for generating the canvases
--initialize game by randomly picking questions and money amounts
+-link main menu to game; center main menu canvas
+-look into AngularJS for generating the canvases
+-(It seems that the game can be made in any order, so...)
+ provide the ability to flow from scene to scene
+    --present one question and one money amount?
+    --initialize game by randomly picking questions and money amounts?
