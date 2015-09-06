@@ -13,21 +13,40 @@
 <script
     src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
 </script>
+<script
+    src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js">
+</script>
 <link rel="stylesheet" type="text/css" href="css/game-show-fusion.css" />
 
 </head>
 <body>
 
-    <div id="menu">
-        <section id="menu-scene" class="scene">
-            <canvas id="menu-canvas" width="768" height="440">
-                Your web browser doesn't support canvas content.
-            </canvas>
-            <canvas id="menu-background-canvas" width="768" height="440">
-            </canvas>
-        </section>
-    </div>
+<div ng-app="mainMenu" ng-controller="mainMenuCtrl">
 
+<div id="menu">
+    <section id="menu-scene" class="scene">
+        <canvas ng-repeat="id in canvasIds" id="{{id}}" width="{{width}}"
+            height="{{height}}">
+            Your web browser doesn't support canvas content.
+        </canvas>
+    </section>
+</div>
+
+</div>
+
+<script>
+    var app = angular.module('mainMenu', []);
+    app.controller('mainMenuCtrl', function($scope) {
+        // make an array for ids of each canvas in this webpage
+        var canvasIds = [];
+        canvasIds.push("menu-canvas");
+        canvasIds.push("menu-background-canvas");
+        $scope.canvasIds = canvasIds;
+
+        $scope.width = "768";
+        $scope.height = "440";
+    });
+</script>
 <script src="js/index.js"></script>
 </body>
 </html>
