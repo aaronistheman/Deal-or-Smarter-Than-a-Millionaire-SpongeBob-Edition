@@ -21,10 +21,10 @@
 </head>
 <body>
 
-<div ng-app="mainMenu" ng-controller="mainMenuCtrl">
+<div ng-app="game" ng-controller="gameCtrl">
 
-<div id="menu">
-    <section id="menu-scene" class="scene">
+<div id="game">
+    <section id="game-scene" class="scene">
         <canvas ng-repeat="id in canvasIds" id="{{id}}" width="{{width}}"
             height="{{height}}">
             Your web browser doesn't support canvas content.
@@ -35,18 +35,26 @@
 </div>
 
 <script>
-    var app = angular.module('mainMenu', []);
-    app.controller('mainMenuCtrl', function($scope) {
+    var app = angular.module('game', []);
+    app.controller('gameCtrl', function($scope) {
         // make an array for ids of each canvas in this webpage
         var canvasIds = [];
         canvasIds.push("menu-canvas");
         canvasIds.push("menu-background-canvas");
+        canvasIds.push("choose-question-canvas");
+        canvasIds.push("choose-question-background-canvas");
+        canvasIds.push("questioning-canvas");
+        canvasIds.push("questioning-background-canvas");
+
+        <!-- open case scene -->
+        <!-- banker deal scene -->
+
         $scope.canvasIds = canvasIds;
 
         $scope.width = "768";
         $scope.height = "440";
     });
 </script>
-<script src="js/index.js"></script>
+<script src="js/game-show-fusion.js"></script>
 </body>
 </html>

@@ -7,7 +7,7 @@ body {
     background-image: url(../images/background-texture.jpg);
 }
 
-#menu {
+#game {
     position: relative;
     width: 768px;
     height: 440px;
@@ -21,7 +21,7 @@ body {
     /* height: 100%; */
 }
 
-#menu-scene {
+#game-scene {
     background-color: #eee;
 
     display: -webkit-box;
