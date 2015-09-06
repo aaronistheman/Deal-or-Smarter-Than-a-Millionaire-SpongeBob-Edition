@@ -25,8 +25,8 @@ $(document).ready(function() {
 
     drawMenuText();
 
-    $(document).keydown(function(e) {
-        if (e.which === KEYCODES.ENTER)
-            window.location.href = "play.html";
-    });
+    // $(document).keydown(function(e) {
+        // if (e.which === KEYCODES.ENTER)
+            // window.location.href = "play.html";
+    // });
 });
