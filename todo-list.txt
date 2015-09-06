@@ -1,6 +1,4 @@
 Next:
--look into AngularJS for generating the canvases
--merge the two webpages into one
 -consider changing the size of the game
 -(It seems that the game can be made in any order, so...)
  provide the ability to flow from scene to scene
