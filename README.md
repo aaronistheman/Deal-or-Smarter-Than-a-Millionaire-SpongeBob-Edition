@@ -27,3 +27,5 @@ Acknowledgements
 ----------------
 
 The seamless, background texture is from www.mb3d.co.uk.
+
+The image of SpongeBob is from www.wikihow.com.

@@ -1,3 +1,7 @@
+var gameShow = {};
+gameShow.spongeBobImage = new Image();
+gameShow.spongeBobImage.src = "images/spongebob.png";
+
 var KEYCODES = {};
 KEYCODES.ENTER = 13;
 
@@ -31,16 +35,24 @@ function drawGameText() {
 }
 
 function drawSpongebob() {
-    var canvas = document.getElementById("speaking-canvas");
-    var ctx = canvas.getContext('2d');
-    ctx.fillStyle = "yellow";
-    ctx.fillRect(0, 0, 180, 400);
+    window.onload = function() {
+        var canvas = document.getElementById("speaking-canvas");
+        var ctx = canvas.getContext('2d');
+
+        ctx.drawImage(gameShow.spongeBobImage, 600, 50);
+
+        // ctx.fillStyle = "yellow";
+        // var x = 600;
+        // var width = 300;
+        // var height = 400;
+        // var y = 550 - height;
+        // ctx.fillRect(x, y, width, height);
+    }
 }
 
 function drawQuoteBubble() {
     var canvas = document.getElementById('quote-bubble-canvas');
     var ctx = canvas.getContext('2d');
-    // ctx.fillStyle = "#eee";
     ctx.fillStyle = "rgba(240, 240, 240, 0.9)";
     ctx.fillRect(50, 325, 1000, 200);
 }

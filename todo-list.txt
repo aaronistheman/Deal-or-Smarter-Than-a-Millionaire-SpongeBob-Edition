@@ -1,7 +1,6 @@
 Next:
 -have host talk at beginning
-    --find a host sprite
-    --make set up with quote bubble on host
+    --figure out how to set up chain of quote bubbles
     --play sound effect when go to next quote bubble
     --make a function for setting up a canvas with the person who will
         talk as an argument
