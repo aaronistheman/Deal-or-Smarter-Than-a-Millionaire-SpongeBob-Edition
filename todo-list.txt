@@ -1,5 +1,5 @@
 Next:
--link main menu to game; center main menu canvas
+-link main menu to game
 -look into AngularJS for generating the canvases
 -(It seems that the game can be made in any order, so...)
  provide the ability to flow from scene to scene
