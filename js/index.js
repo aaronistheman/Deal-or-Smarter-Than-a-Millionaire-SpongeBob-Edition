@@ -27,6 +27,6 @@ $(document).ready(function() {
 
     $(document).keydown(function(e) {
         if (e.which === KEYCODES.ENTER)
-            window.location.href = "play.php";
+            window.location.href = "play.html";
     });
 });

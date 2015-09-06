@@ -1,5 +1,4 @@
 Next:
--link main menu to game; remove use of PHP
 -consider changing the size of the game
 -look into AngularJS for generating the canvases
 -(It seems that the game can be made in any order, so...)
