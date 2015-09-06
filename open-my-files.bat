@@ -5,6 +5,6 @@ start Notepad++ js/index.js
 start Notepad++ todo-list.txt
 start Notepad++ unit-tests.html
 start Notepad++ js/unit-tests.js
-start Notepad++ play.php
+start Notepad++ play.html
 start Notepad++ js/play.js
 exit
