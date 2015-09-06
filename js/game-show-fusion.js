@@ -40,7 +40,8 @@ function drawSpongebob() {
 function drawQuoteBubble() {
     var canvas = document.getElementById('quote-bubble-canvas');
     var ctx = canvas.getContext('2d');
-    ctx.fillStyle = "#eee";
+    // ctx.fillStyle = "#eee";
+    ctx.fillStyle = "rgba(240, 240, 240, 0.9)";
     ctx.fillRect(50, 325, 1000, 200);
 }
 
