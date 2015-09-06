@@ -20,6 +20,7 @@
 
 <div id="game">
     
+    <!-- Scene in which user chooses a question -->
     <section id="choose-scene" class="scene">
         <canvas id="choose-background-canvas" width="768" height="440">
         </canvas>
@@ -27,6 +28,8 @@
         <canvas id="choose-canvas" width="768" height="440"></canvas>
     </section>
     
+    <!-- Scene in which user is presented the questions and told
+        the answer -->
     <section id="questioning-scene" class="scene">
         <canvas id="questioning-background-canvas"
           width="768" height="440">
