@@ -22,7 +22,7 @@ body {
 }
 
 #game-scene {
-    background-color: #eee;
+    /* background-color: #eee; */
 
     display: -webkit-box;
 	-webkit-box-pack:center;
@@ -35,4 +35,20 @@ body {
 	display: box;
 	box-pack:center;
 	box-align: center;
+}
+
+canvas {
+    display: none;
+}
+
+canvas.show {
+    display: block;
+}
+
+#menu-canvas.show {
+    background-color: #eee;
+}
+
+#choose-question-canvas.show {
+    background-color: black;
 }

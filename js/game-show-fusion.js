@@ -20,13 +20,26 @@ function drawMenuText() {
         canvas.height / 2);
 }
 
+function drawGameText() {
+    var canvas = document.getElementById("choose-question-canvas");
+    var ctx = canvas.getContext('2d');
+    ctx.font = "30px Arial";
+    ctx.fillStyle = "white";
+    ctx.textAlign = "center";
+    ctx.fillText("Welcome to the game", canvas.width / 2,
+        canvas.height / 2);
+}
+
 $(document).ready(function() {
     // drawMenuBackground();
 
     drawMenuText();
+    drawGameText();
 
-    // $(document).keydown(function(e) {
-        // if (e.which === KEYCODES.ENTER)
-            // window.location.href = "play.html";
-    // });
+    $(document).keydown(function(e) {
+        if (e.which === KEYCODES.ENTER) {
+            $("#menu-canvas").removeClass('show');
+            // start game
+        }
+    });
 });
