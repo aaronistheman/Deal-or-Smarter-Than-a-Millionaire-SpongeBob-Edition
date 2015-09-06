@@ -1,9 +1,6 @@
 Next:
--separate game into two webpages; use PHP to choose number of players
+-use PHP to choose number of players
     --see if bootstrap can be used for the main menu
--enable the anti-trailing whitespace Git hook
-    --update the readme
 -set up a layered game
     --look into AngularJS for generating the canvases
--make main menu in which only option is to choose number of players
 -initialize game by randomly picking questions and money amounts
