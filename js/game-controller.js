@@ -15,6 +15,6 @@ app.controller('gameCtrl', function($scope) {
     $scope.canvasIds = canvasIds;
 
     // Canvas dimensions
-    $scope.width = "768";
-    $scope.height = "440";
+    $scope.width = "1100";
+    $scope.height = "550";
 });
