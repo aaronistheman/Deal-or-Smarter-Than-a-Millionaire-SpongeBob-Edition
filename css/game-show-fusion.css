@@ -4,6 +4,9 @@
 */
 
 body {
-    /* background: #d3d3d3; */
     background-image: url(../images/background-texture.jpg);
+}
+
+#menu-background-canvas {
+    background-color: #eee;
 }
