@@ -30,11 +30,27 @@ function drawGameText() {
         canvas.height / 2);
 }
 
+function drawSpongebob() {
+    var canvas = document.getElementById("speaking-canvas");
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = "yellow";
+    ctx.fillRect(0, 0, 180, 400);
+}
+
+function drawQuoteBubble() {
+    var canvas = document.getElementById('quote-bubble-canvas');
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = "#eee";
+    ctx.fillRect(50, 325, 1000, 200);
+}
+
 $(document).ready(function() {
     // drawMenuBackground();
 
     drawMenuText();
-    drawGameText();
+    // drawGameText();
+    drawSpongebob();
+    drawQuoteBubble();
 
     $(document).keydown(function(e) {
         if (e.which === KEYCODES.ENTER) {

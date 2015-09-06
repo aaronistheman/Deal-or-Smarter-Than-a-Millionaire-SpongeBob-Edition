@@ -3,6 +3,8 @@ Next:
     --find a host sprite
     --make set up with quote bubble on host
     --play sound effect when go to next quote bubble
+    --make a function for setting up a canvas with the person who will
+        talk as an argument
 -(It seems that the game can be made in any order, so...)
  provide the ability to flow from scene to scene
     --present one question and one money amount?
