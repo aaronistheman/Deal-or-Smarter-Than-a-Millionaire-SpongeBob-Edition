@@ -4,6 +4,7 @@ var gameShow = {};
 gameShow.spongeBobImage = new Image();
 gameShow.spongeBobImage.src = "images/spongebob.png";
 gameShow.nextQuoteSound;
+game.quoteLengthForWrapAround = 85;
 
 var KEYCODES = {};
 KEYCODES.ENTER = 13;
@@ -138,16 +139,14 @@ function drawSpeaker(speakerName, endCallback) {
     sound plays when user presses Enter on a quote
     @hasTest no
     @param text to draw
-    @param lengthForWrapAround maximum number of characters for each
-    row of quote
     @param endCallback to call after the user presses Enter (can
     be used for chaining quote bubbles together) (optional)
     @returns nothing
     @throws nothing
 */
-function drawQuoteText(text, lengthForWrapAround, endCallback) {
+function drawQuoteText(text, endCallback) {
     drawEachTextPiece(convertStringToArrayOfStrings(text,
-        lengthForWrapAround));
+        game.quoteLengthForWrapAround));
 
     if (endCallback !== undefined) {
         // Allow the endCallback to be called
@@ -236,8 +235,8 @@ function setUpGame() {
     $(document).off("keydown");
     setUpQuoteBubble();
     drawSpeaker("SpongeBob", function() {
-        drawQuoteText("Quote 1", 85, function() {
-           drawQuoteText("Quote 2", 85, function() {
+        drawQuoteText("Quote 1", function() {
+           drawQuoteText("Quote 2", function() {
                 eraseQuotes();
            });
         });

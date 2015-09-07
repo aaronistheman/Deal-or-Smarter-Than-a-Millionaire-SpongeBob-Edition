@@ -1,7 +1,5 @@
 Next:
--have host talk at beginning
-    --consider making the wrap around length a global variable so that
-        it won't have to be put as parameter
+-have host say some meaningful stuff at the beginning
 -put in readme how to run unit tests
 -store canvases and contexts in their own object(s)
     --make cleanQuotes() more efficient and used in drawTextPieces()
