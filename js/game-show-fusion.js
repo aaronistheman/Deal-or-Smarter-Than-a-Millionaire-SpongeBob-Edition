@@ -60,21 +60,45 @@ function drawQuoteBubble() {
     ctx.fillRect(50, 325, 1000, 200);
 }
 
+// @post text in the quote bubble has been cleared
+function eraseQuotes() {
+    var canvas = document.getElementById('quote-text-canvas');
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(50, 325, 1000, 200);
+}
+
 /*
   @pre canvases are set up
-  @post text has been drawn with appropriate wrap around
+  @post text has been drawn with appropriate wrap around; endCallback
+  is set up to be called when user wants
   @hasTest no
   @param text to draw
   @param lengthForWrapAround maximum number of characters for each
   row of quote
   @param endCallback to call after the user presses Enter (can
-  be used for chaining quote bubbles together)
+  be used for chaining quote bubbles together) (optional)
   @returns nothing
   @throws nothing
 */
 function drawQuoteText(text, lengthForWrapAround, endCallback) {
     drawEachTextPiece(convertStringToArrayOfStrings(text,
         lengthForWrapAround));
+
+    if (endCallback !== undefined) {
+        $(document).keydown(function(e) {
+            if (e.which === KEYCODES.ENTER) {
+                $(document).off("keydown");
+                endCallback();
+            }
+        });
+    }
+    else {
+        $(document).keydown(function(e) {
+            if (e.which === KEYCODES.ENTER) {
+                eraseQuotes();
+            }
+        });
+    }
 }
 
 /*
@@ -89,14 +113,19 @@ function drawQuoteText(text, lengthForWrapAround, endCallback) {
 function drawEachTextPiece(textPieces) {
     var canvas = document.getElementById('quote-text-canvas');
     var ctx = canvas.getContext('2d');
+    var textPadding = 10;
     var fontSize = 30;
     ctx.font = fontSize + "px Arial";
     var x = 75;
     var y = 400;
 
+    // Erase the quote bubble
+    ctx.clearRect(50, 325, 1000, 200);
+
+    // Draw the text
     for (var textIndex in textPieces) {
         ctx.fillText(textPieces[textIndex], x, y);
-        y += fontSize;
+        y += (fontSize + textPadding);
     }
 }
 
@@ -125,10 +154,16 @@ function convertStringToArrayOfStrings(string, maxStringLength) {
 
 function setUpGame() {
     $("#menu-canvas").removeClass('show');
+    $(document).off("keydown");
     drawSpongebob();
     drawQuoteBubble();
     drawQuoteText("teeheelkjaflk;jd;lkdjflkdajflk;ja;lfjkldsjlsfj" +
-        "startjf;ajfdklsja;lfkjsdlkfjalkfjklsdjflaksfjd", 46);
+        "ja;lkfjdslk;fjdlkfjalkjfkdslfjslkfjlks;jflksjfl;skjf;lsj" +
+        "lkja;kfjdsalfjsalfjlaskdfjlsdjflkadjlfs;jlfsjlkafj;lfsdj" +
+        "startjf;ajfdklsja;lfkjsdlkfjalkfjklsdjflaksfjd", 85,
+        function() {
+            drawQuoteText("whatssup", 5)
+        });
 }
 
 $(document).ready(function() {
