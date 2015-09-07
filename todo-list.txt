@@ -1,7 +1,6 @@
 Next:
 -have host talk at beginning
-    --figure out how to set up chain of quote bubbles
-    --play sound effect when go to next quote bubble
+    --make a function to handle chaining quotes
     --make a function for setting up a canvas with the person who will
         talk as an argument
 -lower case each doctype; put "use strict"; at top of each js file
@@ -20,3 +19,4 @@ Ideas for millionaires to be able to choose as assistants:
 
 Consider:
 -making an object for a state stack
+-making the game work on Safari 5 for Windows

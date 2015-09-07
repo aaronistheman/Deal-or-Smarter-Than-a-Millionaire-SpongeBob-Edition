@@ -1,6 +1,9 @@
+"use strict";
+
 var gameShow = {};
 gameShow.spongeBobImage = new Image();
 gameShow.spongeBobImage.src = "images/spongebob.png";
+gameShow.nextQuoteSound;
 
 var KEYCODES = {};
 KEYCODES.ENTER = 13;
@@ -88,6 +91,7 @@ function drawQuoteText(text, lengthForWrapAround, endCallback) {
         $(document).keydown(function(e) {
             if (e.which === KEYCODES.ENTER) {
                 $(document).off("keydown");
+                gameShow.nextQuoteSound.play();
                 endCallback();
             }
         });
@@ -95,6 +99,8 @@ function drawQuoteText(text, lengthForWrapAround, endCallback) {
     else {
         $(document).keydown(function(e) {
             if (e.which === KEYCODES.ENTER) {
+                $(document).off("keydown");
+                gameShow.nextQuoteSound.play();
                 eraseQuotes();
             }
         });
@@ -152,11 +158,17 @@ function convertStringToArrayOfStrings(string, maxStringLength) {
     return textPieces;
 }
 
+function setUpQuoteBubble() {
+    gameShow.nextQuoteSound =
+        document.getElementById('next-quote-sound');
+    drawQuoteBubble();
+}
+
 function setUpGame() {
     $("#menu-canvas").removeClass('show');
     $(document).off("keydown");
     drawSpongebob();
-    drawQuoteBubble();
+    setUpQuoteBubble();
     drawQuoteText("teeheelkjaflk;jd;lkdjflkdajflk;ja;lfjkldsjlsfj" +
         "ja;lkfjdslk;fjdlkfjalkjfkdslfjslkfjlks;jflksjfl;skjf;lsj" +
         "lkja;kfjdsalfjsalfjlaskdfjlsdjflkadjlfs;jlfsjlkafj;lfsdj" +
