@@ -235,12 +235,19 @@ function setUpGame() {
     $(document).off("keydown");
     setUpQuoteBubble();
     drawSpeaker("SpongeBob", function() {
-        drawQuoteText("Quote 1", function() {
-           drawQuoteText("Quote 2", function() {
-                eraseQuotes();
-           });
+        drawQuoteText("Welcome to the game. Press Enter to go " +
+            "to the next quote.",
+            function() {
+                drawQuoteText("I'm your host, SpongeBob Squarepants.",
+                function() {
+                    drawQuoteText("Get ready to play this combination " +
+                        "of game shows.",
+                        function() {
+                            eraseQuotes();
+                        });
+                });
+            });
         });
-    });
 }
 
 $(document).ready(function() {

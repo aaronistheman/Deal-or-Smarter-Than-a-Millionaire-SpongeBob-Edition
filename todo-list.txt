@@ -1,9 +1,10 @@
 Next:
--have host say some meaningful stuff at the beginning
 -put in readme how to run unit tests
 -store canvases and contexts in their own object(s)
     --make cleanQuotes() more efficient and used in drawTextPieces()
 -change the name of the menu to the title screen
+-consider making another attempt at drawQuotes()
+    --try using the number of quotes in a better way for iteration
 -(It seems that the game can be made in any order, so...)
  provide the ability to flow from scene to scene
     --present one question and one money amount?
