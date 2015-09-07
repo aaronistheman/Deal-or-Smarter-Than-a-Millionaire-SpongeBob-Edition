@@ -73,7 +73,7 @@ function drawGameText() {
 
 // @post canvas that shows a speaker has been erased
 function eraseSpeaker() {
-    var canvas = document.getElementById("speaking-canvas");
+    var canvas = document.getElementById("speaker-canvas");
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
@@ -81,7 +81,7 @@ function eraseSpeaker() {
 // @post SpongeBob has been drawn so that he looks like he's
 // speaking to you
 function drawSpongebob() {
-    var canvas = document.getElementById("speaking-canvas");
+    var canvas = document.getElementById("speaker-canvas");
     var ctx = canvas.getContext('2d');
 
     ctx.drawImage(gameShow.spongeBobImage, 600, 50);

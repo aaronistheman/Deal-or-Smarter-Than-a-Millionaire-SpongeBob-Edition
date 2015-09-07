@@ -53,6 +53,6 @@ canvas.show {
     background-color: #eee;
 }
 
-#speaking-canvas.show {
+#speaker-canvas.show {
     background-color: black;
 }

@@ -1,5 +1,4 @@
 Next:
--change "speaking-canvas" to "speaker-canvas"
 -change the name of the menu to the title screen
 
 -consider making another attempt at drawQuotes()
