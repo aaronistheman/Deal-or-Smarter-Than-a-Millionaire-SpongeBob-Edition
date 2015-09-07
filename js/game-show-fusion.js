@@ -96,7 +96,7 @@ function drawQuoteBubble() {
 }
 
 // @post text in the quote bubble has been cleared
-function eraseQuotes() {
+function eraseQuoteBubbleText() {
     var canvas = document.getElementById('quote-text-canvas');
     var ctx = canvas.getContext('2d');
     ctx.clearRect(50, 325, 1000, 200);
@@ -186,8 +186,7 @@ function drawEachTextPiece(textPieces) {
     var x = 75;
     var y = 400;
 
-    // Erase the quote bubble
-    ctx.clearRect(50, 325, 1000, 200);
+    eraseQuoteBubbleText();
 
     // Draw the text
     for (var textIndex in textPieces) {
@@ -230,10 +229,16 @@ function setUpQuoteBubble() {
     drawQuoteBubble();
 }
 
-function setUpGame() {
+function removeMenu() {
     $("#menu-canvas").removeClass('show');
     $(document).off("keydown");
+}
+
+function setUpGame() {
+    removeMenu();
     setUpQuoteBubble();
+
+    // Host's introductory text
     drawSpeaker("SpongeBob", function() {
         drawQuoteText("Welcome to the game. Press Enter to go " +
             "to the next quote.",
@@ -243,7 +248,7 @@ function setUpGame() {
                     drawQuoteText("Get ready to play this combination " +
                         "of game shows.",
                         function() {
-                            eraseQuotes();
+                            eraseQuoteBubbleText();
                         });
                 });
             });

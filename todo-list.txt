@@ -1,9 +1,14 @@
 Next:
--store canvases and contexts in their own object(s)
-    --make cleanQuotes() more efficient and used in drawTextPieces()
+-change "speaking-canvas" to "speaker-canvas"
 -change the name of the menu to the title screen
+
 -consider making another attempt at drawQuotes()
     --try using the number of quotes in a better way for iteration
+    --consider a global storage/array of quotes to be displayed; a function
+        can be called to add a quote to the storage; another function
+        can be called to display each quote in the storage, ending it
+        with an endCallback; the use of a global in this could make
+        easier making a function to chain the quotes
 -(It seems that the game can be made in any order, so...)
  provide the ability to flow from scene to scene
     --present one question and one money amount?
@@ -22,3 +27,4 @@ Ideas for millionaires to be able to choose as assistants:
 Consider:
 -making an object for a state stack
 -making the game work on Safari 5 for Windows
+-having a global variable for each canvas
