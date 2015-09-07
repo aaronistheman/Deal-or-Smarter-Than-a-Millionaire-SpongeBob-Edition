@@ -6,7 +6,7 @@
 #
 #   <insert-contract>
 #   function mySpecialFunction() {
-#     ...
+#       ...
 #   }
 #
 # @post Each occurence of the string "<insert-contract>" has been
@@ -14,15 +14,15 @@
 # become the following:
 #
 #   /*
-#     @pre
-#     @post
-#     @hasTest
-#     @param
-#     @returns
-#     @throws
+#       @pre
+#       @post
+#       @hasTest
+#       @param
+#       @returns
+#       @throws
 #   */
 #   function mySpecialFunction() {
-#     ...
+#       ...
 #   }
 #
 # @param $1 name of the file to edit
@@ -30,4 +30,4 @@
 
 # Substitute the output for any occurence of the
 # string "<insert-contract>"
-sed -i "s~<insert-contract>~/*\n  @pre\n  @post\n  @hasTest\n  @param\n  @returns\n  @throws\n*/~" $1
+sed -i "s~<insert-contract>~/*\n    @pre\n    @post\n    @hasTest\n    @param\n    @returns\n    @throws\n*/~" $1
