@@ -35,19 +35,10 @@ function drawGameText() {
 }
 
 function drawSpongebob() {
-    window.onload = function() {
-        var canvas = document.getElementById("speaking-canvas");
-        var ctx = canvas.getContext('2d');
+    var canvas = document.getElementById("speaking-canvas");
+    var ctx = canvas.getContext('2d');
 
-        ctx.drawImage(gameShow.spongeBobImage, 600, 50);
-
-        // ctx.fillStyle = "yellow";
-        // var x = 600;
-        // var width = 300;
-        // var height = 400;
-        // var y = 550 - height;
-        // ctx.fillRect(x, y, width, height);
-    }
+    ctx.drawImage(gameShow.spongeBobImage, 600, 50);
 }
 
 function drawQuoteBubble() {
@@ -57,18 +48,61 @@ function drawQuoteBubble() {
     ctx.fillRect(50, 325, 1000, 200);
 }
 
-$(document).ready(function() {
-    // drawMenuBackground();
+// should take array, callback, length for wrap around
+// (and maybe speaker) as arguments
+function drawQuoteText(text, lengthForWrapAround) {
+    var canvas = document.getElementById('quote-text-canvas');
+    var ctx = canvas.getContext('2d');
+    var fontSize = 30;
+    ctx.font = fontSize + "px Arial";
+    var x = 75;
+    var y = 400;
 
-    drawMenuText();
-    // drawGameText();
+    var textPieces = convertStringToArrayOfStrings(text,
+        lengthForWrapAround);
+
+    for (var textIndex in textPieces) {
+        ctx.fillText(textPieces[textIndex], x, y);
+        y += fontSize;
+    }
+}
+
+/*
+  @pre none
+  @post see @returns
+  @hasTest yes
+  @param string to split into pieces
+  @param maxStringLength for each string in the array
+  @returns array of pieces of the parameter string such that none
+  of the pieces have a length greater than maxStringLength
+  @throws nothing
+*/
+function convertStringToArrayOfStrings(string, maxStringLength) {
+    var textPieces = [];
+    var numberOfPieces = 0;
+    // Check if the entire text has been made into text pieces
+    while ((maxStringLength * numberOfPieces) < string.length) {
+        var startIndex = (maxStringLength * numberOfPieces);
+        var endIndex = startIndex + maxStringLength;
+        textPieces.push(string.slice(startIndex, endIndex));
+        numberOfPieces = textPieces.length;
+    }
+    return textPieces;
+}
+
+function setUpGame() {
+    $("#menu-canvas").removeClass('show');
     drawSpongebob();
     drawQuoteBubble();
+    drawQuoteText("teeheelkjaflk;jd;lkdjflkdajflk;ja;lfjkldsjlsfj" +
+        "startjf;ajfdklsja;lfkjsdlkfjalkfjklsdjflaksfjd", 46);
+}
+
+$(document).ready(function() {
+    // drawMenuText();
 
     $(document).keydown(function(e) {
-        if (e.which === KEYCODES.ENTER) {
-            $("#menu-canvas").removeClass('show');
-            // start game
-        }
+        if (e.which === KEYCODES.ENTER)
+            setUpGame();
     });
 });

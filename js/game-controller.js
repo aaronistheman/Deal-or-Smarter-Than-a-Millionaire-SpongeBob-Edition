@@ -8,6 +8,7 @@ app.controller('gameCtrl', function($scope) {
     canvasIds.push("questioning-canvas");
     canvasIds.push("speaking-canvas");
     canvasIds.push("quote-bubble-canvas");
+    canvasIds.push("quote-text-canvas");
     // canvasIds.push("menu-background-canvas");
     canvasIds.push("menu-canvas");
 
