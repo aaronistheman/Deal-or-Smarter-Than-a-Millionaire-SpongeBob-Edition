@@ -4,7 +4,7 @@ var gameShow = {};
 gameShow.spongeBobImage = new Image();
 gameShow.spongeBobImage.src = "images/spongebob.png";
 gameShow.nextQuoteSound;
-game.quoteLengthForWrapAround = 85;
+gameShow.quoteLengthForWrapAround = 85;
 
 var KEYCODES = {};
 KEYCODES.ENTER = 13;
@@ -146,7 +146,7 @@ function drawSpeaker(speakerName, endCallback) {
 */
 function drawQuoteText(text, endCallback) {
     drawEachTextPiece(convertStringToArrayOfStrings(text,
-        game.quoteLengthForWrapAround));
+        gameShow.quoteLengthForWrapAround));
 
     if (endCallback !== undefined) {
         // Allow the endCallback to be called
