@@ -60,18 +60,20 @@ function drawQuoteBubble() {
     ctx.fillRect(50, 325, 1000, 200);
 }
 
-// should take array, callback, length for wrap around
+// should take callback,
 // (and maybe speaker) as arguments
 function drawQuoteText(text, lengthForWrapAround) {
+    drawEachTextPiece(convertStringToArrayOfStrings(text,
+        lengthForWrapAround));
+}
+
+function drawEachTextPiece(textPieces) {
     var canvas = document.getElementById('quote-text-canvas');
     var ctx = canvas.getContext('2d');
     var fontSize = 30;
     ctx.font = fontSize + "px Arial";
     var x = 75;
     var y = 400;
-
-    var textPieces = convertStringToArrayOfStrings(text,
-        lengthForWrapAround);
 
     for (var textIndex in textPieces) {
         ctx.fillText(textPieces[textIndex], x, y);
