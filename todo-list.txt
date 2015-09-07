@@ -1,5 +1,4 @@
 Next:
--put in readme how to run unit tests
 -store canvases and contexts in their own object(s)
     --make cleanQuotes() more efficient and used in drawTextPieces()
 -change the name of the menu to the title screen

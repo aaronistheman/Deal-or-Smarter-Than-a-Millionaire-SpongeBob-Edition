@@ -29,6 +29,7 @@ How to Run Unit Tests
 Run unit-tests.html. According to the QUnit website, the following
 browsers support unit testing with QUnit:
 "IE6+ and Current - 1 for Chrome, Firefox, Safari and Opera."
+Thus, a modern version of a major browser should work.
 
 Use of Git Hooks
 ----------------
