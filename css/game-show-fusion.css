@@ -39,6 +39,10 @@ body {
 
 canvas {
     display: none;
+
+    /* Allows canvases to stack on top of each other without blocking
+    each other completely */
+    position: absolute;
 }
 
 canvas.show {
@@ -49,6 +53,6 @@ canvas.show {
     background-color: #eee;
 }
 
-#choose-question-canvas.show {
+#speaking-canvas.show {
     background-color: black;
 }

@@ -15,6 +15,14 @@ Regarding libraries, I used jQuery, AngularJS, and QUnit. The former
 two libraries are included through CDNs (Content Delivery Networks),
 whereas the latter library's two files are included in the repository.
 
+How to Run the Game
+-------------------
+
+Run index.html on any browser that supports the html audio element and
+mp3 files. I've confirmed that the game works on modern versions of
+Chrome, Internet Explorer, Firefox, and Opera. It doesn't work on
+the most recent version of Safari (that I could find: 5.1.7) for Windows.
+
 Use of Git Hooks
 ----------------
 
@@ -27,3 +35,7 @@ Acknowledgements
 ----------------
 
 The seamless, background texture is from www.mb3d.co.uk.
+
+The image of SpongeBob is from www.wikihow.com.
+
+The audio was made with Bfxr.

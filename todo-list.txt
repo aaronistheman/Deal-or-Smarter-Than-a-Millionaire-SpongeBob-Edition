@@ -1,8 +1,10 @@
 Next:
--have host talk at beginning
-    --find a host sprite
-    --make set up with quote bubble on host
-    --play sound effect when go to next quote bubble
+-put in readme how to run unit tests
+-store canvases and contexts in their own object(s)
+    --make cleanQuotes() more efficient and used in drawTextPieces()
+-change the name of the menu to the title screen
+-consider making another attempt at drawQuotes()
+    --try using the number of quotes in a better way for iteration
 -(It seems that the game can be made in any order, so...)
  provide the ability to flow from scene to scene
     --present one question and one money amount?
@@ -10,6 +12,8 @@ Next:
 
 At some point:
 -more decorated main menu
+-make sure trivial functions that are no longer needed and that were
+ made for the purpose of testing have been erased
 
 Ideas for millionaires to be able to choose as assistants:
 -Kevin O'Leary ("Mr. Wonderful")
@@ -18,3 +22,4 @@ Ideas for millionaires to be able to choose as assistants:
 
 Consider:
 -making an object for a state stack
+-making the game work on Safari 5 for Windows
