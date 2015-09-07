@@ -1,8 +1,11 @@
 Next:
 -have host talk at beginning
-    --make a function to handle chaining quotes
+    --make drawQuoteText() cleaner
     --make a function for setting up a canvas with the person who will
         talk as an argument
+-put in readme how to run unit tests
+-store canvases and contexts in their own object(s)
+    --make cleanQuotes() more efficient and used in drawTextPieces()
 -(It seems that the game can be made in any order, so...)
  provide the ability to flow from scene to scene
     --present one question and one money amount?
@@ -19,3 +22,4 @@ Ideas for millionaires to be able to choose as assistants:
 Consider:
 -making an object for a state stack
 -making the game work on Safari 5 for Windows
+-erasing the commented out drawQuotes()
