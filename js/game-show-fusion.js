@@ -8,6 +8,23 @@ gameShow.nextQuoteSound;
 var KEYCODES = {};
 KEYCODES.ENTER = 13;
 
+var ERROR_MESSAGES = {};
+ERROR_MESSAGES.PARAMETER = "parameter error";
+
+/*
+    @pre none
+    @post errorMessage has been printed to console
+    @hasTest yes
+    @param errorMessage to print in the console
+    @returns constant indicating the parameter error (mostly for unit
+    testing purposes)
+    @throws nothing
+*/
+function parameterError(errorMessage) {
+    console.log(errorMessage);
+    return ERROR_MESSAGES.PARAMETER;
+}
+
 /*
     @pre none
     @post none
@@ -20,6 +37,7 @@ function isUnitTesting() {
     return $("#qunit").length === 1;
 }
 
+// This is a trivial function that was made for the purpose of testing.
 function drawMenuBackground() {
     // var canvas = document.getElementById("menu-background-canvas");
     // var ctx = canvas.getContext('2d');
@@ -29,6 +47,7 @@ function drawMenuBackground() {
     // ctx.stroke();
 }
 
+// @post menu has been set up with prompt for user
 function drawMenuText() {
     var canvas = document.getElementById("menu-canvas");
     var ctx = canvas.getContext('2d');
@@ -39,6 +58,8 @@ function drawMenuText() {
         canvas.height / 2);
 }
 
+// This is currently a trivial function made for the purpose of
+// testing.
 function drawGameText() {
     var canvas = document.getElementById("choose-question-canvas");
     var ctx = canvas.getContext('2d');
@@ -49,6 +70,15 @@ function drawGameText() {
         canvas.height / 2);
 }
 
+// @post canvas that shows a speaker has been erased
+function eraseSpeaker() {
+    var canvas = document.getElementById("speaking-canvas");
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+// @post SpongeBob has been drawn so that he looks like he's
+// speaking to you
 function drawSpongebob() {
     var canvas = document.getElementById("speaking-canvas");
     var ctx = canvas.getContext('2d');
@@ -56,6 +86,7 @@ function drawSpongebob() {
     ctx.drawImage(gameShow.spongeBobImage, 600, 50);
 }
 
+// @post quote bubble has been drawn on its canvas
 function drawQuoteBubble() {
     var canvas = document.getElementById('quote-bubble-canvas');
     var ctx = canvas.getContext('2d');
@@ -68,6 +99,36 @@ function eraseQuotes() {
     var canvas = document.getElementById('quote-text-canvas');
     var ctx = canvas.getContext('2d');
     ctx.clearRect(50, 325, 1000, 200);
+}
+
+/*
+    @pre canvases are set up
+    @post correct speaker has been drawn and endCallback has
+    been called; if invalid speaker, a message has been printed to
+    the console, and a string indicating the error has been returned
+    @hasTest no
+    @param speakerName name of the person to draw; available options:
+        -"SpongeBob" to draw SpongeBob
+    @param endCallback to call after the drawing has finished (this
+    can be used to chain quotes to the drawing of their speaker)
+    @returns return value of parameterError() if invalid speakerName
+    @throws (caught) exception if invalid speakerName
+*/
+function drawSpeaker(speakerName, endCallback) {
+    eraseSpeaker();
+
+    try {
+        // Draw the correct speaker, or cause an error
+        if (speakerName === "SpongeBob")
+            drawSpongebob();
+        else
+            throw "Invalid parameter speakerName()";
+    }
+    catch(err) {
+        return parameterError(err);
+    }
+
+    endCallback();
 }
 
 /*
@@ -159,6 +220,11 @@ function convertStringToArrayOfStrings(string, maxStringLength) {
     return textPieces;
 }
 
+/*
+    @pre quote bubble canvas and sound effect haven't been set up
+    @post sound effect that plays when a quote bubble is done has
+    been set up; quote bubble has been drawn on its canvas
+*/
 function setUpQuoteBubble() {
     gameShow.nextQuoteSound =
         document.getElementById('next-quote-sound');
@@ -168,13 +234,13 @@ function setUpQuoteBubble() {
 function setUpGame() {
     $("#menu-canvas").removeClass('show');
     $(document).off("keydown");
-    drawSpongebob();
     setUpQuoteBubble();
-    drawQuoteText("Quote 1", 85, function() {
-       drawQuoteText("Quote 2", 85, function() {
-            alert("Finished the chain");
-            eraseQuotes();
-       });
+    drawSpeaker("SpongeBob", function() {
+        drawQuoteText("Quote 1", 85, function() {
+           drawQuoteText("Quote 2", 85, function() {
+                eraseQuotes();
+           });
+        });
     });
 }
 

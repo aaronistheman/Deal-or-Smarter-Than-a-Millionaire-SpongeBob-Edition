@@ -1,11 +1,11 @@
 Next:
 -have host talk at beginning
-    --make drawQuoteText() cleaner
-    --make a function for setting up a canvas with the person who will
-        talk as an argument
+    --consider making the wrap around length a global variable so that
+        it won't have to be put as parameter
 -put in readme how to run unit tests
 -store canvases and contexts in their own object(s)
     --make cleanQuotes() more efficient and used in drawTextPieces()
+-change the name of the menu to the title screen
 -(It seems that the game can be made in any order, so...)
  provide the ability to flow from scene to scene
     --present one question and one money amount?
@@ -13,6 +13,8 @@ Next:
 
 At some point:
 -more decorated main menu
+-make sure trivial functions that are no longer needed and that were
+ made for the purpose of testing have been erased
 
 Ideas for millionaires to be able to choose as assistants:
 -Kevin O'Leary ("Mr. Wonderful")

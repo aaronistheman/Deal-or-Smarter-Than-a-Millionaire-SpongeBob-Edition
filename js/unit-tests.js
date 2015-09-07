@@ -7,6 +7,11 @@
 
 QUnit.module("game-show-fusion.js");
 
+QUnit.test("parameterError()", function(assert) {
+    assert.deepEqual(parameterError("This is a test"),
+        ERROR_MESSAGES.PARAMETER, "Correct value is returned");
+});
+
 QUnit.test("convertStringToArrayOfStrings()", function(assert) {
     var testString = "abcdefghijk";
     var testMaxStringLength = 3;
