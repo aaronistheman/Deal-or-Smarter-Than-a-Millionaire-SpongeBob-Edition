@@ -1,6 +1,5 @@
 Next:
 -have host talk at beginning
-    --check if unit testing in document ready function
     --figure out how to set up chain of quote bubbles
     --play sound effect when go to next quote bubble
     --make a function for setting up a canvas with the person who will

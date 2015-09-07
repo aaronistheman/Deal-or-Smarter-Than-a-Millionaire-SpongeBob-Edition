@@ -60,13 +60,32 @@ function drawQuoteBubble() {
     ctx.fillRect(50, 325, 1000, 200);
 }
 
-// should take callback,
-// (and maybe speaker) as arguments
-function drawQuoteText(text, lengthForWrapAround) {
+/*
+  @pre canvases are set up
+  @post text has been drawn with appropriate wrap around
+  @hasTest no
+  @param text to draw
+  @param lengthForWrapAround maximum number of characters for each
+  row of quote
+  @param endCallback to call after the user presses Enter (can
+  be used for chaining quote bubbles together)
+  @returns nothing
+  @throws nothing
+*/
+function drawQuoteText(text, lengthForWrapAround, endCallback) {
     drawEachTextPiece(convertStringToArrayOfStrings(text,
         lengthForWrapAround));
 }
 
+/*
+  @pre canvases are set up
+  @post each string in textPieces has been drawn, with each string
+  using its own row
+  @hasTest no
+  @param textPieces array of strings to draw on canvas
+  @returns nothing
+  @throws nothing
+*/
 function drawEachTextPiece(textPieces) {
     var canvas = document.getElementById('quote-text-canvas');
     var ctx = canvas.getContext('2d');
