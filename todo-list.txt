@@ -22,4 +22,3 @@ Ideas for millionaires to be able to choose as assistants:
 Consider:
 -making an object for a state stack
 -making the game work on Safari 5 for Windows
--erasing the commented out drawQuotes()

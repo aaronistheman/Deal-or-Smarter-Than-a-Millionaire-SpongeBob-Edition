@@ -73,7 +73,8 @@ function eraseQuotes() {
 /*
     @pre canvases are set up
     @post text has been drawn with appropriate wrap around and in quote
-    bubble; endCallback is set up to be called when user wants
+    bubble; endCallback is set up to be called when user wants;
+    sound plays when user presses Enter on a quote
     @hasTest no
     @param text to draw
     @param lengthForWrapAround maximum number of characters for each
@@ -106,123 +107,6 @@ function drawQuoteText(text, lengthForWrapAround, endCallback) {
         });
     }
 }
-
-/*
-    NOTE: The following is an unfinished function that would have
-    facilitated the chaining of quotes. I worked on it for about
-    two or three hours before giving up, for I can't identify
-    the problem. I don't think the benefits of the function are
-    worth risking any more time figuring it out. Thus, immediately
-    below is the function's contract, and with comments, I've
-    divided the function into the two different implementations
-    I tried.
-
-    It would've been used like this:
-    drawQuotes(["Quote 1", "Quote 2", "Quote 3", "Quote 4"], 85,
-        function() {
-            alert("Finished the chain");
-        });
-
-    @pre canvases are set up
-    @post each quote in arrayOfQuotes has been set up in chain to
-    appear in the quote bubble;
-    endCallback has been set up to be called at end of chain
-    @hasTest no
-    @param arrayOfQuotes to set up to be drawn
-    @param lengthForWrapAround maximum number of characters in each
-    row of quote bubble
-    @param finalCallback to call after the user has gone through the
-    chain of quotes
-    @returns nothing
-    @throws nothing
-*/
-// function drawQuotes(arrayOfQuotes, lengthForWrapAround, finalCallback) {
-    /*
-        THIS WAS THE SECOND (PROBABLY BETTER) IMPLEMENTATION I TRIED.
-    */
-    // In reverse order, make the function for drawing each
-    // quote so each can be chained together
-    /*var endingCallbacks = [];
-    for (var i = arrayOfQuotes.length - 1; i >= 0; --i) {
-        var action = undefined;
-        // var nextQuote = undefined;
-        // var chainCallback = undefined;
-        if ((i + 1) === arrayOfQuotes.length) {
-            action = function() {
-                gameShow.nextQuoteSound.play();
-                eraseQuotes();
-                finalCallback();
-            };
-
-            endingCallbacks.push({endCallback : action});
-
-        }
-        else {
-            var object = {};
-            object.nextQuote = arrayOfQuotes[i + 1];
-            object.chainCallback =
-                endingCallbacks[endingCallbacks.length - 1];
-            object.endCallback = function() {
-                alert(this);
-                drawQuoteText(this.nextQuote,
-                    lengthForWrapAround,
-                    this.chainCallbackObject.endCallback);
-                gameShow.nextQuoteSound.play();
-            };
-
-            endingCallbacks.push(object);
-
-            // endingCallbacks.push({endCallback : action,
-                // nextQuote : arrayOfQuotes[i + 1],
-                // chainCallbackObject :
-                    // endingCallbacks[endingCallbacks.length - 1]});
-        }
-    }
-
-    // Start the chain
-    drawQuoteText(arrayOfQuotes[0], lengthForWrapAround,
-        endingCallbacks[endingCallbacks.length - 1].endCallback);
-    */
-
-
-    /*
-        THIS WAS THE FIRST IMPLEMENTATION I TRIED.
-    */
-    // In reverse order, make the function for drawing each
-    // quote so each can be chained together
-    /* var endingCallbacks = [];
-    for (var i = arrayOfQuotes.length - 1; i >= 0; --i) {
-        // Check if this is the last quote
-        if ((i + 1) === arrayOfQuotes.length)
-            endingCallbacks.push(function() {
-                gameShow.nextQuoteSound.play();
-                eraseQuotes();
-                endCallback();
-            });
-        else {
-            // there is another quote to chain
-            // alert("Quote: " + arrayOfQuotes[i + 1]);
-            // alert("endCallbackIndex: " + (endingCallbacks.length - 1));
-            // endingCallbacks.push(function() {
-                // drawQuoteText(arrayOfQuotes[i + 1],
-                    // lengthForWrapAround,
-                    // endingCallbacks[endingCallbacks.length - 1]);
-                // gameShow.nextQuoteSound.play();
-            // });
-            // endingCallbacks.push(function() {
-                // drawQuoteText(arrayOfQuotes.slice(i + 1, 1),
-                    // lengthForWrapAround,
-                    // endingCallbacks.slice(
-                        // endingCallbacks.length - 1, 1));
-                // gameShow.nextQuoteSound.play();
-            // });
-        }
-
-    // Start the chain
-    // drawQuoteText(arrayOfQuotes[0], lengthForWrapAround,
-        // endingCallbacks[endingCallbacks.length - 1]);
-    */
-// }
 
 /*
     @pre canvases are set up
