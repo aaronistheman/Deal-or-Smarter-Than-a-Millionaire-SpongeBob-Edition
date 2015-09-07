@@ -1,3 +1,10 @@
+"use strict";
+
+/*
+    Author: Aaron Kaloti
+    Release number: 0.1
+*/
+
 var app = angular.module('game', []);
 app.controller('gameCtrl', function($scope) {
     // make an array for ids of each canvas in this webpage
