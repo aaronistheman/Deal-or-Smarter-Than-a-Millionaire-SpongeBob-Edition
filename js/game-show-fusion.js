@@ -5,6 +5,18 @@ gameShow.spongeBobImage.src = "images/spongebob.png";
 var KEYCODES = {};
 KEYCODES.ENTER = 13;
 
+/*
+    @pre none
+    @post none
+    @hasTest false
+    @param none
+    @returns true if currently unit testing, false otherwise
+    @throws nothing
+*/
+function isUnitTesting() {
+    return $("#qunit").length === 1;
+}
+
 function drawMenuBackground() {
     // var canvas = document.getElementById("menu-background-canvas");
     // var ctx = canvas.getContext('2d');
@@ -99,10 +111,12 @@ function setUpGame() {
 }
 
 $(document).ready(function() {
-    // drawMenuText();
+    if (!isUnitTesting()) {
+        drawMenuText();
 
-    $(document).keydown(function(e) {
-        if (e.which === KEYCODES.ENTER)
-            setUpGame();
-    });
+        $(document).keydown(function(e) {
+            if (e.which === KEYCODES.ENTER)
+                setUpGame();
+        });
+    }
 });
