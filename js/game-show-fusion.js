@@ -169,13 +169,15 @@ function setUpGame() {
     $(document).off("keydown");
     drawSpongebob();
     setUpQuoteBubble();
-    drawQuoteText("teeheelkjaflk;jd;lkdjflkdajflk;ja;lfjkldsjlsfj" +
-        "ja;lkfjdslk;fjdlkfjalkjfkdslfjslkfjlks;jflksjfl;skjf;lsj" +
-        "lkja;kfjdsalfjsalfjlaskdfjlsdjflkadjlfs;jlfsjlkafj;lfsdj" +
-        "startjf;ajfdklsja;lfkjsdlkfjalkfjklsdjflaksfjd", 85,
+    /*drawQuotes(["Quote 1", "Quote 2", "Quote 3", "Quote 4"], 85,
         function() {
-            drawQuoteText("whatssup", 5)
-        });
+            alert("Finished the chain");
+        });*/
+    drawQuoteText("Quote 1", 85, function() {
+       drawQuoteText("Quote 2", 85, function() {
+            alert("Finished the chain");
+       });
+    });
 }
 
 $(document).ready(function() {
