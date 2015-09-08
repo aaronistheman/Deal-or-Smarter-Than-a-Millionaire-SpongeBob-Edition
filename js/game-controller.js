@@ -13,11 +13,11 @@ app.controller('gameCtrl', function($scope) {
     canvasIds.push("choose-question-canvas");
     // canvasIds.push("questioning-background-canvas");
     canvasIds.push("questioning-canvas");
-    canvasIds.push("speaking-canvas");
+    canvasIds.push("speaker-canvas");
     canvasIds.push("quote-bubble-canvas");
     canvasIds.push("quote-text-canvas");
-    // canvasIds.push("menu-background-canvas");
-    canvasIds.push("menu-canvas");
+    // canvasIds.push("title-screen-background-canvas");
+    canvasIds.push("title-screen-canvas");
 
     // insert:
     // open case scene

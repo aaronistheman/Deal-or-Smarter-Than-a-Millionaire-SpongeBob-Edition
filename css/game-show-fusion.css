@@ -49,10 +49,10 @@ canvas.show {
     display: block;
 }
 
-#menu-canvas.show {
+#title-screen-canvas.show {
     background-color: #eee;
 }
 
-#speaking-canvas.show {
+#speaker-canvas.show {
     background-color: black;
 }

@@ -23,6 +23,14 @@ mp3 files. I've confirmed that the game works on modern versions of
 Chrome, Internet Explorer, Firefox, and Opera. It doesn't work on
 the most recent version of Safari (that I could find: 5.1.7) for Windows.
 
+How to Run Unit Tests
+---------------------
+
+Run unit-tests.html. According to the QUnit website, the following
+browsers support unit testing with QUnit:
+"IE6+ and Current - 1 for Chrome, Firefox, Safari and Opera."
+Thus, a modern version of a major browser should work.
+
 Use of Git Hooks
 ----------------
 

@@ -4,7 +4,7 @@ var gameShow = {};
 gameShow.spongeBobImage = new Image();
 gameShow.spongeBobImage.src = "images/spongebob.png";
 gameShow.nextQuoteSound;
-game.quoteLengthForWrapAround = 85;
+gameShow.quoteLengthForWrapAround = 85;
 
 var KEYCODES = {};
 KEYCODES.ENTER = 13;
@@ -39,8 +39,8 @@ function isUnitTesting() {
 }
 
 // This is a trivial function that was made for the purpose of testing.
-function drawMenuBackground() {
-    // var canvas = document.getElementById("menu-background-canvas");
+function drawTitleScreenBackground() {
+    // var canvas = document.getElementById("title-screen-background-canvas");
     // var ctx = canvas.getContext('2d');
     // ctx.beginPath();
     // ctx.moveTo(100, 50);
@@ -48,9 +48,9 @@ function drawMenuBackground() {
     // ctx.stroke();
 }
 
-// @post menu has been set up with prompt for user
-function drawMenuText() {
-    var canvas = document.getElementById("menu-canvas");
+// @post title screen has been set up with prompt for user
+function drawTitleScreenText() {
+    var canvas = document.getElementById("title-screen-canvas");
     var ctx = canvas.getContext('2d');
     ctx.font = "30px Arial";
     ctx.fillStyle = "black";
@@ -73,7 +73,7 @@ function drawGameText() {
 
 // @post canvas that shows a speaker has been erased
 function eraseSpeaker() {
-    var canvas = document.getElementById("speaking-canvas");
+    var canvas = document.getElementById("speaker-canvas");
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
@@ -81,7 +81,7 @@ function eraseSpeaker() {
 // @post SpongeBob has been drawn so that he looks like he's
 // speaking to you
 function drawSpongebob() {
-    var canvas = document.getElementById("speaking-canvas");
+    var canvas = document.getElementById("speaker-canvas");
     var ctx = canvas.getContext('2d');
 
     ctx.drawImage(gameShow.spongeBobImage, 600, 50);
@@ -96,7 +96,7 @@ function drawQuoteBubble() {
 }
 
 // @post text in the quote bubble has been cleared
-function eraseQuotes() {
+function eraseQuoteBubbleText() {
     var canvas = document.getElementById('quote-text-canvas');
     var ctx = canvas.getContext('2d');
     ctx.clearRect(50, 325, 1000, 200);
@@ -146,7 +146,7 @@ function drawSpeaker(speakerName, endCallback) {
 */
 function drawQuoteText(text, endCallback) {
     drawEachTextPiece(convertStringToArrayOfStrings(text,
-        game.quoteLengthForWrapAround));
+        gameShow.quoteLengthForWrapAround));
 
     if (endCallback !== undefined) {
         // Allow the endCallback to be called
@@ -186,8 +186,7 @@ function drawEachTextPiece(textPieces) {
     var x = 75;
     var y = 400;
 
-    // Erase the quote bubble
-    ctx.clearRect(50, 325, 1000, 200);
+    eraseQuoteBubbleText();
 
     // Draw the text
     for (var textIndex in textPieces) {
@@ -230,10 +229,16 @@ function setUpQuoteBubble() {
     drawQuoteBubble();
 }
 
-function setUpGame() {
-    $("#menu-canvas").removeClass('show');
+function removeTitleScreen() {
+    $("#title-screen-canvas").removeClass('show');
     $(document).off("keydown");
+}
+
+function setUpGame() {
+    removeTitleScreen();
     setUpQuoteBubble();
+
+    // Host's introductory text
     drawSpeaker("SpongeBob", function() {
         drawQuoteText("Welcome to the game. Press Enter to go " +
             "to the next quote.",
@@ -243,7 +248,7 @@ function setUpGame() {
                     drawQuoteText("Get ready to play this combination " +
                         "of game shows.",
                         function() {
-                            eraseQuotes();
+                            eraseQuoteBubbleText();
                         });
                 });
             });
@@ -252,7 +257,7 @@ function setUpGame() {
 
 $(document).ready(function() {
     if (!isUnitTesting()) {
-        drawMenuText();
+        drawTitleScreenText();
 
         $(document).keydown(function(e) {
             if (e.which === KEYCODES.ENTER)
