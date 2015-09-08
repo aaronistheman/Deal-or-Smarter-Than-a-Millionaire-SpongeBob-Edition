@@ -12,6 +12,36 @@ KEYCODES.ENTER = 13;
 var ERROR_MESSAGES = {};
 ERROR_MESSAGES.PARAMETER = "parameter error";
 
+var quotesToDraw = {
+    // quotes with lower indexes will be displayed first
+    storage : [],
+
+    /*
+        @pre this.storage.length > 0
+        @post things have been set up so that the user can go from
+        one quote to the next by pressing Enter; after the last
+        quote has been displayed, pressing Enter will result in
+        the endCallback being called; this.storage.length = 0
+        @hasTest no
+        @param endCallback to call after all the quotes in this.storage
+        have been displayed
+        @returns nothing
+        @throws nothing
+    */
+    deployQuoteChain : function(endCallback) {
+        if (this.storage.length !== 0) {
+            // more quotes to display; display the next one
+            drawQuoteText(this.storage.shift(), function() {
+                quotesToDraw.deployQuoteChain(endCallback);
+            });
+        }
+        else {
+            // no more quotes to call
+            endCallback();
+        }
+    }
+};
+
 /*
     @pre none
     @post errorMessage has been printed to console
@@ -36,16 +66,6 @@ function parameterError(errorMessage) {
 */
 function isUnitTesting() {
     return $("#qunit").length === 1;
-}
-
-// This is a trivial function that was made for the purpose of testing.
-function drawTitleScreenBackground() {
-    // var canvas = document.getElementById("title-screen-background-canvas");
-    // var ctx = canvas.getContext('2d');
-    // ctx.beginPath();
-    // ctx.moveTo(100, 50);
-    // ctx.lineTo(300, 50);
-    // ctx.stroke();
 }
 
 // @post title screen has been set up with prompt for user
@@ -240,19 +260,16 @@ function setUpGame() {
 
     // Host's introductory text
     drawSpeaker("SpongeBob", function() {
-        drawQuoteText("Welcome to the game. Press Enter to go " +
-            "to the next quote.",
-            function() {
-                drawQuoteText("I'm your host, SpongeBob Squarepants.",
-                function() {
-                    drawQuoteText("Get ready to play this combination " +
-                        "of game shows.",
-                        function() {
-                            eraseQuoteBubbleText();
-                        });
-                });
-            });
+        quotesToDraw.storage.push("Welcome to the game. " +
+            "Press Enter to go to the next quote.");
+        quotesToDraw.storage.push("I'm your host, " +
+            "SpongeBob Squarepants.");
+        quotesToDraw.storage.push("Get ready to play this " +
+            "combination of game shows.");
+        quotesToDraw.deployQuoteChain(function() {
+            eraseQuoteBubbleText();
         });
+    });
 }
 
 $(document).ready(function() {
