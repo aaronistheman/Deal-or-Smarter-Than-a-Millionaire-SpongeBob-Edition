@@ -1,5 +1,4 @@
 Next:
--clean up the code for drawing a chain of quotes
 -so that I don't have to keep putting the enter keypressed handler
  everywhere, I could have a global variable store what to do if Enter
  is pressed. It could even be an array, if I want the Enter key to cause

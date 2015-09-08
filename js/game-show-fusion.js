@@ -28,26 +28,15 @@ var quotesToDraw = {
         @returns nothing
         @throws nothing
     */
-    drawQuotes : function(endCallback) {
-        drawQuoteText(this.storage.shift(), function() {
-            quotesToDraw.drawNextQuoteOrStop(endCallback);
-        });
-    },
-
-    drawNextQuoteOrStop : function(endCallback) {
+    deployQuoteChain : function(endCallback) {
         if (this.storage.length !== 0) {
             // more quotes to display; display the next one
             drawQuoteText(this.storage.shift(), function() {
-                // $(document).off("keydown");
-                // $(document).keydown(function(e) {
-                    // if (e.which === KEYCODES.ENTER) {
-                        quotesToDraw.drawNextQuoteOrStop(endCallback);
-                    // }
-                // });
+                quotesToDraw.deployQuoteChain(endCallback);
             });
         }
         else {
-            // no more quotes to call; set up to call endCallback
+            // no more quotes to call
             endCallback();
         }
     }
@@ -77,16 +66,6 @@ function parameterError(errorMessage) {
 */
 function isUnitTesting() {
     return $("#qunit").length === 1;
-}
-
-// This is a trivial function that was made for the purpose of testing.
-function drawTitleScreenBackground() {
-    // var canvas = document.getElementById("title-screen-background-canvas");
-    // var ctx = canvas.getContext('2d');
-    // ctx.beginPath();
-    // ctx.moveTo(100, 50);
-    // ctx.lineTo(300, 50);
-    // ctx.stroke();
 }
 
 // @post title screen has been set up with prompt for user
@@ -287,7 +266,7 @@ function setUpGame() {
             "SpongeBob Squarepants.");
         quotesToDraw.storage.push("Get ready to play this " +
             "combination of game shows.");
-        quotesToDraw.drawQuotes(function() {
+        quotesToDraw.deployQuoteChain(function() {
             eraseQuoteBubbleText();
         });
     });
