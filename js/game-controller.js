@@ -16,8 +16,8 @@ app.controller('gameCtrl', function($scope) {
     canvasIds.push("speaker-canvas");
     canvasIds.push("quote-bubble-canvas");
     canvasIds.push("quote-text-canvas");
-    // canvasIds.push("menu-background-canvas");
-    canvasIds.push("menu-canvas");
+    // canvasIds.push("title-screen-background-canvas");
+    canvasIds.push("title-screen-canvas");
 
     // insert:
     // open case scene

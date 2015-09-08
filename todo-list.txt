@@ -1,6 +1,4 @@
 Next:
--change the name of the menu to the title screen
-
 -consider making another attempt at drawQuotes()
     --try using the number of quotes in a better way for iteration
     --consider a global storage/array of quotes to be displayed; a function

@@ -39,8 +39,8 @@ function isUnitTesting() {
 }
 
 // This is a trivial function that was made for the purpose of testing.
-function drawMenuBackground() {
-    // var canvas = document.getElementById("menu-background-canvas");
+function drawTitleScreenBackground() {
+    // var canvas = document.getElementById("title-screen-background-canvas");
     // var ctx = canvas.getContext('2d');
     // ctx.beginPath();
     // ctx.moveTo(100, 50);
@@ -48,9 +48,9 @@ function drawMenuBackground() {
     // ctx.stroke();
 }
 
-// @post menu has been set up with prompt for user
-function drawMenuText() {
-    var canvas = document.getElementById("menu-canvas");
+// @post title screen has been set up with prompt for user
+function drawTitleScreenText() {
+    var canvas = document.getElementById("title-screen-canvas");
     var ctx = canvas.getContext('2d');
     ctx.font = "30px Arial";
     ctx.fillStyle = "black";
@@ -229,13 +229,13 @@ function setUpQuoteBubble() {
     drawQuoteBubble();
 }
 
-function removeMenu() {
-    $("#menu-canvas").removeClass('show');
+function removeTitleScreen() {
+    $("#title-screen-canvas").removeClass('show');
     $(document).off("keydown");
 }
 
 function setUpGame() {
-    removeMenu();
+    removeTitleScreen();
     setUpQuoteBubble();
 
     // Host's introductory text
@@ -257,7 +257,7 @@ function setUpGame() {
 
 $(document).ready(function() {
     if (!isUnitTesting()) {
-        drawMenuText();
+        drawTitleScreenText();
 
         $(document).keydown(function(e) {
             if (e.which === KEYCODES.ENTER)
