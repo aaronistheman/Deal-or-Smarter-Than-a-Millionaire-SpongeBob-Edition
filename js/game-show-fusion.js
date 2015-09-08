@@ -12,6 +12,58 @@ KEYCODES.ENTER = 13;
 var ERROR_MESSAGES = {};
 ERROR_MESSAGES.PARAMETER = "parameter error";
 
+var quotesToDraw = {
+    // quotes with lower indexes will be displayed first
+    storage : [],
+
+    /*
+        @pre this.storage.length > 0
+        @post things have been set up so that the user can go from
+        one quote to the next by pressing Enter; after the last
+        quote has been displayed, pressing Enter will result in
+        the endCallback being called; this.storage.length = 0
+        @hasTest no
+        @param endCallback to call after all the quotes in this.storage
+        have been displayed
+        @returns nothing
+        @throws nothing
+    */
+    drawQuotes : function(endCallback) {
+        // alert("begin drawQuotes()");
+        // Reserve the Enter key for the purpose of displaying
+        // the next quote
+        $(document).off("keydown");
+        $(document).keydown(function(e) {
+            if (e.which === KEYCODES.ENTER) {
+                // alert("keydown Enter in drawQuotes()");
+                quotesToDraw.drawNextQuoteOrStop(endCallback);
+            }
+        });
+    },
+
+    drawNextQuoteOrStop : function(endCallback) {
+        if (this.storage.length !== 0) {
+            // more quotes to display; display the next one
+            drawQuoteText(this.storage.shift(), function () {
+                $(document).off("keydown");
+                $(document).keydown(function(e) {
+                    if (e.which === KEYCODES.ENTER) {
+                        quotesToDraw.drawNextQuoteOrStop(endCallback);
+                    }
+                });
+            });
+        }
+        else {
+            // no more quotes to call; set up to call endCallback
+            $(document).off("keydown");
+            $(document).keydown(function(e) {
+                if (e.which === KEYCODES.ENTER)
+                    endCallback();
+            });
+        }
+    }
+};
+
 /*
     @pre none
     @post errorMessage has been printed to console
@@ -240,6 +292,16 @@ function setUpGame() {
 
     // Host's introductory text
     drawSpeaker("SpongeBob", function() {
+        quotesToDraw.storage.push("Quote 1");
+        quotesToDraw.storage.push("Quote 2");
+        quotesToDraw.storage.push("Quote 3");
+        quotesToDraw.drawQuotes(function() {
+            alert("Success");
+            eraseQuoteBubbleText();
+        });
+    });
+    /*
+    drawSpeaker("SpongeBob", function() {
         drawQuoteText("Welcome to the game. Press Enter to go " +
             "to the next quote.",
             function() {
@@ -253,6 +315,7 @@ function setUpGame() {
                 });
             });
         });
+        */
 }
 
 $(document).ready(function() {
