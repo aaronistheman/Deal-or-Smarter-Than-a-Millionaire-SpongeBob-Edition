@@ -1,5 +1,4 @@
 Next:
--consider having the erase built into pressing Enter
 -in name of functions that call eraseQuoteBubble(), put the word "erase"
  and (if necessary) split into helper functions
 -(It seems that the game can be made in any order, so...)

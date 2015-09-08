@@ -27,13 +27,21 @@ keyboard.enterKeyAction = {
 
     // @post event handler has been set up so that this.action, if
     // it's defined, will be called when user presses Enter
+    // (this.action will be erased before the action function is
+    // called)
     setUpEventHandler : function() {
         $(document).keydown(function(e) {
             if (e.which === keyboard.ENTER) {
                 // Note that in the handler, the object 'this'
                 // refers to the document
-                if (keyboard.enterKeyAction.action !== undefined)
-                    keyboard.enterKeyAction.action();
+                if (keyboard.enterKeyAction.action !== undefined) {
+                    // Erase action before calling it, but do so
+                    // in a way so that the action to do isn't
+                    // inadvertently erased first
+                    var act = keyboard.enterKeyAction.action;
+                    keyboard.enterKeyAction.erase();
+                    act();
+                }
             }
         });
     }
@@ -201,14 +209,12 @@ function drawQuoteText(text, endCallback) {
     if (endCallback !== undefined) {
         // Allow the endCallback to be called
         keyboard.enterKeyAction.set(function() {
-            keyboard.enterKeyAction.erase();
             gameShow.nextQuoteSound.play();
             endCallback();
         });
     }
     else {
         keyboard.enterKeyAction.set(function() {
-            keyboard.enterKeyAction.erase();
             gameShow.nextQuoteSound.play();
         });
     }
@@ -277,7 +283,6 @@ function setUpQuoteBubble() {
 
 function removeTitleScreen() {
     $("#title-screen-canvas").removeClass('show');
-    keyboard.enterKeyAction.erase();
 }
 
 function setUpGame() {
