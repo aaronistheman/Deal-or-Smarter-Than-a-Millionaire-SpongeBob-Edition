@@ -1,11 +1,7 @@
 Next:
--consider making another attempt at drawQuotes()
-    --try using the number of quotes in a better way for iteration
-    --consider a global storage/array of quotes to be displayed; a function
-        can be called to add a quote to the storage; another function
-        can be called to display each quote in the storage, ending it
-        with an endCallback; the use of a global in this could make
-        easier making a function to chain the quotes
+-clean up the code for drawing a chain of quotes
+-in name of functions that call eraseQuoteBubble(), put the word "erase"
+ and (if necessary) split into helper functions
 -(It seems that the game can be made in any order, so...)
  provide the ability to flow from scene to scene
     --present one question and one money amount?
@@ -15,6 +11,8 @@ At some point:
 -more decorated main menu
 -make sure trivial functions that are no longer needed and that were
  made for the purpose of testing have been erased
+-a guide to each assistant that can be unlocked by reaching a certain
+ high score (using local storage)
 
 Ideas for millionaires to be able to choose as assistants:
 -Kevin O'Leary ("Mr. Wonderful")

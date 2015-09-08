@@ -29,37 +29,26 @@ var quotesToDraw = {
         @throws nothing
     */
     drawQuotes : function(endCallback) {
-        // alert("begin drawQuotes()");
-        // Reserve the Enter key for the purpose of displaying
-        // the next quote
-        $(document).off("keydown");
-        $(document).keydown(function(e) {
-            if (e.which === KEYCODES.ENTER) {
-                // alert("keydown Enter in drawQuotes()");
-                quotesToDraw.drawNextQuoteOrStop(endCallback);
-            }
+        drawQuoteText(this.storage.shift(), function() {
+            quotesToDraw.drawNextQuoteOrStop(endCallback);
         });
     },
 
     drawNextQuoteOrStop : function(endCallback) {
         if (this.storage.length !== 0) {
             // more quotes to display; display the next one
-            drawQuoteText(this.storage.shift(), function () {
-                $(document).off("keydown");
-                $(document).keydown(function(e) {
-                    if (e.which === KEYCODES.ENTER) {
+            drawQuoteText(this.storage.shift(), function() {
+                // $(document).off("keydown");
+                // $(document).keydown(function(e) {
+                    // if (e.which === KEYCODES.ENTER) {
                         quotesToDraw.drawNextQuoteOrStop(endCallback);
-                    }
-                });
+                    // }
+                // });
             });
         }
         else {
             // no more quotes to call; set up to call endCallback
-            $(document).off("keydown");
-            $(document).keydown(function(e) {
-                if (e.which === KEYCODES.ENTER)
-                    endCallback();
-            });
+            endCallback();
         }
     }
 };
@@ -292,30 +281,16 @@ function setUpGame() {
 
     // Host's introductory text
     drawSpeaker("SpongeBob", function() {
-        quotesToDraw.storage.push("Quote 1");
-        quotesToDraw.storage.push("Quote 2");
-        quotesToDraw.storage.push("Quote 3");
+        quotesToDraw.storage.push("Welcome to the game. " +
+            "Press Enter to go to the next quote.");
+        quotesToDraw.storage.push("I'm your host, " +
+            "SpongeBob Squarepants.");
+        quotesToDraw.storage.push("Get ready to play this " +
+            "combination of game shows.");
         quotesToDraw.drawQuotes(function() {
-            alert("Success");
             eraseQuoteBubbleText();
         });
     });
-    /*
-    drawSpeaker("SpongeBob", function() {
-        drawQuoteText("Welcome to the game. Press Enter to go " +
-            "to the next quote.",
-            function() {
-                drawQuoteText("I'm your host, SpongeBob Squarepants.",
-                function() {
-                    drawQuoteText("Get ready to play this combination " +
-                        "of game shows.",
-                        function() {
-                            eraseQuoteBubbleText();
-                        });
-                });
-            });
-        });
-        */
 }
 
 $(document).ready(function() {
