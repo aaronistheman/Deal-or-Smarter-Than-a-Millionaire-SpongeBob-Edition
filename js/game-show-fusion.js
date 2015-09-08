@@ -200,20 +200,16 @@ function drawQuoteText(text, endCallback) {
 
     if (endCallback !== undefined) {
         // Allow the endCallback to be called
-        $(document).keydown(function(e) {
-            if (e.which === keyboard.ENTER) {
-                $(document).off("keydown");
-                gameShow.nextQuoteSound.play();
-                endCallback();
-            }
+        keyboard.enterKeyAction.set(function() {
+            keyboard.enterKeyAction.erase();
+            gameShow.nextQuoteSound.play();
+            endCallback();
         });
     }
     else {
-        $(document).keydown(function(e) {
-            if (e.which === keyboard.ENTER) {
-                $(document).off("keydown");
-                gameShow.nextQuoteSound.play();
-            }
+        keyboard.enterKeyAction.set(function() {
+            keyboard.enterKeyAction.erase();
+            gameShow.nextQuoteSound.play();
         });
     }
 }
@@ -281,7 +277,7 @@ function setUpQuoteBubble() {
 
 function removeTitleScreen() {
     $("#title-screen-canvas").removeClass('show');
-    $(document).off("keydown");
+    keyboard.enterKeyAction.erase();
 }
 
 function setUpGame() {
