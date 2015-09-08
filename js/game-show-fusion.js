@@ -6,8 +6,46 @@ gameShow.spongeBobImage.src = "images/spongebob.png";
 gameShow.nextQuoteSound;
 gameShow.quoteLengthForWrapAround = 85;
 
-var KEYCODES = {};
-KEYCODES.ENTER = 13;
+var keyboard = {};
+keyboard.ENTER = 13;
+keyboard.enterKeyAction = {
+    // what to do when the Enter key
+    // is pressed; should be a function
+    action : undefined,
+
+    // for cleaner syntax (than keyboard.enterKeyAction.action = action;)
+    // @param action the function to assign to this.action (i.e. what
+    // to do when the Enter key is pressed)
+    set : function(action) {
+        this.action = action;
+    },
+
+    // @post this.action = undefined
+    erase : function() {
+        this.action = undefined;
+    },
+
+    // @post event handler has been set up so that this.action, if
+    // it's defined, will be called when user presses Enter
+    // (this.action will be erased before the action function is
+    // called)
+    setUpEventHandler : function() {
+        $(document).keydown(function(e) {
+            if (e.which === keyboard.ENTER) {
+                // Note that in the handler, the object 'this'
+                // refers to the document
+                if (keyboard.enterKeyAction.action !== undefined) {
+                    // Erase action before calling it, but do so
+                    // in a way so that the action to do isn't
+                    // inadvertently erased first
+                    var act = keyboard.enterKeyAction.action;
+                    keyboard.enterKeyAction.erase();
+                    act();
+                }
+            }
+        });
+    }
+};
 
 var ERROR_MESSAGES = {};
 ERROR_MESSAGES.PARAMETER = "parameter error";
@@ -170,20 +208,14 @@ function drawQuoteText(text, endCallback) {
 
     if (endCallback !== undefined) {
         // Allow the endCallback to be called
-        $(document).keydown(function(e) {
-            if (e.which === KEYCODES.ENTER) {
-                $(document).off("keydown");
-                gameShow.nextQuoteSound.play();
-                endCallback();
-            }
+        keyboard.enterKeyAction.set(function() {
+            gameShow.nextQuoteSound.play();
+            endCallback();
         });
     }
     else {
-        $(document).keydown(function(e) {
-            if (e.which === KEYCODES.ENTER) {
-                $(document).off("keydown");
-                gameShow.nextQuoteSound.play();
-            }
+        keyboard.enterKeyAction.set(function() {
+            gameShow.nextQuoteSound.play();
         });
     }
 }
@@ -251,7 +283,6 @@ function setUpQuoteBubble() {
 
 function removeTitleScreen() {
     $("#title-screen-canvas").removeClass('show');
-    $(document).off("keydown");
 }
 
 function setUpGame() {
@@ -275,10 +306,7 @@ function setUpGame() {
 $(document).ready(function() {
     if (!isUnitTesting()) {
         drawTitleScreenText();
-
-        $(document).keydown(function(e) {
-            if (e.which === KEYCODES.ENTER)
-                setUpGame();
-        });
+        keyboard.enterKeyAction.setUpEventHandler();
+        keyboard.enterKeyAction.set(setUpGame);
     }
 });

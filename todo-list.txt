@@ -1,13 +1,4 @@
 Next:
--so that I don't have to keep putting the enter keypressed handler
- everywhere, I could have a global variable store what to do if Enter
- is pressed. It could even be an array, if I want the Enter key to cause
- multiple functions (or two different sources say what the Enter key
- does). To make Enter not do anything, I'd set the variable to undefined.
- (I'd test the state of the variable in the one and only keypressed
- handler.)
-    --consider removing the event handler in drawQuoteText() (i.e.
-    make it the callback's responsibility)
 -in name of functions that call eraseQuoteBubble(), put the word "erase"
  and (if necessary) split into helper functions
 -(It seems that the game can be made in any order, so...)
