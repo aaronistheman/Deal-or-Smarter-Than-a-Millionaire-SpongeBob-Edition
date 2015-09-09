@@ -69,6 +69,7 @@ var quotesToDraw = {
     deployQuoteChain : function(endCallback) {
         if (this.storage.length !== 0) {
             // more quotes to display; display the next one
+            eraseQuoteBubbleText();
             drawQuoteText(this.storage.shift(), function() {
                 quotesToDraw.deployQuoteChain(endCallback);
             });
@@ -237,8 +238,6 @@ function drawEachTextPiece(textPieces) {
     ctx.font = fontSize + "px Arial";
     var x = 75;
     var y = 400;
-
-    eraseQuoteBubbleText();
 
     // Draw the text
     for (var textIndex in textPieces) {

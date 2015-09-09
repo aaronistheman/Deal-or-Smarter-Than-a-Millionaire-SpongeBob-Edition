@@ -1,6 +1,4 @@
 Next:
--in name of functions that call eraseQuoteBubble(), put the word "erase"
- and (if necessary) split into helper functions
 -(It seems that the game can be made in any order, so...)
  provide the ability to flow from scene to scene
     --present one question and one money amount?
