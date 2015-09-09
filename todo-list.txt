@@ -1,4 +1,5 @@
 Next:
+-make the quote bubble shorter
 -create screen with each money amount in Deal or No Deal style
 -(It seems that the game can be made in any order, so...)
  provide the ability to flow from scene to scene
@@ -15,7 +16,6 @@ At some point:
 Ideas for millionaires to be able to choose as assistants:
 -Kevin O'Leary ("Mr. Wonderful")
 -Mr. Burns
--Mr. Krabs
 
 Consider:
 -making an object for a state stack
@@ -24,3 +24,22 @@ Consider:
 -disabling the ability of the user to hold Enter to rush through the
  quotes (to prevent accidents, although disabling this feature prevents
  players from controlling their gameplay speed)
+
+Game flow:
+-host introduces himself and game
+-host shows you the Deal or No Deal money screen
+-host explains the rules
+    --you pick a case
+    --you pick a question and try to answer it
+    --each correct answer leads to a case with a random money amount
+      being opened
+    --after every two questions, the banker (Mr. Krabs) makes a deal
+    --if you miss a question and are not saved, you leave with nothing
+    --if you get past all ten questions, you have the option of either
+        taking your case home or going for the million dollar question
+-host says you do have help
+    --host introduces five helpers who can save you or let you cheat
+    --host tells you of two lifelines (ask audience and phone a friend)
+        --phoning a friend cuts to Patrick asking if its Pizza Castle
+-you pick your case
+-host shows you the randomly generated question screen
