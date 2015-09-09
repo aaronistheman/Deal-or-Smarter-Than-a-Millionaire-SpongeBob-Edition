@@ -4,7 +4,12 @@ var gameShow = {};
 gameShow.spongeBobImage = new Image();
 gameShow.spongeBobImage.src = "images/spongebob.png";
 gameShow.nextQuoteSound;
-gameShow.quoteLengthForWrapAround = 85;
+gameShow.quoteLengthForWrapAround = 70;
+gameShow.quoteBubble = {};
+gameShow.quoteBubble.x = 50;
+gameShow.quoteBubble.y = 440;
+gameShow.quoteBubble.width = 1000;
+gameShow.quoteBubble.height = 85;
 
 var keyboard = {};
 keyboard.ENTER = 13;
@@ -150,15 +155,20 @@ function drawSpongebob() {
 function drawQuoteBubble() {
     var canvas = document.getElementById('quote-bubble-canvas');
     var ctx = canvas.getContext('2d');
+    var bubble = gameShow.quoteBubble;
     ctx.fillStyle = "rgba(240, 240, 240, 0.9)";
-    ctx.fillRect(50, 325, 1000, 200);
+    ctx.fillRect(bubble.x, bubble.y, bubble.width, bubble.height);
 }
 
 // @post text in the quote bubble has been cleared
 function eraseQuoteBubbleText() {
     var canvas = document.getElementById('quote-text-canvas');
     var ctx = canvas.getContext('2d');
-    ctx.clearRect(50, 325, 1000, 200);
+    var bubble = gameShow.quoteBubble;
+
+    // Note that this clears the text on the bubble, not the
+    // bubble itself, because of the canvas we're affecting
+    ctx.clearRect(bubble.x, bubble.y, bubble.width, bubble.height);
 }
 
 /*
@@ -237,8 +247,9 @@ function drawEachTextPiece(textPieces) {
     var textPadding = 10;
     var fontSize = 30;
     ctx.font = fontSize + "px Arial";
-    var x = 75;
-    var y = 400;
+    var bubble = gameShow.quoteBubble;
+    var x = bubble.x + 25;
+    var y = bubble.y + 35;
 
     // Draw the text
     for (var textIndex in textPieces) {
