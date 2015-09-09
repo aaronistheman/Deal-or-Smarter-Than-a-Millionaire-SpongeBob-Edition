@@ -11,6 +11,7 @@ app.controller('gameCtrl', function($scope) {
     var canvasIds = [];
     canvasIds.push("questioning-canvas");
     canvasIds.push("choose-question-canvas");
+    canvasIds.push("money-display-canvas");
     canvasIds.push("speaker-canvas");
     canvasIds.push("quote-bubble-canvas");
     canvasIds.push("quote-text-canvas");

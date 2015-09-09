@@ -125,8 +125,8 @@ function drawTitleScreenText() {
 
 // This is currently a trivial function made for the purpose of
 // testing.
-function drawGameText() {
-    var canvas = document.getElementById("choose-question-canvas");
+function drawTestGameText() {
+    var canvas = document.getElementById("money-display-canvas");
     var ctx = canvas.getContext('2d');
     ctx.font = "30px Arial";
     ctx.fillStyle = "white";
@@ -296,10 +296,14 @@ function removeTitleScreen() {
     $("#title-screen-canvas").removeClass('show');
 }
 
+function talkAboutMoneyDisplay() {
+    $("#speaker-canvas").removeClass('show');
+}
+
 function setUpGame() {
     removeTitleScreen();
     setUpQuoteBubble();
-    drawGameText();
+    drawTestGameText();
 
     // Host's introductory text
     drawNewSpeaker("SpongeBob", function() {
@@ -310,7 +314,7 @@ function setUpGame() {
         quotesToDraw.storage.push("Get ready to play this " +
             "combination of game shows.");
         quotesToDraw.deployQuoteChain(function() {
-            eraseQuoteBubbleText();
+            talkAboutMoneyDisplay();
         });
     });
 }

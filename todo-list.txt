@@ -1,10 +1,9 @@
 Next:
 -create screen with each money amount in Deal or No Deal style
--(It seems that the game can be made in any order, so...)
- provide the ability to flow from scene to scene
-    --present one question and one money amount?
-    --initialize game by randomly picking questions and money amounts?
+    --make the host say something about it
 -turn quote bubble into an object (QuoteBubble)
+-show case display for explaining next part of rules
+-make a state stack (that is, a canvas stack) object (if necessary)
 
 At some point:
 -more decorated main menu
