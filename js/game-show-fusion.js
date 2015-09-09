@@ -45,7 +45,8 @@ gameShow.quotesToDraw = {
         }
         else {
             // no more quotes to call
-            endCallback();
+            if (endCallback !== undefined)
+                endCallback();
         }
     }
 };
@@ -406,6 +407,10 @@ function talkAboutMoneyDisplay() {
     // move speaker canvas out of the way so money display can
     // be seen
     $("#speaker-canvas").removeClass('show');
+    gameShow.quotesToDraw.add("You will try to answer ten questions.");
+    gameShow.quotesToDraw.add("Each question will randomly be " +
+        "assigned one of these values, but you  don't know which.");
+    gameShow.quotesToDraw.deployQuoteChain(eraseQuoteBubbleText);
 }
 
 function setUpGame() {
