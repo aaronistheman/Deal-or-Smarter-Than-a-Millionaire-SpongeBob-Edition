@@ -58,16 +58,19 @@ gameShow.moneyDisplay = {
         verticalPadding : 20,
     },
 
-    // textSettings : {
-        // fillStyle : "black",
-        // padding : 10,
-        // font : (this.height - (this.padding * 2)) + "px Arial",
-    // },
+    textSettings : {
+        fillStyle : "black",
+        padding : 10,
+    },
 };
 
 // this makes equal horizontal spacing between bars
 gameShow.moneyDisplay.barSettings.horizontalPadding =
     (1100 - (gameShow.moneyDisplay.barSettings.width * 2)) / 3;
+
+gameShow.moneyDisplay.textSettings.fontSize =
+    (gameShow.moneyDisplay.barSettings.height -
+    (gameShow.moneyDisplay.textSettings.padding * 2));
 
 /*
     @pre what the caller wants to draw hasn't been drawn
@@ -81,40 +84,64 @@ gameShow.moneyDisplay.barSettings.horizontalPadding =
     @throws caught exception if invalid whatToDraw value
 */
 gameShow.moneyDisplay.draw = function(whatToDraw) {
+    // Get variables that apply to drawing bars and text
+    var barSettings = gameShow.moneyDisplay.barSettings;
+    var textSettings = gameShow.moneyDisplay.textSettings;
+
+    var barWidth = barSettings.width;
+    var horizontalPadding = barSettings.horizontalPadding;
+    var barHeight = barSettings.height;
+    var verticalPadding = barSettings.verticalPadding;
+
+    // Get variables that are specific to what's being drawn
     try {
         if (whatToDraw === 'bars') {
+            // Set variables specific to drawing bars
             var canvas =
                 document.getElementById("money-display-bars-canvas");
             var ctx = canvas.getContext('2d');
-            var settings = gameShow.moneyDisplay.barSettings;
-            ctx.fillStyle = settings.fillStyle;
-
-            // Set up variables for drawing the bars
-            var barWidth = settings.width;
-            var horizontalPadding = settings.horizontalPadding;
-            var barHeight = settings.height;
-            var verticalPadding = settings.verticalPadding;
+            ctx.fillStyle = barSettings.fillStyle;
             var x = horizontalPadding;
-            var y = verticalPadding;
-
-            for (var i = 0; i < 10; ++i) {
-                // draw the bar
-                ctx.fillRect(x, y, barWidth, barHeight);
-
-                y += (barHeight + verticalPadding);
-
-                // if five bars have been drawn, go to next column
-                if (i === 4) {
-                    x += (barWidth + horizontalPadding);
-                    y = verticalPadding;
-                }
-            }
+            var firstBarY = verticalPadding; // facilitates
+                                             // resetting y
+            var y = firstBarY;
+        }
+        else if (whatToDraw === 'text') {
+            // Set variables specific to drawing text
+            var canvas =
+                document.getElementById("money-display-text-canvas");
+            var ctx = canvas.getContext('2d');
+            ctx.fillStyle = textSettings.fillStyle;
+            ctx.font = textSettings.fontSize + "px Arial";
+            var x = horizontalPadding + 20;
+            var firstBarY = verticalPadding + 45; // facilitates
+                                                  // resetting y
+            var y = firstBarY;
+            var textToDraw = '$';
         }
         else
             throw "Invalid value for whatToDraw";
     }
     catch (err) {
         return parameterError(err);
+    }
+
+    for (var i = 0; i < 10; ++i) {
+        if (whatToDraw === 'bars') {
+            // draw the bar
+            ctx.fillRect(x, y, barWidth, barHeight);
+        }
+        else if (whatToDraw === 'text') {
+            ctx.fillText(textToDraw, x, y);
+        }
+
+        y += (barHeight + verticalPadding);
+
+        // if five bars have been drawn, go to next column
+        if (i === 4) {
+            x += (barWidth + horizontalPadding);
+            y = firstBarY;
+        }
     }
 };
 
@@ -382,6 +409,7 @@ function setUpGame() {
     removeTitleScreen();
     setUpQuoteBubble();
     gameShow.moneyDisplay.draw('bars');
+    gameShow.moneyDisplay.draw('text');
 
     // Host's introductory text
     drawNewSpeaker("SpongeBob", function() {

@@ -34,6 +34,7 @@ Consider:
 -making the game work on Safari 5 for Windows
 -having a global variable for each canvas
 -separating classes/objects into different files (see if this is good)
+-using alerts if exceptions
 
 Game flow:
 -host introduces himself and game
