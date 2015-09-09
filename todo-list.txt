@@ -1,4 +1,5 @@
 Next:
+-create screen with each money amount in Deal or No Deal style
 -(It seems that the game can be made in any order, so...)
  provide the ability to flow from scene to scene
     --present one question and one money amount?
@@ -20,3 +21,6 @@ Consider:
 -making an object for a state stack
 -making the game work on Safari 5 for Windows
 -having a global variable for each canvas
+-disabling the ability of the user to hold Enter to rush through the
+ quotes (to prevent accidents, although disabling this feature prevents
+ players from controlling their gameplay speed)

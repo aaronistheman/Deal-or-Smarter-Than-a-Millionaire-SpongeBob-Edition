@@ -163,7 +163,8 @@ function eraseQuoteBubbleText() {
 
 /*
     @pre canvases are set up
-    @post correct speaker has been drawn and endCallback has
+    @post old speaker (if any) has been erased;
+    correct speaker has been drawn and endCallback has
     been called; if invalid speaker, a message has been printed to
     the console, and a string indicating the error has been returned
     @hasTest no
@@ -174,7 +175,7 @@ function eraseQuoteBubbleText() {
     @returns return value of parameterError() if invalid speakerName
     @throws (caught) exception if invalid speakerName
 */
-function drawSpeaker(speakerName, endCallback) {
+function drawNewSpeaker(speakerName, endCallback) {
     eraseSpeaker();
 
     try {
@@ -287,9 +288,10 @@ function removeTitleScreen() {
 function setUpGame() {
     removeTitleScreen();
     setUpQuoteBubble();
+    drawGameText();
 
     // Host's introductory text
-    drawSpeaker("SpongeBob", function() {
+    drawNewSpeaker("SpongeBob", function() {
         quotesToDraw.storage.push("Welcome to the game. " +
             "Press Enter to go to the next quote.");
         quotesToDraw.storage.push("I'm your host, " +
