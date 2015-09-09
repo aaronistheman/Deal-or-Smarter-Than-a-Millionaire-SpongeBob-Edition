@@ -1,22 +1,58 @@
 Next:
--(It seems that the game can be made in any order, so...)
- provide the ability to flow from scene to scene
-    --present one question and one money amount?
-    --initialize game by randomly picking questions and money amounts?
+-consider playing music in the host's introduction
+-see if can allow chaining (in the jQuery sense) when adding quotes
+    --giving add() a return value of "this" could work
+-turn quote bubble into an object (QuoteBubble)
+-show case display for explaining next part of rules
+-make a state stack (that is, a canvas stack) object (if necessary)
+    --to control showing and hiding canvases better
+    --in its initialization, it'll show what need be shown
+-disabling the ability of the user to hold Enter to rush through the
+ quotes (to prevent accidents, although disabling this feature prevents
+ players from controlling their gameplay speed)
+    --this could be fixed with one second delay between setting enter
+      action
 
 At some point:
 -more decorated main menu
 -make sure trivial functions that are no longer needed and that were
  made for the purpose of testing have been erased
 -a guide to each assistant that can be unlocked by reaching a certain
- high score (using local storage)
+ high score (using local storage); link in introduction
+-put private and priviledged members in classes
 
 Ideas for millionaires to be able to choose as assistants:
 -Kevin O'Leary ("Mr. Wonderful")
 -Mr. Burns
--Mr. Krabs
 
-Consider:
+Considerable:
 -making an object for a state stack
 -making the game work on Safari 5 for Windows
 -having a global variable for each canvas
+-separating classes/objects into different files (see if this is good)
+-using alerts if exceptions
+-put at least one of the object/classes into own file
+    --remove gameShow namespace in different file if necessary
+    --change gameShow namespace name if necessary (e.g. to 'gs')
+-find a way to deal with splitting a word between lines (besides
+    having to put extra whitespace)
+    --could limit quotes to one line
+
+Game flow:
+-host introduces himself and game
+-host shows you the Deal or No Deal money screen
+-host explains the rules
+    --you pick a case
+    --you pick a question and try to answer it
+    --each correct answer leads to a case with a random money amount
+      being opened
+    --after every two questions, the banker (Mr. Krabs) makes a deal
+    --if you miss a question and are not saved, you leave with nothing
+    --if you get past all ten questions, you have the option of either
+        taking your case home or going for the million dollar question
+-host says you do have help
+    --host introduces five helpers who can save you or let you cheat
+    --host tells you of two lifelines (ask audience and phone a friend)
+        --phoning a friend cuts to Patrick asking if its Pizza Castle
+-you pick your case
+-host shows you the randomly generated question screen

@@ -4,7 +4,150 @@ var gameShow = {};
 gameShow.spongeBobImage = new Image();
 gameShow.spongeBobImage.src = "images/spongebob.png";
 gameShow.nextQuoteSound;
-gameShow.quoteLengthForWrapAround = 85;
+gameShow.quoteLengthForWrapAround = 70;
+gameShow.quoteBubble = {};
+gameShow.quoteBubble.x = 50;
+gameShow.quoteBubble.y = 440;
+gameShow.quoteBubble.width = 1000;
+gameShow.quoteBubble.height = 85;
+
+gameShow.moneyAmounts = ['0.01', '50', '300', '750', '1,000',
+    '10,000', '25,000', '100,000', '250,000', '500,000'];
+
+gameShow.quotesToDraw = {
+    // quotes with lower indexes will be displayed first
+    storage : [],
+
+    // @param quote to put at end of storage
+    add : function(quote) {
+        this.storage.push(quote);
+    },
+
+    /*
+        @pre this.storage.length > 0
+        @post things have been set up so that the user can go from
+        one quote to the next by pressing Enter; after the last
+        quote has been displayed, pressing Enter will result in
+        the endCallback being called; this.storage.length = 0
+        @hasTest no
+        @param endCallback to call after all the quotes in this.storage
+        have been displayed
+        @returns nothing
+        @throws nothing
+    */
+    deployQuoteChain : function(endCallback) {
+        if (this.storage.length !== 0) {
+            // more quotes to display; display the next one
+            eraseQuoteBubbleText();
+            drawQuoteText(this.storage.shift(), function() {
+                gameShow.quotesToDraw.deployQuoteChain(endCallback);
+            });
+        }
+        else {
+            // no more quotes to call
+            if (endCallback !== undefined)
+                endCallback();
+        }
+    }
+};
+
+// some of this object definition is below the ending curly brace
+gameShow.moneyDisplay = {
+    barSettings : {
+        fillStyle : "#FFDF00",
+        width : 400,
+        height : 60,
+
+        // padding is space between bars
+        verticalPadding : 20,
+    },
+
+    textSettings : {
+        fillStyle : "black",
+        padding : 10,
+    },
+};
+
+// this makes equal horizontal spacing between bars
+gameShow.moneyDisplay.barSettings.horizontalPadding =
+    (1100 - (gameShow.moneyDisplay.barSettings.width * 2)) / 3;
+
+gameShow.moneyDisplay.textSettings.fontSize =
+    (gameShow.moneyDisplay.barSettings.height -
+    (gameShow.moneyDisplay.textSettings.padding * 2));
+
+/*
+    @pre what the caller wants to draw hasn't been drawn
+    @post what the caller wants to draw (see @param) has been
+    drawn (if text is desired, the former text will have been
+    erased)
+    @hasTest no
+    @param whatToDraw either has value of "bars" or "text"
+    @returns parameterError() if invalid whatToDraw value; otherwise,
+    nothing
+    @throws caught exception if invalid whatToDraw value
+*/
+gameShow.moneyDisplay.draw = function(whatToDraw) {
+    // Get variables that apply to drawing bars and text
+    var barSettings = gameShow.moneyDisplay.barSettings;
+    var textSettings = gameShow.moneyDisplay.textSettings;
+
+    var barWidth = barSettings.width;
+    var horizontalPadding = barSettings.horizontalPadding;
+    var barHeight = barSettings.height;
+    var verticalPadding = barSettings.verticalPadding;
+
+    // Get variables that are specific to what's being drawn
+    try {
+        if (whatToDraw === 'bars') {
+            // Set variables specific to drawing bars
+            var canvas =
+                document.getElementById("money-display-bars-canvas");
+            var ctx = canvas.getContext('2d');
+            ctx.fillStyle = barSettings.fillStyle;
+            var x = horizontalPadding;
+            var firstBarY = verticalPadding; // facilitates
+                                             // resetting y
+            var y = firstBarY;
+        }
+        else if (whatToDraw === 'text') {
+            // Set variables specific to drawing text
+            var canvas =
+                document.getElementById("money-display-text-canvas");
+            var ctx = canvas.getContext('2d');
+            ctx.fillStyle = textSettings.fillStyle;
+            ctx.font = textSettings.fontSize + "px Arial";
+            var x = horizontalPadding + 20;
+            var firstBarY = verticalPadding + 45; // facilitates
+                                                  // resetting y
+            var y = firstBarY;
+        }
+        else
+            throw "Invalid value for whatToDraw";
+    }
+    catch (err) {
+        return parameterError(err);
+    }
+
+    for (var i = 0; i < gameShow.moneyAmounts.length; ++i) {
+        if (whatToDraw === 'bars') {
+            // draw the bar
+            ctx.fillRect(x, y, barWidth, barHeight);
+        }
+        else if (whatToDraw === 'text') {
+            var textToDraw = '$ ' + gameShow.moneyAmounts[i];
+            ctx.fillText(textToDraw, x, y);
+        }
+
+        y += (barHeight + verticalPadding);
+
+        // if five bars have been drawn, go to next column
+        if (i === 4) {
+            x += (barWidth + horizontalPadding);
+            y = firstBarY;
+        }
+    }
+};
 
 var keyboard = {};
 keyboard.ENTER = 13;
@@ -50,37 +193,6 @@ keyboard.enterKeyAction = {
 var ERROR_MESSAGES = {};
 ERROR_MESSAGES.PARAMETER = "parameter error";
 
-var quotesToDraw = {
-    // quotes with lower indexes will be displayed first
-    storage : [],
-
-    /*
-        @pre this.storage.length > 0
-        @post things have been set up so that the user can go from
-        one quote to the next by pressing Enter; after the last
-        quote has been displayed, pressing Enter will result in
-        the endCallback being called; this.storage.length = 0
-        @hasTest no
-        @param endCallback to call after all the quotes in this.storage
-        have been displayed
-        @returns nothing
-        @throws nothing
-    */
-    deployQuoteChain : function(endCallback) {
-        if (this.storage.length !== 0) {
-            // more quotes to display; display the next one
-            eraseQuoteBubbleText();
-            drawQuoteText(this.storage.shift(), function() {
-                quotesToDraw.deployQuoteChain(endCallback);
-            });
-        }
-        else {
-            // no more quotes to call
-            endCallback();
-        }
-    }
-};
-
 /*
     @pre none
     @post errorMessage has been printed to console
@@ -120,8 +232,8 @@ function drawTitleScreenText() {
 
 // This is currently a trivial function made for the purpose of
 // testing.
-function drawGameText() {
-    var canvas = document.getElementById("choose-question-canvas");
+function drawTestGameText() {
+    var canvas = document.getElementById("money-display-canvas");
     var ctx = canvas.getContext('2d');
     ctx.font = "30px Arial";
     ctx.fillStyle = "white";
@@ -150,20 +262,26 @@ function drawSpongebob() {
 function drawQuoteBubble() {
     var canvas = document.getElementById('quote-bubble-canvas');
     var ctx = canvas.getContext('2d');
+    var bubble = gameShow.quoteBubble;
     ctx.fillStyle = "rgba(240, 240, 240, 0.9)";
-    ctx.fillRect(50, 325, 1000, 200);
+    ctx.fillRect(bubble.x, bubble.y, bubble.width, bubble.height);
 }
 
 // @post text in the quote bubble has been cleared
 function eraseQuoteBubbleText() {
     var canvas = document.getElementById('quote-text-canvas');
     var ctx = canvas.getContext('2d');
-    ctx.clearRect(50, 325, 1000, 200);
+    var bubble = gameShow.quoteBubble;
+
+    // Note that this clears the text on the bubble, not the
+    // bubble itself, because of the canvas we're affecting
+    ctx.clearRect(bubble.x, bubble.y, bubble.width, bubble.height);
 }
 
 /*
     @pre canvases are set up
-    @post correct speaker has been drawn and endCallback has
+    @post old speaker (if any) has been erased;
+    correct speaker has been drawn and endCallback has
     been called; if invalid speaker, a message has been printed to
     the console, and a string indicating the error has been returned
     @hasTest no
@@ -174,7 +292,7 @@ function eraseQuoteBubbleText() {
     @returns return value of parameterError() if invalid speakerName
     @throws (caught) exception if invalid speakerName
 */
-function drawSpeaker(speakerName, endCallback) {
+function drawNewSpeaker(speakerName, endCallback) {
     eraseSpeaker();
 
     try {
@@ -236,8 +354,9 @@ function drawEachTextPiece(textPieces) {
     var textPadding = 10;
     var fontSize = 30;
     ctx.font = fontSize + "px Arial";
-    var x = 75;
-    var y = 400;
+    var bubble = gameShow.quoteBubble;
+    var x = bubble.x + 25;
+    var y = bubble.y + 35;
 
     // Draw the text
     for (var textIndex in textPieces) {
@@ -284,20 +403,32 @@ function removeTitleScreen() {
     $("#title-screen-canvas").removeClass('show');
 }
 
+function talkAboutMoneyDisplay() {
+    // move speaker canvas out of the way so money display can
+    // be seen
+    $("#speaker-canvas").removeClass('show');
+    gameShow.quotesToDraw.add("You will try to answer ten questions.");
+    gameShow.quotesToDraw.add("Each question will randomly be " +
+        "assigned one of these values, but you  don't know which.");
+    gameShow.quotesToDraw.deployQuoteChain(eraseQuoteBubbleText);
+}
+
 function setUpGame() {
     removeTitleScreen();
     setUpQuoteBubble();
+    gameShow.moneyDisplay.draw('bars');
+    gameShow.moneyDisplay.draw('text');
 
     // Host's introductory text
-    drawSpeaker("SpongeBob", function() {
-        quotesToDraw.storage.push("Welcome to the game. " +
+    drawNewSpeaker("SpongeBob", function() {
+        gameShow.quotesToDraw.add("Welcome to the game. " +
             "Press Enter to go to the next quote.");
-        quotesToDraw.storage.push("I'm your host, " +
+        gameShow.quotesToDraw.add("I'm your host, " +
             "SpongeBob Squarepants.");
-        quotesToDraw.storage.push("Get ready to play this " +
+        gameShow.quotesToDraw.add("Get ready to play this " +
             "combination of game shows.");
-        quotesToDraw.deployQuoteChain(function() {
-            eraseQuoteBubbleText();
+        gameShow.quotesToDraw.deployQuoteChain(function() {
+            talkAboutMoneyDisplay();
         });
     });
 }
