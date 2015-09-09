@@ -53,6 +53,6 @@ canvas.show {
     background-color: #eee;
 }
 
-#speaker-canvas.show, #money-display-canvas.show {
+#speaker-canvas.show, #money-display-bars-canvas.show {
     background-color: black;
 }

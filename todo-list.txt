@@ -1,12 +1,21 @@
 Next:
 -create screen with each money amount in Deal or No Deal style
+    --show dollar values
     --make the host say something about it
+-put at least one of the object/classes into own file
+    --remove gameShow namespace in different file if necessary
+    --change gameShow namespace name if necessary (e.g. to 'gs')
 -consider playing music in the host's introduction
 -turn quote bubble into an object (QuoteBubble)
 -show case display for explaining next part of rules
 -make a state stack (that is, a canvas stack) object (if necessary)
     --to control showing and hiding canvases better
     --in its initialization, it'll show what need be shown
+-disabling the ability of the user to hold Enter to rush through the
+ quotes (to prevent accidents, although disabling this feature prevents
+ players from controlling their gameplay speed)
+    --this could be fixed with one second delay between setting enter
+      action
 
 At some point:
 -more decorated main menu
@@ -24,9 +33,6 @@ Consider:
 -making an object for a state stack
 -making the game work on Safari 5 for Windows
 -having a global variable for each canvas
--disabling the ability of the user to hold Enter to rush through the
- quotes (to prevent accidents, although disabling this feature prevents
- players from controlling their gameplay speed)
 -separating classes/objects into different files (see if this is good)
 
 Game flow:

@@ -47,13 +47,15 @@ gameShow.quotesToDraw = {
     }
 };
 
+// some of this object definition is below the ending curly brace
 gameShow.moneyDisplay = {
     barSettings : {
         fillStyle : "#FFDF00",
         width : 400,
         height : 60,
+
+        // padding is space between bars
         verticalPadding : 20,
-        // horizontalPadding is defined below this object definition
     },
 
     // textSettings : {
@@ -62,10 +64,59 @@ gameShow.moneyDisplay = {
         // font : (this.height - (this.padding * 2)) + "px Arial",
     // },
 };
-// padding is space between bars
+
 // this makes equal horizontal spacing between bars
 gameShow.moneyDisplay.barSettings.horizontalPadding =
     (1100 - (gameShow.moneyDisplay.barSettings.width * 2)) / 3;
+
+/*
+    @pre what the caller wants to draw hasn't been drawn
+    @post what the caller wants to draw (see @param) has been
+    drawn (if text is desired, the former text will have been
+    erased)
+    @hasTest no
+    @param whatToDraw either has value of "bars" or "text"
+    @returns parameterError() if invalid whatToDraw value; otherwise,
+    nothing
+    @throws caught exception if invalid whatToDraw value
+*/
+gameShow.moneyDisplay.draw = function(whatToDraw) {
+    try {
+        if (whatToDraw === 'bars') {
+            var canvas =
+                document.getElementById("money-display-bars-canvas");
+            var ctx = canvas.getContext('2d');
+            var settings = gameShow.moneyDisplay.barSettings;
+            ctx.fillStyle = settings.fillStyle;
+
+            // Set up variables for drawing the bars
+            var barWidth = settings.width;
+            var horizontalPadding = settings.horizontalPadding;
+            var barHeight = settings.height;
+            var verticalPadding = settings.verticalPadding;
+            var x = horizontalPadding;
+            var y = verticalPadding;
+
+            for (var i = 0; i < 10; ++i) {
+                // draw the bar
+                ctx.fillRect(x, y, barWidth, barHeight);
+
+                y += (barHeight + verticalPadding);
+
+                // if five bars have been drawn, go to next column
+                if (i === 4) {
+                    x += (barWidth + horizontalPadding);
+                    y = verticalPadding;
+                }
+            }
+        }
+        else
+            throw "Invalid value for whatToDraw";
+    }
+    catch (err) {
+        return parameterError(err);
+    }
+};
 
 var keyboard = {};
 keyboard.ENTER = 13;
@@ -327,42 +378,10 @@ function talkAboutMoneyDisplay() {
     $("#speaker-canvas").removeClass('show');
 }
 
-function drawMoneyDisplay() {
-    drawMoneyDisplayBars();
-}
-
-function drawMoneyDisplayBars() {
-    var canvas = document.getElementById("money-display-canvas");
-    var ctx = canvas.getContext('2d');
-    var settings = gameShow.moneyDisplay.barSettings;
-    ctx.fillStyle = settings.fillStyle;
-
-    // Set up variables for drawing the bars
-    var barWidth = settings.width;
-    var horizontalPadding = settings.horizontalPadding;
-    var barHeight = settings.height;
-    var verticalPadding = settings.verticalPadding;
-    var x = horizontalPadding;
-    var y = verticalPadding;
-
-    for (var i = 0; i < 10; ++i) {
-        // draw the bar
-        ctx.fillRect(x, y, barWidth, barHeight);
-
-        y += (barHeight + verticalPadding);
-
-        // if five bars have been drawn, go to next column
-        if (i === 4) {
-            x += (barWidth + horizontalPadding);
-            y = verticalPadding;
-        }
-    }
-}
-
 function setUpGame() {
     removeTitleScreen();
     setUpQuoteBubble();
-    drawMoneyDisplay();
+    gameShow.moneyDisplay.draw('bars');
 
     // Host's introductory text
     drawNewSpeaker("SpongeBob", function() {
