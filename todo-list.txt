@@ -1,8 +1,6 @@
 Next:
 -create screen with each money amount in Deal or No Deal style
     --make the host say something about it
-    --make money display into an object (if it makes drawing text on it
-     easier) (keeps variables in one place)
 -consider playing music in the host's introduction
 -turn quote bubble into an object (QuoteBubble)
 -show case display for explaining next part of rules
@@ -15,7 +13,8 @@ At some point:
 -make sure trivial functions that are no longer needed and that were
  made for the purpose of testing have been erased
 -a guide to each assistant that can be unlocked by reaching a certain
- high score (using local storage)
+ high score (using local storage); link in introduction
+-put private and priviledged members in classes
 
 Ideas for millionaires to be able to choose as assistants:
 -Kevin O'Leary ("Mr. Wonderful")
@@ -28,6 +27,7 @@ Consider:
 -disabling the ability of the user to hold Enter to rush through the
  quotes (to prevent accidents, although disabling this feature prevents
  players from controlling their gameplay speed)
+-separating classes/objects into different files (see if this is good)
 
 Game flow:
 -host introduces himself and game

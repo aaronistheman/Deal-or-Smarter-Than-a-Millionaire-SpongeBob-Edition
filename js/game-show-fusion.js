@@ -47,6 +47,26 @@ gameShow.quotesToDraw = {
     }
 };
 
+gameShow.moneyDisplay = {
+    barSettings : {
+        fillStyle : "#FFDF00",
+        width : 400,
+        height : 60,
+        verticalPadding : 20,
+        // horizontalPadding is defined below this object definition
+    },
+
+    // textSettings : {
+        // fillStyle : "black",
+        // padding : 10,
+        // font : (this.height - (this.padding * 2)) + "px Arial",
+    // },
+};
+// padding is space between bars
+// this makes equal horizontal spacing between bars
+gameShow.moneyDisplay.barSettings.horizontalPadding =
+    (1100 - (gameShow.moneyDisplay.barSettings.width * 2)) / 3;
+
 var keyboard = {};
 keyboard.ENTER = 13;
 keyboard.enterKeyAction = {
@@ -308,36 +328,31 @@ function talkAboutMoneyDisplay() {
 }
 
 function drawMoneyDisplay() {
-    var canvas = document.getElementById("money-display-canvas");
+    drawMoneyDisplayBars();
+}
 
-    // Set up the drawing of the bars
-    var barContext = canvas.getContext('2d');
-    barContext.fillStyle = "#FFDF00";
-    var barWidth = 400;
-    var horizontalPadding = (1100 - (barWidth * 2)) / 3; // this makes
-                                // equal horizontal space between bars
-    var barHeight = 60;
-    var verticalPadding = 20; // space between bars on display
+function drawMoneyDisplayBars() {
+    var canvas = document.getElementById("money-display-canvas");
+    var ctx = canvas.getContext('2d');
+    var settings = gameShow.moneyDisplay.barSettings;
+    ctx.fillStyle = settings.fillStyle;
+
+    // Set up variables for drawing the bars
+    var barWidth = settings.width;
+    var horizontalPadding = settings.horizontalPadding;
+    var barHeight = settings.height;
+    var verticalPadding = settings.verticalPadding;
     var x = horizontalPadding;
     var y = verticalPadding;
 
-    // Set up the drawing of the dollar sign on each bar
-    // var textContext = canvas.getContext('2d');
-    // var textPadding = 10;
-    // textContext.font = (barHeight - (textPadding * 2)) + "px Arial";
-    // // textContext.fillStyle = "black";
-
     for (var i = 0; i < 10; ++i) {
         // draw the bar
-        barContext.fillRect(x, y, barWidth, barHeight);
-
-        // put the dollar sign at the left of the bar
-        // textContext.fillText('$', x + textPadding, y + textPadding);
+        ctx.fillRect(x, y, barWidth, barHeight);
 
         y += (barHeight + verticalPadding);
 
+        // if five bars have been drawn, go to next column
         if (i === 4) {
-            // five bars have been drawn; go to next column
             x += (barWidth + horizontalPadding);
             y = verticalPadding;
         }
