@@ -11,6 +11,42 @@ gameShow.quoteBubble.y = 440;
 gameShow.quoteBubble.width = 1000;
 gameShow.quoteBubble.height = 85;
 
+gameShow.quotesToDraw = {
+    // quotes with lower indexes will be displayed first
+    storage : [],
+
+    // @param quote to put at end of storage
+    add : function(quote) {
+        this.storage.push(quote);
+    },
+
+    /*
+        @pre this.storage.length > 0
+        @post things have been set up so that the user can go from
+        one quote to the next by pressing Enter; after the last
+        quote has been displayed, pressing Enter will result in
+        the endCallback being called; this.storage.length = 0
+        @hasTest no
+        @param endCallback to call after all the quotes in this.storage
+        have been displayed
+        @returns nothing
+        @throws nothing
+    */
+    deployQuoteChain : function(endCallback) {
+        if (this.storage.length !== 0) {
+            // more quotes to display; display the next one
+            eraseQuoteBubbleText();
+            drawQuoteText(this.storage.shift(), function() {
+                gameShow.quotesToDraw.deployQuoteChain(endCallback);
+            });
+        }
+        else {
+            // no more quotes to call
+            endCallback();
+        }
+    }
+};
+
 var keyboard = {};
 keyboard.ENTER = 13;
 keyboard.enterKeyAction = {
@@ -54,37 +90,6 @@ keyboard.enterKeyAction = {
 
 var ERROR_MESSAGES = {};
 ERROR_MESSAGES.PARAMETER = "parameter error";
-
-var quotesToDraw = {
-    // quotes with lower indexes will be displayed first
-    storage : [],
-
-    /*
-        @pre this.storage.length > 0
-        @post things have been set up so that the user can go from
-        one quote to the next by pressing Enter; after the last
-        quote has been displayed, pressing Enter will result in
-        the endCallback being called; this.storage.length = 0
-        @hasTest no
-        @param endCallback to call after all the quotes in this.storage
-        have been displayed
-        @returns nothing
-        @throws nothing
-    */
-    deployQuoteChain : function(endCallback) {
-        if (this.storage.length !== 0) {
-            // more quotes to display; display the next one
-            eraseQuoteBubbleText();
-            drawQuoteText(this.storage.shift(), function() {
-                quotesToDraw.deployQuoteChain(endCallback);
-            });
-        }
-        else {
-            // no more quotes to call
-            endCallback();
-        }
-    }
-};
 
 /*
     @pre none
@@ -346,13 +351,13 @@ function setUpGame() {
 
     // Host's introductory text
     drawNewSpeaker("SpongeBob", function() {
-        quotesToDraw.storage.push("Welcome to the game. " +
+        gameShow.quotesToDraw.add("Welcome to the game. " +
             "Press Enter to go to the next quote.");
-        quotesToDraw.storage.push("I'm your host, " +
+        gameShow.quotesToDraw.add("I'm your host, " +
             "SpongeBob Squarepants.");
-        quotesToDraw.storage.push("Get ready to play this " +
+        gameShow.quotesToDraw.add("Get ready to play this " +
             "combination of game shows.");
-        quotesToDraw.deployQuoteChain(function() {
+        gameShow.quotesToDraw.deployQuoteChain(function() {
             talkAboutMoneyDisplay();
         });
     });
