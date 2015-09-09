@@ -297,13 +297,52 @@ function removeTitleScreen() {
 }
 
 function talkAboutMoneyDisplay() {
+    // move speaker canvas out of the way so money display can
+    // be seen
     $("#speaker-canvas").removeClass('show');
+}
+
+function drawMoneyDisplay() {
+    var canvas = document.getElementById("money-display-canvas");
+
+    // Set up the drawing of the bars
+    var barContext = canvas.getContext('2d');
+    barContext.fillStyle = "#FFDF00";
+    var barWidth = 400;
+    var horizontalPadding = (1100 - (barWidth * 2)) / 3; // this makes
+                                // equal horizontal space between bars
+    var barHeight = 60;
+    var verticalPadding = 20; // space between bars on display
+    var x = horizontalPadding;
+    var y = verticalPadding;
+
+    // Set up the drawing of the dollar sign on each bar
+    // var textContext = canvas.getContext('2d');
+    // var textPadding = 10;
+    // textContext.font = (barHeight - (textPadding * 2)) + "px Arial";
+    // // textContext.fillStyle = "black";
+
+    for (var i = 0; i < 10; ++i) {
+        // draw the bar
+        barContext.fillRect(x, y, barWidth, barHeight);
+
+        // put the dollar sign at the left of the bar
+        // textContext.fillText('$', x + textPadding, y + textPadding);
+
+        y += (barHeight + verticalPadding);
+
+        if (i === 4) {
+            // five bars have been drawn; go to next column
+            x += (barWidth + horizontalPadding);
+            y = verticalPadding;
+        }
+    }
 }
 
 function setUpGame() {
     removeTitleScreen();
     setUpQuoteBubble();
-    drawTestGameText();
+    drawMoneyDisplay();
 
     // Host's introductory text
     drawNewSpeaker("SpongeBob", function() {

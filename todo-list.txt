@@ -1,9 +1,14 @@
 Next:
 -create screen with each money amount in Deal or No Deal style
     --make the host say something about it
+    --make money display into an object (if it makes drawing text on it
+     easier) (keeps variables in one place)
+-consider playing music in the host's introduction
 -turn quote bubble into an object (QuoteBubble)
 -show case display for explaining next part of rules
 -make a state stack (that is, a canvas stack) object (if necessary)
+    --to control showing and hiding canvases better
+    --in its initialization, it'll show what need be shown
 
 At some point:
 -more decorated main menu
