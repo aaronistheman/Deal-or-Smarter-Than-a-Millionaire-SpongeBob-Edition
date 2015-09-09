@@ -11,6 +11,9 @@ gameShow.quoteBubble.y = 440;
 gameShow.quoteBubble.width = 1000;
 gameShow.quoteBubble.height = 85;
 
+gameShow.moneyAmounts = ['0.01', '50', '300', '750', '1,000',
+    '10,000', '25,000', '100,000', '250,000', '500,000'];
+
 gameShow.quotesToDraw = {
     // quotes with lower indexes will be displayed first
     storage : [],
@@ -117,7 +120,6 @@ gameShow.moneyDisplay.draw = function(whatToDraw) {
             var firstBarY = verticalPadding + 45; // facilitates
                                                   // resetting y
             var y = firstBarY;
-            var textToDraw = '$';
         }
         else
             throw "Invalid value for whatToDraw";
@@ -126,12 +128,13 @@ gameShow.moneyDisplay.draw = function(whatToDraw) {
         return parameterError(err);
     }
 
-    for (var i = 0; i < 10; ++i) {
+    for (var i = 0; i < gameShow.moneyAmounts.length; ++i) {
         if (whatToDraw === 'bars') {
             // draw the bar
             ctx.fillRect(x, y, barWidth, barHeight);
         }
         else if (whatToDraw === 'text') {
+            var textToDraw = '$ ' + gameShow.moneyAmounts[i];
             ctx.fillText(textToDraw, x, y);
         }
 

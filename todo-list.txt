@@ -1,6 +1,5 @@
 Next:
 -create screen with each money amount in Deal or No Deal style
-    --show dollar values
     --make the host say something about it
 -put at least one of the object/classes into own file
     --remove gameShow namespace in different file if necessary
