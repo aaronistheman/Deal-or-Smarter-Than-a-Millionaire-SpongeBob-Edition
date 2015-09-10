@@ -1,5 +1,4 @@
 Next:
--turn quote bubble into an object (QuoteBubble)
 -make a state stack (that is, a canvas stack) object (if necessary)
     --to control showing and hiding canvases better
     --in its initialization, it'll show what need be shown
@@ -28,14 +27,13 @@ Considerable:
 -making the game work on Safari 5 for Windows
 -having a global variable for each canvas
 -using alerts if exceptions
--put at least one of the object/classes into own file
-    --remove gameShow namespace in different file if necessary
-    --change gameShow namespace name if necessary (e.g. to 'gs')
 -find a way to deal with splitting a word between lines (besides
     having to put extra whitespace)
     --could limit quotes to one line
 -if multiple toggles, make something to generate the layout of a
  toggle function (e.g. including the check of precondition error)
+-a developed QuoteBubble object in game-show-fusion.js
+    --the costs (i.e. time) may outweigh the benefits
 
 Game flow:
 -host introduces himself and game
