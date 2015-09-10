@@ -190,6 +190,11 @@ keyboard.enterKeyAction = {
     }
 };
 
+// For functions that toggle things (e.g. music)
+var TOGGLE = {};
+TOGGLE.ON = "on";
+TOGGLE.OFF = "off";
+
 var ERROR_MESSAGES = {};
 ERROR_MESSAGES.PARAMETER = "parameter error";
 
@@ -401,6 +406,7 @@ function setUpQuoteBubble() {
 
 function removeTitleScreen() {
     $("#title-screen-canvas").removeClass('show');
+    toggleOpeningTheme(TOGGLE.OFF);
 }
 
 function talkAboutMoneyDisplay() {
@@ -433,10 +439,38 @@ function setUpGame() {
     });
 }
 
+/*
+    @param toggleSetting TOGGLE.ON to turn music on; TOGGLE.OFF
+    to turn music off
+    @returns result of parameterError() if parameter error
+    @throws (caught) exception if parameter error
+*/
+function toggleOpeningTheme(toggleSetting) {
+    try {
+        var openingTheme = document.getElementById("opening-theme");
+        if (toggleSetting === TOGGLE.ON)
+            openingTheme.play();
+        else if (toggleSetting === TOGGLE.OFF)
+            openingTheme.pause();
+        else
+            throw "Invalid parameter toggleSetting";
+    }
+    catch (err) {
+        return parameterError(err);
+    }
+}
+
+function setUpTitleScreen() {
+    drawTitleScreenText();
+    toggleOpeningTheme(TOGGLE.ON);
+
+    // Set up the user's ability to go to the game
+    keyboard.enterKeyAction.setUpEventHandler();
+    keyboard.enterKeyAction.set(setUpGame);
+}
+
 $(document).ready(function() {
     if (!isUnitTesting()) {
-        drawTitleScreenText();
-        keyboard.enterKeyAction.setUpEventHandler();
-        keyboard.enterKeyAction.set(setUpGame);
+        setUpTitleScreen();
     }
 });

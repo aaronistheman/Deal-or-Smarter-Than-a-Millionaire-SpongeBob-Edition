@@ -6,6 +6,7 @@ Next:
 -make a state stack (that is, a canvas stack) object (if necessary)
     --to control showing and hiding canvases better
     --in its initialization, it'll show what need be shown
+    --maybe a function for toggling the showing of a canvas
 -show case display for explaining next part of rules
 -disabling the ability of the user to hold Enter to rush through the
  quotes (to prevent accidents, although disabling this feature prevents
@@ -36,6 +37,8 @@ Considerable:
 -find a way to deal with splitting a word between lines (besides
     having to put extra whitespace)
     --could limit quotes to one line
+-if multiple toggles, make something to generate the layout of a
+ toggle function (e.g. including the check of precondition error)
 
 Game flow:
 -host introduces himself and game
