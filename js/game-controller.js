@@ -5,9 +5,9 @@
     Release number: 0.1
 */
 
-var app = angular.module('game', []);
-app.controller('gameCtrl', function($scope) {
-    // make an array for ids of each canvas in this webpage
+// @returns an array containing the ids for each canvas to generate
+function getCanvasIds() {
+    // make an array for ids of each canvas in the webpage
     var canvasIds = [];
     canvasIds.push("questioning-canvas");
     canvasIds.push("choose-question-canvas");
@@ -22,9 +22,37 @@ app.controller('gameCtrl', function($scope) {
     // open case scene
     // banker deal scene
 
-    $scope.canvasIds = canvasIds;
+    return canvasIds;
+}
+
+// @returns an object containing data regarding generating canvases
+function getCanvasData() {
+    var canvasData = {};
+    canvasData.ids = getCanvasIds();
 
     // Canvas dimensions
-    $scope.width = "1100";
-    $scope.height = "550";
+    canvasData.width = "1100";
+    canvasData.height = "550";
+
+    return canvasData;
+}
+
+function AudioData(id, src) {
+    this.id = id;
+    this.src = src;
+}
+
+// @returns an array of objects that contains data regarding
+// generating audio elements
+function getAudioData() {
+    var audioData = [];
+    audioData.push(new AudioData("next-quote-sound",
+        "audio/next_quote.mp3"));
+    return audioData;
+}
+
+var app = angular.module('game', []);
+app.controller('gameCtrl', function($scope) {
+    $scope.canvasData = getCanvasData();
+    $scope.audioData = getAudioData();
 });

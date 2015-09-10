@@ -3,10 +3,10 @@ Next:
 -see if can allow chaining (in the jQuery sense) when adding quotes
     --giving add() a return value of "this" could work
 -turn quote bubble into an object (QuoteBubble)
--show case display for explaining next part of rules
 -make a state stack (that is, a canvas stack) object (if necessary)
     --to control showing and hiding canvases better
     --in its initialization, it'll show what need be shown
+-show case display for explaining next part of rules
 -disabling the ability of the user to hold Enter to rush through the
  quotes (to prevent accidents, although disabling this feature prevents
  players from controlling their gameplay speed)
@@ -20,16 +20,15 @@ At some point:
 -a guide to each assistant that can be unlocked by reaching a certain
  high score (using local storage); link in introduction
 -put private and priviledged members in classes
+-eliminate the use of a scene
 
 Ideas for millionaires to be able to choose as assistants:
 -Kevin O'Leary ("Mr. Wonderful")
 -Mr. Burns
 
 Considerable:
--making an object for a state stack
 -making the game work on Safari 5 for Windows
 -having a global variable for each canvas
--separating classes/objects into different files (see if this is good)
 -using alerts if exceptions
 -put at least one of the object/classes into own file
     --remove gameShow namespace in different file if necessary

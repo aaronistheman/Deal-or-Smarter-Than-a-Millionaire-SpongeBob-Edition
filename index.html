@@ -25,19 +25,25 @@
 
 <div id="game">
     <section id="game-scene" class="scene">
-        <canvas ng-repeat="id in canvasIds" id="{{id}}" class="show"
-            width="{{width}}" height="{{height}}">
+        <canvas ng-repeat="id in canvasData.ids" id="{{id}}"
+            class="show" width="{{canvasData.width}}"
+            height="{{canvasData.height}}">
             Your web browser doesn't support canvas content.
         </canvas>
     </section>
+
+    <audio ng-repeat="audio in audioData" id="{{audio.id}}">
+        <source src="{{audio.src}}" />
+        Your browser does not support the audio element.
+    </audio>
 </div>
 
 </div>
 
-<audio id='next-quote-sound'>
+<!-- <audio id='next-quote-sound'>
     <source src="audio/next_quote.mp3" />
     Your browser does not support the audio element.
-</audio>
+</audio> -->
 
 <script src="js/game-controller.js"></script>
 <script src="js/game-show-fusion.js"></script>
