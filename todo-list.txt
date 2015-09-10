@@ -1,5 +1,4 @@
 Next:
--consider playing music in the host's introduction
 -see if can allow chaining (in the jQuery sense) when adding quotes
     --giving add() a return value of "this" could work
 -turn quote bubble into an object (QuoteBubble)

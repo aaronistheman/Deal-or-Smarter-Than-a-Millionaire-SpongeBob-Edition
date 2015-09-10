@@ -3,16 +3,20 @@
 var gameShow = {};
 gameShow.spongeBobImage = new Image();
 gameShow.spongeBobImage.src = "images/spongebob.png";
-gameShow.nextQuoteSound;
 gameShow.quoteLengthForWrapAround = 70;
+
+gameShow.moneyAmounts = ['0.01', '50', '300', '750', '1,000',
+    '10,000', '25,000', '100,000', '250,000', '500,000'];
+
+gameShow.sounds = {};
+gameShow.sounds.nextQuote;
+gameShow.sounds.openingTheme;
+
 gameShow.quoteBubble = {};
 gameShow.quoteBubble.x = 50;
 gameShow.quoteBubble.y = 440;
 gameShow.quoteBubble.width = 1000;
 gameShow.quoteBubble.height = 85;
-
-gameShow.moneyAmounts = ['0.01', '50', '300', '750', '1,000',
-    '10,000', '25,000', '100,000', '250,000', '500,000'];
 
 gameShow.quotesToDraw = {
     // quotes with lower indexes will be displayed first
@@ -333,13 +337,13 @@ function drawQuoteText(text, endCallback) {
     if (endCallback !== undefined) {
         // Allow the endCallback to be called
         keyboard.enterKeyAction.set(function() {
-            gameShow.nextQuoteSound.play();
+            gameShow.sounds.nextQuote.play();
             endCallback();
         });
     }
     else {
         keyboard.enterKeyAction.set(function() {
-            gameShow.nextQuoteSound.play();
+            gameShow.sounds.nextQuote.play();
         });
     }
 }
@@ -394,19 +398,14 @@ function convertStringToArrayOfStrings(string, maxStringLength) {
 }
 
 /*
-    @pre quote bubble canvas and sound effect haven't been set up
-    @post sound effect that plays when a quote bubble is done has
-    been set up; quote bubble has been drawn on its canvas
+    @post quote bubble has been drawn on its canvas
 */
 function setUpQuoteBubble() {
-    gameShow.nextQuoteSound =
-        document.getElementById('next-quote-sound');
     drawQuoteBubble();
 }
 
 function removeTitleScreen() {
     $("#title-screen-canvas").removeClass('show');
-    toggleOpeningTheme(TOGGLE.OFF);
 }
 
 function talkAboutMoneyDisplay() {
@@ -447,11 +446,10 @@ function setUpGame() {
 */
 function toggleOpeningTheme(toggleSetting) {
     try {
-        var openingTheme = document.getElementById("opening-theme");
         if (toggleSetting === TOGGLE.ON)
-            openingTheme.play();
+            gameShow.sounds.openingTheme.play();
         else if (toggleSetting === TOGGLE.OFF)
-            openingTheme.pause();
+            gameShow.sounds.openingTheme.pause();
         else
             throw "Invalid parameter toggleSetting";
     }
@@ -469,8 +467,16 @@ function setUpTitleScreen() {
     keyboard.enterKeyAction.set(setUpGame);
 }
 
+function setUpAudio() {
+    gameShow.sounds.nextQuote =
+        document.getElementById('next-quote-sound');
+    gameShow.sounds.openingTheme =
+        document.getElementById("opening-theme");
+}
+
 $(document).ready(function() {
     if (!isUnitTesting()) {
+        setUpAudio();
         setUpTitleScreen();
     }
 });
