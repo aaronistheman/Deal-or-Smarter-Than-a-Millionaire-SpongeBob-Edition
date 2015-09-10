@@ -1,6 +1,4 @@
 Next:
--see if can allow chaining (in the jQuery sense) when adding quotes
-    --giving add() a return value of "this" could work
 -turn quote bubble into an object (QuoteBubble)
 -make a state stack (that is, a canvas stack) object (if necessary)
     --to control showing and hiding canvases better

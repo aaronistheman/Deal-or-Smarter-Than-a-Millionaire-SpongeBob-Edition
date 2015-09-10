@@ -22,9 +22,15 @@ gameShow.quotesToDraw = {
     // quotes with lower indexes will be displayed first
     storage : [],
 
-    // @param quote to put at end of storage
+    /*
+        @param quote to put at end of storage
+        @returns 'this' pointer (to allow chaining of calls
+        (e.g. gameShow.quotesToDraw.add(...).add(...).add(...)
+            .add(...).deployQuoteChain(...);))
+    */
     add : function(quote) {
         this.storage.push(quote);
+        return this;
     },
 
     /*
@@ -412,10 +418,10 @@ function talkAboutMoneyDisplay() {
     // move speaker canvas out of the way so money display can
     // be seen
     $("#speaker-canvas").removeClass('show');
-    gameShow.quotesToDraw.add("You will try to answer ten questions.");
-    gameShow.quotesToDraw.add("Each question will randomly be " +
-        "assigned one of these values, but you  don't know which.");
-    gameShow.quotesToDraw.deployQuoteChain(eraseQuoteBubbleText);
+    gameShow.quotesToDraw.add("You will try to answer ten questions.")
+        .add("Each question will randomly be " +
+            "assigned one of these values, but you  don't know which.")
+        .deployQuoteChain(eraseQuoteBubbleText);
 }
 
 function setUpGame() {
@@ -427,13 +433,13 @@ function setUpGame() {
     // Host's introductory text
     drawNewSpeaker("SpongeBob", function() {
         gameShow.quotesToDraw.add("Welcome to the game. " +
-            "Press Enter to go to the next quote.");
-        gameShow.quotesToDraw.add("I'm your host, " +
-            "SpongeBob Squarepants.");
-        gameShow.quotesToDraw.add("Get ready to play this " +
-            "combination of game shows.");
-        gameShow.quotesToDraw.deployQuoteChain(function() {
-            talkAboutMoneyDisplay();
+            "Press Enter to go to the next quote.")
+            .add("I'm your host, " +
+                "SpongeBob Squarepants.")
+            .add("Get ready to play this " +
+                "combination of game shows.")
+            .deployQuoteChain(function() {
+                talkAboutMoneyDisplay();
         });
     });
 }
