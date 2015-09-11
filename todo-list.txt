@@ -3,7 +3,13 @@ Next:
     --to control showing and hiding canvases better
     --in its initialization, it'll show what need be shown
     --maybe a function for toggling the showing of a canvas
-    --take the constants out of the class definition
+    --allow removal of canvases (i.e. hiding of them)
+    --implement the class in the game
+    --if possible, separate the state stack implementation into its
+        own file, for this'll make it easier to label which methods
+        are static with comments
+        --if this is done, error-handling code must go in own file, too
+          (e.g. error-handling.js)
 -again consider a developed QuoteBubble object
 -show case display for explaining next part of rules
 -disabling the ability of the user to hold Enter to rush through the

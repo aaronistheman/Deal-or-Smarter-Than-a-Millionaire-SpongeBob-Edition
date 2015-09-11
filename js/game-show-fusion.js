@@ -64,37 +64,13 @@ gameShow.quotesToDraw = {
 function CanvasStack() {
     this.stack = [];
 
-    this.CANVASES = {
-        TITLE_SCREEN : "title-screen-canvas",
-        QUOTE_TEXT : "quote-text-canvas",
-        QUOTE_BUBBLE : "quote-bubble-canvas",
-        QUOTE : [this.QUOTE_TEXT, this.QUOTE_BUBBLE],
-        SPEAKER : "speaker-canvas",
-        MONEY_DISPLAY_TEXT : "money-display-text-canvas",
-        MONEY_DISPLAY_BAR : "money-display-bars-canvas",
-        MONEY_DISPLAY : [this.MONEY_DISPLAY_TEXT,
-            this.MONEY_DISPLAY_BAR],
-        CHOOSE_QUESTION : "choose-question-canvas",
-        QUESTIONING : "questioning-canvas",
-    };
-
-    // @returns true if whatToCheck equals one of the constants
-    // in this.CANVASES
-    this.isCanvasOrCanvases = function(whatToCheck) {
-        for (var key in this.CANVASES) {
-            if (whatToCheck === this.CANVASES[key])
-                return true;
-        }
-        return false;
-    };
-
     /*
         @post the canvas or canvases commanded to be added have been
         added
         @hasTest yes
         @param whatToAdd which canvas or canvases to add; pass an array
         of canvases to add all of them; must be one of the constants
-        attached to this.CANVASES
+        attached to CanvasStack.CANVASES
         @returns "this" pointer if valid whatToAdd value; error message
         if invalid whatToAdd value
         @throws (caught) exception if invalid whatToAdd value
@@ -102,7 +78,7 @@ function CanvasStack() {
     this.add = function(whatToAdd) {
         // Confirm valid paramter whatToAdd
         try {
-            if (!this.isCanvasOrCanvases(whatToAdd))
+            if (!CanvasStack.isCanvasOrCanvases(whatToAdd))
                 throw "Invalid value of parameter whatToAdd";
         }
         catch (err) {
@@ -122,7 +98,7 @@ function CanvasStack() {
         'show'
         @hasTest yes
         @param whatToAdd to affect as the postcondition specifies;
-        must be a value in this.CANVASES
+        must be a value in CanvasStack.CANVASES
         @returns nothing
         @throws nothing
     */
@@ -140,6 +116,30 @@ function CanvasStack() {
         }
     };
 }
+
+CanvasStack.CANVASES = {
+    TITLE_SCREEN : "title-screen-canvas",
+    QUOTE_TEXT : "quote-text-canvas",
+    QUOTE_BUBBLE : "quote-bubble-canvas",
+    QUOTE : [this.QUOTE_TEXT, this.QUOTE_BUBBLE],
+    SPEAKER : "speaker-canvas",
+    MONEY_DISPLAY_TEXT : "money-display-text-canvas",
+    MONEY_DISPLAY_BAR : "money-display-bars-canvas",
+    MONEY_DISPLAY : [this.MONEY_DISPLAY_TEXT,
+        this.MONEY_DISPLAY_BAR],
+    CHOOSE_QUESTION : "choose-question-canvas",
+    QUESTIONING : "questioning-canvas",
+};
+
+// @returns true if whatToCheck equals one of the constants
+// in CanvasStack.CANVASES
+CanvasStack.isCanvasOrCanvases = function(whatToCheck) {
+    for (var key in CanvasStack.CANVASES) {
+        if (whatToCheck === CanvasStack.CANVASES[key])
+            return true;
+    }
+    return false;
+};
 
 gameShow.canvasStack = new CanvasStack();
 

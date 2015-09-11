@@ -7,15 +7,15 @@
 
 QUnit.module("game-show-fusion.js");
 
-QUnit.test("CanvasStack.isCanvasOrCanvases()", function(assert) {
+QUnit.test("CanvasStack::isCanvasOrCanvases()", function(assert) {
     var canvasStack = new CanvasStack();
-    assert.deepEqual(canvasStack.isCanvasOrCanvases("invalidParameter"),
+    assert.deepEqual(CanvasStack.isCanvasOrCanvases("invalidParameter"),
         false, "Returns false if not valid canvas or array of canvases");
-    assert.deepEqual(canvasStack.isCanvasOrCanvases(
-        canvasStack.CANVASES.SPEAKER), true,
+    assert.deepEqual(CanvasStack.isCanvasOrCanvases(
+        CanvasStack.CANVASES.SPEAKER), true,
         "Returns true if valid canvas");
-    assert.deepEqual(canvasStack.isCanvasOrCanvases(
-        canvasStack.CANVASES.MONEY_DISPLAY), true,
+    assert.deepEqual(CanvasStack.isCanvasOrCanvases(
+        CanvasStack.CANVASES.MONEY_DISPLAY), true,
         "Returns true if valid array canvases");
 });
 
@@ -26,7 +26,7 @@ QUnit.test("CanvasStack.add()", function(assert) {
         ERROR_MESSAGES.PARAMETER, "Good valid parameter enforcement");
 
     // Confirm the 'this' pointer is returned if valid parameter
-    assert.deepEqual(canvasStack.add(canvasStack.CANVASES.SPEAKER),
+    assert.deepEqual(canvasStack.add(CanvasStack.CANVASES.SPEAKER),
         canvasStack,
         "The 'this' pointer is returned if successful addition");
 });
@@ -36,10 +36,10 @@ QUnit.test("CanvasStack.storeAndShow()", function(assert) {
     // storeAndShow() is called in add()
     var canvasStack = new CanvasStack();
     assert.deepEqual(canvasStack.add(
-        canvasStack.CANVASES.TITLE_SCREEN).stack.length, 1,
+        CanvasStack.CANVASES.TITLE_SCREEN).stack.length, 1,
         "A canvas was successfully stored");
     assert.deepEqual(canvasStack.add(
-        canvasStack.CANVASES.MONEY_DISPLAY).stack.length, 3,
+        CanvasStack.CANVASES.MONEY_DISPLAY).stack.length, 3,
         "Two more canvas were successfully, simultaneously stored");
 });
 
