@@ -3,6 +3,8 @@ Next:
     --to control showing and hiding canvases better
     --in its initialization, it'll show what need be shown
     --maybe a function for toggling the showing of a canvas
+    --take the constants out of the class definition
+-again consider a developed QuoteBubble object
 -show case display for explaining next part of rules
 -disabling the ability of the user to hold Enter to rush through the
  quotes (to prevent accidents, although disabling this feature prevents
@@ -16,8 +18,12 @@ At some point:
  made for the purpose of testing have been erased
 -a guide to each assistant that can be unlocked by reaching a certain
  high score (using local storage); link in introduction
--put private and priviledged members in classes
+-put private and priviledged members/functions in classes
 -eliminate the use of a scene
+-background image (behind the game) changes (e.g. one of the images
+ could be of Bikini Bottom underwater)
+-fake advertisement panel on the side
+    --could advertise some of my YouTube videos
 
 Ideas for millionaires to be able to choose as assistants:
 -Kevin O'Leary ("Mr. Wonderful")
@@ -32,8 +38,7 @@ Considerable:
     --could limit quotes to one line
 -if multiple toggles, make something to generate the layout of a
  toggle function (e.g. including the check of precondition error)
--a developed QuoteBubble object in game-show-fusion.js
-    --the costs (i.e. time) may outweigh the benefits
+-turning each contract into a full one
 
 Game flow:
 -host introduces himself and game

@@ -61,6 +61,88 @@ gameShow.quotesToDraw = {
     }
 };
 
+function CanvasStack() {
+    this.stack = [];
+
+    this.CANVASES = {
+        TITLE_SCREEN : "title-screen-canvas",
+        QUOTE_TEXT : "quote-text-canvas",
+        QUOTE_BUBBLE : "quote-bubble-canvas",
+        QUOTE : [this.QUOTE_TEXT, this.QUOTE_BUBBLE],
+        SPEAKER : "speaker-canvas",
+        MONEY_DISPLAY_TEXT : "money-display-text-canvas",
+        MONEY_DISPLAY_BAR : "money-display-bars-canvas",
+        MONEY_DISPLAY : [this.MONEY_DISPLAY_TEXT,
+            this.MONEY_DISPLAY_BAR],
+        CHOOSE_QUESTION : "choose-question-canvas",
+        QUESTIONING : "questioning-canvas",
+    };
+
+    // @returns true if whatToCheck equals one of the constants
+    // in this.CANVASES
+    this.isCanvasOrCanvases = function(whatToCheck) {
+        for (var key in this.CANVASES) {
+            if (whatToCheck === this.CANVASES[key])
+                return true;
+        }
+        return false;
+    };
+
+    /*
+        @post the canvas or canvases commanded to be added have been
+        added
+        @hasTest yes
+        @param whatToAdd which canvas or canvases to add; pass an array
+        of canvases to add all of them; must be one of the constants
+        attached to this.CANVASES
+        @returns "this" pointer if valid whatToAdd value; error message
+        if invalid whatToAdd value
+        @throws (caught) exception if invalid whatToAdd value
+    */
+    this.add = function(whatToAdd) {
+        // Confirm valid paramter whatToAdd
+        try {
+            if (!this.isCanvasOrCanvases(whatToAdd))
+                throw "Invalid value of parameter whatToAdd";
+        }
+        catch (err) {
+            return parameterError(err);
+        }
+
+        // Add the canvas or canvases
+        this.storeAndShow(whatToAdd);
+
+        return this;
+    };
+
+    /*
+        @pre none
+        @post whatToAdd has been added to this.stack, and the
+        canvas represented by whatToAdd has been given CSS class
+        'show'
+        @hasTest yes
+        @param whatToAdd to affect as the postcondition specifies;
+        must be a value in this.CANVASES
+        @returns nothing
+        @throws nothing
+    */
+    this.storeAndShow = function(whatToAdd) {
+        if (typeof whatToAdd == "string") {
+            // only one canvas to add and show
+            this.stack.push(whatToAdd);
+            $('#' + whatToAdd).addClass('show');
+        }
+        else {
+            // array of canvases to add
+            this.stack = this.stack.concat(whatToAdd);
+            for (var canvasId in whatToAdd)
+                $('#' + canvasId).addClass('show');
+        }
+    };
+}
+
+gameShow.canvasStack = new CanvasStack();
+
 // some of this object definition is below the ending curly brace
 gameShow.moneyDisplay = {
     barSettings : {

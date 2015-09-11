@@ -10,7 +10,9 @@ function getCanvasIds() {
     // make an array for ids of each canvas in the webpage
     var canvasIds = [];
 
-    // Here is where we add the data for each canvas element
+    // Here is where we add the data for each canvas element;
+    // note that the order of these pushes matters (e.g. the quote
+    // text must be above the quote bubble)
     canvasIds.push("questioning-canvas");
     canvasIds.push("choose-question-canvas");
     canvasIds.push("money-display-bars-canvas");
