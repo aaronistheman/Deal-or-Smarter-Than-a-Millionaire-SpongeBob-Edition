@@ -7,4 +7,5 @@ start Notepad++ unit-tests.html
 start Notepad++ js/unit-tests.js
 start Notepad++ js/game-controller.js
 start Notepad++ js/game-controller.js
+start Notepad++ js/canvas-stack.js
 exit

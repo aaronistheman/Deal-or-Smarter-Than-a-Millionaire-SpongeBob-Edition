@@ -5,7 +5,7 @@
     Release number: 0.1
 */
 
-QUnit.module("game-show-fusion.js");
+QUnit.module("canvas-stack.js");
 
 QUnit.test("CanvasStack::isCanvasOrCanvases()", function(assert) {
     var canvasStack = new CanvasStack();
@@ -35,6 +35,8 @@ QUnit.test("CanvasStack.add()", function(assert) {
     // var canvasStack = new CanvasStack();
 
 // });
+
+QUnit.module("game-show-fusion.js");
 
 QUnit.test("parameterError()", function(assert) {
     assert.deepEqual(parameterError("This is a test"),

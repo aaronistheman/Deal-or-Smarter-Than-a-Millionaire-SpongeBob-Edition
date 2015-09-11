@@ -6,13 +6,10 @@ Next:
     --maybe a function for toggling the showing of a canvas
     --implement the class in the game
         --in its initialization, it'll show what need be shown
-    --if possible, separate the state stack implementation into its
-        own file, for this'll make it easier to label which methods
-        are static with comments
-        --if this is done, error-handling code must go in own file, too
-          (e.g. error-handling.js)
-        --also consider using the object in AngularJS controller
+-put error-handling code in error-handling.js
 -again consider a developed QuoteBubble object
+    --drawQuoteText() could stay in game-show-fusion.js (and either
+        stand alone or be added to the prototype)
 -show case display for explaining next part of rules
 -disabling the ability of the user to hold Enter to rush through the
  quotes (to prevent accidents, although disabling this feature prevents
@@ -47,6 +44,10 @@ Considerable:
 -if multiple toggles, make something to generate the layout of a
  toggle function (e.g. including the check of precondition error)
 -turning each contract into a full one
+-generating proper file header in add-file script
+-generating script files to include in both index.html and
+    unit-tests.html with AngularJS
+-get canvas ids in AngularJS code by using CanvasStack.CONSTANTS
 
 Game flow:
 -host introduces himself and game
