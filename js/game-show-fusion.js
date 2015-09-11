@@ -62,28 +62,28 @@ gameShow.quotesToDraw = {
 };
 
 function CanvasStack() {
-    this.stack = [];
+    this.storage = [];
 
     /*
         @pre none
-        @post whatToAdd has been added to this.stack, and the
+        @post whatToAdd has been added to this.storage, and the
         canvas represented by whatToAdd has been given CSS class
         'show'
         @hasTest yes
         @param whatToAdd to affect as the postcondition specifies;
-        must be a value in CanvasStack.CANVASES
+        must be a value in CanvasStack.CANVASES_IDS
         @returns "this" pointer
         @throws nothing
     */
     this.add = function(whatToAdd) {
         if (typeof whatToAdd == "string") {
             // only one canvas to add and show
-            this.stack.push(whatToAdd);
+            this.storage.push(whatToAdd);
             $('#' + whatToAdd).addClass('show');
         }
         else {
             // array of canvases to add
-            this.stack = this.stack.concat(whatToAdd);
+            this.storage = this.storage.concat(whatToAdd);
             for (var i in whatToAdd)
                 $('#' + whatToAdd[i]).addClass('show');
         }
@@ -98,7 +98,7 @@ function CanvasStack() {
         @param whatToRemove which canvas or canvases to remove;
         pass an array of canvases to remove all of those;
         must be one of the constants
-        attached to CanvasStack.CANVASES
+        attached to CanvasStack.CANVASES_IDS
         @returns "this" pointer
         @throws nothing
     */
@@ -115,7 +115,8 @@ function CanvasStack() {
     };
 }
 
-CanvasStack.CANVASES = {
+// Includes ids of canvases and groups of those ids
+CanvasStack.CANVASES_IDS = {
     TITLE_SCREEN : "title-screen-canvas",
     QUOTE_TEXT : "quote-text-canvas",
     QUOTE_BUBBLE : "quote-bubble-canvas",
@@ -130,10 +131,10 @@ CanvasStack.CANVASES = {
 };
 
 // @returns true if whatToCheck equals one of the constants
-// in CanvasStack.CANVASES
+// in CanvasStack.CANVASES_IDS
 CanvasStack.isCanvasOrCanvases = function(whatToCheck) {
-    for (var key in CanvasStack.CANVASES) {
-        if (whatToCheck === CanvasStack.CANVASES[key])
+    for (var key in CanvasStack.CANVASES_IDS) {
+        if (whatToCheck === CanvasStack.CANVASES_IDS[key])
             return true;
     }
     return false;

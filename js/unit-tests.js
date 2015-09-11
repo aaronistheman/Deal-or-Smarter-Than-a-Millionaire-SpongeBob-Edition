@@ -12,10 +12,10 @@ QUnit.test("CanvasStack::isCanvasOrCanvases()", function(assert) {
     assert.deepEqual(CanvasStack.isCanvasOrCanvases("invalidParameter"),
         false, "Returns false if not valid canvas or array of canvases");
     assert.deepEqual(CanvasStack.isCanvasOrCanvases(
-        CanvasStack.CANVASES.SPEAKER), true,
+        CanvasStack.CANVASES_IDS.SPEAKER), true,
         "Returns true if valid canvas");
     assert.deepEqual(CanvasStack.isCanvasOrCanvases(
-        CanvasStack.CANVASES.MONEY_DISPLAY), true,
+        CanvasStack.CANVASES_IDS.MONEY_DISPLAY), true,
         "Returns true if valid array canvases");
 });
 
@@ -23,10 +23,10 @@ QUnit.test("CanvasStack.add()", function(assert) {
     // this test checks stack's length
     var canvasStack = new CanvasStack();
     assert.deepEqual(canvasStack.add(
-        CanvasStack.CANVASES.TITLE_SCREEN).stack.length, 1,
+        CanvasStack.CANVASES_IDS.TITLE_SCREEN).storage.length, 1,
         "A canvas was successfully stored");
     assert.deepEqual(canvasStack.add(
-        CanvasStack.CANVASES.MONEY_DISPLAY).stack.length, 3,
+        CanvasStack.CANVASES_IDS.MONEY_DISPLAY).storage.length, 3,
         "Two more canvas were successfully, simultaneously stored");
 });
 

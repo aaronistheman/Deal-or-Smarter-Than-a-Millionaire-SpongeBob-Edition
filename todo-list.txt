@@ -1,6 +1,5 @@
 Next:
 -make a state stack (that is, a canvas stack) object
-    --indicate that what is stored is the canvas ids
     --consider making a remove function for array of canvases
         --OR update remove()'s contract
     --use private and priviledged methods/members
@@ -12,6 +11,7 @@ Next:
         are static with comments
         --if this is done, error-handling code must go in own file, too
           (e.g. error-handling.js)
+        --also consider using the object in AngularJS controller
 -again consider a developed QuoteBubble object
 -show case display for explaining next part of rules
 -disabling the ability of the user to hold Enter to rush through the
