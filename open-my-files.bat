@@ -8,4 +8,6 @@ start Notepad++ js/unit-tests.js
 start Notepad++ js/game-controller.js
 start Notepad++ js/game-controller.js
 start Notepad++ js/canvas-stack.js
+start Notepad++ js/error-handling.js
+start Notepad++ js/utility.js
 exit
