@@ -1,5 +1,4 @@
 Next:
--eliminate the use of a scene
 -see if other objects can be put in own file
     --put moneyDisplay code in own file
 -again consider a developed QuoteBubble object
@@ -43,6 +42,7 @@ Considerable:
  players from controlling their gameplay speed)
     --this could be fixed with one second delay between setting enter
       action
+-effects as canvases appear or disappear
 
 Ideas for millionaires to be able to choose as assistants:
 -Kevin O'Leary ("Mr. Wonderful")
