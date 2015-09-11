@@ -69,8 +69,8 @@ gameShow.quotesToDraw = {
 gameShow.canvasStack = new CanvasStack();
 
 gameShow.moneyDisplay = new MoneyDisplay(
-    CanvasStack.CANVASES_IDS.MONEY_DISPLAY_BAR,
-    CanvasStack.CANVASES_IDS.MONEY_DISPLAY_TEXT,
+    CANVAS_IDS.MONEY_DISPLAY_BAR,
+    CANVAS_IDS.MONEY_DISPLAY_TEXT,
     gameShow.moneyAmounts);
 
 var keyboard = {};
@@ -311,8 +311,8 @@ function setUpGame() {
     gameShow.moneyDisplay.setUp();
 
     // Show the appropriate canvases
-    gameShow.canvasStack.add(CanvasStack.CANVASES_IDS.SPEAKER_QUOTE)
-        .add(CanvasStack.CANVASES_IDS.MONEY_DISPLAY);
+    gameShow.canvasStack.add(CANVAS_IDS.SPEAKER_QUOTE)
+        .add(CANVAS_IDS.MONEY_DISPLAY);
 
     // Host's introductory text
     drawNewSpeaker("SpongeBob", function() {
@@ -349,7 +349,7 @@ function toggleOpeningTheme(toggleSetting) {
 }
 
 function setUpTitleScreen() {
-    gameShow.canvasStack.add(CanvasStack.CANVASES_IDS.TITLE_SCREEN);
+    gameShow.canvasStack.add(CANVAS_IDS.TITLE_SCREEN);
     drawTitleScreenText();
     toggleOpeningTheme(TOGGLE.ON);
 
@@ -359,7 +359,7 @@ function setUpTitleScreen() {
 }
 
 function removeTitleScreen() {
-    gameShow.canvasStack.remove(CanvasStack.CANVASES_IDS.TITLE_SCREEN);
+    gameShow.canvasStack.remove(CANVAS_IDS.TITLE_SCREEN);
 }
 
 function setUpAudio() {
