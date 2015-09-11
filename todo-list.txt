@@ -1,6 +1,4 @@
 Next:
--detach CANVASES_IDS from CanvasStack (but keep it in same file)
-    --see if those id constants can be put in more places
 -generating script files to include in both index.html and
     unit-tests.html with AngularJS
 -again consider a developed QuoteBubble object

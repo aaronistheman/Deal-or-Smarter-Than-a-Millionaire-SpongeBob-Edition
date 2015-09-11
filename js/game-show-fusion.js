@@ -69,7 +69,7 @@ gameShow.quotesToDraw = {
 gameShow.canvasStack = new CanvasStack();
 
 gameShow.moneyDisplay = new MoneyDisplay(
-    CANVAS_IDS.MONEY_DISPLAY_BAR,
+    CANVAS_IDS.MONEY_DISPLAY_BARS,
     CANVAS_IDS.MONEY_DISPLAY_TEXT,
     gameShow.moneyAmounts);
 
@@ -121,7 +121,7 @@ TOGGLE.OFF = "off";
 
 // @post title screen has been set up with prompt for user
 function drawTitleScreenText() {
-    var canvas = document.getElementById("title-screen-canvas");
+    var canvas = document.getElementById(CANVAS_IDS.TITLE_SCREEN);
     var ctx = canvas.getContext('2d');
     ctx.font = "30px Arial";
     ctx.fillStyle = "black";
@@ -144,7 +144,7 @@ function drawTestGameText() {
 
 // @post canvas that shows a speaker has been erased
 function eraseSpeaker() {
-    var canvas = document.getElementById("speaker-canvas");
+    var canvas = document.getElementById(CANVAS_IDS.SPEAKER);
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
@@ -152,7 +152,7 @@ function eraseSpeaker() {
 // @post SpongeBob has been drawn so that he looks like he's
 // speaking to you
 function drawSpongebob() {
-    var canvas = document.getElementById("speaker-canvas");
+    var canvas = document.getElementById(CANVAS_IDS.SPEAKER);
     var ctx = canvas.getContext('2d');
 
     ctx.drawImage(gameShow.spongeBobImage, 600, 50);
@@ -160,7 +160,7 @@ function drawSpongebob() {
 
 // @post quote bubble has been drawn on its canvas
 function drawQuoteBubble() {
-    var canvas = document.getElementById('quote-bubble-canvas');
+    var canvas = document.getElementById(CANVAS_IDS.QUOTE_BUBBLE);
     var ctx = canvas.getContext('2d');
     var bubble = gameShow.quoteBubble;
     ctx.fillStyle = "rgba(240, 240, 240, 0.9)";
@@ -169,7 +169,7 @@ function drawQuoteBubble() {
 
 // @post text in the quote bubble has been cleared
 function eraseQuoteBubbleText() {
-    var canvas = document.getElementById('quote-text-canvas');
+    var canvas = document.getElementById(CANVAS_IDS.QUOTE_TEXT);
     var ctx = canvas.getContext('2d');
     var bubble = gameShow.quoteBubble;
 
@@ -249,7 +249,7 @@ function drawQuoteText(text, endCallback) {
     @throws nothing
 */
 function drawEachTextPiece(textPieces) {
-    var canvas = document.getElementById('quote-text-canvas');
+    var canvas = document.getElementById(CANVAS_IDS.QUOTE_TEXT);
     var ctx = canvas.getContext('2d');
     var textPadding = 10;
     var fontSize = 30;

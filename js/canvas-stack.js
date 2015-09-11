@@ -91,23 +91,23 @@ CanvasStack.isCanvasOrCanvases = function(whatToCheck) {
     Non-static constants
 */
 
-// Includes ids of canvases and groups of those ids
+// Includes ids of canvases
 var CANVAS_IDS = {
     TITLE_SCREEN : "title-screen-canvas",
     QUOTE_TEXT : "quote-text-canvas",
     QUOTE_BUBBLE : "quote-bubble-canvas",
     SPEAKER : "speaker-canvas",
     MONEY_DISPLAY_TEXT : "money-display-text-canvas",
-    MONEY_DISPLAY_BAR : "money-display-bars-canvas",
+    MONEY_DISPLAY_BARS : "money-display-bars-canvas",
     CHOOSE_QUESTION : "choose-question-canvas",
     QUESTIONING : "questioning-canvas",
 };
+
+// Groups of canvas ids; for use in functions that support them
 CANVAS_IDS.QUOTE = [CANVAS_IDS.QUOTE_TEXT,
     CANVAS_IDS.QUOTE_BUBBLE];
 CANVAS_IDS.SPEAKER_QUOTE =
-    [CANVAS_IDS.QUOTE_TEXT,
-    CANVAS_IDS.QUOTE_BUBBLE,
-    CANVAS_IDS.SPEAKER];
+    CANVAS_IDS.QUOTE.concat([CANVAS_IDS.SPEAKER]);
 CANVAS_IDS.MONEY_DISPLAY =
     [CANVAS_IDS.MONEY_DISPLAY_TEXT,
-    CANVAS_IDS.MONEY_DISPLAY_BAR];
+    CANVAS_IDS.MONEY_DISPLAY_BARS];
