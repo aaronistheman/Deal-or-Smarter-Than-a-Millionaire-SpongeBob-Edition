@@ -68,15 +68,17 @@ CanvasStack.CANVASES_IDS = {
     TITLE_SCREEN : "title-screen-canvas",
     QUOTE_TEXT : "quote-text-canvas",
     QUOTE_BUBBLE : "quote-bubble-canvas",
-    QUOTE : [this.QUOTE_TEXT, this.QUOTE_BUBBLE],
     SPEAKER : "speaker-canvas",
     MONEY_DISPLAY_TEXT : "money-display-text-canvas",
     MONEY_DISPLAY_BAR : "money-display-bars-canvas",
-    MONEY_DISPLAY : [this.MONEY_DISPLAY_TEXT,
-        this.MONEY_DISPLAY_BAR],
     CHOOSE_QUESTION : "choose-question-canvas",
     QUESTIONING : "questioning-canvas",
 };
+CanvasStack.CANVASES_IDS.QUOTE = [CanvasStack.CANVASES_IDS.QUOTE_TEXT,
+    CanvasStack.CANVASES_IDS.QUOTE_BUBBLE];
+CanvasStack.CANVASES_IDS.MONEY_DISPLAY =
+    [CanvasStack.CANVASES_IDS.MONEY_DISPLAY_TEXT,
+    CanvasStack.CANVASES_IDS.MONEY_DISPLAY_BAR];
 
 // @returns true if whatToCheck equals one of the constants
 // in CanvasStack.CANVASES_IDS
