@@ -1,33 +1,34 @@
 Next:
--put error-handling code in error-handling.js
+-fix error handling system
+    --put error-handling code in error-handling.js
+    --a central place to catch exceptions and display the messages/alerts
+        --with this, functions would throw uncaught exceptions
+            (e.g. throw new Error())
+-see if other objects can be put in own file
     --put moneyDisplay code in own file
-    --see if other objects can be put in own file
 -again consider a developed QuoteBubble object
     --drawQuoteText() could stay in game-show-fusion.js (and either
         stand alone or be added to the prototype)
 -show case display for explaining next part of rules
--disabling the ability of the user to hold Enter to rush through the
- quotes (to prevent accidents, although disabling this feature prevents
- players from controlling their gameplay speed)
-    --this could be fixed with one second delay between setting enter
-      action
 
 At some point:
--more decorated main menu
--make sure trivial functions that are no longer needed and that were
- made for the purpose of testing have been erased
--a guide to each assistant that can be unlocked by reaching a certain
- high score (using local storage); link in introduction
 -eliminate the use of a scene
 -background image (behind the game) changes (e.g. one of the images
  could be of Bikini Bottom underwater)
--fake advertisement panel on the side
-    --could advertise some of my YouTube videos
 -remove use of storage in CanvasStack if no longer necessary
 
-Ideas for millionaires to be able to choose as assistants:
--Kevin O'Leary ("Mr. Wonderful")
--Mr. Burns
+After game is playable (or, perhaps, ready for release 0.1):
+-more decorated main menu
+-a guide to each assistant that can be unlocked by reaching a certain
+ high score (using local storage); link in introduction
+-fake advertisement panel on the side
+    --could advertise some of my YouTube videos
+
+Before release 0.1:
+-make sure trivial functions that are no longer needed and that were
+ made for the purpose of testing have been erased
+-update readme
+-put release number on each file
 
 Considerable:
 -making the game work on Safari 5 for Windows
@@ -43,8 +44,16 @@ Considerable:
 -generating script files to include in both index.html and
     unit-tests.html with AngularJS
 -get canvas ids in AngularJS code by using CanvasStack.CONSTANTS
--a central place to catch exceptions and display the messages/alerts
 -put private and priviledged members/functions in classes
+-disabling the ability of the user to hold Enter to rush through the
+ quotes (to prevent accidents, although disabling this feature prevents
+ players from controlling their gameplay speed)
+    --this could be fixed with one second delay between setting enter
+      action
+
+Ideas for millionaires to be able to choose as assistants:
+-Kevin O'Leary ("Mr. Wonderful")
+-Mr. Burns
 
 Game flow:
 -host introduces himself and game
