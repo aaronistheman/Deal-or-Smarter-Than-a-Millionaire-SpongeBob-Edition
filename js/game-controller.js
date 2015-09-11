@@ -13,14 +13,14 @@ function getCanvasIds() {
     // Here is where we add the data for each canvas element;
     // note that the order of these pushes matters (e.g. the quote
     // text must be above the quote bubble)
-    canvasIds.push("questioning-canvas");
-    canvasIds.push("choose-question-canvas");
-    canvasIds.push("money-display-bars-canvas");
-    canvasIds.push("money-display-text-canvas");
-    canvasIds.push("speaker-canvas");
-    canvasIds.push("quote-bubble-canvas");
-    canvasIds.push("quote-text-canvas");
-    canvasIds.push("title-screen-canvas");
+    canvasIds.push(CANVAS_IDS.QUESTIONING);
+    canvasIds.push(CANVAS_IDS.CHOOSE_QUESTION);
+    canvasIds.push(CANVAS_IDS.MONEY_DISPLAY_BARS);
+    canvasIds.push(CANVAS_IDS.MONEY_DISPLAY_TEXT);
+    canvasIds.push(CANVAS_IDS.SPEAKER);
+    canvasIds.push(CANVAS_IDS.QUOTE_BUBBLE);
+    canvasIds.push(CANVAS_IDS.QUOTE_TEXT);
+    canvasIds.push(CANVAS_IDS.TITLE_SCREEN);
 
     return canvasIds;
 }

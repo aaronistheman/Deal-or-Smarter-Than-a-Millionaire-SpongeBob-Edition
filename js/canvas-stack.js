@@ -16,7 +16,7 @@ function CanvasStack() {
     'show'
     @hasTest yes
     @param whatToAdd to affect as the postcondition specifies;
-    must be a value in CanvasStack.CANVASES_IDS
+    must be a value in CANVAS_IDS
     @returns "this" pointer
     @throws nothing
 */
@@ -43,7 +43,7 @@ CanvasStack.prototype.add = function(whatToAdd) {
     @param whatToRemove which canvas or canvases to remove;
     pass an array of canvases to remove all of those;
     must be one of the constants attached to
-    CanvasStack.CANVASES_IDS
+    CANVAS_IDS
     @returns "this" pointer
     @throws nothing
 */
@@ -74,33 +74,40 @@ CanvasStack.prototype.remove = function(whatToRemove) {
     'Static' members and instances
 */
 
-// Includes ids of canvases and groups of those ids
-CanvasStack.CANVASES_IDS = {
+/*
+// @hasTest yes
+// @returns true if whatToCheck equals one of the constants
+// in CANVAS_IDS
+CanvasStack.isCanvasOrCanvases = function(whatToCheck) {
+    for (var key in CANVAS_IDS) {
+        if (whatToCheck === CANVAS_IDS[key])
+            return true;
+    }
+    return false;
+};
+*/
+
+/*
+    Non-static constants
+*/
+
+// Includes ids of canvases
+var CANVAS_IDS = {
     TITLE_SCREEN : "title-screen-canvas",
     QUOTE_TEXT : "quote-text-canvas",
     QUOTE_BUBBLE : "quote-bubble-canvas",
     SPEAKER : "speaker-canvas",
     MONEY_DISPLAY_TEXT : "money-display-text-canvas",
-    MONEY_DISPLAY_BAR : "money-display-bars-canvas",
+    MONEY_DISPLAY_BARS : "money-display-bars-canvas",
     CHOOSE_QUESTION : "choose-question-canvas",
     QUESTIONING : "questioning-canvas",
 };
-CanvasStack.CANVASES_IDS.QUOTE = [CanvasStack.CANVASES_IDS.QUOTE_TEXT,
-    CanvasStack.CANVASES_IDS.QUOTE_BUBBLE];
-CanvasStack.CANVASES_IDS.SPEAKER_QUOTE =
-    [CanvasStack.CANVASES_IDS.QUOTE_TEXT,
-    CanvasStack.CANVASES_IDS.QUOTE_BUBBLE,
-    CanvasStack.CANVASES_IDS.SPEAKER];
-CanvasStack.CANVASES_IDS.MONEY_DISPLAY =
-    [CanvasStack.CANVASES_IDS.MONEY_DISPLAY_TEXT,
-    CanvasStack.CANVASES_IDS.MONEY_DISPLAY_BAR];
 
-// @returns true if whatToCheck equals one of the constants
-// in CanvasStack.CANVASES_IDS
-CanvasStack.isCanvasOrCanvases = function(whatToCheck) {
-    for (var key in CanvasStack.CANVASES_IDS) {
-        if (whatToCheck === CanvasStack.CANVASES_IDS[key])
-            return true;
-    }
-    return false;
-};
+// Groups of canvas ids; for use in functions that support them
+CANVAS_IDS.QUOTE = [CANVAS_IDS.QUOTE_TEXT,
+    CANVAS_IDS.QUOTE_BUBBLE];
+CANVAS_IDS.SPEAKER_QUOTE =
+    CANVAS_IDS.QUOTE.concat([CANVAS_IDS.SPEAKER]);
+CANVAS_IDS.MONEY_DISPLAY =
+    [CANVAS_IDS.MONEY_DISPLAY_TEXT,
+    CANVAS_IDS.MONEY_DISPLAY_BARS];
