@@ -1,6 +1,8 @@
 Next:
--see if other objects can be put in own file
-    --put moneyDisplay code in own file
+-detach CANVASES_IDS from CanvasStack (but keep it in same file)
+    --see if those id constants can be put in more places
+-generating script files to include in both index.html and
+    unit-tests.html with AngularJS
 -again consider a developed QuoteBubble object
     --drawQuoteText() could stay in game-show-fusion.js (and either
         stand alone or be added to the prototype)
@@ -8,6 +10,11 @@ Next:
 
 At some point:
 -remove use of storage in CanvasStack if no longer necessary
+-either throw a class ParameterError to trigger that kind of exception,
+    or make ParameterError a general error function
+    --maybe decide on a better way of dealing with exceptions
+    --alert for each exception
+    --alert if missing object parameter
 
 After game is playable (or, perhaps, ready for release 0.1):
 -more decorated main menu
@@ -19,6 +26,7 @@ After game is playable (or, perhaps, ready for release 0.1):
 Before release 0.1:
 -make sure trivial functions that are no longer needed and that were
  made for the purpose of testing have been erased
+-erase commented out methods of MoneyDisplay
 -update readme
 -put release number on each file
 
@@ -33,8 +41,6 @@ Considerable:
  toggle function (e.g. including the check of precondition error)
 -turning each contract into a full one
 -generating proper file header in add-file script
--generating script files to include in both index.html and
-    unit-tests.html with AngularJS
 -get canvas ids in AngularJS code by using CanvasStack.CONSTANTS
 -put private and priviledged members/functions in classes
 -disabling the ability of the user to hold Enter to rush through the

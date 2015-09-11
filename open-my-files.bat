@@ -10,4 +10,5 @@ start Notepad++ js/game-controller.js
 start Notepad++ js/canvas-stack.js
 start Notepad++ js/error-handling.js
 start Notepad++ js/utility.js
+start Notepad++ js/money-display.js
 exit
