@@ -1,5 +1,10 @@
 "use strict";
 
+/*
+    Author: Aaron Kaloti
+    Release number: 0.1
+*/
+
 var gameShow = {};
 gameShow.spongeBobImage = new Image();
 gameShow.spongeBobImage.src = "images/spongebob.png";
@@ -60,6 +65,8 @@ gameShow.quotesToDraw = {
         }
     }
 };
+
+gameShow.canvasStack = new CanvasStack();
 
 // some of this object definition is below the ending curly brace
 gameShow.moneyDisplay = {
@@ -158,6 +165,11 @@ gameShow.moneyDisplay.draw = function(whatToDraw) {
         }
     }
 };
+
+gameShow.moneyDisplay.setUp = function() {
+    this.draw('bars');
+    this.draw('text');
+}
 
 var keyboard = {};
 keyboard.ENTER = 13;
@@ -410,10 +422,6 @@ function setUpQuoteBubble() {
     drawQuoteBubble();
 }
 
-function removeTitleScreen() {
-    $("#title-screen-canvas").removeClass('show');
-}
-
 function talkAboutMoneyDisplay() {
     // move speaker canvas out of the way so money display can
     // be seen
@@ -427,8 +435,11 @@ function talkAboutMoneyDisplay() {
 function setUpGame() {
     removeTitleScreen();
     setUpQuoteBubble();
-    gameShow.moneyDisplay.draw('bars');
-    gameShow.moneyDisplay.draw('text');
+    gameShow.moneyDisplay.setUp();
+
+    // Show the appropriate canvases
+    gameShow.canvasStack.add(CanvasStack.CANVASES_IDS.SPEAKER_QUOTE)
+        .add(CanvasStack.CANVASES_IDS.MONEY_DISPLAY);
 
     // Host's introductory text
     drawNewSpeaker("SpongeBob", function() {
@@ -465,12 +476,17 @@ function toggleOpeningTheme(toggleSetting) {
 }
 
 function setUpTitleScreen() {
+    gameShow.canvasStack.add(CanvasStack.CANVASES_IDS.TITLE_SCREEN);
     drawTitleScreenText();
     toggleOpeningTheme(TOGGLE.ON);
 
     // Set up the user's ability to go to the game
     keyboard.enterKeyAction.setUpEventHandler();
     keyboard.enterKeyAction.set(setUpGame);
+}
+
+function removeTitleScreen() {
+    gameShow.canvasStack.remove(CanvasStack.CANVASES_IDS.TITLE_SCREEN);
 }
 
 function setUpAudio() {
