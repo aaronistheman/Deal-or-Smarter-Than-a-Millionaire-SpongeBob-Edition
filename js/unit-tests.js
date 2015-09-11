@@ -43,6 +43,17 @@ QUnit.test("CanvasStack.storeAndShow()", function(assert) {
         "Two more canvas were successfully, simultaneously stored");
 });
 
+QUnit.test("CanvasStack.remove()", function(assert) {
+    // Check valid parameter enforcement
+    var canvasStack = new CanvasStack();
+    assert.deepEqual(canvasStack.remove("invalidParameter"),
+        ERROR_MESSAGES.PARAMETER, "Good valid parameter enforcement");
+
+    assert.deepEqual(canvasStack.remove(CanvasStack.CANVASES.SPEAKER),
+        canvasStack,
+        "The 'this' pointer is returned if successful addition");
+});
+
 QUnit.test("parameterError()", function(assert) {
     assert.deepEqual(parameterError("This is a test"),
         ERROR_MESSAGES.PARAMETER, "Correct value is returned");

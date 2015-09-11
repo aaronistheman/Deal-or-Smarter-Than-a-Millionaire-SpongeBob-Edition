@@ -111,10 +111,57 @@ function CanvasStack() {
         else {
             // array of canvases to add
             this.stack = this.stack.concat(whatToAdd);
-            for (var canvasId in whatToAdd)
-                $('#' + canvasId).addClass('show');
+            for (var i in whatToAdd)
+                $('#' + whatToAdd[i]).addClass('show');
         }
     };
+
+    /*
+        @post the canvas or canvases commanded to be removed have
+        been removed
+        @hasTest yes
+        @param whatToRemove which canvas or canvases to remove;
+        pass an array
+        of canvases to remove all of those; must be one of the constants
+        attached to CanvasStack.CANVASES
+        @returns "this" pointer if valid whatToRemove value;
+        error message if invalid whatToAdd value
+        @throws (caught) exception if invalid whatToRemove value
+    */
+    this.remove = function(whatToRemove) {
+        // Confirm valid paramter whatToRemove
+        try {
+            if (!CanvasStack.isCanvasOrCanvases(whatToRemove))
+                throw "Invalid value of parameter whatToRemove";
+        }
+        catch (err) {
+            return parameterError(err);
+        }
+
+        // Remove the canvas indicated by whatToRemove
+        for (var i in this.storage) {
+            if (this.storage[i] === whatToRemove) {
+                this.storage.splice[i, 1];
+                break;
+            }
+        }
+
+        return this;
+    };
+
+    // this.removeAndHide = function(whatToRemove) {
+        // if (typeof whatToRemove == "string") {
+            // // only one canvas to add and show
+            // this.stack.push(whatToRemove);
+            // $('#' + whatToRemove).addClass('show');
+        // }
+        // else {
+            // // array of canvases to add
+            // this.stack = this.stack.concat(whatToRemove);
+            // for (var canvasId in whatToRemove)
+                // $('#' + canvasId).addClass('show');
+        // }
+    // };
 }
 
 CanvasStack.CANVASES = {
