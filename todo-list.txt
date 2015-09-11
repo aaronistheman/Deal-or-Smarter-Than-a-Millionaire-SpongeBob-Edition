@@ -1,8 +1,7 @@
 Next:
--make a state stack (that is, a canvas stack) object
-    --implement the class in the game
-        --in its initialization, it'll show what need be shown
 -put error-handling code in error-handling.js
+    --put moneyDisplay code in own file
+    --see if other objects can be put in own file
 -again consider a developed QuoteBubble object
     --drawQuoteText() could stay in game-show-fusion.js (and either
         stand alone or be added to the prototype)
@@ -19,12 +18,12 @@ At some point:
  made for the purpose of testing have been erased
 -a guide to each assistant that can be unlocked by reaching a certain
  high score (using local storage); link in introduction
--put private and priviledged members/functions in classes
 -eliminate the use of a scene
 -background image (behind the game) changes (e.g. one of the images
  could be of Bikini Bottom underwater)
 -fake advertisement panel on the side
     --could advertise some of my YouTube videos
+-remove use of storage in CanvasStack if no longer necessary
 
 Ideas for millionaires to be able to choose as assistants:
 -Kevin O'Leary ("Mr. Wonderful")
@@ -45,7 +44,7 @@ Considerable:
     unit-tests.html with AngularJS
 -get canvas ids in AngularJS code by using CanvasStack.CONSTANTS
 -a central place to catch exceptions and display the messages/alerts
--use private and priviledged methods/members for CanvasStack
+-put private and priviledged members/functions in classes
 
 Game flow:
 -host introduces himself and game
