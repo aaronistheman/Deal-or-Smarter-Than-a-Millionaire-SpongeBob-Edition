@@ -41,20 +41,31 @@ function CanvasStack() {
         @hasTest yes
         @param whatToRemove which canvas or canvases to remove;
         pass an array of canvases to remove all of those;
-        must be one of the constants
-        attached to CanvasStack.CANVASES_IDS
+        must be one of the constants attached to
+        CanvasStack.CANVASES_IDS
         @returns "this" pointer
         @throws nothing
     */
     this.remove = function(whatToRemove) {
-        // Remove the canvas indicated by whatToRemove
-        for (var i in this.storage) {
-            if (this.storage[i] === whatToRemove) {
-                $('#' + this.storage[i]).removeClass('show');
-                this.storage.splice[i, 1];
-                break;
+        // React according to how many canvas ids to remove
+        var canvasIdsToRemove = [];
+        if (typeof whatToRemove == "string")
+            canvasIdsToRemove.push(whatToRemove);
+        else
+            canvasIdsToRemove = whatToRemove;
+
+        for (var i in canvasIdsToRemove) {
+            for (var j = 0; j < this.storage.length; ) {
+                if (this.storage[j] === canvasIdsToRemove[i]) {
+                    $('#' + this.storage[j]).removeClass('show');
+                    this.storage.splice(j, 1);
+                    break;
+                }
+                else
+                    ++j;
             }
         }
+
         return this;
     };
 }

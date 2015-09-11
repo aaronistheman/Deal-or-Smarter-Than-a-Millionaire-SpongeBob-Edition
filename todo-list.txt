@@ -1,7 +1,5 @@
 Next:
 -make a state stack (that is, a canvas stack) object
-    --consider making a remove function for array of canvases
-        --OR update remove()'s contract
     --use private and priviledged methods/members
     --maybe a function for toggling the showing of a canvas
     --implement the class in the game
