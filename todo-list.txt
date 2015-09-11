@@ -1,6 +1,6 @@
 Next:
 -make a state stack (that is, a canvas stack) object
-    --delete some (unneeded) parameter enforcement
+    --indicate that what is stored is the canvas ids
     --consider making a remove function for array of canvases
         --OR update remove()'s contract
     --use private and priviledged methods/members

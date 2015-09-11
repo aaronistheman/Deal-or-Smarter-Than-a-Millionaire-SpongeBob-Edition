@@ -20,20 +20,7 @@ QUnit.test("CanvasStack::isCanvasOrCanvases()", function(assert) {
 });
 
 QUnit.test("CanvasStack.add()", function(assert) {
-    // Check valid parameter enforcement
-    var canvasStack = new CanvasStack();
-    assert.deepEqual(canvasStack.add("invalidParameter"),
-        ERROR_MESSAGES.PARAMETER, "Good valid parameter enforcement");
-
-    // Confirm the 'this' pointer is returned if valid parameter
-    assert.deepEqual(canvasStack.add(CanvasStack.CANVASES.SPEAKER),
-        canvasStack,
-        "The 'this' pointer is returned if successful addition");
-});
-
-QUnit.test("CanvasStack.storeAndShow()", function(assert) {
-    // this test checks stack's length;
-    // storeAndShow() is called in add()
+    // this test checks stack's length
     var canvasStack = new CanvasStack();
     assert.deepEqual(canvasStack.add(
         CanvasStack.CANVASES.TITLE_SCREEN).stack.length, 1,
@@ -43,16 +30,11 @@ QUnit.test("CanvasStack.storeAndShow()", function(assert) {
         "Two more canvas were successfully, simultaneously stored");
 });
 
-QUnit.test("CanvasStack.remove()", function(assert) {
-    // Check valid parameter enforcement
-    var canvasStack = new CanvasStack();
-    assert.deepEqual(canvasStack.remove("invalidParameter"),
-        ERROR_MESSAGES.PARAMETER, "Good valid parameter enforcement");
+// QUnit.test("CanvasStack.remove()", function(assert) {
+    // // Check valid parameter enforcement
+    // var canvasStack = new CanvasStack();
 
-    assert.deepEqual(canvasStack.remove(CanvasStack.CANVASES.SPEAKER),
-        canvasStack,
-        "The 'this' pointer is returned if successful addition");
-});
+// });
 
 QUnit.test("parameterError()", function(assert) {
     assert.deepEqual(parameterError("This is a test"),

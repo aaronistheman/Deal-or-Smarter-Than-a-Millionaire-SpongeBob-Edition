@@ -65,33 +65,6 @@ function CanvasStack() {
     this.stack = [];
 
     /*
-        @post the canvas or canvases commanded to be added have been
-        added
-        @hasTest yes
-        @param whatToAdd which canvas or canvases to add; pass an array
-        of canvases to add all of them; must be one of the constants
-        attached to CanvasStack.CANVASES
-        @returns "this" pointer if valid whatToAdd value; error message
-        if invalid whatToAdd value
-        @throws (caught) exception if invalid whatToAdd value
-    */
-    this.add = function(whatToAdd) {
-        // Confirm valid paramter whatToAdd
-        try {
-            if (!CanvasStack.isCanvasOrCanvases(whatToAdd))
-                throw "Invalid value of parameter whatToAdd";
-        }
-        catch (err) {
-            return parameterError(err);
-        }
-
-        // Add the canvas or canvases
-        this.storeAndShow(whatToAdd);
-
-        return this;
-    };
-
-    /*
         @pre none
         @post whatToAdd has been added to this.stack, and the
         canvas represented by whatToAdd has been given CSS class
@@ -99,10 +72,10 @@ function CanvasStack() {
         @hasTest yes
         @param whatToAdd to affect as the postcondition specifies;
         must be a value in CanvasStack.CANVASES
-        @returns nothing
+        @returns "this" pointer
         @throws nothing
     */
-    this.storeAndShow = function(whatToAdd) {
+    this.add = function(whatToAdd) {
         if (typeof whatToAdd == "string") {
             // only one canvas to add and show
             this.stack.push(whatToAdd);
@@ -114,54 +87,32 @@ function CanvasStack() {
             for (var i in whatToAdd)
                 $('#' + whatToAdd[i]).addClass('show');
         }
+        return this;
     };
 
     /*
+        @pre none
         @post the canvas or canvases commanded to be removed have
-        been removed
+        been removed and (via CSS) hidden
         @hasTest yes
         @param whatToRemove which canvas or canvases to remove;
-        pass an array
-        of canvases to remove all of those; must be one of the constants
+        pass an array of canvases to remove all of those;
+        must be one of the constants
         attached to CanvasStack.CANVASES
-        @returns "this" pointer if valid whatToRemove value;
-        error message if invalid whatToAdd value
-        @throws (caught) exception if invalid whatToRemove value
+        @returns "this" pointer
+        @throws nothing
     */
     this.remove = function(whatToRemove) {
-        // Confirm valid paramter whatToRemove
-        try {
-            if (!CanvasStack.isCanvasOrCanvases(whatToRemove))
-                throw "Invalid value of parameter whatToRemove";
-        }
-        catch (err) {
-            return parameterError(err);
-        }
-
         // Remove the canvas indicated by whatToRemove
         for (var i in this.storage) {
             if (this.storage[i] === whatToRemove) {
+                $('#' + this.storage[i]).removeClass('show');
                 this.storage.splice[i, 1];
                 break;
             }
         }
-
         return this;
     };
-
-    // this.removeAndHide = function(whatToRemove) {
-        // if (typeof whatToRemove == "string") {
-            // // only one canvas to add and show
-            // this.stack.push(whatToRemove);
-            // $('#' + whatToRemove).addClass('show');
-        // }
-        // else {
-            // // array of canvases to add
-            // this.stack = this.stack.concat(whatToRemove);
-            // for (var canvasId in whatToRemove)
-                // $('#' + canvasId).addClass('show');
-        // }
-    // };
 }
 
 CanvasStack.CANVASES = {
