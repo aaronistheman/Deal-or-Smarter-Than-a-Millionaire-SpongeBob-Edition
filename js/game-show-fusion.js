@@ -230,6 +230,11 @@ ERROR_MESSAGES.PARAMETER = "parameter error";
     @throws nothing
 */
 function parameterError(errorMessage) {
+    // We don't want to have alerts bombard us during unit testing
+    // of proper invalid parameter rejection
+    if (!isUnitTesting())
+        alert(errorMessage);
+
     console.log(errorMessage);
     return ERROR_MESSAGES.PARAMETER;
 }

@@ -1,9 +1,4 @@
 Next:
--fix error handling system
-    --put error-handling code in error-handling.js
-    --a central place to catch exceptions and display the messages/alerts
-        --with this, functions would throw uncaught exceptions
-            (e.g. throw new Error())
 -see if other objects can be put in own file
     --put moneyDisplay code in own file
 -again consider a developed QuoteBubble object
