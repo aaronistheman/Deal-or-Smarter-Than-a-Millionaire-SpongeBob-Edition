@@ -6,12 +6,12 @@
 */
 
 function CanvasStack() {
-    this.storage = [];
+    this._storage = [];
 }
 
 /*
     @pre none
-    @post whatToAdd has been added to this.storage, and the
+    @post whatToAdd has been added to this._storage, and the
     canvas represented by whatToAdd has been given CSS class
     'show'
     @hasTest yes
@@ -23,12 +23,12 @@ function CanvasStack() {
 CanvasStack.prototype.add = function(whatToAdd) {
     if (typeof whatToAdd == "string") {
         // only one canvas to add and show
-        this.storage.push(whatToAdd);
+        this._storage.push(whatToAdd);
         $('#' + whatToAdd).addClass('show');
     }
     else {
         // array of canvases to add
-        this.storage = this.storage.concat(whatToAdd);
+        this._storage = this._storage.concat(whatToAdd);
         for (var i in whatToAdd)
             $('#' + whatToAdd[i]).addClass('show');
     }
@@ -56,10 +56,10 @@ CanvasStack.prototype.remove = function(whatToRemove) {
         canvasIdsToRemove = whatToRemove;
 
     for (var i in canvasIdsToRemove) {
-        for (var j = 0; j < this.storage.length; ) {
-            if (this.storage[j] === canvasIdsToRemove[i]) {
-                $('#' + this.storage[j]).removeClass('show');
-                this.storage.splice(j, 1);
+        for (var j = 0; j < this._storage.length; ) {
+            if (this._storage[j] === canvasIdsToRemove[i]) {
+                $('#' + this._storage[j]).removeClass('show');
+                this._storage.splice(j, 1);
                 break;
             }
             else

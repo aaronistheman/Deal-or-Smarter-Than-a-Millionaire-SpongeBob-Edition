@@ -11,10 +11,10 @@ QUnit.test("CanvasStack.add()", function(assert) {
     // this test checks stack's length
     var canvasStack = new CanvasStack();
     assert.deepEqual(canvasStack.add(
-        CanvasStack.CANVASES_IDS.TITLE_SCREEN).storage.length, 1,
+        CanvasStack.CANVASES_IDS.TITLE_SCREEN)._storage.length, 1,
         "A canvas was successfully stored");
     assert.deepEqual(canvasStack.add(
-        CanvasStack.CANVASES_IDS.MONEY_DISPLAY).storage.length, 3,
+        CanvasStack.CANVASES_IDS.MONEY_DISPLAY)._storage.length, 3,
         "After, two more canvas were successfully, simultaneously stored");
 });
 
@@ -25,10 +25,10 @@ QUnit.test("CanvasStack.remove()", function(assert) {
     canvasStack.add(CanvasStack.CANVASES_IDS.MONEY_DISPLAY)
         .add(CanvasStack.CANVASES_IDS.QUOTE);
     assert.deepEqual(canvasStack.remove(
-        CanvasStack.CANVASES_IDS.QUOTE_TEXT).storage.length, 3,
+        CanvasStack.CANVASES_IDS.QUOTE_TEXT)._storage.length, 3,
         "A canvas was successfully removed");
     assert.deepEqual(canvasStack.remove(
-        CanvasStack.CANVASES_IDS.MONEY_DISPLAY).storage.length, 1,
+        CanvasStack.CANVASES_IDS.MONEY_DISPLAY)._storage.length, 1,
         "After, two canvases were successfully removed");
 });
 
