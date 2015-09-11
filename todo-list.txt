@@ -1,10 +1,9 @@
 Next:
--generating script files to include in both index.html and
-    unit-tests.html with AngularJS
--again consider a developed QuoteBubble object
-    --drawQuoteText() could stay in game-show-fusion.js (and either
-        stand alone or be added to the prototype)
+-make rest of introductory dialogue (without appropriate displays)
 -show case display for explaining next part of rules
+    --make ability to choose case at beginning
+-start working on questions display, randomization, topics, and
+    appropriate objects
 
 At some point:
 -remove use of storage in CanvasStack if no longer necessary
@@ -13,6 +12,11 @@ At some point:
     --maybe decide on a better way of dealing with exceptions
     --alert for each exception
     --alert if missing object parameter
+-again consider a developed QuoteBubble object
+    --drawQuoteText() could stay in game-show-fusion.js (and either
+        stand alone or be added to the prototype)
+    --generating script files to include in both index.html and
+        unit-tests.html with AngularJS
 
 After game is playable (or, perhaps, ready for release 0.1):
 -more decorated main menu
