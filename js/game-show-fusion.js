@@ -295,13 +295,34 @@ function setUpQuoteBubble() {
     drawQuoteBubble();
 }
 
-function talkAboutMoneyDisplay() {
+// function talkAboutMoneyDisplay() {
+
+// }
+
+function explainRules() {
     // move speaker canvas out of the way so money display can
     // be seen
-    $("#speaker-canvas").removeClass('show');
-    gameShow.quotesToDraw.add("You will try to answer ten questions.")
-        .add("Each question will randomly be " +
-            "assigned one of these values, but you  don't know which.")
+    gameShow.canvasStack.remove(CANVAS_IDS.SPEAKER);
+
+    gameShow.quotesToDraw.add("Shortly, you will pick a briefcase.")
+        .add("That case's value equals one of the values on the " +
+            "money board, but you don't know which.")
+        .add("After that, you will try to answer ten questions.")
+        .add("Answering a question correctly reveals a random " +
+            "amount from the money board.")
+        .add("But wait, a twist occurs after every two questions " +
+            "and before your tenth question:")
+        .add("the banker will offer you some money.")
+        .add("He wants your briefcase, but he doesn't want to pay " +
+            "too much for it.")
+        .add("You can say 'Deal' and leave the game with that money,")
+        .add("or you can say 'No Deal' and hope for an even greater " +
+            "amount of money.")
+        .add("If you miss a question, you leave with nothing.")
+        .add("If you get past all ten questions, you can either take " +
+            "your case home,")
+        .add("or you can bet it all and try to answer the million " +
+            "dollar question.")
         .deployQuoteChain(eraseQuoteBubbleText);
 }
 
@@ -320,11 +341,10 @@ function setUpGame() {
             "Press Enter to go to the next quote.")
             .add("I'm your host, " +
                 "SpongeBob Squarepants.")
-            .add("Get ready to play this " +
+            .add("Do you think you can beat the banker?")
+            .add("If so, get ready to play this " +
                 "combination of game shows.")
-            .deployQuoteChain(function() {
-                talkAboutMoneyDisplay();
-        });
+            .deployQuoteChain(explainRules);
     });
 }
 

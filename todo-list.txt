@@ -1,9 +1,11 @@
 Next:
--make rest of introductory dialogue (without appropriate displays)
 -show case display for explaining next part of rules
     --make ability to choose case at beginning
+-show canvases that should be shown during introduction (or basic
+    versions of them)
 -start working on questions display, randomization, topics, and
     appropriate objects
+-introduce helpers
 
 At some point:
 -remove use of storage in CanvasStack if no longer necessary
@@ -17,6 +19,14 @@ At some point:
         stand alone or be added to the prototype)
     --generating script files to include in both index.html and
         unit-tests.html with AngularJS
+    --find a way to properly limit a line in a quote
+        --try measuring something other than number of characters
+        --or find a way to make each character take up same space
+    --find a way to deal with splitting a word between lines (besides
+    having to put extra whitespace)
+        --could limit quotes to one line
+        --could split each string/quote into array of words (separate
+            by ' ')
 
 After game is playable (or, perhaps, ready for release 0.1):
 -more decorated main menu
@@ -36,9 +46,6 @@ Considerable:
 -making the game work on Safari 5 for Windows
 -having a global variable for each canvas
 -using alerts if exceptions
--find a way to deal with splitting a word between lines (besides
-    having to put extra whitespace)
-    --could limit quotes to one line
 -if multiple toggles, make something to generate the layout of a
  toggle function (e.g. including the check of precondition error)
 -turning each contract into a full one
@@ -70,7 +77,9 @@ Game flow:
         taking your case home or going for the million dollar question
 -host says you do have help
     --host introduces five helpers who can save you or let you cheat
+        --introduce helpers
     --host tells you of two lifelines (ask audience and phone a friend)
         --phoning a friend cuts to Patrick asking if its Pizza Castle
+    --these don't work on million dollar question
 -you pick your case
 -host shows you the randomly generated question screen
