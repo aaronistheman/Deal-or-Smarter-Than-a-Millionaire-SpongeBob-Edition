@@ -10,17 +10,11 @@ function getCanvasIds() {
     // make an array for ids of each canvas in the webpage
     var canvasIds = [];
 
-    // Here is where we add the data for each canvas element;
-    // note that the order of these pushes matters (e.g. the quote
-    // text must be above the quote bubble)
-    canvasIds.push(CANVAS_IDS.QUESTIONING);
-    canvasIds.push(CANVAS_IDS.CHOOSE_QUESTION);
-    canvasIds.push(CANVAS_IDS.MONEY_DISPLAY_BARS);
-    canvasIds.push(CANVAS_IDS.MONEY_DISPLAY_TEXT);
-    canvasIds.push(CANVAS_IDS.SPEAKER);
-    canvasIds.push(CANVAS_IDS.QUOTE_BUBBLE);
-    canvasIds.push(CANVAS_IDS.QUOTE_TEXT);
-    canvasIds.push(CANVAS_IDS.TITLE_SCREEN);
+    // Here is where we add the data for each canvas element
+    for (var key in CANVAS_IDS) {
+        if (typeof CANVAS_IDS[key] == "string")
+            canvasIds.push(CANVAS_IDS[key]);
+    }
 
     return canvasIds;
 }
