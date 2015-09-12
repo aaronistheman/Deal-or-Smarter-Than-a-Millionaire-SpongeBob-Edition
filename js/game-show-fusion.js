@@ -73,6 +73,11 @@ gameShow.moneyDisplay = new MoneyDisplay(
     CANVAS_IDS.MONEY_DISPLAY_TEXT,
     gameShow.moneyAmounts);
 
+gameShow.briefcaseDisplay = new BriefcaseDisplay(
+    CANVAS_IDS.BRIEFCASES,
+    CANVAS_IDS.BRIEFCASES_TEXT,
+    gameShow.moneyAmounts);
+
 var keyboard = {};
 keyboard.ENTER = 13;
 keyboard.enterKeyAction = {
@@ -300,9 +305,12 @@ function setUpQuoteBubble() {
 // }
 
 function explainRules() {
-    // move speaker canvas out of the way so money display can
-    // be seen
-    gameShow.canvasStack.remove(CANVAS_IDS.SPEAKER);
+    // move speaker canvas out of the way to show other things
+    // while host is speaking
+    gameShow.canvasStack.remove(CANVAS_IDS.SPEAKER)
+        .add(CANVAS_IDS.MONEY_DISPLAY);
+    gameShow.canvasStack.remove(CANVAS_IDS.MONEY_DISPLAY)
+        .add(CANVAS_IDS.BRIEFCASE_DISPLAY);
 
     gameShow.quotesToDraw.add("Shortly, you will pick a briefcase.")
         .add("That case's value equals one of the values on the " +
@@ -330,10 +338,10 @@ function setUpGame() {
     removeTitleScreen();
     setUpQuoteBubble();
     gameShow.moneyDisplay.setUp();
+    gameShow.briefcaseDisplay.setUp();
 
     // Show the appropriate canvases
-    gameShow.canvasStack.add(CANVAS_IDS.SPEAKER_QUOTE)
-        .add(CANVAS_IDS.MONEY_DISPLAY);
+    gameShow.canvasStack.add(CANVAS_IDS.SPEAKER_QUOTE);
 
     // Host's introductory text
     drawNewSpeaker("SpongeBob", function() {
