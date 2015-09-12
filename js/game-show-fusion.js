@@ -76,7 +76,8 @@ gameShow.moneyDisplay = new MoneyDisplay(
 gameShow.briefcaseDisplay = new BriefcaseDisplay(
     CANVAS_IDS.BRIEFCASES,
     CANVAS_IDS.BRIEFCASES_TEXT,
-    gameShow.moneyAmounts);
+    gameShow.moneyAmounts,
+    7);
 
 var keyboard = {};
 keyboard.ENTER = 13;
@@ -300,9 +301,10 @@ function setUpQuoteBubble() {
     drawQuoteBubble();
 }
 
-// function talkAboutMoneyDisplay() {
-
-// }
+function selectFirstCase() {
+    gameShow.canvasStack.remove(CANVAS_IDS.MONEY_DISPLAY)
+        .add(CANVAS_IDS.BRIEFCASE_DISPLAY);
+}
 
 function explainRules() {
     // move speaker canvas out of the way to show other things
@@ -338,7 +340,9 @@ function explainRules() {
             // show million dollar question screen
             .add("or you can bet it all and try to answer the million " +
                 "dollar question.")
-            .deployQuoteChain(eraseQuoteBubbleText);
+            .add("You do have help, but I haven't been programmed " +
+                "to describe how.")
+            .deployQuoteChain(selectFirstCase);
         });
 }
 
@@ -346,7 +350,7 @@ function setUpGame() {
     removeTitleScreen();
     setUpQuoteBubble();
     gameShow.moneyDisplay.setUp();
-    gameShow.briefcaseDisplay.setUp();
+    gameShow.briefcaseDisplay.draw();
 
     // Show the appropriate canvases
     gameShow.canvasStack.add(CANVAS_IDS.SPEAKER_QUOTE);

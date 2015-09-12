@@ -11,11 +11,14 @@
     @param textCanvasId id of the canvas to draw the text (i.e.
     the briefcase numbers) on
     @param moneyAmounts array of 10 money amounts to display
+    @param numberToEmphasize number of the case to emphasize
 */
-function BriefcaseDisplay(caseCanvasId, textCanvasId, moneyAmounts) {
+function BriefcaseDisplay(caseCanvasId, textCanvasId, moneyAmounts,
+        numberToEmphasize) {
     this.caseCanvasId = caseCanvasId;
     this.textCanvasId = textCanvasId;
     this.moneyAmounts = moneyAmounts;
+    this.numberToEmphasize = numberToEmphasize;
 }
 
 /*
@@ -30,7 +33,6 @@ BriefcaseDisplay.prototype.draw = function() {
     // Set up the canvas contexts
     var caseContext =
         document.getElementById(this.caseCanvasId).getContext('2d');
-    caseContext.fillStyle = "#C0C0C0";
     var textContext =
         document.getElementById(this.textCanvasId).getContext('2d');
     textContext.fillStyle = "black";
@@ -46,6 +48,11 @@ BriefcaseDisplay.prototype.draw = function() {
     var verticalPadding = 40;
 
     for (var i = 0; i < this.moneyAmounts.length; ++i) {
+        if ((i + 1) === this.numberToEmphasize)
+            caseContext.fillStyle = "#FFDF00";
+        else
+            caseContext.fillStyle = "#C0C0C0";
+
         this._drawBriefcase(caseContext, textContext, x, y, (i + 1));
 
         // Update x and y
@@ -81,10 +88,6 @@ BriefcaseDisplay.prototype._drawBriefcase =
     textContext.fillText(number,
         x + (BriefcaseDisplay.caseDimensions.width / 2.0),
         y + (BriefcaseDisplay.caseDimensions.height / 2.0));
-};
-
-BriefcaseDisplay.prototype.setUp = function() {
-    this.draw();
 };
 
 /*
