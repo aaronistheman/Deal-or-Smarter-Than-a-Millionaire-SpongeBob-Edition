@@ -65,6 +65,8 @@ Considerable:
     --this would require the storage; set() hides shown canvases
         that don't fit under the parameter canvas id(s)
 -find a better way to edit CanvasStack in the middle of quote chain
+-CSS classes for manipulating the color of the background of certain
+    canvases
 
 Ideas for millionaires to be able to choose as assistants:
 -Kevin O'Leary ("Mr. Wonderful")
