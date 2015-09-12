@@ -1,6 +1,5 @@
 Next:
--show case display for explaining next part of rules
-    --make ability to choose case at beginning
+-make ability to choose case at beginning
 -show canvases that should be shown during introduction (or basic
     versions of them)
 -start working on questions display, randomization, topics, and
@@ -8,7 +7,9 @@ Next:
 -introduce helpers
 
 At some point:
--remove use of storage in CanvasStack if no longer necessary
+-make class MoneyData
+    --this can be used to update both MoneyDisplay and
+        BriefcaseDisplay
 -either throw a class ParameterError to trigger that kind of exception,
     or make ParameterError a general error function
     --maybe decide on a better way of dealing with exceptions
@@ -58,6 +59,12 @@ Considerable:
     --this could be fixed with one second delay between setting enter
       action
 -effects as canvases appear or disappear
+-CanvasStack has set() instead of add() and remove()
+    --this would require the storage; set() hides shown canvases
+        that don't fit under the parameter canvas id(s)
+-find a better way to edit CanvasStack in the middle of quote chain
+-CSS classes for manipulating the color of the background of certain
+    canvases
 
 Ideas for millionaires to be able to choose as assistants:
 -Kevin O'Leary ("Mr. Wonderful")
