@@ -27,12 +27,19 @@ function BriefcaseDisplay(caseCanvasId, textCanvasId, moneyAmounts) {
     @throws nothing
 */
 BriefcaseDisplay.prototype.draw = function() {
+    // Set up the canvas contexts
+    var caseContext =
+        document.getElementById(this.caseCanvasId).getContext('2d');
+    var textContext =
+        document.getElementById(this.textCanvasId).getContext('2d');
+
+    caseContext.fillStyle = "#C0C0C0";
+    textContext.fillStyle = "black";
+    textContext.font = "30px Arial";
+    textContext.textAlign = "center";
+
     this._drawBriefcase(
-        document.getElementById(this.caseCanvasId).getContext('2d'),
-        document.getElementById(this.textCanvasId).getContext('2d'),
-        100,
-        100,
-        3);
+        caseContext, textContext, 100, 100, 3);
 };
 
 /*
@@ -49,10 +56,26 @@ BriefcaseDisplay.prototype.draw = function() {
 */
 BriefcaseDisplay.prototype._drawBriefcase =
     function(caseContext, textContext, x, y, number) {
-    caseContext.fillStyle = "#C0C0C0";
-    caseContext.fillRect(x, y, 190, 95);
+    var briefcaseWidth = 190;
+    var briefcaseHeight = 95;
+
+    caseContext.fillRect(x, y,
+        BriefcaseDisplay.caseDimensions.width,
+        BriefcaseDisplay.caseDimensions.height);
+    textContext.fillText(number,
+        x + (BriefcaseDisplay.caseDimensions.width / 2.0),
+        y + (BriefcaseDisplay.caseDimensions.height / 2.0));
 };
 
 BriefcaseDisplay.prototype.setUp = function() {
     this.draw();
+};
+
+/*
+    Static members and methods
+*/
+
+BriefcaseDisplay.caseDimensions = {
+    width : 190,
+    height : 95,
 };

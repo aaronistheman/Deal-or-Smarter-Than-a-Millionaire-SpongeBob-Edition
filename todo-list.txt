@@ -1,6 +1,7 @@
 Next:
 -show case display for explaining next part of rules
     --make algorithm for positioning the briefcases
+    --center the number on the briefcase
     --make class MoneyData
         --this can be used to update both MoneyDisplay and
             BriefcaseDisplay
