@@ -27,10 +27,30 @@ function BriefcaseDisplay(caseCanvasId, textCanvasId, moneyAmounts) {
     @throws nothing
 */
 BriefcaseDisplay.prototype.draw = function() {
-    var testCanvas = document.getElementById(this.caseCanvasId);
-    var ctx = testCanvas.getContext('2d');
-    ctx.fillStyle = "white";
-    ctx.fillRect(10, 10, 10, 10);
+    this._drawBriefcase(
+        document.getElementById(this.caseCanvasId).getContext('2d'),
+        document.getElementById(this.textCanvasId).getContext('2d'),
+        100,
+        100,
+        3);
+};
+
+/*
+    @post briefcase has been drawn
+    @hasTest no
+    @param caseContext context of the canvas to draw the case on
+    @param textContext context of the canvas to draw the case's
+    number on
+    @param x where
+    @param y where
+    @param number on the briefcase
+    @returns nothing
+    @throws nothing
+*/
+BriefcaseDisplay.prototype._drawBriefcase =
+    function(caseContext, textContext, x, y, number) {
+    caseContext.fillStyle = "#C0C0C0";
+    caseContext.fillRect(x, y, 190, 95);
 };
 
 BriefcaseDisplay.prototype.setUp = function() {
