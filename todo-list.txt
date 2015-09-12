@@ -1,6 +1,7 @@
 Next:
 -show case display for explaining next part of rules
-    --find where to display briefcases in chain of quotes
+    --figure out how to edit the CanvasStack in the middle of quote
+        chain
     --display the briefcases
     --make class MoneyData
         --this can be used to update both MoneyDisplay and

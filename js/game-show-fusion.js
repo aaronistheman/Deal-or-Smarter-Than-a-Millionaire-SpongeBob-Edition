@@ -315,20 +315,25 @@ function explainRules() {
     gameShow.quotesToDraw.add("Shortly, you will pick a briefcase.")
         .add("That case's value equals one of the values on the " +
             "money board, but you don't know which.")
+        // change to display of questions
         .add("After that, you will try to answer ten questions.")
+        // change back to money display
         .add("Answering a question correctly reveals a random " +
             "amount from the money board.")
         .add("But wait, a twist occurs after every two questions " +
             "and before your tenth question:")
+        // show the banker
         .add("the banker will offer you some money.")
         .add("He wants your briefcase, but he doesn't want to pay " +
             "too much for it.")
         .add("You can say 'Deal' and leave the game with that money,")
         .add("or you can say 'No Deal' and hope for an even greater " +
             "amount of money.")
+        // show SpongeBob
         .add("If you miss a question, you leave with nothing.")
         .add("If you get past all ten questions, you can either take " +
             "your case home,")
+        // show million dollar question screen
         .add("or you can bet it all and try to answer the million " +
             "dollar question.")
         .deployQuoteChain(eraseQuoteBubbleText);
