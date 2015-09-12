@@ -1,11 +1,5 @@
 Next:
--show case display for explaining next part of rules
-    --make algorithm for positioning the briefcases
-    --center the number on the briefcase
-    --make class MoneyData
-        --this can be used to update both MoneyDisplay and
-            BriefcaseDisplay
-    --make ability to choose case at beginning
+-make ability to choose case at beginning
 -show canvases that should be shown during introduction (or basic
     versions of them)
 -start working on questions display, randomization, topics, and
@@ -13,6 +7,9 @@ Next:
 -introduce helpers
 
 At some point:
+-make class MoneyData
+    --this can be used to update both MoneyDisplay and
+        BriefcaseDisplay
 -either throw a class ParameterError to trigger that kind of exception,
     or make ParameterError a general error function
     --maybe decide on a better way of dealing with exceptions

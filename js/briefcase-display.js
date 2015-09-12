@@ -30,16 +30,35 @@ BriefcaseDisplay.prototype.draw = function() {
     // Set up the canvas contexts
     var caseContext =
         document.getElementById(this.caseCanvasId).getContext('2d');
+    caseContext.fillStyle = "#C0C0C0";
     var textContext =
         document.getElementById(this.textCanvasId).getContext('2d');
-
-    caseContext.fillStyle = "#C0C0C0";
     textContext.fillStyle = "black";
     textContext.font = "30px Arial";
     textContext.textAlign = "center";
 
-    this._drawBriefcase(
-        caseContext, textContext, 100, 100, 3);
+    // For help with positioning the briefcases
+    var isOdd = function(number) { return ((number % 2) === 1); };
+    var x = 55;
+    var initialY = 50;
+    var y = initialY;
+    var horizontalPadding = 10; // padding is space between briefcases
+    var verticalPadding = 40;
+
+    for (var i = 0; i < this.moneyAmounts.length; ++i) {
+        this._drawBriefcase(caseContext, textContext, x, y, (i + 1));
+
+        // Update x and y
+        if (isOdd(i)) {
+            x += (BriefcaseDisplay.caseDimensions.width +
+                horizontalPadding);
+            y = initialY;
+        }
+        else {
+            y += (BriefcaseDisplay.caseDimensions.height +
+                verticalPadding);
+        }
+    }
 };
 
 /*
@@ -56,9 +75,6 @@ BriefcaseDisplay.prototype.draw = function() {
 */
 BriefcaseDisplay.prototype._drawBriefcase =
     function(caseContext, textContext, x, y, number) {
-    var briefcaseWidth = 190;
-    var briefcaseHeight = 95;
-
     caseContext.fillRect(x, y,
         BriefcaseDisplay.caseDimensions.width,
         BriefcaseDisplay.caseDimensions.height);
