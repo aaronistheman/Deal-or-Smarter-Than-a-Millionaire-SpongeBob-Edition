@@ -286,8 +286,6 @@ function allowCaseSelectorMovement(bool) {
     presses Enter
 */
 function handleCaseSelection() {
-    alert("Case selected");
-
     allowCaseSelectorMovement(false);
 
     // Record which case was selected
@@ -295,6 +293,8 @@ function handleCaseSelection() {
         gameShow.briefcaseDisplay.numberToEmphasize;
 
     // Update the briefcase display
+    gameShow.briefcaseDisplay.giveFade(
+        gameShow.selectedBriefcaseNumber);
 
     // Have the host announce it and allow game continuation
 }

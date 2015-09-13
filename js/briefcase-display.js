@@ -19,6 +19,7 @@ function BriefcaseDisplay(caseCanvasId, textCanvasId, moneyAmounts,
     this.textCanvasId = textCanvasId;
     this.moneyAmounts = moneyAmounts;
     this.numberToEmphasize = numberToEmphasize;
+    this.numbersToFade = [];
 }
 
 /*
@@ -40,9 +41,28 @@ BriefcaseDisplay.prototype.draw = function() {
 };
 
 /*
-
+    @post this.numbersToFade has been updated; now faded case
+    has been redrawn
+    @param caseNumber of the case to apply the fade to
 */
-// BriefcaseDisplay.prototype.giveFade = function(
+BriefcaseDisplay.prototype.giveFade = function(caseNumber) {
+    // Only act if the case hasn't already been given fade
+    if (this.numbersToFade.indexOf(caseNumber) === -1) {
+        this.numbersToFade.push(caseNumber);
+
+        // Set up variables for redrawing
+        var caseContext =
+            document.getElementById(this.caseCanvasId).getContext('2d');
+        var textContext = this.getTextContext();
+        var position = BriefcaseDisplay.getCasePosition(caseNumber);
+
+        // Erase and redraw the case
+        this._eraseBriefcase(caseContext, textContext,
+            position.x, position.y);
+        this._drawBriefcase(caseContext, textContext, position.x,
+            position.y, caseNumber);
+    }
+}
 
 /*
     @post this.numberToEmphasize has been updated; formerly
@@ -164,7 +184,9 @@ BriefcaseDisplay.prototype._drawBriefcase =
     emphasized
 */
 BriefcaseDisplay.prototype.getCaseFillStyle = function(caseNumber) {
-    if (caseNumber === this.numberToEmphasize)
+    if (this.numbersToFade.indexOf(caseNumber) !== -1)
+        return BriefcaseDisplay.fillStyles.fadedCaseStyle;
+    else if (caseNumber === this.numberToEmphasize)
         return BriefcaseDisplay.fillStyles.emphasizedCaseStyle;
     else
         return BriefcaseDisplay.fillStyles.caseStyle;
@@ -188,8 +210,8 @@ BriefcaseDisplay.marginalCasePosition =
 BriefcaseDisplay.firstCasePosition = new Vector2d(55, 185);
 
 BriefcaseDisplay.fillStyles = {
-    // caseStyle : "#C0C0C0",
-    caseStyle : "rgba(192, 192, 192, 0.3)",
+    caseStyle : "#C0C0C0",
+    fadedCaseStyle : "rgba(192, 192, 192, 0.3)",
     emphasizedCaseStyle : "#FFDF00",
     textStyle : "black",
 };
