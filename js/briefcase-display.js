@@ -40,6 +40,11 @@ BriefcaseDisplay.prototype.draw = function() {
 };
 
 /*
+
+*/
+// BriefcaseDisplay.prototype.giveFade = function(
+
+/*
     @post this.numberToEmphasize has been updated; formerly
     emphasized case has been redrawn so that it's no longer
     emphasized; now emphasized case has been redrawn so that
@@ -183,7 +188,8 @@ BriefcaseDisplay.marginalCasePosition =
 BriefcaseDisplay.firstCasePosition = new Vector2d(55, 185);
 
 BriefcaseDisplay.fillStyles = {
-    caseStyle : "#C0C0C0",
+    // caseStyle : "#C0C0C0",
+    caseStyle : "rgba(192, 192, 192, 0.3)",
     emphasizedCaseStyle : "#FFDF00",
     textStyle : "black",
 };

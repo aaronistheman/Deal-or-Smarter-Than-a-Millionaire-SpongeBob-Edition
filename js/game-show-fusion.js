@@ -13,6 +13,23 @@ gameShow.quoteLengthForWrapAround = 70;
 gameShow.moneyAmounts = ['0.01', '50', '300', '750', '1,000',
     '10,000', '25,000', '100,000', '250,000', '500,000'];
 
+gameShow.canvasStack = new CanvasStack();
+
+gameShow.moneyDisplay = new MoneyDisplay(
+    CANVAS_IDS.MONEY_DISPLAY_BARS,
+    CANVAS_IDS.MONEY_DISPLAY_TEXT,
+    gameShow.moneyAmounts);
+
+gameShow.briefcaseDisplay = new BriefcaseDisplay(
+    CANVAS_IDS.BRIEFCASES,
+    CANVAS_IDS.BRIEFCASES_TEXT,
+    gameShow.moneyAmounts,
+    1);
+
+gameShow.selectedBriefcaseNumber = undefined;
+
+gameShow.keyActions = new KeyActions();
+
 gameShow.sounds = {};
 gameShow.sounds.nextQuote;
 gameShow.sounds.openingTheme;
@@ -65,21 +82,6 @@ gameShow.quotesToDraw = {
         }
     }
 };
-
-gameShow.canvasStack = new CanvasStack();
-
-gameShow.moneyDisplay = new MoneyDisplay(
-    CANVAS_IDS.MONEY_DISPLAY_BARS,
-    CANVAS_IDS.MONEY_DISPLAY_TEXT,
-    gameShow.moneyAmounts);
-
-gameShow.briefcaseDisplay = new BriefcaseDisplay(
-    CANVAS_IDS.BRIEFCASES,
-    CANVAS_IDS.BRIEFCASES_TEXT,
-    gameShow.moneyAmounts,
-    1);
-
-gameShow.keyActions = new KeyActions();
 
 // @post title screen has been set up with prompt for user
 function drawTitleScreenText() {
@@ -259,28 +261,53 @@ function setUpQuoteBubble() {
 
 /*
     @param bool true to allow user to change which case is
-    emphasized and to select a case; false to remove this ability
+    emphasized; false to remove this ability
 */
-function allowCaseSelection(bool) {
-    // gameShow.keyActions.set(KEY_CODES.ENTER, function() {
-        // alert("Enter was pressed");
-    // });
-    gameShow.keyActions.set(KEY_CODES.LEFT_ARROW, function() {
-        gameShow.briefcaseDisplay.emphasizePreviousCase();
-    });
-    gameShow.keyActions.set(KEY_CODES.RIGHT_ARROW, function() {
-        gameShow.briefcaseDisplay.emphasizeNextCase();
-    });
+function allowCaseSelectorMovement(bool) {
+    if (bool === true) {
+        gameShow.keyActions.set(KEY_CODES.LEFT_ARROW, function() {
+            gameShow.briefcaseDisplay.emphasizePreviousCase();
+        });
+        gameShow.keyActions.set(KEY_CODES.RIGHT_ARROW, function() {
+            gameShow.briefcaseDisplay.emphasizeNextCase();
+        });
+    }
+    else {
+        gameShow.keyActions.set(KEY_CODES.LEFT_ARROW, function() {});
+        gameShow.keyActions.set(KEY_CODES.RIGHT_ARROW, function() {});
+    }
+}
+
+/*
+    @post the selection of a case has been performed; the
+    selection has been set up to be announced by the host; the
+    briefcase display has been updated; the
+    continuation of the game has been set to start after the user
+    presses Enter
+*/
+function handleCaseSelection() {
+    alert("Case selected");
+
+    allowCaseSelectorMovement(false);
+
+    // Record which case was selected
+    gameShow.selectedBriefcaseNumber =
+        gameShow.briefcaseDisplay.numberToEmphasize;
+
+    // Update the briefcase display
+
+    // Have the host announce it and allow game continuation
 }
 
 function selectFirstCase() {
     gameShow.canvasStack.remove(CANVAS_IDS.MONEY_DISPLAY)
         .add(CANVAS_IDS.BRIEFCASE_DISPLAY);
+
+    allowCaseSelectorMovement(true);
+
     gameShow.quotesToDraw.add("Now, you must use the left and " +
         "right arrow keys and the Enter key to  choose a case.")
-        .deployQuoteChain(function() {
-            allowCaseSelection(true)
-        });
+        .deployQuoteChain(handleCaseSelection);
 }
 
 function explainRules() {
