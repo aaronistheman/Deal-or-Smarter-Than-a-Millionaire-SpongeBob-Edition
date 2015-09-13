@@ -267,12 +267,14 @@ function setUpQuoteBubble() {
     emphasized and to select a case; false to remove this ability
 */
 function allowCaseSelection(bool) {
-    eraseQuoteBubbleText();
-    gameShow.keyActions.set(KEY_CODES.ENTER, function() {
-        alert("Enter was pressed");
-    });
+    // gameShow.keyActions.set(KEY_CODES.ENTER, function() {
+        // alert("Enter was pressed");
+    // });
     gameShow.keyActions.set(KEY_CODES.LEFT_ARROW, function() {
-        alert("Left arrow key was pressed");
+        gameShow.briefcaseDisplay.emphasizePreviousCase();
+    });
+    gameShow.keyActions.set(KEY_CODES.RIGHT_ARROW, function() {
+        gameShow.briefcaseDisplay.emphasizeNextCase();
     });
 }
 

@@ -72,6 +72,28 @@ BriefcaseDisplay.prototype.setEmphasis = function(newNumber) {
 };
 
 /*
+    @post the next case has been identified, with wrap around if
+    necessary, so that setEmphasis() can handle the rest
+*/
+BriefcaseDisplay.prototype.emphasizeNextCase = function() {
+    var nextCaseNumber = (this.numberToEmphasize + 1);
+    if (nextCaseNumber > 10)
+        nextCaseNumber = 1;
+    this.setEmphasis(nextCaseNumber);
+};
+
+/*
+    @post the previous case has been identified, with wrap around if
+    necessary, so that setEmphasis() can handle the rest
+*/
+BriefcaseDisplay.prototype.emphasizePreviousCase = function() {
+    var previousCaseNumber = (this.numberToEmphasize - 1);
+    if (previousCaseNumber < 1)
+        previousCaseNumber = 10;
+    this.setEmphasis(previousCaseNumber);
+};
+
+/*
     @returns canvas context that is set up in all ways except
     for position regarding drawing on the briefcase text canvas
 */
