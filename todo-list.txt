@@ -1,7 +1,6 @@
 Next:
 -make ability to choose case at beginning
-    --split BriefcaseDisplay functions into helper functions
-    --allow the user to make this change
+    --allow the user to make the change in which case is emphasized
     --allow the user to select
 -show canvases that should be shown during introduction (or basic
     versions of them)

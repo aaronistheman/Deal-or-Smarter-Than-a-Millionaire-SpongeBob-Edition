@@ -48,12 +48,10 @@ BriefcaseDisplay.prototype.draw = function() {
 */
 BriefcaseDisplay.prototype.setEmphasis = function(newNumber) {
     // Set up variables
-    var oldNumber = this.numberToEmphasize;
     var caseContext =
         document.getElementById(this.caseCanvasId).getContext('2d');
-    caseContext.fillStyle =
-                BriefcaseDisplay.fillStyles.caseStyle;
     var textContext = this.getTextContext();
+    var oldNumber = this.numberToEmphasize;
     var oldPosition = BriefcaseDisplay.getCasePosition(oldNumber);
     var newPosition = BriefcaseDisplay.getCasePosition(newNumber);
 
@@ -121,16 +119,9 @@ BriefcaseDisplay.prototype._eraseBriefcase =
 */
 BriefcaseDisplay.prototype._drawBriefcase =
     function(caseContext, textContext, x, y, number) {
-    // Choose the appropriate color for the briefcase, based
-    // on whether or not the briefcase in question is emphasized
-    if (number === this.numberToEmphasize)
-        caseContext.fillStyle =
-            BriefcaseDisplay.fillStyles.emphasizedCaseStyle;
-    else
-        caseContext.fillStyle =
-            BriefcaseDisplay.fillStyles.caseStyle;
+    caseContext.fillStyle = this.getCaseFillStyle(number);
 
-    // Draw the briefcase and it snumber
+    // Draw the briefcase and its number
     caseContext.fillRect(x, y,
         BriefcaseDisplay.caseDimensions.x,
         BriefcaseDisplay.caseDimensions.y);
@@ -138,6 +129,19 @@ BriefcaseDisplay.prototype._drawBriefcase =
         x + (BriefcaseDisplay.caseDimensions.x / 2.0),
         y + (BriefcaseDisplay.caseDimensions.y / 2.0));
 };
+
+/*
+    @param caseNumber the case to get the appropriate color of
+    @returns appropriate briefcase fill style (i.e. color),
+    based on whether or not the briefcase is supposed to be
+    emphasized
+*/
+BriefcaseDisplay.prototype.getCaseFillStyle = function(caseNumber) {
+    if (caseNumber === this.numberToEmphasize)
+        return BriefcaseDisplay.fillStyles.emphasizedCaseStyle;
+    else
+        return BriefcaseDisplay.fillStyles.caseStyle;
+}
 
 /*
     Static members and methods
