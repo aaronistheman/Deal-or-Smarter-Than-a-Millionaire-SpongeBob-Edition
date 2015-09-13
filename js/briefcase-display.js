@@ -6,11 +6,11 @@
 */
 
 /*
-    @pre moneyAmounts.length = 10
+    @pre moneyAmounts.length = BriefcaseDisplay.NUMBER_OF_CASES
     @param caseCanvasId id of the canvas to draw the briefcases on
     @param textCanvasId id of the canvas to draw the text (i.e.
     the briefcase numbers) on
-    @param moneyAmounts array of 10 money amounts to display
+    @param moneyAmounts array of money amounts to display
     @param numberToEmphasize number of the case to emphasize
 */
 function BriefcaseDisplay(caseCanvasId, textCanvasId, moneyAmounts,
@@ -77,7 +77,7 @@ BriefcaseDisplay.prototype.setEmphasis = function(newNumber) {
 */
 BriefcaseDisplay.prototype.emphasizeNextCase = function() {
     var nextCaseNumber = (this.numberToEmphasize + 1);
-    if (nextCaseNumber > 10)
+    if (nextCaseNumber > BriefcaseDisplay.NUMBER_OF_CASES)
         nextCaseNumber = 1;
     this.setEmphasis(nextCaseNumber);
 };
@@ -89,7 +89,7 @@ BriefcaseDisplay.prototype.emphasizeNextCase = function() {
 BriefcaseDisplay.prototype.emphasizePreviousCase = function() {
     var previousCaseNumber = (this.numberToEmphasize - 1);
     if (previousCaseNumber < 1)
-        previousCaseNumber = 10;
+        previousCaseNumber = BriefcaseDisplay.NUMBER_OF_CASES;
     this.setEmphasis(previousCaseNumber);
 };
 
@@ -191,10 +191,12 @@ BriefcaseDisplay.fillStyles = {
 BriefcaseDisplay.textFont = "30px Arial";
 BriefcaseDisplay.textAlign = "center";
 
+BriefcaseDisplay.NUMBER_OF_CASES = 10;
+
 /*
     @hasTest yes
     @param whichCase number of the case to get the position of;
-    1 <= whichCase <= 10
+    1 <= whichCase <= BriefcaseDisplay.NUMBER_OF_CASES
     @returns Vector2d object containing the position to draw the
     briefcase at (on its canvas)
 */
