@@ -81,11 +81,6 @@ gameShow.briefcaseDisplay = new BriefcaseDisplay(
 
 gameShow.keyActions = new KeyActions();
 
-// For functions that toggle things (e.g. music)
-var TOGGLE = {};
-TOGGLE.ON = "on";
-TOGGLE.OFF = "off";
-
 // @post title screen has been set up with prompt for user
 function drawTitleScreenText() {
     var canvas = document.getElementById(CANVAS_IDS.TITLE_SCREEN);
