@@ -5,6 +5,16 @@
     Release number: 0.1
 */
 
+QUnit.module("utility.js");
+
+QUnit.test("Point.getSum()", function(assert) {
+    var p = new Point(20, 30);
+    assert.deepEqual(p.getSum(new Point(40, 40)),
+        new Point(60, 70),
+        "Function successfully returns the correct " +
+        "sum as a Point object");
+});
+
 QUnit.module("canvas-stack.js");
 
 QUnit.test("CanvasStack.add()", function(assert) {

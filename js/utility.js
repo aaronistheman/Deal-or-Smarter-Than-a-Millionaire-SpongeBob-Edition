@@ -25,4 +25,12 @@ function isUnitTesting() {
 function Point(x, y) {
     this.x = x;
     this.y = y;
+
+    // @param p instance of Point to combine with 'this' in forming
+    // what to return
+    // @returns the sum of the two points (this and the parameter)
+    // without editing the original point
+    this.getSum = function(p) {
+        return new Point(this.x + p.x, this.y + p.y);
+    };
 }
