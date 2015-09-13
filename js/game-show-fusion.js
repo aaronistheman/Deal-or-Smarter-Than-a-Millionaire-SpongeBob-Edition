@@ -77,7 +77,7 @@ gameShow.briefcaseDisplay = new BriefcaseDisplay(
     CANVAS_IDS.BRIEFCASES,
     CANVAS_IDS.BRIEFCASES_TEXT,
     gameShow.moneyAmounts,
-    7);
+    3);
 
 var keyboard = {};
 keyboard.ENTER = 13;

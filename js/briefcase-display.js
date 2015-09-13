@@ -35,15 +35,10 @@ BriefcaseDisplay.prototype.draw = function() {
         document.getElementById(this.caseCanvasId).getContext('2d');
     var textContext = this.getTextContext();
 
-    // For help with positioning the briefcases
-    var isOdd = function(number) { return ((number % 2) === 1); };
-    var x = BriefcaseDisplay.firstCasePosition.x;
-    var initialY = BriefcaseDisplay.firstCasePosition.y;
-    var y = initialY;
-    var horizontalPadding = BriefcaseDisplay.casePaddings.x;
-    var verticalPadding = BriefcaseDisplay.casePaddings.y;
-
+    // Iterate to draw each briefcase
     for (var i = 0; i < this.moneyAmounts.length; ++i) {
+        // Choose the appropriate color for the briefcase, based
+        // on whether or not the briefcase in question is emphasized
         if ((i + 1) === this.numberToEmphasize)
             caseContext.fillStyle =
                 BriefcaseDisplay.fillStyles.emphasizedCaseStyle;
@@ -51,18 +46,9 @@ BriefcaseDisplay.prototype.draw = function() {
             caseContext.fillStyle =
                 BriefcaseDisplay.fillStyles.caseStyle;
 
-        this._drawBriefcase(caseContext, textContext, x, y, (i + 1));
-
-        // Update x and y
-        if (isOdd(i)) {
-            x += (BriefcaseDisplay.caseDimensions.width +
-                horizontalPadding);
-            y = initialY;
-        }
-        else {
-            y += (BriefcaseDisplay.caseDimensions.height +
-                verticalPadding);
-        }
+        var position = BriefcaseDisplay.getCasePosition(i + 1);
+        this._drawBriefcase(caseContext, textContext,
+            position.x, position.y, (i + 1));
     }
 };
 
