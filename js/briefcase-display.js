@@ -33,25 +33,23 @@ BriefcaseDisplay.prototype.draw = function() {
     // Set up the canvas contexts
     var caseContext =
         document.getElementById(this.caseCanvasId).getContext('2d');
-    var textContext =
-        document.getElementById(this.textCanvasId).getContext('2d');
-    textContext.fillStyle = "black";
-    textContext.font = "30px Arial";
-    textContext.textAlign = "center";
+    var textContext = this.getTextContext();
 
     // For help with positioning the briefcases
     var isOdd = function(number) { return ((number % 2) === 1); };
-    var x = 55;
-    var initialY = 50;
+    var x = BriefcaseDisplay.firstCasePosition.x;
+    var initialY = BriefcaseDisplay.firstCasePosition.y;
     var y = initialY;
-    var horizontalPadding = 10; // padding is space between briefcases
-    var verticalPadding = 40;
+    var horizontalPadding = BriefcaseDisplay.casePaddings.horizontal;
+    var verticalPadding = BriefcaseDisplay.casePaddings.vertical;
 
     for (var i = 0; i < this.moneyAmounts.length; ++i) {
         if ((i + 1) === this.numberToEmphasize)
-            caseContext.fillStyle = "#FFDF00";
+            caseContext.fillStyle =
+                BriefcaseDisplay.fillStyles.emphasizedCaseStyle;
         else
-            caseContext.fillStyle = "#C0C0C0";
+            caseContext.fillStyle =
+                BriefcaseDisplay.fillStyles.caseStyle;
 
         this._drawBriefcase(caseContext, textContext, x, y, (i + 1));
 
@@ -98,3 +96,31 @@ BriefcaseDisplay.caseDimensions = {
     width : 190,
     height : 95,
 };
+
+// padding is space between briefcases
+BriefcaseDisplay.casePaddings = {
+    horizontal : 10,
+    vertical : 40,
+};
+
+BriefcaseDisplay.firstCasePosition = new Point(55, 185);
+
+BriefcaseDisplay.fillStyles = {
+    caseStyle : "#C0C0C0",
+    emphasizedCaseStyle : "#FFDF00",
+    textStyle : "black",
+};
+
+BriefcaseDisplay.textFont = "30px Arial";
+BriefcaseDisplay.textAlign = "center";
+
+/*
+    @hasTest yes
+    @param whichCase number of the case to get the position of;
+    1 <= whichCase <= 10
+    @returns Point object containing the position to draw the
+    briefcase at (on its canvas)
+*/
+BriefcaseDisplay.getCasePosition = function(whichCase) {
+
+}
