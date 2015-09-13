@@ -297,6 +297,9 @@ function handleCaseSelection() {
         gameShow.selectedBriefcaseNumber);
 
     // Have the host announce it and allow game continuation
+    gameShow.quotesToDraw.add("You have selected case " +
+        gameShow.selectedBriefcaseNumber + ".")
+        .deployQuoteChain(eraseQuoteBubbleText);
 }
 
 function selectFirstCase() {
