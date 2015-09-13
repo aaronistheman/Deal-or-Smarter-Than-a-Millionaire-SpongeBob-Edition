@@ -79,6 +79,8 @@ gameShow.briefcaseDisplay = new BriefcaseDisplay(
     gameShow.moneyAmounts,
     1);
 
+gameShow.keyActions = new KeyActions();
+
 // For functions that toggle things (e.g. music)
 var TOGGLE = {};
 TOGGLE.ON = "on";
@@ -192,13 +194,13 @@ function drawQuoteText(text, endCallback) {
 
     if (endCallback !== undefined) {
         // Allow the endCallback to be called
-        keyboard.enterKeyAction.set(function() {
+        gameShow.keyActions.set(KEY_CODES.ENTER, function() {
             gameShow.sounds.nextQuote.play();
             endCallback();
         });
     }
     else {
-        keyboard.enterKeyAction.set(function() {
+        gameShow.keyActions.set(KEY_CODES.ENTER, function() {
             gameShow.sounds.nextQuote.play();
         });
     }
@@ -261,11 +263,17 @@ function setUpQuoteBubble() {
 }
 
 /*
-    @param boolean true to allow user to change which case is
+    @param bool true to allow user to change which case is
     emphasized and to select a case; false to remove this ability
 */
-function allowCaseSelection(boolean) {
-
+function allowCaseSelection(bool) {
+    eraseQuoteBubbleText();
+    gameShow.keyActions.set(KEY_CODES.ENTER, function() {
+        alert("Enter was pressed");
+    });
+    gameShow.keyActions.set(KEY_CODES.LEFT_ARROW, function() {
+        alert("Left arrow key was pressed");
+    });
 }
 
 function selectFirstCase() {
@@ -366,8 +374,8 @@ function setUpTitleScreen() {
     toggleOpeningTheme(TOGGLE.ON);
 
     // Set up the user's ability to go to the game
-    keyboard.enterKeyAction.setUpEventHandler();
-    keyboard.enterKeyAction.set(setUpGame);
+    gameShow.keyActions.setUpEventHandler();
+    gameShow.keyActions.set(KEY_CODES.ENTER, setUpGame);
 }
 
 function removeTitleScreen() {
