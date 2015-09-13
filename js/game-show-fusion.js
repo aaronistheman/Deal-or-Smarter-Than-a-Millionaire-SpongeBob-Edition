@@ -77,7 +77,7 @@ gameShow.briefcaseDisplay = new BriefcaseDisplay(
     CANVAS_IDS.BRIEFCASES,
     CANVAS_IDS.BRIEFCASES_TEXT,
     gameShow.moneyAmounts,
-    3);
+    8);
 
 var keyboard = {};
 keyboard.ENTER = 13;
@@ -302,6 +302,7 @@ function setUpQuoteBubble() {
 }
 
 function selectFirstCase() {
+    gameShow.briefcaseDisplay.setEmphasis(2);
     gameShow.canvasStack.remove(CANVAS_IDS.MONEY_DISPLAY)
         .add(CANVAS_IDS.BRIEFCASE_DISPLAY);
 }

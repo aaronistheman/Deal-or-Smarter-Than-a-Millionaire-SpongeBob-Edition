@@ -22,12 +22,8 @@ function BriefcaseDisplay(caseCanvasId, textCanvasId, moneyAmounts,
 }
 
 /*
-    @pre what the caller wants to draw hasn't been drawn
-    @post what the caller wants to draw has been
-    drawn
-    @hasTest no
-    @returns nothing
-    @throws nothing
+    @pre no aspect of the briefcase display has been drawn
+    @post all briefcases (and their numbers) have been drawn
 */
 BriefcaseDisplay.prototype.draw = function() {
     // Set up the canvas contexts
@@ -37,15 +33,6 @@ BriefcaseDisplay.prototype.draw = function() {
 
     // Iterate to draw each briefcase
     for (var i = 0; i < this.moneyAmounts.length; ++i) {
-        // Choose the appropriate color for the briefcase, based
-        // on whether or not the briefcase in question is emphasized
-        if ((i + 1) === this.numberToEmphasize)
-            caseContext.fillStyle =
-                BriefcaseDisplay.fillStyles.emphasizedCaseStyle;
-        else
-            caseContext.fillStyle =
-                BriefcaseDisplay.fillStyles.caseStyle;
-
         var position = BriefcaseDisplay.getCasePosition(i + 1);
         this._drawBriefcase(caseContext, textContext,
             position.x, position.y, (i + 1));
@@ -53,7 +40,75 @@ BriefcaseDisplay.prototype.draw = function() {
 };
 
 /*
-    @post briefcase has been drawn
+    @post this.numberToEmphasize has been updated; formerly
+    emphasized case has been redrawn so that it's no longer
+    emphasized; now emphasized case has been redrawn so that
+    it is emphasized
+    @param newNumber new number of case to emphasize
+*/
+BriefcaseDisplay.prototype.setEmphasis = function(newNumber) {
+    // Set up variables
+    var oldNumber = this.numberToEmphasize;
+    var caseContext =
+        document.getElementById(this.caseCanvasId).getContext('2d');
+    caseContext.fillStyle =
+                BriefcaseDisplay.fillStyles.caseStyle;
+    var textContext = this.getTextContext();
+    var oldPosition = BriefcaseDisplay.getCasePosition(oldNumber);
+    var newPosition = BriefcaseDisplay.getCasePosition(newNumber);
+
+    // Update numberToEmphasize
+    this.numberToEmphasize = newNumber;
+
+    // Redraw the formerly emphasized case
+    this._eraseBriefcase(caseContext, textContext,
+        oldPosition.x, oldPosition.y);
+    this._drawBriefcase(caseContext, textContext, oldPosition.x,
+        oldPosition.y, oldNumber);
+
+    // Redraw the now emphasized case
+    this._eraseBriefcase(caseContext, textContext,
+        newPosition.x, newPosition.y);
+    this._drawBriefcase(caseContext, textContext, newPosition.x,
+        newPosition.y, newNumber);
+};
+
+/*
+    @returns canvas context that is set up in all ways except
+    for position regarding drawing on the briefcase text canvas
+*/
+BriefcaseDisplay.prototype.getTextContext = function() {
+    var textContext =
+        document.getElementById(this.textCanvasId).getContext('2d');
+    textContext.fillStyle = BriefcaseDisplay.fillStyles.textStyle;
+    textContext.font = BriefcaseDisplay.textFont;
+    textContext.textAlign = BriefcaseDisplay.textAlign;
+    return textContext;
+};
+
+/*
+    @post the rectangle at the specified position has been cleared
+    on both briefcase canvases
+    @param caseContext context of the canvas to erase the briefcase
+    itself from
+    @param textContext context of the canvas to erase the briefcase
+    number from
+    @param x coordinate of top left of briefcase
+    @param y coordinate of top left of briefcase
+*/
+BriefcaseDisplay.prototype._eraseBriefcase =
+    function(caseContext, textContext, x, y) {
+    caseContext.clearRect(x, y,
+        BriefcaseDisplay.caseDimensions.x,
+        BriefcaseDisplay.caseDimensions.y);
+    textContext.clearRect(x, y,
+        BriefcaseDisplay.caseDimensions.x,
+        BriefcaseDisplay.caseDimensions.y);
+};
+
+/*
+    @post briefcase indicated by parameter number has been drawn
+    (and given a color that makes it emphasized, if it's supposed to be)
     @hasTest no
     @param caseContext context of the canvas to draw the case on
     @param textContext context of the canvas to draw the case's
@@ -66,6 +121,16 @@ BriefcaseDisplay.prototype.draw = function() {
 */
 BriefcaseDisplay.prototype._drawBriefcase =
     function(caseContext, textContext, x, y, number) {
+    // Choose the appropriate color for the briefcase, based
+    // on whether or not the briefcase in question is emphasized
+    if (number === this.numberToEmphasize)
+        caseContext.fillStyle =
+            BriefcaseDisplay.fillStyles.emphasizedCaseStyle;
+    else
+        caseContext.fillStyle =
+            BriefcaseDisplay.fillStyles.caseStyle;
+
+    // Draw the briefcase and it snumber
     caseContext.fillRect(x, y,
         BriefcaseDisplay.caseDimensions.x,
         BriefcaseDisplay.caseDimensions.y);
