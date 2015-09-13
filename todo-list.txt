@@ -1,7 +1,5 @@
 Next:
 -make ability to choose case at beginning
-    --use the prototypes in key action classes for making the
-        functions
     --allow the user to select
 -show canvases that should be shown during introduction (or basic
     versions of them)

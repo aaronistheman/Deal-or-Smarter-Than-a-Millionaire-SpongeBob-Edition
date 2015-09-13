@@ -35,84 +35,42 @@ function KeyActions() {
 
         this._actions[KEY_CODES[i]] = new KeyAction(hasOneLife);
     }
-
-    /*
-        @post the action (if any) formerly attached to the key
-        represented by keyCode has been replaced by the parameter
-        action
-        @param keyCode of the key to attach the action to
-        @param action function to attach to the key
-    */
-    this.set = function(keyCode, action) {
-        this._actions[keyCode].set(action);
-    };
-
-    /*
-        @post the action attached to the key represented by keyCode
-        has been erased
-        @param keyCode of the key to attach the action to
-    */
-    this.erase = function(keyCode) {
-        this._actions[keyCode].erase();
-    };
-
-    /*
-        @pre event handlers haven't been set up; this function
-        hasn't been called yet
-        @post event handlers have been set up so that a
-        key's action will be called when that key is pressed down
-    */
-    this.setUpEventHandler = function() {
-        // this is needed because the event handler will change
-        // what 'this' refers to in its scope
-        var thisInstance = this;
-
-        $(document).keydown(function(e) {
-            var action = thisInstance._actions[e.which];
-            if (action !== undefined)
-                action.perform();
-        });
-    };
 }
 
 /*
-    Represents what to do when a certain key is acted on (e.g. pressed
-    down)
-    @param hasOneLife true to erase this._action after it has been
-    used once; false, otherwise
+    @post the action (if any) formerly attached to the key
+    represented by keyCode has been replaced by the parameter
+    action
+    @param keyCode of the key to attach the action to
+    @param action function to attach to the key
 */
-function KeyAction(hasOneLife) {
-    this._action = undefined;
+KeyActions.prototype.set = function(keyCode, action) {
+    this._actions[keyCode].set(action);
+};
 
-    this._hasOneLife = hasOneLife;
+/*
+    @post the action attached to the key represented by keyCode
+    has been erased
+    @param keyCode of the key to attach the action to
+*/
+KeyActions.prototype.erase = function(keyCode) {
+    this._actions[keyCode].erase();
+};
 
-    /*
-        @post this._action has been executed (and erased if
-        this._hasOneLife === true)
-        The function achieves its postcondition in a way so that
-        the erasing doesn't erase this._action before it's called and
-        doesn't erase any new action that might've been set by
-        the calling of this._action.
-    */
-    this.perform = function() {
-        var action = this._action;
+/*
+    @pre event handlers haven't been set up; this function
+    hasn't been called yet
+    @post event handlers have been set up so that a
+    key's action will be called when that key is pressed down
+*/
+KeyActions.prototype.setUpEventHandler = function() {
+    // this is needed because the event handler will change
+    // what 'this' refers to in its scope
+    var thisInstance = this;
 
-        // Only proceed if the action is defined
-        if (action !== undefined) {
-            // Erase the action, if necessary
-            if (this._hasOneLife === true)
-                this.erase();
-
-            action();
-        }
-    };
-
-    // @param action the function to assign to this._action
-    this.set = function(action) {
-        this._action = action;
-    };
-
-    this.erase = function() {
-        this._action = undefined;
-    };
-}
+    $(document).keydown(function(e) {
+        var action = thisInstance._actions[e.which];
+        if (action !== undefined)
+            action.perform();
+    });
+};
