@@ -12,4 +12,6 @@ start Notepad++ js/error-handling.js
 start Notepad++ js/utility.js
 start Notepad++ js/money-display.js
 start Notepad++ js/briefcase-display.js
+start Notepad++ js/key-actions.js
+start Notepad++ js/key-action.js
 exit

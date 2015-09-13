@@ -13,6 +13,23 @@ gameShow.quoteLengthForWrapAround = 70;
 gameShow.moneyAmounts = ['0.01', '50', '300', '750', '1,000',
     '10,000', '25,000', '100,000', '250,000', '500,000'];
 
+gameShow.canvasStack = new CanvasStack();
+
+gameShow.moneyDisplay = new MoneyDisplay(
+    CANVAS_IDS.MONEY_DISPLAY_BARS,
+    CANVAS_IDS.MONEY_DISPLAY_TEXT,
+    gameShow.moneyAmounts);
+
+gameShow.briefcaseDisplay = new BriefcaseDisplay(
+    CANVAS_IDS.BRIEFCASES,
+    CANVAS_IDS.BRIEFCASES_TEXT,
+    gameShow.moneyAmounts,
+    "none");
+
+gameShow.selectedBriefcaseNumber = undefined;
+
+gameShow.keyActions = new KeyActions();
+
 gameShow.sounds = {};
 gameShow.sounds.nextQuote;
 gameShow.sounds.openingTheme;
@@ -65,64 +82,6 @@ gameShow.quotesToDraw = {
         }
     }
 };
-
-gameShow.canvasStack = new CanvasStack();
-
-gameShow.moneyDisplay = new MoneyDisplay(
-    CANVAS_IDS.MONEY_DISPLAY_BARS,
-    CANVAS_IDS.MONEY_DISPLAY_TEXT,
-    gameShow.moneyAmounts);
-
-gameShow.briefcaseDisplay = new BriefcaseDisplay(
-    CANVAS_IDS.BRIEFCASES,
-    CANVAS_IDS.BRIEFCASES_TEXT,
-    gameShow.moneyAmounts);
-
-var keyboard = {};
-keyboard.ENTER = 13;
-keyboard.enterKeyAction = {
-    // what to do when the Enter key
-    // is pressed; should be a function
-    action : undefined,
-
-    // for cleaner syntax (than keyboard.enterKeyAction.action = action;)
-    // @param action the function to assign to this.action (i.e. what
-    // to do when the Enter key is pressed)
-    set : function(action) {
-        this.action = action;
-    },
-
-    // @post this.action = undefined
-    erase : function() {
-        this.action = undefined;
-    },
-
-    // @post event handler has been set up so that this.action, if
-    // it's defined, will be called when user presses Enter
-    // (this.action will be erased before the action function is
-    // called)
-    setUpEventHandler : function() {
-        $(document).keydown(function(e) {
-            if (e.which === keyboard.ENTER) {
-                // Note that in the handler, the object 'this'
-                // refers to the document
-                if (keyboard.enterKeyAction.action !== undefined) {
-                    // Erase action before calling it, but do so
-                    // in a way so that the action to do isn't
-                    // inadvertently erased first
-                    var act = keyboard.enterKeyAction.action;
-                    keyboard.enterKeyAction.erase();
-                    act();
-                }
-            }
-        });
-    }
-};
-
-// For functions that toggle things (e.g. music)
-var TOGGLE = {};
-TOGGLE.ON = "on";
-TOGGLE.OFF = "off";
 
 // @post title screen has been set up with prompt for user
 function drawTitleScreenText() {
@@ -232,13 +191,13 @@ function drawQuoteText(text, endCallback) {
 
     if (endCallback !== undefined) {
         // Allow the endCallback to be called
-        keyboard.enterKeyAction.set(function() {
+        gameShow.keyActions.set(KEY_CODES.ENTER, function() {
             gameShow.sounds.nextQuote.play();
             endCallback();
         });
     }
     else {
-        keyboard.enterKeyAction.set(function() {
+        gameShow.keyActions.set(KEY_CODES.ENTER, function() {
             gameShow.sounds.nextQuote.play();
         });
     }
@@ -300,9 +259,60 @@ function setUpQuoteBubble() {
     drawQuoteBubble();
 }
 
-// function talkAboutMoneyDisplay() {
+/*
+    @param bool true to allow user to change which case is
+    emphasized; false to remove this ability
+*/
+function allowCaseSelectorMovement(bool) {
+    if (bool === true) {
+        gameShow.keyActions.set(KEY_CODES.LEFT_ARROW, function() {
+            gameShow.briefcaseDisplay.emphasizePreviousCase();
+        })
+        .set(KEY_CODES.RIGHT_ARROW, function() {
+            gameShow.briefcaseDisplay.emphasizeNextCase();
+        });
+    }
+    else {
+        gameShow.keyActions.set(KEY_CODES.LEFT_ARROW, function() {})
+            .set(KEY_CODES.RIGHT_ARROW, function() {});
+    }
+}
 
-// }
+/*
+    @post the selection of a case has been performed; the
+    selection has been set up to be announced by the host; the
+    briefcase display has been updated; the
+    continuation of the game has been set to start after the user
+    presses Enter
+*/
+function handleCaseSelection() {
+    allowCaseSelectorMovement(false);
+
+    // Record which case was selected
+    gameShow.selectedBriefcaseNumber =
+        gameShow.briefcaseDisplay.numberToEmphasize;
+
+    // Update the briefcase display
+    gameShow.briefcaseDisplay.giveFade(
+        gameShow.selectedBriefcaseNumber);
+
+    // Have the host announce it and allow game continuation
+    gameShow.quotesToDraw.add("You have selected case " +
+        gameShow.selectedBriefcaseNumber + ".")
+        .deployQuoteChain(eraseQuoteBubbleText);
+}
+
+function selectFirstCase() {
+    gameShow.canvasStack.remove(CANVAS_IDS.MONEY_DISPLAY)
+        .add(CANVAS_IDS.BRIEFCASE_DISPLAY);
+    gameShow.briefcaseDisplay.setEmphasis(1);
+
+    allowCaseSelectorMovement(true);
+
+    gameShow.quotesToDraw.add("Now, you must use the left and " +
+        "right arrow keys and the Enter key to  choose a case.")
+        .deployQuoteChain(handleCaseSelection);
+}
 
 function explainRules() {
     // move speaker canvas out of the way to show other things
@@ -338,7 +348,9 @@ function explainRules() {
             // show million dollar question screen
             .add("or you can bet it all and try to answer the million " +
                 "dollar question.")
-            .deployQuoteChain(eraseQuoteBubbleText);
+            .add("You do have help, but I haven't been programmed " +
+                "to describe how.")
+            .deployQuoteChain(selectFirstCase);
         });
 }
 
@@ -346,7 +358,7 @@ function setUpGame() {
     removeTitleScreen();
     setUpQuoteBubble();
     gameShow.moneyDisplay.setUp();
-    gameShow.briefcaseDisplay.setUp();
+    gameShow.briefcaseDisplay.draw();
 
     // Show the appropriate canvases
     gameShow.canvasStack.add(CANVAS_IDS.SPEAKER_QUOTE);
@@ -390,8 +402,8 @@ function setUpTitleScreen() {
     toggleOpeningTheme(TOGGLE.ON);
 
     // Set up the user's ability to go to the game
-    keyboard.enterKeyAction.setUpEventHandler();
-    keyboard.enterKeyAction.set(setUpGame);
+    gameShow.keyActions.setUpEventHandler()
+        .set(KEY_CODES.ENTER, setUpGame);
 }
 
 function removeTitleScreen() {
