@@ -22,15 +22,15 @@ function isUnitTesting() {
     return $("#qunit").length === 1;
 }
 
-function Point(x, y) {
+function Vector2d(x, y) {
     this.x = x;
     this.y = y;
 
-    // @param p instance of Point to combine with 'this' in forming
+    // @param v instance of Vector2d to combine with 'this' in forming
     // what to return
-    // @returns the sum of the two points (this and the parameter)
-    // without editing the original point
-    this.getSum = function(p) {
-        return new Point(this.x + p.x, this.y + p.y);
+    // @returns the sum of the two vectors ('this' and the parameter)
+    // without editing the original vector (i.e. 'this')
+    this.getSum = function(v) {
+        return new Vector2d(this.x + v.x, this.y + v.y);
     };
 }

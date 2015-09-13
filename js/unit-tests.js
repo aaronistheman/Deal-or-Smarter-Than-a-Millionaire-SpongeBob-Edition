@@ -7,12 +7,12 @@
 
 QUnit.module("utility.js");
 
-QUnit.test("Point.getSum()", function(assert) {
-    var p = new Point(20, 30);
-    assert.deepEqual(p.getSum(new Point(40, 40)),
-        new Point(60, 70),
+QUnit.test("Vector2d.getSum()", function(assert) {
+    var v = new Vector2d(20, 30);
+    assert.deepEqual(v.getSum(new Vector2d(40, 40)),
+        new Vector2d(60, 70),
         "Function successfully returns the correct " +
-        "sum as a Point object");
+        "sum as a Vector2d object");
 });
 
 QUnit.module("canvas-stack.js");

@@ -40,8 +40,8 @@ BriefcaseDisplay.prototype.draw = function() {
     var x = BriefcaseDisplay.firstCasePosition.x;
     var initialY = BriefcaseDisplay.firstCasePosition.y;
     var y = initialY;
-    var horizontalPadding = BriefcaseDisplay.casePaddings.horizontal;
-    var verticalPadding = BriefcaseDisplay.casePaddings.vertical;
+    var horizontalPadding = BriefcaseDisplay.casePaddings.x;
+    var verticalPadding = BriefcaseDisplay.casePaddings.y;
 
     for (var i = 0; i < this.moneyAmounts.length; ++i) {
         if ((i + 1) === this.numberToEmphasize)
@@ -81,29 +81,29 @@ BriefcaseDisplay.prototype.draw = function() {
 BriefcaseDisplay.prototype._drawBriefcase =
     function(caseContext, textContext, x, y, number) {
     caseContext.fillRect(x, y,
-        BriefcaseDisplay.caseDimensions.width,
-        BriefcaseDisplay.caseDimensions.height);
+        BriefcaseDisplay.caseDimensions.x,
+        BriefcaseDisplay.caseDimensions.y);
     textContext.fillText(number,
-        x + (BriefcaseDisplay.caseDimensions.width / 2.0),
-        y + (BriefcaseDisplay.caseDimensions.height / 2.0));
+        x + (BriefcaseDisplay.caseDimensions.x / 2.0),
+        y + (BriefcaseDisplay.caseDimensions.y / 2.0));
 };
 
 /*
     Static members and methods
 */
 
-BriefcaseDisplay.caseDimensions = {
-    width : 190,
-    height : 95,
-};
+BriefcaseDisplay.caseDimensions = new Vector2d(190, 95);
 
 // padding is space between briefcases
-BriefcaseDisplay.casePaddings = {
-    horizontal : 10,
-    vertical : 40,
-};
+BriefcaseDisplay.casePaddings = new Vector2d(10, 40);
 
-BriefcaseDisplay.firstCasePosition = new Point(55, 185);
+// space needed to jump from point on one case to exact same
+// point of adjacent case
+BriefcaseDisplay.marginalCasePosition =
+    BriefcaseDisplay.caseDimensions.getSum(
+        BriefcaseDisplay.casePaddings);
+
+BriefcaseDisplay.firstCasePosition = new Vector2d(55, 185);
 
 BriefcaseDisplay.fillStyles = {
     caseStyle : "#C0C0C0",
@@ -118,7 +118,7 @@ BriefcaseDisplay.textAlign = "center";
     @hasTest yes
     @param whichCase number of the case to get the position of;
     1 <= whichCase <= 10
-    @returns Point object containing the position to draw the
+    @returns Vector2d object containing the position to draw the
     briefcase at (on its canvas)
 */
 BriefcaseDisplay.getCasePosition = function(whichCase) {
