@@ -122,5 +122,12 @@ BriefcaseDisplay.textAlign = "center";
     briefcase at (on its canvas)
 */
 BriefcaseDisplay.getCasePosition = function(whichCase) {
+    // Decide how much to adjust the case position
+    var multiplierX = ((whichCase - 1) % 5);
+    var multiplierY = (whichCase < 6) ? 0 : -1;
+    var adjustment = new Vector2d(multiplierX, multiplierY);
 
+    return BriefcaseDisplay.firstCasePosition.getSum(
+        BriefcaseDisplay.marginalCasePosition.getProduct(
+            adjustment));
 }

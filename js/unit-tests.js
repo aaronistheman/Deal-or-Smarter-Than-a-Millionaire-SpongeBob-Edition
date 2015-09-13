@@ -15,6 +15,42 @@ QUnit.test("Vector2d.getSum()", function(assert) {
         "sum as a Vector2d object");
 });
 
+QUnit.test("Vector2d.getProduct()", function(assert) {
+    var v = new Vector2d(70, 80);
+    assert.deepEqual(v.getProduct(new Vector2d(3, 2)),
+        new Vector2d(210, 160),
+        "Function successfully returns the correct " +
+        "product as a Vector2d object");
+});
+
+QUnit.module("briefcase-display.js");
+
+QUnit.test("BriefcaseDisplay::getCasePosition()", function(assert) {
+    assert.deepEqual(BriefcaseDisplay.getCasePosition(1),
+        BriefcaseDisplay.firstCasePosition,
+        "Correct position for first case");
+    assert.deepEqual(BriefcaseDisplay.getCasePosition(4),
+        BriefcaseDisplay.firstCasePosition.getSum(
+            BriefcaseDisplay.marginalCasePosition.getProduct(
+                new Vector2d(3, 0))),
+        "Correct position for fourth case");
+    assert.deepEqual(BriefcaseDisplay.getCasePosition(5),
+        BriefcaseDisplay.firstCasePosition.getSum(
+            BriefcaseDisplay.marginalCasePosition.getProduct(
+                new Vector2d(4, 0))),
+        "Correct position for fifth case");
+    assert.deepEqual(BriefcaseDisplay.getCasePosition(6),
+        BriefcaseDisplay.firstCasePosition.getSum(
+            BriefcaseDisplay.marginalCasePosition.getProduct(
+                new Vector2d(0, -1))),
+        "Correct position for sixth case");
+    assert.deepEqual(BriefcaseDisplay.getCasePosition(10),
+        BriefcaseDisplay.firstCasePosition.getSum(
+            BriefcaseDisplay.marginalCasePosition.getProduct(
+                new Vector2d(4, -1))),
+        "Correct position for tenth case");
+});
+
 QUnit.module("canvas-stack.js");
 
 QUnit.test("CanvasStack.add()", function(assert) {
