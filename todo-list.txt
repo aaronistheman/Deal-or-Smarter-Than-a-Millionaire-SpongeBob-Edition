@@ -1,7 +1,4 @@
 Next:
--make ability to choose case at beginning
-    --consider having no case emphasized when the display is first
-        shown
 -show canvases that should be shown during introduction (or basic
     versions of them)
 -start working on questions display, randomization, topics, and

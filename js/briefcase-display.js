@@ -65,11 +65,13 @@ BriefcaseDisplay.prototype.giveFade = function(caseNumber) {
 }
 
 /*
+    @pre 1 <= newNumber <= NUMBER_OF_CASES
     @post this.numberToEmphasize has been updated; formerly
     emphasized case has been redrawn so that it's no longer
     emphasized; now emphasized case has been redrawn so that
     it is emphasized
-    @param newNumber new number of case to emphasize
+    @param newNumber new number of case to emphasize; set to
+    "none" to emphasize no case
 */
 BriefcaseDisplay.prototype.setEmphasis = function(newNumber) {
     // Set up variables
@@ -78,7 +80,8 @@ BriefcaseDisplay.prototype.setEmphasis = function(newNumber) {
     var textContext = this.getTextContext();
     var oldNumber = this.numberToEmphasize;
     var oldPosition = BriefcaseDisplay.getCasePosition(oldNumber);
-    var newPosition = BriefcaseDisplay.getCasePosition(newNumber);
+    if (newNumber !== "none")
+        var newPosition = BriefcaseDisplay.getCasePosition(newNumber);
 
     // Update numberToEmphasize
     this.numberToEmphasize = newNumber;
@@ -89,14 +92,17 @@ BriefcaseDisplay.prototype.setEmphasis = function(newNumber) {
     this._drawBriefcase(caseContext, textContext, oldPosition.x,
         oldPosition.y, oldNumber);
 
-    // Redraw the now emphasized case
-    this._eraseBriefcase(caseContext, textContext,
-        newPosition.x, newPosition.y);
-    this._drawBriefcase(caseContext, textContext, newPosition.x,
-        newPosition.y, newNumber);
+    if (newNumber !== "none") {
+        // Redraw the now emphasized case
+        this._eraseBriefcase(caseContext, textContext,
+            newPosition.x, newPosition.y);
+        this._drawBriefcase(caseContext, textContext, newPosition.x,
+            newPosition.y, newNumber);
+    }
 };
 
 /*
+    @pre this.numberToEmphasize != "none"
     @post the next case has been identified, with wrap around if
     necessary, so that setEmphasis() can handle the rest
 */
@@ -108,6 +114,7 @@ BriefcaseDisplay.prototype.emphasizeNextCase = function() {
 };
 
 /*
+    @pre this.numberToEmphasize != "none"
     @post the previous case has been identified, with wrap around if
     necessary, so that setEmphasis() can handle the rest
 */

@@ -24,7 +24,7 @@ gameShow.briefcaseDisplay = new BriefcaseDisplay(
     CANVAS_IDS.BRIEFCASES,
     CANVAS_IDS.BRIEFCASES_TEXT,
     gameShow.moneyAmounts,
-    1);
+    "none");
 
 gameShow.selectedBriefcaseNumber = undefined;
 
@@ -305,6 +305,7 @@ function handleCaseSelection() {
 function selectFirstCase() {
     gameShow.canvasStack.remove(CANVAS_IDS.MONEY_DISPLAY)
         .add(CANVAS_IDS.BRIEFCASE_DISPLAY);
+    gameShow.briefcaseDisplay.setEmphasis(1);
 
     allowCaseSelectorMovement(true);
 
