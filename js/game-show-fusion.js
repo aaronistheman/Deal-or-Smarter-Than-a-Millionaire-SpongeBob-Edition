@@ -267,14 +267,14 @@ function allowCaseSelectorMovement(bool) {
     if (bool === true) {
         gameShow.keyActions.set(KEY_CODES.LEFT_ARROW, function() {
             gameShow.briefcaseDisplay.emphasizePreviousCase();
-        });
-        gameShow.keyActions.set(KEY_CODES.RIGHT_ARROW, function() {
+        })
+        .set(KEY_CODES.RIGHT_ARROW, function() {
             gameShow.briefcaseDisplay.emphasizeNextCase();
         });
     }
     else {
-        gameShow.keyActions.set(KEY_CODES.LEFT_ARROW, function() {});
-        gameShow.keyActions.set(KEY_CODES.RIGHT_ARROW, function() {});
+        gameShow.keyActions.set(KEY_CODES.LEFT_ARROW, function() {})
+            .set(KEY_CODES.RIGHT_ARROW, function() {});
     }
 }
 
@@ -401,8 +401,8 @@ function setUpTitleScreen() {
     toggleOpeningTheme(TOGGLE.ON);
 
     // Set up the user's ability to go to the game
-    gameShow.keyActions.setUpEventHandler();
-    gameShow.keyActions.set(KEY_CODES.ENTER, setUpGame);
+    gameShow.keyActions.setUpEventHandler()
+        .set(KEY_CODES.ENTER, setUpGame);
 }
 
 function removeTitleScreen() {

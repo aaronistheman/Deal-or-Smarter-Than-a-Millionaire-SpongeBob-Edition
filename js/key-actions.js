@@ -43,18 +43,22 @@ function KeyActions() {
     action
     @param keyCode of the key to attach the action to
     @param action function to attach to the key
+    @returns 'this' to allow chaining
 */
 KeyActions.prototype.set = function(keyCode, action) {
     this._actions[keyCode].set(action);
+    return this;
 };
 
 /*
     @post the action attached to the key represented by keyCode
     has been erased
     @param keyCode of the key to attach the action to
+    @returns 'this' to allow chaining
 */
 KeyActions.prototype.erase = function(keyCode) {
     this._actions[keyCode].erase();
+    return this;
 };
 
 /*
@@ -62,6 +66,7 @@ KeyActions.prototype.erase = function(keyCode) {
     hasn't been called yet
     @post event handlers have been set up so that a
     key's action will be called when that key is pressed down
+    @returns 'this' to allow chaining
 */
 KeyActions.prototype.setUpEventHandler = function() {
     // this is needed because the event handler will change
@@ -73,4 +78,6 @@ KeyActions.prototype.setUpEventHandler = function() {
         if (action !== undefined)
             action.perform();
     });
+
+    return this;
 };

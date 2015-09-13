@@ -1,6 +1,5 @@
 Next:
 -make ability to choose case at beginning
-    --consider allowing the setting of key actions to be chained
     --consider having no case emphasized when the display is first
         shown
 -show canvases that should be shown during introduction (or basic
