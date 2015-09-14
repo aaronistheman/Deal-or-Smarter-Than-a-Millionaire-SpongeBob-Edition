@@ -55,6 +55,8 @@ CanvasStack.prototype.remove = function(whatToRemove) {
     else
         canvasIdsToRemove = whatToRemove;
 
+    // Find each canvas that should be hidden, hide it, and remove
+    // its id from the storage
     for (var i in canvasIdsToRemove) {
         for (var j = 0; j < this._storage.length; ) {
             if (this._storage[j] === canvasIdsToRemove[i]) {
@@ -92,8 +94,9 @@ CanvasStack.isCanvasOrCanvases = function(whatToCheck) {
 */
 
 // Includes ids of canvases;
-// note that the order of these pushes matters (e.g. the quote
-// text must be above the quote bubble)
+// note that the order of these ids matter in that they affect
+// the order in which the AngularJS code generates the canvases
+// (e.g. the quote text must be above the quote bubble)
 var CANVAS_IDS = {
     BRIEFCASES : "briefcase-display-canvas",
     BRIEFCASES_TEXT : "briefcase-text-canvas",

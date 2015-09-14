@@ -54,27 +54,45 @@ QUnit.test("BriefcaseDisplay::getCasePosition()", function(assert) {
 QUnit.module("canvas-stack.js");
 
 QUnit.test("CanvasStack.add()", function(assert) {
-    // this test checks stack's length
+    // Set up
     var canvasStack = new CanvasStack();
+    var comparisonArray = [];
+    comparisonArray.push(CANVAS_IDS.TITLE_SCREEN);
+
     assert.deepEqual(canvasStack.add(
-        CANVAS_IDS.TITLE_SCREEN)._storage.length, 1,
+        CANVAS_IDS.TITLE_SCREEN)._storage,
+        comparisonArray,
         "A canvas was successfully stored");
+
+    // Adjust setup
+    comparisonArray = comparisonArray.concat(CANVAS_IDS.MONEY_DISPLAY);
+
     assert.deepEqual(canvasStack.add(
-        CANVAS_IDS.MONEY_DISPLAY)._storage.length, 3,
+        CANVAS_IDS.MONEY_DISPLAY)._storage.sort(),
+        comparisonArray.sort(),
         "After, two more canvas were successfully, simultaneously stored");
 });
 
 QUnit.test("CanvasStack.remove()", function(assert) {
-    // this test checks storage's length
+    // Set up
     var canvasStack = new CanvasStack();
+    var comparisonArray = [];
+    comparisonArray = comparisonArray.concat(CANVAS_IDS.MONEY_DISPLAY);
+    comparisonArray.push(CANVAS_IDS.QUOTE_BUBBLE);
     // add four canvas ids
-    canvasStack.add(CANVAS_IDS.MONEY_DISPLAY)
-        .add(CANVAS_IDS.QUOTE);
+    canvasStack.add(CANVAS_IDS.MONEY_DISPLAY).add(CANVAS_IDS.QUOTE);
+
     assert.deepEqual(canvasStack.remove(
-        CANVAS_IDS.QUOTE_TEXT)._storage.length, 3,
+        CANVAS_IDS.QUOTE_TEXT)._storage.sort(),
+        comparisonArray.sort(),
         "A canvas was successfully removed");
+
+    // Adjust the setup
+    comparisonArray = [CANVAS_IDS.QUOTE_BUBBLE];
+
     assert.deepEqual(canvasStack.remove(
-        CANVAS_IDS.MONEY_DISPLAY)._storage.length, 1,
+        CANVAS_IDS.MONEY_DISPLAY)._storage.sort(),
+        comparisonArray.sort(),
         "After, two canvases were successfully removed");
 });
 
