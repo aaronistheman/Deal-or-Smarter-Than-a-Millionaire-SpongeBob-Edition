@@ -121,20 +121,6 @@ QUnit.test("CanvasStack.removeAll()", function(assert) {
         "All stored canvases were removed");
 });
 
-/*
-QUnit.test("CanvasStack::isCanvasOrCanvases()", function(assert) {
-    var canvasStack = new CanvasStack();
-    assert.deepEqual(CanvasStack.isCanvasOrCanvases("invalidParameter"),
-        false, "Returns false if not valid canvas or array of canvases");
-    assert.deepEqual(CanvasStack.isCanvasOrCanvases(
-        CANVAS_IDS.SPEAKER), true,
-        "Returns true if valid canvas");
-    assert.deepEqual(CanvasStack.isCanvasOrCanvases(
-        CANVAS_IDS.MONEY_DISPLAY), true,
-        "Returns true if valid array canvases");
-});
-*/
-
 QUnit.module("error-handling.js");
 
 QUnit.test("parameterError()", function(assert) {

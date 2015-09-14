@@ -14,4 +14,5 @@ start Notepad++ js/money-display.js
 start Notepad++ js/briefcase-display.js
 start Notepad++ js/key-actions.js
 start Notepad++ js/key-action.js
+start Notepad++ js/canvas-ids.js
 exit

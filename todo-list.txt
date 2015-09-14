@@ -1,6 +1,5 @@
 Next:
 -improve CanvasStack
-    --move canvas ids into canvas-ids.js
     --apply set()
     --make add() and remove() private
     --change removeAll() to clear()
