@@ -53,6 +53,20 @@ QUnit.test("BriefcaseDisplay::getCasePosition()", function(assert) {
 
 QUnit.module("canvas-stack.js");
 
+QUnit.test("CanvasStack.setCanvasOrCanvases()", function(assert) {
+    // Create artificial environment
+    var canvasStack = new CanvasStack();
+    canvasStack.add(CANVAS_IDS.MONEY_DISPLAY);
+
+    // The canvas ids added above should be replaced by the canvas ids
+    // indicated in the parameter
+    assert.deepEqual(canvasStack.setCanvasOrCanvases(
+        CANVAS_IDS.SPEAKER_QUOTE)._storage.sort(),
+        CANVAS_IDS.SPEAKER_QUOTE.sort(),
+        "Canvases stored in CanvasStack were replaced by the " +
+        "canvases indicated by the parameter; correct returned object");
+});
+
 QUnit.test("CanvasStack.add()", function(assert) {
     // Set up
     var canvasStack = new CanvasStack();
@@ -65,10 +79,11 @@ QUnit.test("CanvasStack.add()", function(assert) {
         "A canvas was successfully stored");
 
     // Adjust setup
-    comparisonArray = comparisonArray.concat(CANVAS_IDS.MONEY_DISPLAY);
+    comparisonArray = comparisonArray.concat(
+        CANVAS_IDS.BRIEFCASE_DISPLAY);
 
     assert.deepEqual(canvasStack.add(
-        CANVAS_IDS.MONEY_DISPLAY)._storage.sort(),
+        CANVAS_IDS.BRIEFCASE_DISPLAY)._storage.sort(),
         comparisonArray.sort(),
         "After, two more canvas were successfully, simultaneously stored");
 });
@@ -94,6 +109,16 @@ QUnit.test("CanvasStack.remove()", function(assert) {
         CANVAS_IDS.MONEY_DISPLAY)._storage.sort(),
         comparisonArray.sort(),
         "After, two canvases were successfully removed");
+});
+
+QUnit.test("CanvasStack.removeAll()", function(assert) {
+    // Set up
+    var canvasStack = new CanvasStack();
+    canvasStack.add(CANVAS_IDS.BRIEFCASE_DISPLAY);
+
+    // The canvases added above should end up removed
+    assert.deepEqual(canvasStack.removeAll()._storage, [],
+        "All stored canvases were removed");
 });
 
 /*

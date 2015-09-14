@@ -11,6 +11,28 @@ function CanvasStack() {
 
 /*
     @pre none
+    @post the only canvas or canvases shown and stored in
+    this._storage are those that were indicated by whatToSet
+    @hasTest yes
+    @param whatToSet id or ids of the canvas or canvases to show
+    and store; must be a value in CANVAS_IDS
+    @returns "this" pointer
+    @throws nothing
+*/
+CanvasStack.prototype.setCanvasOrCanvases = function(whatToSet) {
+    // Hide each canvas indicated by the currently stored ids,
+    // then clear the storage
+    this.removeAll();
+
+    // For each canvas indicated by the id or ids in whatToSet,
+    // show the canvas and store the id
+    this.add(whatToSet);
+
+    return this;
+}
+
+/*
+    @pre none
     @post whatToAdd has been added to this._storage, and the
     canvas represented by whatToAdd has been given CSS class
     'show'
@@ -71,6 +93,21 @@ CanvasStack.prototype.remove = function(whatToRemove) {
 
     return this;
 };
+
+/*
+    @pre this._storage doesn't contain any objects, although it
+    should only ever contain strings, anyway
+    @post all canvases indicated by the stored ids have been
+    hidden; the storage has been emptied
+    @hasTest yes
+    @returns "this" pointer"
+    @throws nothing
+*/
+CanvasStack.prototype.removeAll = function() {
+    // this._storage should never contain any objects, so
+    // using slice() here should be fine
+    return this.remove(this._storage.slice());
+}
 
 /*
     'Static' members and instances

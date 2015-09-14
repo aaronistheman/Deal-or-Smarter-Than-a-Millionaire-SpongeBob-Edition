@@ -1,11 +1,7 @@
 Next:
--CanvasStack has set() instead of add() and remove()
-    --this would require the storage; set() hides shown canvases
-        that don't fit under the parameter canvas id(s)
+-improve CanvasStack
     --handle duplicated ids in storage
-    --remove or make private add() and remove()
     --move canvas ids into canvas-ids.js
-    --make a gettor for _storage
 -show canvases that should be shown during introduction (or basic
     versions of them)
 -introduce helpers
