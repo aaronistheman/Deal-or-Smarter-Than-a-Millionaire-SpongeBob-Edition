@@ -53,14 +53,14 @@ QUnit.test("BriefcaseDisplay::getCasePosition()", function(assert) {
 
 QUnit.module("canvas-stack.js");
 
-QUnit.test("CanvasStack.setCanvasOrCanvases()", function(assert) {
+QUnit.test("CanvasStack.set()", function(assert) {
     // Create artificial environment
     var canvasStack = new CanvasStack();
     canvasStack.add(CANVAS_IDS.MONEY_DISPLAY);
 
     // The canvas ids added above should be replaced by the canvas ids
     // indicated in the parameter
-    assert.deepEqual(canvasStack.setCanvasOrCanvases(
+    assert.deepEqual(canvasStack.set(
         CANVAS_IDS.SPEAKER_QUOTE)._storage.sort(),
         CANVAS_IDS.SPEAKER_QUOTE.sort(),
         "Canvases stored in CanvasStack were replaced by the " +

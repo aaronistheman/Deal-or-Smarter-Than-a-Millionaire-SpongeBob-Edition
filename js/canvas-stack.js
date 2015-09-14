@@ -6,6 +6,7 @@
 */
 
 function CanvasStack() {
+    // stores the ids of the canvases that are shown
     this._storage = [];
 }
 
@@ -19,7 +20,7 @@ function CanvasStack() {
     @returns "this" pointer
     @throws nothing
 */
-CanvasStack.prototype.setCanvasOrCanvases = function(whatToSet) {
+CanvasStack.prototype.set = function(whatToSet) {
     // Hide each canvas indicated by the currently stored ids,
     // then clear the storage
     this.removeAll();
