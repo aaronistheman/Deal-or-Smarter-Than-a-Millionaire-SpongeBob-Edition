@@ -1,7 +1,7 @@
 Next:
 -improve CanvasStack
-    --handle duplicated ids in storage
     --move canvas ids into canvas-ids.js
+    --apply setCanvasOrCanvases()
 -show canvases that should be shown during introduction (or basic
     versions of them)
 -introduce helpers

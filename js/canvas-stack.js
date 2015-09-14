@@ -32,7 +32,7 @@ CanvasStack.prototype.setCanvasOrCanvases = function(whatToSet) {
 }
 
 /*
-    @pre none
+    @pre the ids indicated by whatToAdd are not already stored
     @post whatToAdd has been added to this._storage, and the
     canvas represented by whatToAdd has been given CSS class
     'show'
