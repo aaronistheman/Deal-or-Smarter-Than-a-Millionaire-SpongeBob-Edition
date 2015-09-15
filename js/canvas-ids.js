@@ -8,11 +8,15 @@
 // Includes ids of canvases;
 // note that the order of these ids matter in that they affect
 // the order in which the AngularJS code generates the canvases
-// (e.g. the quote text must be above the quote bubble)
+// (e.g. the quote text must be above the quote bubble);
+// for each string in CANVAS_IDS, a canvas will be created
+// using AngularJS
 var CANVAS_IDS = {
+    BANKER : "banker-canvas",
     BRIEFCASES : "briefcase-display-canvas",
     BRIEFCASES_TEXT : "briefcase-text-canvas",
     QUESTIONING : "questioning-canvas",
+    MILLION_QUESTION : "million-question-canvas",
     CHOOSE_QUESTION : "choose-question-canvas",
     MONEY_DISPLAY_BARS : "money-display-bars-canvas",
     MONEY_DISPLAY_TEXT : "money-display-text-canvas",

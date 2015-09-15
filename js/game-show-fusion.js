@@ -314,44 +314,92 @@ function selectFirstCase() {
         .deployQuoteChain(handleCaseSelection);
 }
 
-function explainRules() {
+function explainCasePick() {
     // move speaker canvas out of the way to show other things
     // while host is speaking
     gameShow.canvasStack.set(CANVAS_IDS.BRIEFCASE_DISPLAY.concat(
         CANVAS_IDS.QUOTE));
 
     gameShow.quotesToDraw.add("Shortly, you will pick a briefcase.")
-        .deployQuoteChain(function() {
-            gameShow.canvasStack.remove(CANVAS_IDS.BRIEFCASE_DISPLAY)
-                .add(CANVAS_IDS.MONEY_DISPLAY);
-            gameShow.quotesToDraw.add(
-                "That case's value equals one of the values on the " +
-                "money board, but you don't know which.")
-            // change to display of questions
-            .add("After that, you will try to answer ten questions.")
-            // change back to money display
-            .add("Answering a question correctly reveals a random " +
-                "amount from the money board.")
-            .add("But wait, a twist occurs after every two questions " +
-                "and before your tenth question:")
-            // show the banker
-            .add("the banker will offer you some money.")
-            .add("He wants your briefcase, but he doesn't want to pay " +
-                "too much for it.")
-            .add("You can say 'Deal' and leave the game with that money,")
-            .add("or you can say 'No Deal' and hope for an even greater " +
-                "amount of money.")
-            // show SpongeBob
-            .add("If you miss a question, you leave with nothing.")
-            .add("If you get past all ten questions, you can either take " +
-                "your case home,")
-            // show million dollar question screen
-            .add("or you can bet it all and try to answer the million " +
-                "dollar question.")
-            .add("You do have help, but I haven't been programmed " +
-                "to describe how.")
-            .deployQuoteChain(selectFirstCase);
-        });
+        .deployQuoteChain(explainPickedCaseValue);
+}
+
+function explainPickedCaseValue() {
+    gameShow.canvasStack.set(CANVAS_IDS.MONEY_DISPLAY.concat(
+        CANVAS_IDS.QUOTE));
+    gameShow.quotesToDraw.add(
+        "That case's value equals one of the values on the " +
+        "money board, but you don't know which.")
+        .deployQuoteChain(sayNumberOfQuestions);
+}
+
+function sayNumberOfQuestions() {
+    gameShow.canvasStack.set(CANVAS_IDS.QUOTE.concat(
+        CANVAS_IDS.CHOOSE_QUESTION));
+    // gameShow.canvasStack.set(CANVAS_IDS.QUOTE);
+    gameShow.quotesToDraw.add(
+        "After that, you will try to answer ten questions.")
+        .deployQuoteChain(explainQuestionValue);
+}
+
+function explainQuestionValue() {
+    gameShow.canvasStack.set(CANVAS_IDS.MONEY_DISPLAY.concat(
+        CANVAS_IDS.QUOTE));
+    gameShow.quotesToDraw.add(
+        "Answering a question correctly reveals a random " +
+        "amount from the money board.")
+        .add("But wait, a twist occurs after every two questions " +
+            "and before your tenth question:")
+        .deployQuoteChain(explainBanker);
+}
+
+function explainBanker() {
+    gameShow.canvasStack.set(CANVAS_IDS.QUOTE.concat(
+        CANVAS_IDS.BANKER));
+    gameShow.quotesToDraw.add("the banker will offer you some money.")
+        .add("He wants your briefcase, but he doesn't want to pay " +
+            "too much for it.")
+        .add("You can say 'Deal' and leave the game with that money,")
+        .add("or you can say 'No Deal' and hope for an even greater " +
+            "amount of money.")
+        .deployQuoteChain(explainOutcomes);
+}
+
+function explainOutcomes() {
+    gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
+    gameShow.quotesToDraw.add(
+        "If you miss a question, you leave with nothing.")
+        .add("If you get past all ten questions, you can either take " +
+            "your case home,")
+        .deployQuoteChain(explainMillionDollarQuestion);
+}
+
+function explainMillionDollarQuestion() {
+    gameShow.canvasStack.set(CANVAS_IDS.QUOTE.concat(
+        CANVAS_IDS.MILLION_QUESTION));
+    gameShow.quotesToDraw.add(
+        "or you can bet it all and try to answer the million " +
+        "dollar question.")
+        .deployQuoteChain(explainHelp);
+}
+
+function explainHelp() {
+    gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
+    gameShow.quotesToDraw.add(
+        "You do have help, but I haven't been programmed " +
+        "to describe how.")
+        .deployQuoteChain(selectFirstCase);
+}
+
+/*
+    @post a chain of helper functions has been started so that
+    the rules will be explained
+    I did it this way to avoid bad-looking nesting of calls
+    of gameShow.quotesToDraw.deployQuoteChain and calls of
+    the methods of gameShow.canvasStack.
+*/
+function explainRules() {
+    explainCasePick();
 }
 
 function setUpGame() {
