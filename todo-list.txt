@@ -1,5 +1,7 @@
 Next:
 -introduce helpers
+    --draw each one's sprite
+    --introduce each in the chain of rules explanations
 -start working on questions display, randomization, topics, and
     appropriate objects
 
@@ -52,8 +54,11 @@ Considerable:
     canvases
 
 Ideas for millionaires to be able to choose as assistants:
--Kevin O'Leary ("Mr. Wonderful")
--Mr. Burns
+-Squidward
+-Mermaid Man
+-The Flying Dutchman
+-Larry the Lobster
+-Gary
 
 Game flow:
 -host introduces himself and game

@@ -30,6 +30,15 @@ gameShow.selectedBriefcaseNumber = undefined;
 
 gameShow.keyActions = new KeyActions();
 
+gameShow.SPEAKERS = {
+    SPONGEBOB : "SpongeBob",
+    SQUIDWARD : "Squidward",
+    MERMAID_MAN : "Mermaid Man",
+    THE_FLYING_DUTCHMAN : "The Flying Dutchman",
+    LARRY_THE_LOBSTER : "Larry the Lobster",
+    GARY : "Gary",
+};
+
 gameShow.sounds = {};
 gameShow.sounds.nextQuote;
 gameShow.sounds.openingTheme;
@@ -149,8 +158,8 @@ function eraseQuoteBubbleText() {
     been called; if invalid speaker, a message has been printed to
     the console, and a string indicating the error has been returned
     @hasTest no
-    @param speakerName name of the person to draw; available options:
-        -"SpongeBob" to draw SpongeBob
+    @param speakerName name of the person to draw; should be
+    a constant in gameShow.SPEAKERS
     @param endCallback to call after the drawing has finished (this
     can be used to chain quotes to the drawing of their speaker)
     @returns return value of parameterError() if invalid speakerName
@@ -161,8 +170,9 @@ function drawNewSpeaker(speakerName, endCallback) {
 
     try {
         // Draw the correct speaker, or cause an error
-        if (speakerName === "SpongeBob")
+        if (speakerName === gameShow.SPEAKERS.SPONGEBOB) {
             drawSpongebob();
+        }
         else
             throw "Invalid parameter speakerName()";
     }
@@ -323,7 +333,7 @@ function setUpGame() {
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
 
     // Host's introductory text
-    drawNewSpeaker("SpongeBob", function() {
+    drawNewSpeaker(gameShow.SPEAKERS.SPONGEBOB, function() {
         gameShow.quotesToDraw.add("Welcome to the game. " +
             "Press Enter to go to the next quote.")
             .add("I'm your host, " +
