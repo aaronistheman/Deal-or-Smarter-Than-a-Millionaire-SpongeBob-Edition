@@ -1,12 +1,13 @@
 Next:
 -introduce helpers
-    --introduce each in the chain of rules explanations
     --position (and perhaps resize) the speakers appropriately
 -start working on questions display, randomization, topics, and
     appropriate objects
 
 At some point:
 -effects as canvases appear or disappear (e.g. fading)
+    --and maybe even between speakers (could maybe hide and then show
+        as a trick)
 -look into that one error that always pops up in the console
 -make class MoneyData?
     --this can be used to update both MoneyDisplay and

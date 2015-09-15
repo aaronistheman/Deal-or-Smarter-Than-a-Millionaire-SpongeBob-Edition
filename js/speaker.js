@@ -37,8 +37,8 @@ var SPEAKERS = {
     SPONGEBOB : "SpongeBob",
     SQUIDWARD : "Squidward",
     MERMAID_MAN : "Mermaid Man",
-    SANDY_CHEEKS : "Sandy Cheeks",
-    LARRY_THE_LOBSTER : "Larry the Lobster",
+    SANDY : "Sandy",
+    LARRY : "Larry",
     GARY : "Gary",
 };
 
@@ -58,9 +58,9 @@ function getSpeakerObjects() {
         "images/squidward.png", canvasId, 600, 50);
     objects[SPEAKERS.MERMAID_MAN] = new Speaker(
         "images/mermaid_man.png", canvasId, 600, 50);
-    objects[SPEAKERS.SANDY_CHEEKS] = new Speaker(
-        "images/sandy_cheeks.png", canvasId, 600, 50);
-    objects[SPEAKERS.LARRY_THE_LOBSTER] = new Speaker(
+    objects[SPEAKERS.SANDY] = new Speaker(
+        "images/sandy.png", canvasId, 600, 50);
+    objects[SPEAKERS.LARRY] = new Speaker(
         "images/larry_the_lobster.png", canvasId, 600, 50);
     objects[SPEAKERS.GARY] = new Speaker(
         "images/gary.gif", canvasId, 600, 50);
