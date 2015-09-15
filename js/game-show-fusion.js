@@ -135,20 +135,16 @@ function eraseQuoteBubbleText() {
 /*
     @pre canvases are set up
     @post old speaker (if any) has been erased;
-    correct speaker has been drawn and endCallback has
-    been called
+    correct speaker has been drawn
     @hasTest no
     @param speakerName name of the person to draw; should be
     a constant in SPEAKERS
-    @param endCallback to call after the drawing has finished (this
-    can be used to chain quotes to the drawing of their speaker)
     @returns nothing
     @throws nothing
 */
-function drawNewSpeaker(speakerName, endCallback) {
+function drawNewSpeaker(speakerName) {
     eraseSpeaker();
     gameShow.speakers[speakerName].draw();
-    endCallback();
 }
 
 /*
@@ -301,16 +297,15 @@ function setUpGame() {
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
 
     // Host's introductory text
-    drawNewSpeaker(SPEAKERS.SPONGEBOB, function() {
-        gameShow.quotesToDraw.add("Welcome to the game. " +
-            "Press Enter to go to the next quote.")
-            .add("I'm your host, " +
-                "SpongeBob Squarepants.")
-            .add("Do you think you can beat the banker?")
-            .add("If so, get ready to play this " +
-                "combination of game shows.")
-            .deployQuoteChain(explainRules);
-    });
+    drawNewSpeaker(SPEAKERS.SPONGEBOB);
+    gameShow.quotesToDraw.add("Welcome to the game. " +
+        "Press Enter to go to the next quote.")
+        .add("I'm your host, " +
+            "SpongeBob Squarepants.")
+        .add("Do you think you can beat the banker?")
+        .add("If so, get ready to play this " +
+            "combination of game shows.")
+        .deployQuoteChain(explainRules);
 }
 
 /*
