@@ -24,7 +24,7 @@ function CanvasStack() {
 CanvasStack.prototype.set = function(whatToSet) {
     // Hide each canvas indicated by the currently stored ids,
     // then clear the storage
-    this.removeAll();
+    this.clear();
 
     // For each canvas indicated by the id or ids in whatToSet,
     // show the canvas and store the id
@@ -105,7 +105,7 @@ CanvasStack.prototype.remove = function(whatToRemove) {
     @returns "this" pointer"
     @throws nothing
 */
-CanvasStack.prototype.removeAll = function() {
+CanvasStack.prototype.clear = function() {
     // this._storage should never contain any objects, so
     // using slice() here should be fine
     return this.remove(this._storage.slice());

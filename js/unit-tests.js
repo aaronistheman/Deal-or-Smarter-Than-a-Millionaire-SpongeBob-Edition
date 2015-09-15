@@ -111,13 +111,13 @@ QUnit.test("CanvasStack.remove()", function(assert) {
         "After, two canvases were successfully removed");
 });
 
-QUnit.test("CanvasStack.removeAll()", function(assert) {
+QUnit.test("CanvasStack.clear()", function(assert) {
     // Set up
     var canvasStack = new CanvasStack();
     canvasStack.add(CANVAS_IDS.BRIEFCASE_DISPLAY);
 
     // The canvases added above should end up removed
-    assert.deepEqual(canvasStack.removeAll()._storage, [],
+    assert.deepEqual(canvasStack.clear()._storage, [],
         "All stored canvases were removed");
 });
 
