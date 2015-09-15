@@ -303,8 +303,8 @@ function handleCaseSelection() {
 }
 
 function selectFirstCase() {
-    gameShow.canvasStack.remove(CANVAS_IDS.MONEY_DISPLAY)
-        .add(CANVAS_IDS.BRIEFCASE_DISPLAY);
+    gameShow.canvasStack.set(CANVAS_IDS.BRIEFCASE_DISPLAY.concat(
+        CANVAS_IDS.QUOTE));
     gameShow.briefcaseDisplay.setEmphasis(1);
 
     allowCaseSelectorMovement(true);
@@ -317,8 +317,8 @@ function selectFirstCase() {
 function explainRules() {
     // move speaker canvas out of the way to show other things
     // while host is speaking
-    gameShow.canvasStack.remove(CANVAS_IDS.SPEAKER)
-        .add(CANVAS_IDS.BRIEFCASE_DISPLAY);
+    gameShow.canvasStack.set(CANVAS_IDS.BRIEFCASE_DISPLAY.concat(
+        CANVAS_IDS.QUOTE));
 
     gameShow.quotesToDraw.add("Shortly, you will pick a briefcase.")
         .deployQuoteChain(function() {
