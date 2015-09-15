@@ -355,13 +355,12 @@ function explainRules() {
 }
 
 function setUpGame() {
-    removeTitleScreen();
     setUpQuoteBubble();
     gameShow.moneyDisplay.setUp();
     gameShow.briefcaseDisplay.draw();
 
     // Show the appropriate canvases
-    gameShow.canvasStack.add(CANVAS_IDS.SPEAKER_QUOTE);
+    gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
 
     // Host's introductory text
     drawNewSpeaker("SpongeBob", function() {
@@ -397,17 +396,13 @@ function toggleOpeningTheme(toggleSetting) {
 }
 
 function setUpTitleScreen() {
-    gameShow.canvasStack.add(CANVAS_IDS.TITLE_SCREEN);
+    gameShow.canvasStack.set(CANVAS_IDS.TITLE_SCREEN);
     drawTitleScreenText();
     toggleOpeningTheme(TOGGLE.ON);
 
     // Set up the user's ability to go to the game
     gameShow.keyActions.setUpEventHandler()
         .set(KEY_CODES.ENTER, setUpGame);
-}
-
-function removeTitleScreen() {
-    gameShow.canvasStack.remove(CANVAS_IDS.TITLE_SCREEN);
 }
 
 function setUpAudio() {

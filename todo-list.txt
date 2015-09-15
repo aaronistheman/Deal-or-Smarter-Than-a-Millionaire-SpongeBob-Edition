@@ -1,7 +1,5 @@
 Next:
 -improve CanvasStack
-    --apply set()
-    --make add() and remove() private
     --change removeAll() to clear()
 -show canvases that should be shown during introduction (or basic
     versions of them)

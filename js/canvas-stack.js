@@ -16,7 +16,8 @@ function CanvasStack() {
     this._storage are those that were indicated by whatToSet
     @hasTest yes
     @param whatToSet id or ids of the canvas or canvases to show
-    and store; must be a value in CANVAS_IDS
+    and store; must be a value in CANVAS_IDS (or a concatenation
+    of them)
     @returns "this" pointer
     @throws nothing
 */
