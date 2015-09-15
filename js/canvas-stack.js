@@ -6,11 +6,35 @@
 */
 
 function CanvasStack() {
+    // stores the ids of the canvases that are shown
     this._storage = [];
 }
 
 /*
     @pre none
+    @post the only canvas or canvases shown and stored in
+    this._storage are those that were indicated by whatToSet
+    @hasTest yes
+    @param whatToSet id or ids of the canvas or canvases to show
+    and store; must be a value in CANVAS_IDS (or a concatenation
+    of them)
+    @returns "this" pointer
+    @throws nothing
+*/
+CanvasStack.prototype.set = function(whatToSet) {
+    // Hide each canvas indicated by the currently stored ids,
+    // then clear the storage
+    this.clear();
+
+    // For each canvas indicated by the id or ids in whatToSet,
+    // show the canvas and store the id
+    this.add(whatToSet);
+
+    return this;
+}
+
+/*
+    @pre the ids indicated by whatToAdd are not already stored
     @post whatToAdd has been added to this._storage, and the
     canvas represented by whatToAdd has been given CSS class
     'show'
@@ -55,6 +79,8 @@ CanvasStack.prototype.remove = function(whatToRemove) {
     else
         canvasIdsToRemove = whatToRemove;
 
+    // Find each canvas that should be hidden, hide it, and remove
+    // its id from the storage
     for (var i in canvasIdsToRemove) {
         for (var j = 0; j < this._storage.length; ) {
             if (this._storage[j] === canvasIdsToRemove[i]) {
@@ -71,47 +97,16 @@ CanvasStack.prototype.remove = function(whatToRemove) {
 };
 
 /*
-    'Static' members and instances
+    @pre this._storage doesn't contain any objects, although it
+    should only ever contain strings, anyway
+    @post all canvases indicated by the stored ids have been
+    hidden; the storage has been emptied
+    @hasTest yes
+    @returns "this" pointer"
+    @throws nothing
 */
-
-/*
-// @hasTest yes
-// @returns true if whatToCheck equals one of the constants
-// in CANVAS_IDS
-CanvasStack.isCanvasOrCanvases = function(whatToCheck) {
-    for (var key in CANVAS_IDS) {
-        if (whatToCheck === CANVAS_IDS[key])
-            return true;
-    }
-    return false;
-};
-*/
-
-/*
-    Non-static constants
-*/
-
-// Includes ids of canvases;
-// note that the order of these pushes matters (e.g. the quote
-// text must be above the quote bubble)
-var CANVAS_IDS = {
-    BRIEFCASES : "briefcase-display-canvas",
-    BRIEFCASES_TEXT : "briefcase-text-canvas",
-    QUESTIONING : "questioning-canvas",
-    CHOOSE_QUESTION : "choose-question-canvas",
-    MONEY_DISPLAY_BARS : "money-display-bars-canvas",
-    MONEY_DISPLAY_TEXT : "money-display-text-canvas",
-    SPEAKER : "speaker-canvas",
-    QUOTE_BUBBLE : "quote-bubble-canvas",
-    QUOTE_TEXT : "quote-text-canvas",
-    TITLE_SCREEN : "title-screen-canvas",
-};
-
-// Groups of canvas ids; for use in functions that support them
-CANVAS_IDS.QUOTE = [CANVAS_IDS.QUOTE_TEXT, CANVAS_IDS.QUOTE_BUBBLE];
-CANVAS_IDS.SPEAKER_QUOTE =
-    CANVAS_IDS.QUOTE.concat([CANVAS_IDS.SPEAKER]);
-CANVAS_IDS.MONEY_DISPLAY =
-    [CANVAS_IDS.MONEY_DISPLAY_TEXT, CANVAS_IDS.MONEY_DISPLAY_BARS];
-CANVAS_IDS.BRIEFCASE_DISPLAY =
-    [CANVAS_IDS.BRIEFCASES, CANVAS_IDS.BRIEFCASES_TEXT];
+CanvasStack.prototype.clear = function() {
+    // this._storage should never contain any objects, so
+    // using slice() here should be fine
+    return this.remove(this._storage.slice());
+}

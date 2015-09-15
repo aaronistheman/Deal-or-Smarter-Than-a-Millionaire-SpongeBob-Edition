@@ -7,9 +7,6 @@ Next:
 
 At some point:
 -find a better way to edit CanvasStack in the middle of quote chain
--CanvasStack has set() instead of add() and remove()
-    --this would require the storage; set() hides shown canvases
-        that don't fit under the parameter canvas id(s)
 -look into that one error that always pops up in the console
 -make class MoneyData?
     --this can be used to update both MoneyDisplay and

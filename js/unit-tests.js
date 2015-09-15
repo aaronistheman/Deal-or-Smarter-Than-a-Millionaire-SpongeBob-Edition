@@ -53,44 +53,73 @@ QUnit.test("BriefcaseDisplay::getCasePosition()", function(assert) {
 
 QUnit.module("canvas-stack.js");
 
-QUnit.test("CanvasStack.add()", function(assert) {
-    // this test checks stack's length
+QUnit.test("CanvasStack.set()", function(assert) {
+    // Create artificial environment
     var canvasStack = new CanvasStack();
+    canvasStack.add(CANVAS_IDS.MONEY_DISPLAY);
+
+    // The canvas ids added above should be replaced by the canvas ids
+    // indicated in the parameter
+    assert.deepEqual(canvasStack.set(
+        CANVAS_IDS.SPEAKER_QUOTE)._storage.sort(),
+        CANVAS_IDS.SPEAKER_QUOTE.sort(),
+        "Canvases stored in CanvasStack were replaced by the " +
+        "canvases indicated by the parameter; correct returned object");
+});
+
+QUnit.test("CanvasStack.add()", function(assert) {
+    // Set up
+    var canvasStack = new CanvasStack();
+    var comparisonArray = [];
+    comparisonArray.push(CANVAS_IDS.TITLE_SCREEN);
+
     assert.deepEqual(canvasStack.add(
-        CANVAS_IDS.TITLE_SCREEN)._storage.length, 1,
+        CANVAS_IDS.TITLE_SCREEN)._storage,
+        comparisonArray,
         "A canvas was successfully stored");
+
+    // Adjust setup
+    comparisonArray = comparisonArray.concat(
+        CANVAS_IDS.BRIEFCASE_DISPLAY);
+
     assert.deepEqual(canvasStack.add(
-        CANVAS_IDS.MONEY_DISPLAY)._storage.length, 3,
+        CANVAS_IDS.BRIEFCASE_DISPLAY)._storage.sort(),
+        comparisonArray.sort(),
         "After, two more canvas were successfully, simultaneously stored");
 });
 
 QUnit.test("CanvasStack.remove()", function(assert) {
-    // this test checks storage's length
+    // Set up
     var canvasStack = new CanvasStack();
+    var comparisonArray = [];
+    comparisonArray = comparisonArray.concat(CANVAS_IDS.MONEY_DISPLAY);
+    comparisonArray.push(CANVAS_IDS.QUOTE_BUBBLE);
     // add four canvas ids
-    canvasStack.add(CANVAS_IDS.MONEY_DISPLAY)
-        .add(CANVAS_IDS.QUOTE);
+    canvasStack.add(CANVAS_IDS.MONEY_DISPLAY).add(CANVAS_IDS.QUOTE);
+
     assert.deepEqual(canvasStack.remove(
-        CANVAS_IDS.QUOTE_TEXT)._storage.length, 3,
+        CANVAS_IDS.QUOTE_TEXT)._storage.sort(),
+        comparisonArray.sort(),
         "A canvas was successfully removed");
+
+    // Adjust the setup
+    comparisonArray = [CANVAS_IDS.QUOTE_BUBBLE];
+
     assert.deepEqual(canvasStack.remove(
-        CANVAS_IDS.MONEY_DISPLAY)._storage.length, 1,
+        CANVAS_IDS.MONEY_DISPLAY)._storage.sort(),
+        comparisonArray.sort(),
         "After, two canvases were successfully removed");
 });
 
-/*
-QUnit.test("CanvasStack::isCanvasOrCanvases()", function(assert) {
+QUnit.test("CanvasStack.clear()", function(assert) {
+    // Set up
     var canvasStack = new CanvasStack();
-    assert.deepEqual(CanvasStack.isCanvasOrCanvases("invalidParameter"),
-        false, "Returns false if not valid canvas or array of canvases");
-    assert.deepEqual(CanvasStack.isCanvasOrCanvases(
-        CANVAS_IDS.SPEAKER), true,
-        "Returns true if valid canvas");
-    assert.deepEqual(CanvasStack.isCanvasOrCanvases(
-        CANVAS_IDS.MONEY_DISPLAY), true,
-        "Returns true if valid array canvases");
+    canvasStack.add(CANVAS_IDS.BRIEFCASE_DISPLAY);
+
+    // The canvases added above should end up removed
+    assert.deepEqual(canvasStack.clear()._storage, [],
+        "All stored canvases were removed");
 });
-*/
 
 QUnit.module("error-handling.js");
 
