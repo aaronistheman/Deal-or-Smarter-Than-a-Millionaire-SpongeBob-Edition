@@ -1,7 +1,7 @@
 Next:
 -introduce helpers
-    --draw each one's sprite
     --introduce each in the chain of rules explanations
+    --position (and perhaps resize) the speakers appropriately
 -start working on questions display, randomization, topics, and
     appropriate objects
 
@@ -52,13 +52,6 @@ Considerable:
 -put truly private and priviledged members/functions in classes
 -CSS classes for manipulating the color of the background of certain
     canvases
-
-Ideas for millionaires to be able to choose as assistants:
--Squidward
--Mermaid Man
--The Flying Dutchman
--Larry the Lobster
--Gary
 
 Game flow:
 -host introduces himself and game

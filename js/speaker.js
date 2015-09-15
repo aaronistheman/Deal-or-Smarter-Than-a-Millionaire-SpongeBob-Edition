@@ -6,16 +6,13 @@
 */
 
 /*
-    @param name of the speaker
     @param imageSource for drawing the image of the speaker
     @param canvasId id of the canvas to draw the speaker on, if
     he/she is drawn
     @param posX x-coordinate of the speaker when drawn on the canvas
     @param posY y-coordinate of the speaker when drawn on the canvas
 */
-function Speaker(name, imageSource, canvasId, posX, posY) {
-    this.name = name;
-
+function Speaker(imageSource, canvasId, posX, posY) {
     // Store the image indicated by imageSource
     this.image = new Image();
     this.image.src = imageSource;
@@ -40,7 +37,7 @@ var SPEAKERS = {
     SPONGEBOB : "SpongeBob",
     SQUIDWARD : "Squidward",
     MERMAID_MAN : "Mermaid Man",
-    THE_FLYING_DUTCHMAN : "The Flying Dutchman",
+    SANDY_CHEEKS : "Sandy Cheeks",
     LARRY_THE_LOBSTER : "Larry the Lobster",
     GARY : "Gary",
 };
@@ -55,8 +52,18 @@ function getSpeakerObjects() {
     var objects = {};
     var canvasId = CANVAS_IDS.SPEAKER;
 
-    objects[SPEAKERS.SPONGEBOB] = new Speaker(SPEAKERS.SPONGEBOB,
+    objects[SPEAKERS.SPONGEBOB] = new Speaker(
         "images/spongebob.png", canvasId, 600, 50);
+    objects[SPEAKERS.SQUIDWARD] = new Speaker(
+        "images/squidward.png", canvasId, 600, 50);
+    objects[SPEAKERS.MERMAID_MAN] = new Speaker(
+        "images/mermaid_man.png", canvasId, 600, 50);
+    objects[SPEAKERS.SANDY_CHEEKS] = new Speaker(
+        "images/sandy_cheeks.png", canvasId, 600, 50);
+    objects[SPEAKERS.LARRY_THE_LOBSTER] = new Speaker(
+        "images/larry_the_lobster.png", canvasId, 600, 50);
+    objects[SPEAKERS.GARY] = new Speaker(
+        "images/gary.gif", canvasId, 600, 50);
 
     return objects;
 }

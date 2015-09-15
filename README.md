@@ -44,7 +44,12 @@ Acknowledgements
 
 The seamless, background texture is from www.mb3d.co.uk.
 
+I made the background of many of the images transparent with the
+website at www.online-image-editor.com.
 The image of SpongeBob is from www.wikihow.com.
+The images of Squidward and Sandy are from Wikipedia.
+The image of Larry the Lobster is from spongebob.wikia.com.
+The image of Gary is from www.clipartpanda.com.
 
 The audio that plays when a quote bubble is finished was made with Bfxr.
 
