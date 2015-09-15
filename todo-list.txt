@@ -4,7 +4,7 @@ Next:
     appropriate objects
 
 At some point:
--find a better way to edit CanvasStack in the middle of quote chain
+-effects as canvases appear or disappear (e.g. fading)
 -look into that one error that always pops up in the console
 -make class MoneyData?
     --this can be used to update both MoneyDisplay and
@@ -17,8 +17,8 @@ At some point:
 -again consider a developed QuoteBubble object
     --drawQuoteText() could stay in game-show-fusion.js (and either
         stand alone or be added to the prototype)
-    --generating script files to include in both index.html and
-        unit-tests.html with AngularJS
+-generating script files to include in both index.html and
+    unit-tests.html with AngularJS
 -improve the fitting of a quote into its bubble
     --find a way to properly limit a line in a quote
         --try measuring something other than number of characters
@@ -31,7 +31,7 @@ At some point:
 
 After game is playable (or, perhaps, ready for release 0.1):
 -better looking briefcases
--fake non-static advertisement panel on the side
+-fake static advertisement panel on the side
     --could advertise some of my YouTube videos
 -more decorated main menu
 -a guide to each assistant that can be unlocked by reaching a certain
@@ -47,17 +47,7 @@ Before release 0.1:
 
 Considerable:
 -making the game work on Safari 5 for Windows
--having a global variable for each canvas
--if multiple toggles, make something to generate the layout of a
- toggle function (e.g. including the check of precondition error)
--generating proper file header in add-file script
 -put truly private and priviledged members/functions in classes
--disabling the ability of the user to hold Enter to rush through the
- quotes (to prevent accidents, although disabling this feature prevents
- players from controlling their gameplay speed)
-    --this could be fixed with one second delay between setting enter
-      action
--effects as canvases appear or disappear
 -CSS classes for manipulating the color of the background of certain
     canvases
 
