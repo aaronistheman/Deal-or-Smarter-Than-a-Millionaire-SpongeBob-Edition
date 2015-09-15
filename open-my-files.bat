@@ -16,4 +16,5 @@ start Notepad++ js/key-actions.js
 start Notepad++ js/key-action.js
 start Notepad++ js/canvas-ids.js
 start Notepad++ js/explain-rules.js
+start Notepad++ js/speaker.js
 exit
