@@ -1,6 +1,5 @@
 Next:
 -introduce helpers
-    --make the checking in drawNewSpeaker() easier
     --draw each one's sprite
     --introduce each in the chain of rules explanations
 -start working on questions display, randomization, topics, and

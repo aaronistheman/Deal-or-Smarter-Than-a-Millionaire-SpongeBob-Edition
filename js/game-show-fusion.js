@@ -136,30 +136,18 @@ function eraseQuoteBubbleText() {
     @pre canvases are set up
     @post old speaker (if any) has been erased;
     correct speaker has been drawn and endCallback has
-    been called; if invalid speaker, a message has been printed to
-    the console, and a string indicating the error has been returned
+    been called
     @hasTest no
     @param speakerName name of the person to draw; should be
     a constant in SPEAKERS
     @param endCallback to call after the drawing has finished (this
     can be used to chain quotes to the drawing of their speaker)
-    @returns return value of parameterError() if invalid speakerName
-    @throws (caught) exception if invalid speakerName
+    @returns nothing
+    @throws nothing
 */
 function drawNewSpeaker(speakerName, endCallback) {
     eraseSpeaker();
-
-    try {
-        // Draw the correct speaker, or cause an error
-        if (speakerName === SPEAKERS.SPONGEBOB)
-            gameShow.speakers[SPEAKERS.SPONGEBOB].draw();
-        else
-            throw "Invalid parameter speakerName()";
-    }
-    catch(err) {
-        return parameterError(err);
-    }
-
+    gameShow.speakers[speakerName].draw();
     endCallback();
 }
 
