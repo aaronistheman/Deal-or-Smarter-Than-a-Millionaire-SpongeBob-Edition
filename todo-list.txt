@@ -1,10 +1,4 @@
 Next:
--show canvases that should be shown during introduction (or basic
-    versions of them)
-    --put junk text on unused canvases?
-    --put these functions under an object
-        --could put in own file and let it take the needed
-            objects as parameters
 -introduce helpers
 -start working on questions display, randomization, topics, and
     appropriate objects
