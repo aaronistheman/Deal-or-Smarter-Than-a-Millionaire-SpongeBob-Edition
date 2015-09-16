@@ -1,12 +1,16 @@
 Next:
--questions display
-    --generate ten questions of different categories from a pool
+-questions display (for now, only have a subject and grade level
+    for each question)
+    --apply grade level as a filter when picking ten questions
     --display the questions' difficulty and subject on the
         questions display
     --a question can be emphasized
     --the user can change which one is emphasized
+-generating script files to include in both index.html and
+    unit-tests.html with AngularJS
 -picking a question
     --the user can pick
+    --the question is generated after the user picks
     --the question and options (i.e. remaining help and answers)
         are presented
 -implement peeking
@@ -40,8 +44,6 @@ At some point:
 -again consider a developed QuoteBubble object
     --drawQuoteText() could stay in game-show-fusion.js (and either
         stand alone or be added to the prototype)
--generating script files to include in both index.html and
-    unit-tests.html with AngularJS
 
 After game is playable (or, perhaps, ready for release 0.1):
 -maybe change some of host's quotes to make some of the game's
@@ -76,20 +78,3 @@ Considerable:
         --could split each string/quote into array of words (separate
             by ' ')
 -load question data (e.g. with jQuery AJAX)
-
-Question categories:
--video games
--crime (e.g. Bubble Buddy high tide, Plankton, the strangler)
--geography
--staff
--restaurants
--vehicles
--side characters
--main characters
--art
--driving
--fitness
--rumors (e.g. hash slinging slasher, creepypasta)
--history
--technology (Robo Krabs)
--quotations

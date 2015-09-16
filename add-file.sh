@@ -12,6 +12,9 @@
 # Create the file
 echo > $1
 
+# Open the file
+start Notepad++ $1
+
 # Edit the batch file that opens files (if applicable)
 sed -i "s~exit~start Notepad++ $1\nexit~" open-my-files.bat
 

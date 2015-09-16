@@ -26,6 +26,8 @@ gameShow.briefcaseDisplay = new BriefcaseDisplay(
 
 gameShow.selectedBriefcaseNumber = undefined;
 
+gameShow.questions = new Questions();
+
 gameShow.keyActions = new KeyActions();
 
 gameShow.sounds = {};
