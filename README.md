@@ -42,12 +42,5 @@ to "pre-commit".
 Acknowledgements
 ----------------
 
-The seamless, background texture is from www.mb3d.co.uk.
-
-The image of SpongeBob is from www.wikihow.com.
-
-The audio that plays when a quote bubble is finished was made with Bfxr.
-
-The audio that plays in the title screen was downloaded from a
-YouTube video that belonged to the user "EVEL CLAN". This audio
-originated from "Who Wants To Be A Millionaire".
+I made the background of many of the images transparent with the
+website at www.online-image-editor.com.

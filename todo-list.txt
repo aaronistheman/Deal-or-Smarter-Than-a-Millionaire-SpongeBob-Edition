@@ -1,10 +1,11 @@
 Next:
--introduce helpers
 -start working on questions display, randomization, topics, and
     appropriate objects
 
 At some point:
 -effects as canvases appear or disappear (e.g. fading)
+    --and maybe even between speakers (could maybe hide and then show
+        as a trick)
 -look into that one error that always pops up in the console
 -make class MoneyData?
     --this can be used to update both MoneyDisplay and
@@ -51,22 +52,24 @@ Considerable:
 -CSS classes for manipulating the color of the background of certain
     canvases
 
-Ideas for millionaires to be able to choose as assistants:
--Kevin O'Leary ("Mr. Wonderful")
--Mr. Burns
+Question categories:
+-video games
+-crime (e.g. Bubble Buddy high tide, Plankton, the strangler)
+-geography
+-staff
+-restaurants
+-vehicles
+-side characters
+-main characters
+-art
+-driving
+-fitness
+-rumors (e.g. hash slinging slasher, creepypasta)
+-history
+-technology (Robo Krabs)
+-quotations
 
-Game flow:
--host introduces himself and game
--host shows you the Deal or No Deal money screen
--host explains the rules
-    --you pick a case
-    --you pick a question and try to answer it
-    --each correct answer leads to a case with a random money amount
-      being opened
-    --after every two questions, the banker (Mr. Krabs) makes a deal
-    --if you miss a question and are not saved, you leave with nothing
-    --if you get past all ten questions, you have the option of either
-        taking your case home or going for the million dollar question
+Remaining introductory game flow to implement:
 -host says you do have help
     --host introduces five helpers who can save you or let you cheat
         --introduce helpers

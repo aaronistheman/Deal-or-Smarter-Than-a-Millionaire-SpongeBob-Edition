@@ -6,9 +6,7 @@
 */
 
 var gameShow = {};
-gameShow.spongeBobImage = new Image();
-gameShow.spongeBobImage.src = "images/spongebob.png";
-gameShow.quoteLengthForWrapAround = 70;
+gameShow.speakers = getSpeakerObjects();
 
 gameShow.moneyAmounts = ['0.01', '50', '300', '750', '1,000',
     '10,000', '25,000', '100,000', '250,000', '500,000'];
@@ -34,6 +32,7 @@ gameShow.sounds = {};
 gameShow.sounds.nextQuote;
 gameShow.sounds.openingTheme;
 
+gameShow.quoteLengthForWrapAround = 70;
 gameShow.quoteBubble = {};
 gameShow.quoteBubble.x = 50;
 gameShow.quoteBubble.y = 440;
@@ -113,15 +112,6 @@ function eraseSpeaker() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-// @post SpongeBob has been drawn so that he looks like he's
-// speaking to you
-function drawSpongebob() {
-    var canvas = document.getElementById(CANVAS_IDS.SPEAKER);
-    var ctx = canvas.getContext('2d');
-
-    ctx.drawImage(gameShow.spongeBobImage, 600, 50);
-}
-
 // @post quote bubble has been drawn on its canvas
 function drawQuoteBubble() {
     var canvas = document.getElementById(CANVAS_IDS.QUOTE_BUBBLE);
@@ -145,32 +135,16 @@ function eraseQuoteBubbleText() {
 /*
     @pre canvases are set up
     @post old speaker (if any) has been erased;
-    correct speaker has been drawn and endCallback has
-    been called; if invalid speaker, a message has been printed to
-    the console, and a string indicating the error has been returned
+    correct speaker has been drawn
     @hasTest no
-    @param speakerName name of the person to draw; available options:
-        -"SpongeBob" to draw SpongeBob
-    @param endCallback to call after the drawing has finished (this
-    can be used to chain quotes to the drawing of their speaker)
-    @returns return value of parameterError() if invalid speakerName
-    @throws (caught) exception if invalid speakerName
+    @param speakerName name of the person to draw; should be
+    a constant in SPEAKERS
+    @returns nothing
+    @throws nothing
 */
-function drawNewSpeaker(speakerName, endCallback) {
+function drawNewSpeaker(speakerName) {
     eraseSpeaker();
-
-    try {
-        // Draw the correct speaker, or cause an error
-        if (speakerName === "SpongeBob")
-            drawSpongebob();
-        else
-            throw "Invalid parameter speakerName()";
-    }
-    catch(err) {
-        return parameterError(err);
-    }
-
-    endCallback();
+    gameShow.speakers[speakerName].draw();
 }
 
 /*
@@ -323,16 +297,15 @@ function setUpGame() {
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
 
     // Host's introductory text
-    drawNewSpeaker("SpongeBob", function() {
-        gameShow.quotesToDraw.add("Welcome to the game. " +
-            "Press Enter to go to the next quote.")
-            .add("I'm your host, " +
-                "SpongeBob Squarepants.")
-            .add("Do you think you can beat the banker?")
-            .add("If so, get ready to play this " +
-                "combination of game shows.")
-            .deployQuoteChain(explainRules);
-    });
+    drawNewSpeaker(SPEAKERS.SPONGEBOB);
+    gameShow.quotesToDraw.add("Welcome to the game. " +
+        "Press Enter to go to the next quote.")
+        .add("I'm your host, " +
+            "SpongeBob Squarepants.")
+        .add("Do you think you can beat the banker?")
+        .add("If so, get ready to play this " +
+            "combination of game shows.")
+        .deployQuoteChain(explainRules);
 }
 
 /*

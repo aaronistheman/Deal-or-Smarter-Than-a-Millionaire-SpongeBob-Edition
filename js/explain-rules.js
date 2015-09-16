@@ -93,8 +93,40 @@ function explainMillionDollarQuestion() {
 
 function explainHelp() {
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
-    gameShow.quotesToDraw.add(
-        "You do have help, but I haven't been programmed " +
-        "to describe how.")
+    gameShow.quotesToDraw.add("However, you're not alone.")
+        .add("You have helpers.")
+        .add("Let's see them.")
+        .deployQuoteChain(showSquidward);
+}
+
+function showSquidward() {
+    drawNewSpeaker(SPEAKERS.SQUIDWARD);
+    gameShow.quotesToDraw.add("Fortunately, I have enough talent " +
+        "for all of you.")
+        .deployQuoteChain(showMermaidMan);
+}
+
+function showMermaidMan() {
+    drawNewSpeaker(SPEAKERS.MERMAID_MAN);
+    gameShow.quotesToDraw.add("EVIL!")
+        .deployQuoteChain(showSandy);
+}
+
+function showSandy() {
+    drawNewSpeaker(SPEAKERS.SANDY);
+    gameShow.quotesToDraw.add("Howdy ya'll.")
+        .deployQuoteChain(showLarryTheLobster);
+}
+
+function showLarryTheLobster() {
+    drawNewSpeaker(SPEAKERS.LARRY);
+    gameShow.quotesToDraw.add("Hey, this party's finally " +
+        "starting to pick up. ")
+        .deployQuoteChain(showGary);
+}
+
+function showGary() {
+    drawNewSpeaker(SPEAKERS.GARY);
+    gameShow.quotesToDraw.add("Meow.")
         .deployQuoteChain(selectFirstCase);
 }
