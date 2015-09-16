@@ -128,5 +128,34 @@ function showLarryTheLobster() {
 function showGary() {
     drawNewSpeaker(SPEAKERS.GARY);
     gameShow.quotesToDraw.add("Meow.")
+        .deployQuoteChain(explainSourcesOfHelp);
+}
+
+function explainSourcesOfHelp() {
+    drawNewSpeaker(SPEAKERS.SPONGEBOB);
+
+    // Describe what the helpers can do and the two ways in
+    // which the player can cheat off of them
+    gameShow.quotesToDraw.add("You get to pick one helper before " +
+        "every two questions.")
+        .add("You have two cheats you can use on your helper.")
+        .add("Once per game, you can peek at your helper's answer " +
+            "before picking your own.")
+        .add("Additionally, also once per game, if you get a " +
+            "question wrong, your helper has a chance at saving you.")
+        .add("To do this, he or she must've picked the correct " +
+            "answer.")
+        .add("However, your helpers don't know everything.")
+        .add("They can be wrong. Keep that in mind.")
+
+    // Describe the two additional lifelines that the player has
+        .add("In addition to the cheats, you also have two lifelines.")
+        .add("Each of these can only be used once per game.")
+        .add("You can ask the audience to vote on a question.")
+        .add("You can also phone a friend to try to get the answer.")
+        .add("Hopefully, that friend is reliable.")
+
+        .add("However, be aware that none of your cheats and lifelines" +
+            " can be used on the million dollar question.")
         .deployQuoteChain(selectFirstCase);
 }
