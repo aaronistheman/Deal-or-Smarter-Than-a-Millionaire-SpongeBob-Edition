@@ -1,6 +1,4 @@
 Next:
--introduce helpers
-    --position (and perhaps resize) the speakers appropriately
 -start working on questions display, randomization, topics, and
     appropriate objects
 
