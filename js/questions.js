@@ -5,11 +5,47 @@
     Release number: 0.1
 */
 
-function Questions() {
+/*
+    @pre the canvas indicated by graphicsCanvasId is behind the
+    canvas indicated by textCanvasId
+    @param graphicsCanvasId id of the canvas to draw the non-text
+    part of the questions' display on
+    @param textCanvasId id of the canvas to draw the text part
+    of the questions' display on
+*/
+function Questions(graphicsCanvasId, textCanvasId) {
     // Storage of objects of type Question
     this._questions = [];
 
+    // Store ten questions for use in the game
     this._generateTenQuestions();
+
+    // Store canvas data
+    this.choosingQuestionCanvases = {
+        graphicsCanvasId : graphicsCanvasId,
+        textCanvasId : textCanvasId,
+    };
+}
+
+/*
+    @post the two canvases for this purpose have been erased,
+    after which the stored questions were drawn in a way so
+    that the user could choose which to try to answer; each's
+    question's grade level and subject will be displayed
+*/
+Questions.prototype.displayAsChoices = function() {
+    // Set up the canvas contexts
+    var graphicsContext = document.getElementById(
+        this.choosingQuestionCanvases.graphicsCanvasId).getContext('2d');
+    var textContext = document.getElementById(
+        this.choosingQuestionCanvases.textCanvasId).getContext('2d');
+
+    // Iterate to draw each question label
+    for (var i = 0; i < NUMBER_OF_QUESTIONS_TO_DISPLAY; ++i) {
+        // var position =
+        // this._drawQuestionLabel(graphicsContext, textContext,
+            // position.x, position.y, (i + 1));
+    }
 }
 
 /*
@@ -85,6 +121,47 @@ Questions.prototype._generateTenQuestions = function() {
 /*
     Static methods and/or members
 */
+
+Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY = 10;
+
+// For positioning the question labels
+Questions.HEIGHT_SPACE_PER_LABEL = 410 / 5;
+Questions.LABEL_DIMENSIONS = new Vector2d(400, 52);
+Questions.LABEL_PADDING =
+    new Vector2d(100,
+        Questions.HEIGHT_SPACE_PER_LABEL -
+            Questions.LABEL_DIMENSIONS.y);
+// space needed to jump from point on one label to exact same
+// point of adjacent label
+Questions.MARGINAL_LABEL_POSITION =
+    Questions.LABEL_DIMENSIONS.getSum(Questions.LABEL_PADDING);
+Questions.FIRST_LABEL_POSITION = new Vector2d(
+    (Questions.LABEL_PADDING.x / 2),
+    Questions.LABEL_PADDING.y +
+        (4 * Questions.MARGINAL_LABEL_POSITION.y));
+
+/*
+    @hasTest yes
+    @param whichLabel number of the label to get the position of;
+    1 <= whichLabel <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY;
+    the label numbers are like this:
+    [9, 10] - the top of the display; fifth grade questions
+    [7, 8] - fourth grade
+    [5, 6] - third grade
+    [3, 4] - second grade
+    [1, 2] - the bottom of the display; first grade questions
+    @returns Vector2d object containing the top-left position at which
+    to draw the question label (on the appropriate canvases)
+*/
+Questions.getLabelPosition = function(whichLabel) {
+    // Decide how much to adjust the default label position
+    var multiplierX = ((whichLabel - 1) % 2);
+    var multiplierY = -1 * (Math.ceil(whichLabel / 2.0) - 1);
+    var adjustment = new Vector2d(multiplierX, multiplierY);
+
+    return Questions.FIRST_LABEL_POSITION.getSum(
+        Questions.MARGINAL_LABEL_POSITION.getProduct(adjustment));
+}
 
 /*
     @returns an array of instances of Question so that this array

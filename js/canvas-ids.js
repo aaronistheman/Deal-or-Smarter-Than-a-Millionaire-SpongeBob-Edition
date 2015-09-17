@@ -5,7 +5,8 @@
     Release number: 0.1
 */
 
-// Includes ids of canvases;
+// the values of the constants are the ids of the generated
+// canvases;
 // note that the order of these ids matter in that they affect
 // the order in which the AngularJS code generates the canvases
 // (e.g. the quote text must be above the quote bubble);
@@ -17,7 +18,8 @@ var CANVAS_IDS = {
     BRIEFCASES_TEXT : "briefcase-text-canvas",
     QUESTIONING : "questioning-canvas",
     MILLION_QUESTION : "million-question-canvas",
-    CHOOSE_QUESTION : "choose-question-canvas",
+    CHOOSE_QUESTION_GRAPHICS : "choose-question-graphics-canvas",
+    CHOOSE_QUESTION_TEXT : "choose-question-text-canvas",
     MONEY_DISPLAY_BARS : "money-display-bars-canvas",
     MONEY_DISPLAY_TEXT : "money-display-text-canvas",
     SPEAKER : "speaker-canvas",
@@ -34,3 +36,6 @@ CANVAS_IDS.MONEY_DISPLAY =
     [CANVAS_IDS.MONEY_DISPLAY_TEXT, CANVAS_IDS.MONEY_DISPLAY_BARS];
 CANVAS_IDS.BRIEFCASE_DISPLAY =
     [CANVAS_IDS.BRIEFCASES, CANVAS_IDS.BRIEFCASES_TEXT];
+CANVAS_IDS.CHOOSE_QUESTION =
+    [CANVAS_IDS.CHOOSE_QUESTION_GRAPHICS,
+    CANVAS_IDS.CHOOSE_QUESTION_TEXT];

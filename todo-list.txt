@@ -5,6 +5,8 @@ Next:
         questions display
     --a question can be emphasized
     --the user can change which one is emphasized
+-put the unit test modules in alphabetical order
+    --specify this in comments (as well as order of tests within modules)
 -generating script files to include in both index.html and
     unit-tests.html with AngularJS
 -picking a question
