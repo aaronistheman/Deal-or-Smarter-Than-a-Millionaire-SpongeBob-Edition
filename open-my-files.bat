@@ -18,6 +18,7 @@ start Notepad++ js/canvas-ids.js
 start Notepad++ js/explain-rules.js
 start Notepad++ js/speaker.js
 start Notepad++ js/question.js
-start Notepad++ js/categories.js
+start Notepad++ js/subjects.js
 start Notepad++ js/questions.js
+start Notepad++ js/grades.js
 exit

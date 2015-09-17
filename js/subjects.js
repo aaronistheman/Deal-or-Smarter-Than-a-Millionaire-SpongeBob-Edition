@@ -5,7 +5,9 @@
     Release number: 0.1
 */
 
-// These are for the questions
+// These are for the questions.
+// The values of the constants are important in displaying each
+// question's label.
 var SUBJECTS = {
     VIDEO_GAMES : "Video Games",
     CRIME : "Crime",

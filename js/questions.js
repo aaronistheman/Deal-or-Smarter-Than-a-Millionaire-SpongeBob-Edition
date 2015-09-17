@@ -29,22 +29,57 @@ function Questions() {
     @post this._questions contains ten instances of type Question;
     each of these instances has a different subject matter; two
     questions of the ten are attached to each grade level from
-    one to five
+    one to five, and these ten questions are sorted by grade level
+    @hasTest yes
 */
 Questions.prototype._generateTenQuestions = function() {
     var supply = Questions.getEntireSupplyOfQuestions();
+    var tenQuestions = [];
 
-    // Pick a question from a grade.
-    // Erase all questions, regardingless of grade,
-    // from supply that have its subject.
-    // Pick another question from the same grade.
-    // Erase all questions that have its subject.
-    // Go to the next grade, and repeat the process.
+    /*
+        @pre for each grade level, supplyOfQuestions contains at
+        least two questions of different subject matters; otherwise,
+        an infinite loop will occur
+        @post two questions of the given grade from supplyOfQuestions
+        have been put in tenQuestions; these two questions don't
+        have the same subject; after a question is put in tenQuestions,
+        every question in supplyOfQuestions that has the question's
+        subject matter will be removed
+    */
+    var pickTwoQuestions = function(supplyOfQuestions, grade) {
+        var numberOfQuestionsAdded = 0;
+        while (numberOfQuestionsAdded < 2) {
+            var randomIndex =
+                Math.floor((Math.random() * supplyOfQuestions.length));
 
-    while (this._questions.length < 10) {
-        var randomIndex = Math.floor((Math.random() * supply.length));
-        this._questions.push(supply.splice(randomIndex, 1).pop());
-    }
+            // Only add the question indicated by randomIndex if the
+            // grade level is correct
+            if (supplyOfQuestions[randomIndex].grade === grade) {
+                var questionToAdd =
+                    supplyOfQuestions.splice(randomIndex, 1).pop();
+                tenQuestions.push(questionToAdd);
+                ++numberOfQuestionsAdded;
+
+                // Erase all questions that have this question's subject
+                // matter
+                var subjectToErase = questionToAdd.subject;
+                for (var i = 0; i < supplyOfQuestions.length; ) {
+                    if (supplyOfQuestions[i].subject === subjectToErase)
+                        supplyOfQuestions.splice(i, 1);
+                    else
+                        ++i;
+                }
+            }
+        }
+    };
+
+    pickTwoQuestions(supply, GRADES.FIRST);
+    pickTwoQuestions(supply, GRADES.SECOND);
+    pickTwoQuestions(supply, GRADES.THIRD);
+    pickTwoQuestions(supply, GRADES.FOURTH);
+    pickTwoQuestions(supply, GRADES.FIFTH);
+
+    this._questions = tenQuestions;
 }
 
 /*
@@ -58,21 +93,30 @@ Questions.prototype._generateTenQuestions = function() {
 Questions.getEntireSupplyOfQuestions = function() {
     var supply = [];
 
-    supply.push(new Question(SUBJECTS.VIDEO_GAMES));
-    supply.push(new Question(SUBJECTS.CRIME));
-    supply.push(new Question(SUBJECTS.GEOGRAPHY));
-    supply.push(new Question(SUBJECTS.STAFF));
-    supply.push(new Question(SUBJECTS.RESTAURANTS));
-    supply.push(new Question(SUBJECTS.VEHICLES));
-    supply.push(new Question(SUBJECTS.SIDE_CHARACTERS));
-    supply.push(new Question(SUBJECTS.MAIN_CHARACTERS));
-    supply.push(new Question(SUBJECTS.ART));
-    supply.push(new Question(SUBJECTS.DRIVING));
-    supply.push(new Question(SUBJECTS.FITNESS));
-    supply.push(new Question(SUBJECTS.RUMORS));
-    supply.push(new Question(SUBJECTS.HISTORY));
-    supply.push(new Question(SUBJECTS.TECHNOLOGY));
-    supply.push(new Question(SUBJECTS.QUOTATIONS));
+    supply.push(new Question(GRADES.FIRST, SUBJECTS.VIDEO_GAMES));
+    supply.push(new Question(GRADES.FIRST, SUBJECTS.VIDEO_GAMES));
+    supply.push(new Question(GRADES.FIRST, SUBJECTS.CRIME));
+    supply.push(new Question(GRADES.FIRST, SUBJECTS.GEOGRAPHY));
+
+    supply.push(new Question(GRADES.SECOND, SUBJECTS.STAFF));
+    supply.push(new Question(GRADES.SECOND, SUBJECTS.STAFF));
+    supply.push(new Question(GRADES.SECOND, SUBJECTS.RESTAURANTS));
+    supply.push(new Question(GRADES.SECOND, SUBJECTS.VEHICLES));
+
+    supply.push(new Question(GRADES.THIRD, SUBJECTS.SIDE_CHARACTERS));
+    supply.push(new Question(GRADES.THIRD, SUBJECTS.SIDE_CHARACTERS));
+    supply.push(new Question(GRADES.THIRD, SUBJECTS.MAIN_CHARACTERS));
+    supply.push(new Question(GRADES.THIRD, SUBJECTS.ART));
+
+    supply.push(new Question(GRADES.FOURTH, SUBJECTS.DRIVING));
+    supply.push(new Question(GRADES.FOURTH, SUBJECTS.DRIVING));
+    supply.push(new Question(GRADES.FOURTH, SUBJECTS.FITNESS));
+    supply.push(new Question(GRADES.FOURTH, SUBJECTS.RUMORS));
+
+    supply.push(new Question(GRADES.FIFTH, SUBJECTS.HISTORY));
+    supply.push(new Question(GRADES.FIFTH, SUBJECTS.HISTORY));
+    supply.push(new Question(GRADES.FIFTH, SUBJECTS.TECHNOLOGY));
+    supply.push(new Question(GRADES.FIFTH, SUBJECTS.QUOTATIONS));
 
     return supply;
 }

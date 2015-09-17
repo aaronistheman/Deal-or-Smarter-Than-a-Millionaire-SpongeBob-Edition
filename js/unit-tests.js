@@ -121,6 +121,68 @@ QUnit.test("CanvasStack.clear()", function(assert) {
         "All stored canvases were removed");
 });
 
+QUnit.module("questions.js");
+
+QUnit.test("Questions._generateTenQuestions()", function(assert) {
+    // Note that this test's effectiveness is slightly up to chance.
+
+    // the constructor calls the tested function, so testing
+    // can already be done
+    var questionsObject = new Questions();
+    var questions = questionsObject._questions;
+
+    QUnit.deepEqual(questions.length, 10,
+        "Ten instances of type Question were generated.");
+
+    // Make an array for only the ten questions' subject matters
+    // so that indexOf() and lastIndexOf() can be used more easily
+    var subjects = [];
+    for (var i = 0; i < questions.length; ++i)
+        subjects.push(questions[i].subject);
+    // Confirm that each of the ten stored questions has a different
+    // subject matter
+    var uniqueSubjectMatters = true;
+    for (var i = 0; i < subjects.length - 1; ++i) {
+        if (subjects.indexOf(subjects[i]) !==
+            subjects.lastIndexOf(subjects[i]))
+        {
+            // The subject matter must be present in more than one
+            // part of the array if its first appearance and last
+            // appearance (index-wise) in the array are not the same
+            uniqueSubjectMatters = false;
+
+            // Escape because failed test
+            break;
+        }
+    }
+    QUnit.ok(uniqueSubjectMatters, "Each of the ten stored questions " +
+        "has a different subject matter.");
+
+    // Confirm that every two of the ten is attached to a unique
+    // grade level from first to fifth; this also checks
+    // that the questions are sorted by grade level
+    var passingTest = true;
+    var grade = GRADES.FIRST;
+    for (var i = 0; i < questions.length; ++i) {
+        if (questions[i].grade !== grade) {
+            // Failed test; escape loop
+            passingTest = false;
+            break;
+        }
+
+        // Increase the grade level if two questions have been
+        // compared to this grade level already; note that the
+        // following works because the GRADES constants have
+        // numerical values
+        if (i % 2 === 1)
+            grade += 1;
+    }
+    QUnit.ok(passingTest, "Every two of the ten questions " +
+        "corresponds to a grade level going up from first to fifth, " +
+        "and the questions are sorted by grade level, with the first " +
+        "grade questions having the lowest index in the array of questions.");
+});
+
 QUnit.module("error-handling.js");
 
 QUnit.test("parameterError()", function(assert) {
