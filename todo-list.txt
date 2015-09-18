@@ -60,14 +60,14 @@ Considerable:
 -put truly private and priviledged members/functions in classes
 -CSS classes for manipulating the color of the background of certain
     canvases
--improve the fitting of a quote into its bubble
-    --find a way to properly limit a line in a quote
-        --try measuring something other than number of characters
-        --or find a way to make each character take up same space
-    --find a way to deal with splitting a word between lines (besides
-    having to put extra whitespace)
-        --could limit quotes to one line
-        --could split each string/quote into array of words (separate
-            by ' ')
+-improve the fitting of a quote into its bubble; ideas:
+    --try measuring something other than number of characters
+    --find a way to make each character take up same space
+    --could limit quotes to one line
+    --could split each string/quote into array of words (separate
+        by ' ')
+    --could make the quote bubble not be a canvas, but make it hang
+    below the canvas; this way, it would be properly formatted as
+    a typical html element would be
 -load question data (e.g. with jQuery AJAX)
 -using web fonts
