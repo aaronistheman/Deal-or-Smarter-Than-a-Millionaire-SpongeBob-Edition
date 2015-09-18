@@ -67,14 +67,50 @@ Questions.prototype._drawQuestionLabel =
     function(graphicsContext, textContext, x, y, text)
 {
     // Draw the graphical label
-    graphicsContext.fillRect(x, y,
-        Questions.LABEL_DIMENSIONS.x,
+    var circularEdgeRadius = Questions.LABEL_DIMENSIONS.y / 2.0;
+    graphicsContext.fillRect(
+        x + circularEdgeRadius,
+        y,
+        Questions.LABEL_DIMENSIONS.x - (2 * circularEdgeRadius),
         Questions.LABEL_DIMENSIONS.y);
+    // Draw the circular edges
+    this._drawCircularEdgeOfLabel(
+        graphicsContext,
+        x + circularEdgeRadius,
+        y + circularEdgeRadius,
+        circularEdgeRadius,
+        Math.PI * 0.5,
+        Math.PI * 1.5);
+    this._drawCircularEdgeOfLabel(
+        graphicsContext,
+        x + Questions.LABEL_DIMENSIONS.x - circularEdgeRadius,
+        y + circularEdgeRadius,
+        circularEdgeRadius,
+        Math.PI * 1.5,
+        Math.PI * 0.5);
 
     // Draw the text of the label
     textContext.fillText(text,
         x + (Questions.LABEL_DIMENSIONS.x / 2.0),
         y + (Questions.LABEL_DIMENSIONS.y / 2.0));
+};
+
+/*
+    @param graphicsContext to use for drawing
+    @param x position of arc's center
+    @param y position of arc's center
+    @param arcRadius
+    @param startingAngle of the arc
+    @param endingAngle
+*/
+Questions.prototype._drawCircularEdgeOfLabel =
+    function(graphicsContext, x, y, arcRadius, startingAngle,
+        endingAngle)
+{
+    graphicsContext.beginPath();
+    graphicsContext.arc(x, y, arcRadius, startingAngle, endingAngle);
+    graphicsContext.closePath();
+    graphicsContext.fill();
 };
 
 /*
