@@ -45,6 +45,15 @@ function Questions(graphicsCanvasId, textCanvasId, numberToEmphasize) {
 }
 
 /*
+    @param whichOne number of the question to get
+    @returns the question among the stored ten questions that is
+    indicated by whichOne
+*/
+Questions.prototype.getQuestion = function(whichOne) {
+    return this._questions[whichOne - 1];
+};
+
+/*
     @post the two canvases for this purpose have been erased,
     after which the stored questions were drawn in a way so
     that the user could choose which to try to answer; each's
@@ -210,18 +219,6 @@ Questions.prototype._getLabelTextFillStyle = function(number) {
     else
         return "white";
 };
-
-/*
-    Because each question must have a unique subject (but not
-    necessarily a unique grade level), this is how a question
-    from the storage of ten questions will
-    be retrieved based on the user's choice.
-    @pre none of the Question objects in "this" have the same
-    subject
-*/
-// Questions.prototype.getQuestionBySubject = function(subject) {
-
-// }
 
 /*
     @pre 1 <= newNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY

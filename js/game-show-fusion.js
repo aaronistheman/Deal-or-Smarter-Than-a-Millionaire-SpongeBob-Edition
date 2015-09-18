@@ -31,6 +31,8 @@ gameShow.questions = new Questions(
     CANVAS_IDS.CHOOSE_QUESTION_TEXT,
     "none");
 
+gameShow.selectedQuestion = undefined;
+
 gameShow.keyActions = new KeyActions();
 
 gameShow.sounds = {};
@@ -326,10 +328,17 @@ function selectFirstCase() {
 }
 
 /*
-    @post nothing yet
+    @post the question selected by the player has been presented
+    to him/her
 */
 function handleQuestionSelection() {
     allowQuestionSelectorMovement(false);
+
+    // Present the question
+    gameShow.selectedQuestion = gameShow.questions.numberToEmphasize;
+    console.log(
+        gameShow.questions.getQuestion(
+            gameShow.selectedQuestion).subject);
 }
 
 /*
