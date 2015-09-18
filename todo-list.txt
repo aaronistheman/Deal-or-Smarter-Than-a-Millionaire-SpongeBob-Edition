@@ -1,6 +1,4 @@
 Next:
--generating script files to include in both index.html and
-    unit-tests.html with AngularJS
 -picking a question
     --a question can be emphasized
     --the user can change which one is emphasized
