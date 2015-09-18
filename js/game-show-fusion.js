@@ -258,6 +258,25 @@ function allowCaseSelectorMovement(bool) {
 }
 
 /*
+    @param bool true to allow user to change which case is emphasized;
+    false to remove this ability
+*/
+function allowQuestionSelectorMovement(bool) {
+    if (bool === true) {
+        gameShow.keyActions.set(KEY_CODES.LEFT_ARROW, function() {
+            gameShow.questions.emphasizeLeftLabel();
+        })
+        .set(KEY_CODES.RIGHT_ARROW, function() {
+            gameShow.questions.emphasizeRightLabel();
+        });
+    }
+    else {
+        gameShow.keyActions.set(KEY_CODES.LEFT_ARROW, function() {})
+            .set(KEY_CODES.RIGHT_ARROW, function() {});
+    }
+}
+
+/*
     @post the selection of a case has been performed; the
     selection has been set up to be announced by the host; the
     briefcase display has been updated; the
@@ -307,6 +326,12 @@ function selectQuestion() {
     gameShow.canvasStack.set(CANVAS_IDS.CHOOSE_QUESTION.concat(
         CANVAS_IDS.QUOTE));
     gameShow.questions.setEmphasis(1);
+
+    allowQuestionSelectorMovement(true);
+
+    gameShow.quotesToDraw.add("Use the left and right arrow keys " +
+        "and the Enter key to select a question")
+        .deployQuoteChain(eraseQuoteBubbleText);
 }
 
 function setUpGame() {

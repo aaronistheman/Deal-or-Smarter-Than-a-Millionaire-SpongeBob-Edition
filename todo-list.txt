@@ -1,6 +1,7 @@
 Next:
 -picking a question
-    --the user can change which one is emphasized
+    --the user can also change which one is emphasize with up/down
+        keys
     --the user can pick
     --the question is generated after the user picks
     --the question and options (i.e. remaining help and answers)
