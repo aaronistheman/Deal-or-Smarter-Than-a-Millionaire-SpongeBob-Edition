@@ -6,19 +6,36 @@
 */
 
 /*
+    Note that each of the display ten questions has an assigned
+    number; when displayed as options for the user, the numbers
+    of the questions are like this:
+    [9, 10] - the top of the display; fifth grade questions
+    [7, 8] - fourth grade
+    [5, 6] - third grade
+    [3, 4] - second grade
+    [1, 2] - the bottom of the display; first grade questions
+*/
+
+/*
     @pre the canvas indicated by graphicsCanvasId is behind the
     canvas indicated by textCanvasId
     @param graphicsCanvasId id of the canvas to draw the non-text
     part of the questions' display on
     @param textCanvasId id of the canvas to draw the text part
     of the questions' display on
+    @param numberToEmphasize number of the question to emphasize;
+    set to "none" to emphasize no question label
 */
-function Questions(graphicsCanvasId, textCanvasId) {
+function Questions(graphicsCanvasId, textCanvasId, numberToEmphasize) {
     // Storage of objects of type Question
     this._questions = [];
 
     // Store ten questions for use in the game
     this._generateTenQuestions();
+
+    // This number indicates which question the user is currently
+    // hovering over as he selects a question
+    this.numberToEmphasize = numberToEmphasize;
 
     // Store canvas data
     this.choosingQuestionCanvases = {
@@ -41,12 +58,9 @@ Questions.prototype.displayAsChoices = function() {
 
     // Iterate to draw each question label
     for (var i = 0; i < Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY; ++i) {
-        graphicsContext.fillStyle = Questions._getLabelFillStyle(
-            this._questions[i].grade);
         var position = Questions._getLabelPosition(i + 1);
-        var text = Questions._getLabelText(this._questions[i]);
         this._drawQuestionLabel(graphicsContext, textContext,
-            position.x, position.y, text);
+            position.x, position.y, (i + 1));
     }
 };
 
@@ -55,17 +69,21 @@ Questions.prototype.displayAsChoices = function() {
     with the given text, and with the given fill style; the
     graphical part is on graphicsContext; the textual part is on
     is on textContext
-    @param graphicsContext set up context of the canvas to draw
+    @param graphicsContext context of the canvas to draw
     the graphical label on
     @param textContext set up context of the canvas to draw the
     label's text on
     @param x top left x-coordinate of the label's reserved space
     @param y top left y-coordinate of the label's reserved space
-    @param text to draw on the label
+    @param number of the question label
 */
 Questions.prototype._drawQuestionLabel =
-    function(graphicsContext, textContext, x, y, text)
+    function(graphicsContext, textContext, x, y, number)
 {
+    graphicsContext.fillStyle = this._getLabelFillStyle(number);
+    textContext.fillStyle = this._getLabelTextFillStyle(number);
+    var text = Questions._getLabelText(this._questions[number - 1]);
+
     // Draw the graphical label
     var circularEdgeRadius = Questions.LABEL_DIMENSIONS.y / 2.0;
     graphicsContext.fillRect(
@@ -93,6 +111,31 @@ Questions.prototype._drawQuestionLabel =
     textContext.fillText(text,
         x + (Questions.LABEL_DIMENSIONS.x / 2.0),
         y + (Questions.LABEL_DIMENSIONS.y / 2.0));
+};
+
+/*
+    @param number of the question label to get the fill style of
+    @returns fillStyle for the context to draw the graphical
+    labels on
+*/
+Questions.prototype._getLabelFillStyle = function(number) {
+    // Color the emphasized question label differently
+    if (number === this.numberToEmphasize)
+        return "white";
+
+    var grade = this._questions[number - 1].grade;
+    switch (grade) {
+        case GRADES.FIRST:
+            return "green";
+        case GRADES.SECOND:
+            return "brown";
+        case GRADES.THIRD:
+            return "#4B0082";
+        case GRADES.FOURTH:
+            return "#DAA520";
+        case GRADES.FIFTH:
+            return "#800000";
+    }
 };
 
 /*
@@ -142,10 +185,23 @@ Questions.prototype._drawCircularEdgeOfLabel =
 Questions.prototype._getLabelTextContext = function() {
     var textContext = document.getElementById(
         this.choosingQuestionCanvases.textCanvasId).getContext('2d');
-    textContext.fillStyle = "white";
     textContext.font = "30px Arial";
     textContext.textAlign = "center";
     return textContext;
+};
+
+/*
+    @param number of the question label
+    @returns fill style for the context of the canvas to draw
+    the text of the question label on
+*/
+Questions.prototype._getLabelTextFillStyle = function(number) {
+    if (number === this.numberToEmphasize) {
+        // Color differently the text of emphasized question label
+        return "black";
+    }
+    else
+        return "white";
 };
 
 /*
@@ -159,6 +215,50 @@ Questions.prototype._getLabelTextContext = function() {
 // Questions.prototype.getQuestionBySubject = function(subject) {
 
 // }
+
+/*
+    @pre 1 <= newNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY
+    @post this.numberToEmphasize has been updated; formerly
+    emphasized question label has been redrawn so that it's no
+    longer emphasized; now emphasized question label has been
+    redrawn so that it's emphasized
+    @param newNumber new number of question label to emphasize;
+    set to "none" to emphasize no question
+*/
+Questions.prototype.setEmphasis = function(newNumber) {
+    // Set up variables
+    var graphicsContext = document.getElementById(
+        this.choosingQuestionCanvases.graphicsCanvasId).getContext('2d');
+    var textContext = document.getElementById(
+        this.choosingQuestionCanvases.textCanvasId).getContext('2d');
+    var oldNumber = this.numberToEmphasize;
+
+    // Determine positions of formerly emphasized case and now
+    // emphasized case
+    if (oldNumber !== "none")
+        var oldPosition = Questions._getLabelPosition(oldNumber);
+    if (newNumber !== "none")
+        var newPosition = Questions._getLabelPosition(newNumber);
+
+    // Update numberToEmphasize
+    this.numberToEmphasize = newNumber;
+
+    // Redraw the formerly emphasized question label
+    if (oldNumber !== "none") {
+        this._eraseQuestionLabel(graphicsContext, textContext,
+            oldPosition.x, oldPosition.y);
+        this._drawQuestionLabel(graphicsContext, textContext,
+            oldPosition.x, oldPosition.y, oldNumber);
+    }
+
+    // Redraw the now emphasized question label
+    if (newNumber != "none") {
+        this._eraseQuestionLabel(graphicsContext, textContext,
+            newPosition.x, newPosition.y);
+        this._drawQuestionLabel(graphicsContext, textContext,
+            newPosition.x, newPosition.y, newNumber);
+    }
+}
 
 /*
     @pre this._questions.length = 0
@@ -243,13 +343,7 @@ Questions.FIRST_LABEL_POSITION = new Vector2d(
 /*
     @hasTest yes
     @param whichLabel number of the label to get the position of;
-    1 <= whichLabel <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY;
-    the label numbers are like this:
-    [9, 10] - the top of the display; fifth grade questions
-    [7, 8] - fourth grade
-    [5, 6] - third grade
-    [3, 4] - second grade
-    [1, 2] - the bottom of the display; first grade questions
+    1 <= whichLabel <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY
     @returns Vector2d object containing the top-left position at which
     to draw the question label (on the appropriate canvases)
 */
@@ -262,28 +356,6 @@ Questions._getLabelPosition = function(whichLabel) {
     return Questions.FIRST_LABEL_POSITION.getSum(
         Questions.MARGINAL_LABEL_POSITION.getProduct(adjustment));
 }
-
-/*
-    @param grade the color of the label depends on the grade;
-    must be a constant in object GRADES
-    @returns fillStyle for the context to draw the graphical
-    labels on
-*/
-Questions._getLabelFillStyle = function(grade) {
-    switch (grade) {
-        case GRADES.FIRST:
-            return "green";
-        case GRADES.SECOND:
-            return "brown";
-        case GRADES.THIRD:
-            return "#4B0082";
-        case GRADES.FOURTH:
-            return "#DAA520";
-        case GRADES.FIFTH:
-            return "#800000";
-    }
-};
-
 
 /*
     @param question instance of Questoin

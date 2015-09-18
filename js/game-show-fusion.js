@@ -28,7 +28,8 @@ gameShow.selectedBriefcaseNumber = undefined;
 
 gameShow.questions = new Questions(
     CANVAS_IDS.CHOOSE_QUESTION_GRAPHICS,
-    CANVAS_IDS.CHOOSE_QUESTION_TEXT);
+    CANVAS_IDS.CHOOSE_QUESTION_TEXT,
+    "none");
 
 gameShow.keyActions = new KeyActions();
 
@@ -277,9 +278,14 @@ function handleCaseSelection() {
     // Have the host announce it and allow game continuation
     gameShow.quotesToDraw.add("You have selected case " +
         gameShow.selectedBriefcaseNumber + ".")
-        .deployQuoteChain(eraseQuoteBubbleText);
+        .deployQuoteChain(selectQuestion);
 }
 
+/*
+    @post game has been updated so that the user can use the arrow
+    keys to change which case is selected and can select a case
+    by hitting Enter
+*/
 function selectFirstCase() {
     gameShow.canvasStack.set(CANVAS_IDS.BRIEFCASE_DISPLAY.concat(
         CANVAS_IDS.QUOTE));
@@ -290,6 +296,17 @@ function selectFirstCase() {
     gameShow.quotesToDraw.add("Now, you must use the left and " +
         "right arrow keys and the Enter key to  choose a case.")
         .deployQuoteChain(handleCaseSelection);
+}
+
+/*
+    @post game has been updated so that the user can use the arrow
+    keys to change which question is selected and can select a question
+    by hitting Enter
+*/
+function selectQuestion() {
+    gameShow.canvasStack.set(CANVAS_IDS.CHOOSE_QUESTION.concat(
+        CANVAS_IDS.QUOTE));
+    gameShow.questions.setEmphasis(1);
 }
 
 function setUpGame() {

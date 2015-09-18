@@ -1,6 +1,6 @@
 Next:
 -picking a question
-    --a question can be emphasized
+    --make it more obvious which question is emphasized
     --the user can change which one is emphasized
     --the user can pick
     --the question is generated after the user picks
