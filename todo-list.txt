@@ -1,9 +1,6 @@
 Next:
 -questions display (for now, only have a subject and grade level
     for each question)
-    --display the questions' difficulty and subject on the
-        questions display; use rectangular labels
-    --improve the texts' positions
     --make the labels' edges circular
     --a question can be emphasized
     --the user can change which one is emphasized

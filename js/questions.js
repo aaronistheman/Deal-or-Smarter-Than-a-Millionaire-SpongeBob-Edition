@@ -41,11 +41,12 @@ Questions.prototype.displayAsChoices = function() {
 
     // Iterate to draw each question label
     for (var i = 0; i < Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY; ++i) {
-        var position = Questions.getLabelPosition(i + 1);
-        graphicsContext.fillStyle = Questions.getLabelFillStyle(
+        graphicsContext.fillStyle = Questions._getLabelFillStyle(
             this._questions[i].grade);
+        var position = Questions._getLabelPosition(i + 1);
+        var text = Questions._getLabelText(this._questions[i]);
         this._drawQuestionLabel(graphicsContext, textContext,
-            position.x, position.y, "teehee");
+            position.x, position.y, text);
     }
 };
 
@@ -194,7 +195,7 @@ Questions.FIRST_LABEL_POSITION = new Vector2d(
     @returns Vector2d object containing the top-left position at which
     to draw the question label (on the appropriate canvases)
 */
-Questions.getLabelPosition = function(whichLabel) {
+Questions._getLabelPosition = function(whichLabel) {
     // Decide how much to adjust the default label position
     var multiplierX = ((whichLabel - 1) % 2);
     var multiplierY = -1 * (Math.ceil(whichLabel / 2.0) - 1);
@@ -210,7 +211,7 @@ Questions.getLabelPosition = function(whichLabel) {
     @returns fillStyle for the context to draw the graphical
     labels on
 */
-Questions.getLabelFillStyle = function(grade) {
+Questions._getLabelFillStyle = function(grade) {
     switch (grade) {
         case GRADES.FIRST:
             return "green";
@@ -223,6 +224,39 @@ Questions.getLabelFillStyle = function(grade) {
         case GRADES.FIFTH:
             return "#800000";
     }
+};
+
+
+/*
+    @param question instance of Questoin
+    @returns text to display on the question's label
+*/
+Questions._getLabelText = function(question) {
+    var text = "";
+
+    // Put the grade on the text
+    switch (question.grade) {
+        case GRADES.FIRST:
+            text += "1st Grade ";
+            break;
+        case GRADES.SECOND:
+            text += "2nd Grade ";
+            break;
+        case GRADES.THIRD:
+            text += "3rd Grade ";
+            break;
+        case GRADES.FOURTH:
+            text += "4th Grade ";
+            break;
+        case GRADES.FIFTH:
+            text += "5th Grade ";
+            break;
+    }
+
+    // Put the question's subject on the text
+    text += question.subject;
+
+    return text;
 };
 
 /*
