@@ -290,6 +290,28 @@ Questions.prototype.emphasizeRightLabel = function() {
 };
 
 /*
+    @pre this.numberToEmphasize != "none"
+    @post the emphasis has been placed on the label below
+    the currently emphasized label; if a lowest label
+    is already emphasized, nothing happens
+*/
+Questions.prototype.emphasizeDownLabel = function() {
+    if (this.numberToEmphasize >= 3)
+        this.setEmphasis(this.numberToEmphasize - 2);
+};
+
+/*
+    @pre this.numberToEmphasize != "none"
+    @post the emphasis has been placed on the label above
+    the currently emphasized label; if a uppermost label
+    is already emphasized, nothing happens
+*/
+Questions.prototype.emphasizeUpLabel = function() {
+    if (this.numberToEmphasize <= 8)
+        this.setEmphasis(this.numberToEmphasize + 2);
+};
+
+/*
     @pre this._questions.length = 0
     @post this._questions contains ten instances of type Question;
     each of these instances has a different subject matter; two

@@ -252,8 +252,8 @@ function allowCaseSelectorMovement(bool) {
         });
     }
     else {
-        gameShow.keyActions.set(KEY_CODES.LEFT_ARROW, function() {})
-            .set(KEY_CODES.RIGHT_ARROW, function() {});
+        gameShow.keyActions.erase(KEY_CODES.LEFT_ARROW)
+            .erase(KEY_CODES.RIGHT_ARROW);
     }
 }
 
@@ -268,11 +268,17 @@ function allowQuestionSelectorMovement(bool) {
         })
         .set(KEY_CODES.RIGHT_ARROW, function() {
             gameShow.questions.emphasizeRightLabel();
+        })
+        .set(KEY_CODES.UP_ARROW, function() {
+            gameShow.questions.emphasizeUpLabel();
+        })
+        .set(KEY_CODES.DOWN_ARROW, function() {
+            gameShow.questions.emphasizeDownLabel();
         });
     }
     else {
-        gameShow.keyActions.set(KEY_CODES.LEFT_ARROW, function() {})
-            .set(KEY_CODES.RIGHT_ARROW, function() {});
+        gameShow.keyActions.erase(KEY_CODES.LEFT_ARROW)
+            .erase(KEY_CODES.RIGHT_ARROW);
     }
 }
 
