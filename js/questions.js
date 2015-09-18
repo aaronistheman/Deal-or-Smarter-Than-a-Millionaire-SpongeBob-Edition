@@ -96,6 +96,28 @@ Questions.prototype._drawQuestionLabel =
 };
 
 /*
+    @post a rectangle has been cleared in the canvases indicated by
+    the given contexts, so that the question label contained in
+    that rectangle will have been erased
+    @param graphicsContext context of the canvas to erase
+    the graphical label from
+    @param textContext context of the canvas to erase the
+    label's text from
+    @param x top left x-coordinate of the label's reserved space
+    @param y top left y-coordinate of the label's reserved space
+*/
+Questions.prototype._eraseQuestionLabel =
+    function(graphicsContext, textContext, x, y)
+{
+    graphicsContext.clearRect(x, y,
+        Questions.LABEL_DIMENSIONS.x,
+        Questions.LABEL_DIMENSIONS.y);
+    textContext.clearRect(x, y,
+        Questions.LABEL_DIMENSIONS.x,
+        Questions.LABEL_DIMENSIONS.y);
+}
+
+/*
     @param graphicsContext to use for drawing
     @param x position of arc's center
     @param y position of arc's center
