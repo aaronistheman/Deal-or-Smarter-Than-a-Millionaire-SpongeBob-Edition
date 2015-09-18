@@ -84,28 +84,35 @@ Questions.prototype._drawQuestionLabel =
     textContext.fillStyle = this._getLabelTextFillStyle(number);
     var text = Questions._getLabelText(this._questions[number - 1]);
 
-    // Draw the graphical label
-    var circularEdgeRadius = Questions.LABEL_DIMENSIONS.y / 2.0;
-    graphicsContext.fillRect(
-        x + circularEdgeRadius,
-        y,
-        Questions.LABEL_DIMENSIONS.x - (2 * circularEdgeRadius),
-        Questions.LABEL_DIMENSIONS.y);
-    // Draw the circular edges
-    this._drawCircularEdgeOfLabel(
-        graphicsContext,
-        x + circularEdgeRadius,
-        y + circularEdgeRadius,
-        circularEdgeRadius,
-        Math.PI * 0.5,
-        Math.PI * 1.5);
-    this._drawCircularEdgeOfLabel(
-        graphicsContext,
-        x + Questions.LABEL_DIMENSIONS.x - circularEdgeRadius,
-        y + circularEdgeRadius,
-        circularEdgeRadius,
-        Math.PI * 1.5,
-        Math.PI * 0.5);
+    // Draw the graphical label; shape it differently if the
+    // label is supposed to be emphasized
+    if (number !== this.numberToEmphasize) {
+        var circularEdgeRadius = Questions.LABEL_DIMENSIONS.y / 2.0;
+        graphicsContext.fillRect(
+            x + circularEdgeRadius,
+            y,
+            Questions.LABEL_DIMENSIONS.x - (2 * circularEdgeRadius),
+            Questions.LABEL_DIMENSIONS.y);
+        // Draw the circular edges
+        this._drawCircularEdgeOfLabel(
+            graphicsContext,
+            x + circularEdgeRadius,
+            y + circularEdgeRadius,
+            circularEdgeRadius,
+            Math.PI * 0.5,
+            Math.PI * 1.5);
+        this._drawCircularEdgeOfLabel(
+            graphicsContext,
+            x + Questions.LABEL_DIMENSIONS.x - circularEdgeRadius,
+            y + circularEdgeRadius,
+            circularEdgeRadius,
+            Math.PI * 1.5,
+            Math.PI * 0.5);
+    }
+    else {
+        graphicsContext.fillRect(x, y, Questions.LABEL_DIMENSIONS.x,
+            Questions.LABEL_DIMENSIONS.y);
+    }
 
     // Draw the text of the label
     textContext.fillText(text,
