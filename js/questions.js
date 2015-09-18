@@ -37,16 +37,57 @@ Questions.prototype.displayAsChoices = function() {
     // Set up the canvas contexts
     var graphicsContext = document.getElementById(
         this.choosingQuestionCanvases.graphicsCanvasId).getContext('2d');
-    var textContext = document.getElementById(
-        this.choosingQuestionCanvases.textCanvasId).getContext('2d');
+    var textContext = this._getLabelTextContext();
 
     // Iterate to draw each question label
-    for (var i = 0; i < NUMBER_OF_QUESTIONS_TO_DISPLAY; ++i) {
-        // var position =
-        // this._drawQuestionLabel(graphicsContext, textContext,
-            // position.x, position.y, (i + 1));
+    for (var i = 0; i < Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY; ++i) {
+        var position = Questions.getLabelPosition(i + 1);
+        graphicsContext.fillStyle = Questions.getLabelFillStyle(
+            this._questions[i].grade);
+        this._drawQuestionLabel(graphicsContext, textContext,
+            position.x, position.y, "teehee");
     }
-}
+};
+
+/*
+    @post question label has been drawn in the given position,
+    with the given text, and with the given fill style; the
+    graphical part is on graphicsContext; the textual part is on
+    is on textContext
+    @param graphicsContext set up context of the canvas to draw
+    the graphical label on
+    @param textContext set up context of the canvas to draw the
+    label's text on
+    @param x top left x-coordinate of the label's reserved space
+    @param y top left y-coordinate of the label's reserved space
+    @param text to draw on the label
+*/
+Questions.prototype._drawQuestionLabel =
+    function(graphicsContext, textContext, x, y, text)
+{
+    // Draw the graphical label
+    graphicsContext.fillRect(x, y,
+        Questions.LABEL_DIMENSIONS.x,
+        Questions.LABEL_DIMENSIONS.y);
+
+    // Draw the text of the label
+    textContext.fillText(text,
+        x + (Questions.LABEL_DIMENSIONS.x / 2.0),
+        y + (Questions.LABEL_DIMENSIONS.y / 2.0));
+};
+
+/*
+    @returns canvas context that is set up in all ways
+    except for position regarding where to draw
+*/
+Questions.prototype._getLabelTextContext = function() {
+    var textContext = document.getElementById(
+        this.choosingQuestionCanvases.textCanvasId).getContext('2d');
+    textContext.fillStyle = "white";
+    textContext.font = "30px Arial";
+    textContext.textAlign = "center";
+    return textContext;
+};
 
 /*
     Because each question must have a unique subject (but not
@@ -126,7 +167,7 @@ Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY = 10;
 
 // For positioning the question labels
 Questions.HEIGHT_SPACE_PER_LABEL = 410 / 5;
-Questions.LABEL_DIMENSIONS = new Vector2d(400, 52);
+Questions.LABEL_DIMENSIONS = new Vector2d(450, 52);
 Questions.LABEL_PADDING =
     new Vector2d(100,
         Questions.HEIGHT_SPACE_PER_LABEL -
@@ -162,6 +203,27 @@ Questions.getLabelPosition = function(whichLabel) {
     return Questions.FIRST_LABEL_POSITION.getSum(
         Questions.MARGINAL_LABEL_POSITION.getProduct(adjustment));
 }
+
+/*
+    @param grade the color of the label depends on the grade;
+    must be a constant in object GRADES
+    @returns fillStyle for the context to draw the graphical
+    labels on
+*/
+Questions.getLabelFillStyle = function(grade) {
+    switch (grade) {
+        case GRADES.FIRST:
+            return "green";
+        case GRADES.SECOND:
+            return "brown";
+        case GRADES.THIRD:
+            return "#4B0082";
+        case GRADES.FOURTH:
+            return "#DAA520";
+        case GRADES.FIFTH:
+            return "#800000";
+    }
+};
 
 /*
     @returns an array of instances of Question so that this array

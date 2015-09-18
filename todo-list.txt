@@ -2,7 +2,9 @@ Next:
 -questions display (for now, only have a subject and grade level
     for each question)
     --display the questions' difficulty and subject on the
-        questions display
+        questions display; use rectangular labels
+    --improve the texts' positions
+    --make the labels' edges circular
     --a question can be emphasized
     --the user can change which one is emphasized
 -put the unit test modules in alphabetical order
@@ -79,3 +81,4 @@ Considerable:
         --could split each string/quote into array of words (separate
             by ' ')
 -load question data (e.g. with jQuery AJAX)
+-using web fonts
