@@ -278,7 +278,9 @@ function allowQuestionSelectorMovement(bool) {
     }
     else {
         gameShow.keyActions.erase(KEY_CODES.LEFT_ARROW)
-            .erase(KEY_CODES.RIGHT_ARROW);
+            .erase(KEY_CODES.RIGHT_ARROW)
+            .erase(KEY_CODES.UP_ARROW)
+            .erase(KEY_CODES.DOWN_ARROW);
     }
 }
 
@@ -324,6 +326,13 @@ function selectFirstCase() {
 }
 
 /*
+    @post nothing yet
+*/
+function handleQuestionSelection() {
+    allowQuestionSelectorMovement(false);
+}
+
+/*
     @post game has been updated so that the user can use the arrow
     keys to change which question is selected and can select a question
     by hitting Enter
@@ -336,8 +345,8 @@ function selectQuestion() {
     allowQuestionSelectorMovement(true);
 
     gameShow.quotesToDraw.add("Use the left and right arrow keys " +
-        "and the Enter key to select a question")
-        .deployQuoteChain(eraseQuoteBubbleText);
+        "and the Enter key to select a question.")
+        .deployQuoteChain(handleQuestionSelection);
 }
 
 function setUpGame() {

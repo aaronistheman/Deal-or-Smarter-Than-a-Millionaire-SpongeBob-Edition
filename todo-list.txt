@@ -1,7 +1,6 @@
 Next:
 -picking a question
-    --the user can pick
-    --the question is generated after the user picks
+    --the question is retrieved after the user picks (output to console)
     --the question and options (i.e. remaining help and answers)
         are presented
 -implement answering a question correctly and moving on
