@@ -38,15 +38,17 @@ function explainPickedCaseValue() {
     gameShow.quotesToDraw.add(
         "That case's value equals one of the values on the " +
         "money board, but you don't know which.")
-        .deployQuoteChain(sayNumberOfQuestions);
+        .deployQuoteChain(beginExplainingQuestions);
 }
 
-function sayNumberOfQuestions() {
+function beginExplainingQuestions() {
     gameShow.canvasStack.set(CANVAS_IDS.QUOTE.concat(
         CANVAS_IDS.CHOOSE_QUESTION));
-    // gameShow.canvasStack.set(CANVAS_IDS.QUOTE);
     gameShow.quotesToDraw.add(
         "After that, you will try to answer ten questions.")
+        .add("To keep it easy for you, these questions are " +
+            "elementary school level.")
+        .add("And, they're all about some television show.")
         .deployQuoteChain(explainQuestionValue);
 }
 

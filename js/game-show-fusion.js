@@ -26,6 +26,10 @@ gameShow.briefcaseDisplay = new BriefcaseDisplay(
 
 gameShow.selectedBriefcaseNumber = undefined;
 
+gameShow.questions = new Questions(
+    CANVAS_IDS.CHOOSE_QUESTION_GRAPHICS,
+    CANVAS_IDS.CHOOSE_QUESTION_TEXT);
+
 gameShow.keyActions = new KeyActions();
 
 gameShow.sounds = {};
@@ -292,6 +296,7 @@ function setUpGame() {
     setUpQuoteBubble();
     gameShow.moneyDisplay.setUp();
     gameShow.briefcaseDisplay.draw();
+    gameShow.questions.displayAsChoices();
 
     // Show the appropriate canvases
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
