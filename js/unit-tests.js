@@ -5,23 +5,11 @@
     Release number: 0.1
 */
 
-QUnit.module("utility.js");
-
-QUnit.test("Vector2d.getSum()", function(assert) {
-    var v = new Vector2d(20, 30);
-    assert.deepEqual(v.getSum(new Vector2d(40, 40)),
-        new Vector2d(60, 70),
-        "Function successfully returns the correct " +
-        "sum as a Vector2d object");
-});
-
-QUnit.test("Vector2d.getProduct()", function(assert) {
-    var v = new Vector2d(70, 80);
-    assert.deepEqual(v.getProduct(new Vector2d(3, 2)),
-        new Vector2d(210, 160),
-        "Function successfully returns the correct " +
-        "product as a Vector2d object");
-});
+/*
+    Using modules, I've divided the tests based on which file
+    each tested function comes from. Modules are in alphabetical
+    order by the name of the represented file.
+*/
 
 QUnit.module("briefcase-display.js");
 
@@ -121,6 +109,27 @@ QUnit.test("CanvasStack.clear()", function(assert) {
         "All stored canvases were removed");
 });
 
+QUnit.module("error-handling.js");
+
+QUnit.test("parameterError()", function(assert) {
+    assert.deepEqual(parameterError("This is a test"),
+        ERROR_MESSAGES.PARAMETER, "Correct value is returned");
+});
+
+QUnit.module("game-show-fusion.js");
+
+QUnit.test("convertStringToArrayOfStrings()", function(assert) {
+    var testString = "abcdefghijk";
+    var testMaxStringLength = 3;
+    var textPieces = convertStringToArrayOfStrings(testString,
+        testMaxStringLength);
+
+    assert.equal(textPieces[0], 'abc', "Correct first piece made");
+    assert.equal(textPieces[1], 'def', "Correct second piece made");
+    assert.equal(textPieces[2], 'ghi', "Correct third piece made");
+    assert.equal(textPieces[3], 'jk', "Correct fourth piece made");
+});
+
 QUnit.module("questions.js");
 
 QUnit.test("Questions._generateTenQuestions()", function(assert) {
@@ -204,23 +213,20 @@ QUnit.test("Questions::_getLabelPosition()", function(assert) {
         "Correct position for tenth label");
 });
 
-QUnit.module("error-handling.js");
+QUnit.module("utility.js");
 
-QUnit.test("parameterError()", function(assert) {
-    assert.deepEqual(parameterError("This is a test"),
-        ERROR_MESSAGES.PARAMETER, "Correct value is returned");
+QUnit.test("Vector2d.getSum()", function(assert) {
+    var v = new Vector2d(20, 30);
+    assert.deepEqual(v.getSum(new Vector2d(40, 40)),
+        new Vector2d(60, 70),
+        "Function successfully returns the correct " +
+        "sum as a Vector2d object");
 });
 
-QUnit.module("game-show-fusion.js");
-
-QUnit.test("convertStringToArrayOfStrings()", function(assert) {
-    var testString = "abcdefghijk";
-    var testMaxStringLength = 3;
-    var textPieces = convertStringToArrayOfStrings(testString,
-        testMaxStringLength);
-
-    assert.equal(textPieces[0], 'abc', "Correct first piece made");
-    assert.equal(textPieces[1], 'def', "Correct second piece made");
-    assert.equal(textPieces[2], 'ghi', "Correct third piece made");
-    assert.equal(textPieces[3], 'jk', "Correct fourth piece made");
+QUnit.test("Vector2d.getProduct()", function(assert) {
+    var v = new Vector2d(70, 80);
+    assert.deepEqual(v.getProduct(new Vector2d(3, 2)),
+        new Vector2d(210, 160),
+        "Function successfully returns the correct " +
+        "product as a Vector2d object");
 });
