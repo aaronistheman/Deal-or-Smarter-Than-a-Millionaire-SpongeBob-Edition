@@ -14,7 +14,14 @@
 */
 function Question(grade, subject, text) {
     this.grade = grade;
-    this.subject = subject;
+
+    if (isSubject(subject))
+        this.subject = subject;
+    else {
+        alert("Error: invalid subject given to Question constructor");
+        throw "Error: invalid subject given to Question constructor";
+    }
+
     this.text = text;
     // options (choosable answers)
     // correct answer

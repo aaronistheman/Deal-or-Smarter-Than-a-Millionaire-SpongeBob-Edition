@@ -25,3 +25,16 @@ var SUBJECTS = {
     TECHNOLOGY : "Technology",
     QUOTATIONS : "Quotations",
 };
+
+/*
+    @param subject the value to check the presence of in SUBJECTS
+    @returns true if subject equals one of the values in SUBJECTS;
+    otherwise, false
+*/
+function isSubject(subject) {
+    for (var i in SUBJECTS) {
+        if (SUBJECTS[i] === subject)
+            return true;
+    }
+    return false;
+}

@@ -1,9 +1,7 @@
 Next:
--picking a question
-    --put parameter checking in Question subject, since there isn't
-        any easy way to find such a logic error
+-presenting a question
     --the question and options (i.e. remaining help and answers)
-        are presented
+        are presented; with no quote bubble
 -look into loading question data (e.g. with jQuery AJAX)
 -create an object for turn variables; this'll make it easier to
     reset variables before picking next question
