@@ -10,11 +10,19 @@
     constant in the object GRADES
     @param subject of the question (e.g. art); must be a
     constant in the object SUBJECTS
+    @param text the text of the question
 */
-function Question(grade, subject) {
+function Question(grade, subject, text) {
     this.grade = grade;
-    this.subject = subject;
-    // question text
+
+    if (isSubject(subject))
+        this.subject = subject;
+    else {
+        alert("Error: invalid subject given to Question constructor");
+        throw "Error: invalid subject given to Question constructor";
+    }
+
+    this.text = text;
     // options (choosable answers)
     // correct answer
     // ask the audience data

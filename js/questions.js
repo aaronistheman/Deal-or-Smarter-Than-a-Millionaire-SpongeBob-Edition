@@ -6,19 +6,36 @@
 */
 
 /*
+    Note that each of the display ten questions has an assigned
+    number; when displayed as options for the user, the numbers
+    of the questions are like this:
+    [9, 10] - the top of the display; fifth grade questions
+    [7, 8] - fourth grade
+    [5, 6] - third grade
+    [3, 4] - second grade
+    [1, 2] - the bottom of the display; first grade questions
+*/
+
+/*
     @pre the canvas indicated by graphicsCanvasId is behind the
     canvas indicated by textCanvasId
     @param graphicsCanvasId id of the canvas to draw the non-text
     part of the questions' display on
     @param textCanvasId id of the canvas to draw the text part
     of the questions' display on
+    @param numberToEmphasize number of the question to emphasize;
+    set to "none" to emphasize no question label
 */
-function Questions(graphicsCanvasId, textCanvasId) {
+function Questions(graphicsCanvasId, textCanvasId, numberToEmphasize) {
     // Storage of objects of type Question
     this._questions = [];
 
     // Store ten questions for use in the game
     this._generateTenQuestions();
+
+    // This number indicates which question the user is currently
+    // hovering over as he selects a question
+    this.numberToEmphasize = numberToEmphasize;
 
     // Store canvas data
     this.choosingQuestionCanvases = {
@@ -26,6 +43,15 @@ function Questions(graphicsCanvasId, textCanvasId) {
         textCanvasId : textCanvasId,
     };
 }
+
+/*
+    @param whichOne number of the question to get
+    @returns the question among the stored ten questions that is
+    indicated by whichOne
+*/
+Questions.prototype.getQuestion = function(whichOne) {
+    return this._questions[whichOne - 1];
+};
 
 /*
     @post the two canvases for this purpose have been erased,
@@ -41,12 +67,9 @@ Questions.prototype.displayAsChoices = function() {
 
     // Iterate to draw each question label
     for (var i = 0; i < Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY; ++i) {
-        graphicsContext.fillStyle = Questions._getLabelFillStyle(
-            this._questions[i].grade);
         var position = Questions._getLabelPosition(i + 1);
-        var text = Questions._getLabelText(this._questions[i]);
         this._drawQuestionLabel(graphicsContext, textContext,
-            position.x, position.y, text);
+            position.x, position.y, (i + 1));
     }
 };
 
@@ -55,45 +78,103 @@ Questions.prototype.displayAsChoices = function() {
     with the given text, and with the given fill style; the
     graphical part is on graphicsContext; the textual part is on
     is on textContext
-    @param graphicsContext set up context of the canvas to draw
+    @param graphicsContext context of the canvas to draw
     the graphical label on
     @param textContext set up context of the canvas to draw the
     label's text on
     @param x top left x-coordinate of the label's reserved space
     @param y top left y-coordinate of the label's reserved space
-    @param text to draw on the label
+    @param number of the question label
 */
 Questions.prototype._drawQuestionLabel =
-    function(graphicsContext, textContext, x, y, text)
+    function(graphicsContext, textContext, x, y, number)
 {
-    // Draw the graphical label
-    var circularEdgeRadius = Questions.LABEL_DIMENSIONS.y / 2.0;
-    graphicsContext.fillRect(
-        x + circularEdgeRadius,
-        y,
-        Questions.LABEL_DIMENSIONS.x - (2 * circularEdgeRadius),
-        Questions.LABEL_DIMENSIONS.y);
-    // Draw the circular edges
-    this._drawCircularEdgeOfLabel(
-        graphicsContext,
-        x + circularEdgeRadius,
-        y + circularEdgeRadius,
-        circularEdgeRadius,
-        Math.PI * 0.5,
-        Math.PI * 1.5);
-    this._drawCircularEdgeOfLabel(
-        graphicsContext,
-        x + Questions.LABEL_DIMENSIONS.x - circularEdgeRadius,
-        y + circularEdgeRadius,
-        circularEdgeRadius,
-        Math.PI * 1.5,
-        Math.PI * 0.5);
+    graphicsContext.fillStyle = this._getLabelFillStyle(number);
+    textContext.fillStyle = this._getLabelTextFillStyle(number);
+    var text = Questions._getLabelText(this._questions[number - 1]);
+
+    // Draw the graphical label; shape it differently if the
+    // label is supposed to be emphasized
+    if (number !== this.numberToEmphasize) {
+        var circularEdgeRadius = Questions.LABEL_DIMENSIONS.y / 2.0;
+        graphicsContext.fillRect(
+            x + circularEdgeRadius,
+            y,
+            Questions.LABEL_DIMENSIONS.x - (2 * circularEdgeRadius),
+            Questions.LABEL_DIMENSIONS.y);
+        // Draw the circular edges
+        this._drawCircularEdgeOfLabel(
+            graphicsContext,
+            x + circularEdgeRadius,
+            y + circularEdgeRadius,
+            circularEdgeRadius,
+            Math.PI * 0.5,
+            Math.PI * 1.5);
+        this._drawCircularEdgeOfLabel(
+            graphicsContext,
+            x + Questions.LABEL_DIMENSIONS.x - circularEdgeRadius,
+            y + circularEdgeRadius,
+            circularEdgeRadius,
+            Math.PI * 1.5,
+            Math.PI * 0.5);
+    }
+    else {
+        graphicsContext.fillRect(x, y, Questions.LABEL_DIMENSIONS.x,
+            Questions.LABEL_DIMENSIONS.y);
+    }
 
     // Draw the text of the label
     textContext.fillText(text,
         x + (Questions.LABEL_DIMENSIONS.x / 2.0),
         y + (Questions.LABEL_DIMENSIONS.y / 2.0));
 };
+
+/*
+    @param number of the question label to get the fill style of
+    @returns fillStyle for the context to draw the graphical
+    labels on
+*/
+Questions.prototype._getLabelFillStyle = function(number) {
+    // Color the emphasized question label differently
+    if (number === this.numberToEmphasize)
+        return "white";
+
+    var grade = this._questions[number - 1].grade;
+    switch (grade) {
+        case GRADES.FIRST:
+            return "green";
+        case GRADES.SECOND:
+            return "brown";
+        case GRADES.THIRD:
+            return "#4B0082";
+        case GRADES.FOURTH:
+            return "#DAA520";
+        case GRADES.FIFTH:
+            return "#800000";
+    }
+};
+
+/*
+    @post a rectangle has been cleared in the canvases indicated by
+    the given contexts, so that the question label contained in
+    that rectangle will have been erased
+    @param graphicsContext context of the canvas to erase
+    the graphical label from
+    @param textContext context of the canvas to erase the
+    label's text from
+    @param x top left x-coordinate of the label's reserved space
+    @param y top left y-coordinate of the label's reserved space
+*/
+Questions.prototype._eraseQuestionLabel =
+    function(graphicsContext, textContext, x, y)
+{
+    graphicsContext.clearRect(x, y,
+        Questions.LABEL_DIMENSIONS.x,
+        Questions.LABEL_DIMENSIONS.y);
+    textContext.clearRect(x, y,
+        Questions.LABEL_DIMENSIONS.x,
+        Questions.LABEL_DIMENSIONS.y);
+}
 
 /*
     @param graphicsContext to use for drawing
@@ -120,23 +201,112 @@ Questions.prototype._drawCircularEdgeOfLabel =
 Questions.prototype._getLabelTextContext = function() {
     var textContext = document.getElementById(
         this.choosingQuestionCanvases.textCanvasId).getContext('2d');
-    textContext.fillStyle = "white";
     textContext.font = "30px Arial";
     textContext.textAlign = "center";
     return textContext;
 };
 
 /*
-    Because each question must have a unique subject (but not
-    necessarily a unique grade level), this is how a question
-    from the storage of ten questions will
-    be retrieved based on the user's choice.
-    @pre none of the Question objects in "this" have the same
-    subject
+    @param number of the question label
+    @returns fill style for the context of the canvas to draw
+    the text of the question label on
 */
-// Questions.prototype.getQuestionBySubject = function(subject) {
+Questions.prototype._getLabelTextFillStyle = function(number) {
+    if (number === this.numberToEmphasize) {
+        // Color differently the text of emphasized question label
+        return "black";
+    }
+    else
+        return "white";
+};
 
-// }
+/*
+    @pre 1 <= newNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY
+    @post this.numberToEmphasize has been updated; formerly
+    emphasized question label has been redrawn so that it's no
+    longer emphasized; now emphasized question label has been
+    redrawn so that it's emphasized
+    @param newNumber new number of question label to emphasize;
+    set to "none" to emphasize no question
+*/
+Questions.prototype.setEmphasis = function(newNumber) {
+    // Set up variables
+    var graphicsContext = document.getElementById(
+        this.choosingQuestionCanvases.graphicsCanvasId).getContext('2d');
+    var textContext = document.getElementById(
+        this.choosingQuestionCanvases.textCanvasId).getContext('2d');
+    var oldNumber = this.numberToEmphasize;
+
+    // Determine positions of formerly emphasized case and now
+    // emphasized case
+    if (oldNumber !== "none")
+        var oldPosition = Questions._getLabelPosition(oldNumber);
+    if (newNumber !== "none")
+        var newPosition = Questions._getLabelPosition(newNumber);
+
+    // Update numberToEmphasize
+    this.numberToEmphasize = newNumber;
+
+    // Redraw the formerly emphasized question label
+    if (oldNumber !== "none") {
+        this._eraseQuestionLabel(graphicsContext, textContext,
+            oldPosition.x, oldPosition.y);
+        this._drawQuestionLabel(graphicsContext, textContext,
+            oldPosition.x, oldPosition.y, oldNumber);
+    }
+
+    // Redraw the now emphasized question label
+    if (newNumber != "none") {
+        this._eraseQuestionLabel(graphicsContext, textContext,
+            newPosition.x, newPosition.y);
+        this._drawQuestionLabel(graphicsContext, textContext,
+            newPosition.x, newPosition.y, newNumber);
+    }
+}
+
+/*
+    @pre this.numberToEmphasize != "none"
+    @post the emphasis has been placed on the label to the left
+    of the currently emphasized label; if a leftmost label
+    is already emphasized, nothing happens
+*/
+Questions.prototype.emphasizeLeftLabel = function() {
+    if (this.numberToEmphasize % 2 === 0)
+        this.setEmphasis(this.numberToEmphasize - 1);
+};
+
+/*
+    @pre this.numberToEmphasize != "none"
+    @post the emphasis has been placed on the label to the right
+    of the currently emphasized label; if a rightmost label
+    is already emphasized, nothing happens
+*/
+Questions.prototype.emphasizeRightLabel = function() {
+    if (this.numberToEmphasize % 2 === 1)
+        this.setEmphasis(this.numberToEmphasize + 1);
+};
+
+/*
+    @pre this.numberToEmphasize != "none"
+    @post the emphasis has been placed on the label below
+    the currently emphasized label; if a lowest label
+    is already emphasized, nothing happens
+*/
+Questions.prototype.emphasizeDownLabel = function() {
+    if (this.numberToEmphasize >= 3)
+        this.setEmphasis(this.numberToEmphasize - 2);
+};
+
+/*
+    @pre this.numberToEmphasize != "none"
+    @post the emphasis has been placed on the label above
+    the currently emphasized label; if a uppermost label
+    is already emphasized, nothing happens
+*/
+Questions.prototype.emphasizeUpLabel = function() {
+    if (this.numberToEmphasize <= 8)
+        this.setEmphasis(this.numberToEmphasize + 2);
+};
 
 /*
     @pre this._questions.length = 0
@@ -151,7 +321,7 @@ Questions.prototype._generateTenQuestions = function() {
     var tenQuestions = [];
 
     /*
-        @pre for each grade level, supplyOfQuestions contains at
+        @pre for the given grade level, supplyOfQuestions contains at
         least two questions of different subject matters; otherwise,
         an infinite loop will occur
         @post two questions of the given grade from supplyOfQuestions
@@ -159,6 +329,9 @@ Questions.prototype._generateTenQuestions = function() {
         have the same subject; after a question is put in tenQuestions,
         every question in supplyOfQuestions that has the question's
         subject matter will be removed
+        @param supplyOfQuestions
+        @param grade the grade level of the questions to pick from;
+        has no effect on which questions are erased
     */
     var pickTwoQuestions = function(supplyOfQuestions, grade) {
         var numberOfQuestionsAdded = 0;
@@ -221,13 +394,7 @@ Questions.FIRST_LABEL_POSITION = new Vector2d(
 /*
     @hasTest yes
     @param whichLabel number of the label to get the position of;
-    1 <= whichLabel <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY;
-    the label numbers are like this:
-    [9, 10] - the top of the display; fifth grade questions
-    [7, 8] - fourth grade
-    [5, 6] - third grade
-    [3, 4] - second grade
-    [1, 2] - the bottom of the display; first grade questions
+    1 <= whichLabel <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY
     @returns Vector2d object containing the top-left position at which
     to draw the question label (on the appropriate canvases)
 */
@@ -240,28 +407,6 @@ Questions._getLabelPosition = function(whichLabel) {
     return Questions.FIRST_LABEL_POSITION.getSum(
         Questions.MARGINAL_LABEL_POSITION.getProduct(adjustment));
 }
-
-/*
-    @param grade the color of the label depends on the grade;
-    must be a constant in object GRADES
-    @returns fillStyle for the context to draw the graphical
-    labels on
-*/
-Questions._getLabelFillStyle = function(grade) {
-    switch (grade) {
-        case GRADES.FIRST:
-            return "green";
-        case GRADES.SECOND:
-            return "brown";
-        case GRADES.THIRD:
-            return "#4B0082";
-        case GRADES.FOURTH:
-            return "#DAA520";
-        case GRADES.FIFTH:
-            return "#800000";
-    }
-};
-
 
 /*
     @param question instance of Questoin
@@ -297,35 +442,187 @@ Questions._getLabelText = function(question) {
 
 /*
     @returns an array of instances of Question so that this array
-    contains all of the questions that the user could possible face
+    contains all of the questions that the user could possible face;
+    there are at least ten questions of different subjects for fifth
+    grade, at least eight of such questions for fourth grade,
+    at least six of such questions for third grade, at least four
+    of such questions for second grade, and at least two of
+    such questions for first grade (this prevents an infinite loop
+    in Questions._generateTenQuestions())
 */
 Questions.getEntireSupplyOfQuestions = function() {
     var supply = [];
 
-    supply.push(new Question(GRADES.FIRST, SUBJECTS.VIDEO_GAMES));
-    supply.push(new Question(GRADES.FIRST, SUBJECTS.VIDEO_GAMES));
-    supply.push(new Question(GRADES.FIRST, SUBJECTS.CRIME));
-    supply.push(new Question(GRADES.FIRST, SUBJECTS.GEOGRAPHY));
+    // Questions are ordered by grade and placed between
+    // the appropriate grade dividers
 
-    supply.push(new Question(GRADES.SECOND, SUBJECTS.STAFF));
-    supply.push(new Question(GRADES.SECOND, SUBJECTS.STAFF));
-    supply.push(new Question(GRADES.SECOND, SUBJECTS.RESTAURANTS));
-    supply.push(new Question(GRADES.SECOND, SUBJECTS.VEHICLES));
+    /*
+        First grade questions
+    */
+    var gradeOfQuestion = GRADES.FIRST;
 
-    supply.push(new Question(GRADES.THIRD, SUBJECTS.SIDE_CHARACTERS));
-    supply.push(new Question(GRADES.THIRD, SUBJECTS.SIDE_CHARACTERS));
-    supply.push(new Question(GRADES.THIRD, SUBJECTS.MAIN_CHARACTERS));
-    supply.push(new Question(GRADES.THIRD, SUBJECTS.ART));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
+        "Which of the following characters has tried to steal " +
+        "a recipe from Mr. Krabs?")); // Plankton
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.GEOGRAPHY,
+        "Which of the following areas is at a lower elevation " +
+        "than Glove World?")); // Rock Bottom
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.RESTAURANTS,
+        "Which of the following is a restaurant in Bikini " +
+        "Bottom?")); // Krusty Krab
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.TECHNOLOGY,
+        "What species is Plankton's wife?")); // computer
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
+        "What is SpongeBob's catchphrase?")); // "I'm ready."
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.VEHICLES,
+        "Which of the following vehicles " +
+        "is driven by Mermaid Man?")); // Invisible Boatmobile
+        // wrong options: Underwater Heartbreaker, Patty Wagon, bus
 
-    supply.push(new Question(GRADES.FOURTH, SUBJECTS.DRIVING));
-    supply.push(new Question(GRADES.FOURTH, SUBJECTS.DRIVING));
-    supply.push(new Question(GRADES.FOURTH, SUBJECTS.FITNESS));
-    supply.push(new Question(GRADES.FOURTH, SUBJECTS.RUMORS));
+    /*
+        Second grade questions
+    */
+    gradeOfQuestion = GRADES.SECOND;
 
-    supply.push(new Question(GRADES.FIFTH, SUBJECTS.HISTORY));
-    supply.push(new Question(GRADES.FIFTH, SUBJECTS.HISTORY));
-    supply.push(new Question(GRADES.FIFTH, SUBJECTS.TECHNOLOGY));
-    supply.push(new Question(GRADES.FIFTH, SUBJECTS.QUOTATIONS));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
+        "Which of the following characters tried to strangle " +
+        "someone who reported his littering?"));
+        // Tattle-Tale Strangler
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.SIDE_CHARACTERS,
+        "What is Squilliam's last name?")); // Fancyson
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.FITNESS,
+        "Which of the following products sold in Bikini Bottom " +
+        "can make a fish seem unreasonably fit?")); // anchor arms
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
+        "Who said the following quote: 'We should take Bikini" +
+        "Bottom, and push it somewhere else'?")); // Patrick
+
+    /*
+        Third grade questions
+    */
+    gradeOfQuestion = GRADES.THIRD;
+
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.STAFF,
+        "Who created the television show 'SpongeBob Squarepants'?"));
+        // Stephen Hillenburg
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.VEHICLES,
+        "Which of the following vehicles " +
+        "does one not need a license to drive?")); // Patty Wagon
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
+        "As SpongeBob hosted a house party, why did " +
+        "police arrest him?")); // He didn't invite them
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.RUMORS,
+        "Which of the following episodes was a rumor?"));
+        // Squidward's Suicide (other option: Someone in...)
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
+        "Who said the following quote: 'I wonder if a fall " +
+        "from this height would kill me'?")); // Squidward
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.VIDEO_GAMES,
+        "Who is the final boss in the video game version of " +
+        "the first movie?")); // King Neptune
+
+    /*
+        Fourth grade questions
+    */
+    gradeOfQuestion = GRADES.FOURTH;
+
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.DRIVING,
+        "At the beginning of the episode 'No Free Rides', " +
+        "how many points did SpongeBob need in order to pass " +
+        "his driving test?")); // 600
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.STAFF,
+        "Who is the voice actor of SpongeBob Squarepants?"));
+        // Tom Kenny
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.ART,
+        "In the episode 'Artist Unknown', which of the following " +
+        "was produced by SpongeBob and later by Squidward?")); // David
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
+        "Which of the following characters tried to steal " +
+        "someone's car keys with his mouth?")); // Bubble Bass
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.MAIN_CHARACTERS,
+        "What is Plankton's first name?")); // Sheldon
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
+        "According to Mr. Krabs, what is one of the purposes of his " +
+        "'big meaty claws'?")); // attracting mates
+        // other answers: stopping Plankton, sleeping, balance
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.GEOGRAPHY,
+        "Which of the following areas is visited by SpongeBob " +
+        "and Patrick in the first movie?")); // Shell City
+        // other answers: Glove World, Pizza Castle, Sandy's Treedome
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.TECHNOLOGY,
+        "Which of the following did Mr. Krabs' cash register " +
+        "used to be?")); // calculator
+        // other answers: blender, blow dryer, spatula
+
+    /*
+        Fifth grade questions
+    */
+    gradeOfQuestion = GRADES.FIFTH;
+
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.VIDEO_GAMES,
+        "Which of the following games is not available on the " +
+        "PlayStation 2?")); // idk - find one
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
+        "Which of the following characters let someone " +
+        "drown to death?")); // Bubble Buddy
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.HISTORY,
+        "In which of the following years did a chum famine " +
+        "take place?")); // 1959
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.ART,
+        "Which of the following words is not used to describe " +
+        "SpongeBob in the opening theme?")); // spongy
+        // wrong options: absorbent, yellow, porous
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.TECHNOLOGY,
+        "Which of the following did SpongeBob not say that " +
+        "robots cannot do?")); // dance
+        // wrong options: laugh, cry, love
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
+        "Who said the following quote: 'Everything is chrome " +
+        "in the future'?")); // SpongeTron
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.RUMORS,
+        "What is supposedly the second sign of the " +
+        "Hash-Slinging Slasher's arrival?"));
+        // The phone will ring, and there will be nobody there
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.RESTAURANTS,
+        "Which of the following is not a restaurant in Bikini " +
+        "Bottom?")); // Weenie Hut General
+        // wrong options: Fancy, Weenie Hut Juniors,
+        // Super Weenie Hut Juniors
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.STAFF,
+        "Who is the voice actor of Patrick?"));
+        // Bill Fagerbakke
+        // Wrong options: Larry the Cable Guy, Clancy Brown,
+        // Rodger Bumpass
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.VEHICLES,
+        "What is the name of the vehicle that was driven by Patrick " +
+        "and SpongeBob on the way to their panty raid?"));
+        // Underwater Heartbreaker
+        // wrong options: Boaty, X Tornado, Trailblazer
+
+    // supply.push(new Question(GRADES.FIRST, SUBJECTS.VIDEO_GAMES));
+    // supply.push(new Question(GRADES.FIRST, SUBJECTS.VIDEO_GAMES));
+    // supply.push(new Question(GRADES.FIRST, SUBJECTS.CRIME));
+    // supply.push(new Question(GRADES.FIRST, SUBJECTS.GEOGRAPHY));
+
+    // supply.push(new Question(GRADES.SECOND, SUBJECTS.STAFF));
+    // supply.push(new Question(GRADES.SECOND, SUBJECTS.STAFF));
+    // supply.push(new Question(GRADES.SECOND, SUBJECTS.RESTAURANTS));
+    // supply.push(new Question(GRADES.SECOND, SUBJECTS.VEHICLES));
+
+    // supply.push(new Question(GRADES.THIRD, SUBJECTS.SIDE_CHARACTERS));
+    // supply.push(new Question(GRADES.THIRD, SUBJECTS.SIDE_CHARACTERS));
+    // supply.push(new Question(GRADES.THIRD, SUBJECTS.MAIN_CHARACTERS));
+    // supply.push(new Question(GRADES.THIRD, SUBJECTS.ART));
+
+    // supply.push(new Question(GRADES.FOURTH, SUBJECTS.DRIVING));
+    // supply.push(new Question(GRADES.FOURTH, SUBJECTS.DRIVING));
+    // supply.push(new Question(GRADES.FOURTH, SUBJECTS.FITNESS));
+    // supply.push(new Question(GRADES.FOURTH, SUBJECTS.RUMORS));
+
+    // supply.push(new Question(GRADES.FIFTH, SUBJECTS.HISTORY));
+    // supply.push(new Question(GRADES.FIFTH, SUBJECTS.HISTORY));
+    // supply.push(new Question(GRADES.FIFTH, SUBJECTS.TECHNOLOGY));
+    // supply.push(new Question(GRADES.FIFTH, SUBJECTS.QUOTATIONS));
 
     return supply;
 }

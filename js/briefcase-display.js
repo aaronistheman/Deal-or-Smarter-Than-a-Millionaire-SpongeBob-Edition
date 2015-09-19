@@ -11,7 +11,8 @@
     @param textCanvasId id of the canvas to draw the text (i.e.
     the briefcase numbers) on
     @param moneyAmounts array of money amounts to display
-    @param numberToEmphasize number of the case to emphasize
+    @param numberToEmphasize number of the case to emphasize; set to
+    "none" to emphasize no case
 */
 function BriefcaseDisplay(caseCanvasId, textCanvasId, moneyAmounts,
         numberToEmphasize) {
@@ -79,7 +80,11 @@ BriefcaseDisplay.prototype.setEmphasis = function(newNumber) {
         document.getElementById(this.caseCanvasId).getContext('2d');
     var textContext = this.getTextContext();
     var oldNumber = this.numberToEmphasize;
-    var oldPosition = BriefcaseDisplay.getCasePosition(oldNumber);
+
+    // Determine positions of formerly emphasized case and now
+    // emphasized case
+    if (oldNumber !== "none")
+        var oldPosition = BriefcaseDisplay.getCasePosition(oldNumber);
     if (newNumber !== "none")
         var newPosition = BriefcaseDisplay.getCasePosition(newNumber);
 
@@ -87,13 +92,15 @@ BriefcaseDisplay.prototype.setEmphasis = function(newNumber) {
     this.numberToEmphasize = newNumber;
 
     // Redraw the formerly emphasized case
-    this._eraseBriefcase(caseContext, textContext,
-        oldPosition.x, oldPosition.y);
-    this._drawBriefcase(caseContext, textContext, oldPosition.x,
-        oldPosition.y, oldNumber);
+    if (oldNumber !== "none") {
+        this._eraseBriefcase(caseContext, textContext,
+            oldPosition.x, oldPosition.y);
+        this._drawBriefcase(caseContext, textContext, oldPosition.x,
+            oldPosition.y, oldNumber);
+    }
 
+    // Redraw the now emphasized case
     if (newNumber !== "none") {
-        // Redraw the now emphasized case
         this._eraseBriefcase(caseContext, textContext,
             newPosition.x, newPosition.y);
         this._drawBriefcase(caseContext, textContext, newPosition.x,

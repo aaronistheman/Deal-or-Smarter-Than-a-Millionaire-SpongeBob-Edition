@@ -1,15 +1,16 @@
 Next:
--picking a question
-    --a question can be emphasized
-    --the user can change which one is emphasized
-    --the user can pick
-    --the question is generated after the user picks
+-presenting a question
     --the question and options (i.e. remaining help and answers)
-        are presented
+        are presented; with no quote bubble
+-look into loading question data (e.g. with jQuery AJAX)
+-create an object for turn variables; this'll make it easier to
+    reset variables before picking next question
 -implement answering a question correctly and moving on
     --show case open with random money amount
         --show effect on money display
     --make sure sources of help can only be used once
+-allow picking of a helper
+-make more questions
 -implement peeking
 -implement ask the audience
 -implement phone a friend
@@ -61,14 +62,13 @@ Considerable:
 -put truly private and priviledged members/functions in classes
 -CSS classes for manipulating the color of the background of certain
     canvases
--improve the fitting of a quote into its bubble
-    --find a way to properly limit a line in a quote
-        --try measuring something other than number of characters
-        --or find a way to make each character take up same space
-    --find a way to deal with splitting a word between lines (besides
-    having to put extra whitespace)
-        --could limit quotes to one line
-        --could split each string/quote into array of words (separate
-            by ' ')
--load question data (e.g. with jQuery AJAX)
+-improve the fitting of a quote into its bubble; ideas:
+    --try measuring something other than number of characters
+    --find a way to make each character take up same space
+    --could limit quotes to one line
+    --could split each string/quote into array of words (separate
+        by ' ')
+    --could make the quote bubble not be a canvas, but make it hang
+    below the canvas; this way, it would be properly formatted as
+    a typical html element would be
 -using web fonts
