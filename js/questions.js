@@ -321,7 +321,7 @@ Questions.prototype._generateTenQuestions = function() {
     var tenQuestions = [];
 
     /*
-        @pre for each grade level, supplyOfQuestions contains at
+        @pre for the given grade level, supplyOfQuestions contains at
         least two questions of different subject matters; otherwise,
         an infinite loop will occur
         @post two questions of the given grade from supplyOfQuestions
@@ -329,6 +329,9 @@ Questions.prototype._generateTenQuestions = function() {
         have the same subject; after a question is put in tenQuestions,
         every question in supplyOfQuestions that has the question's
         subject matter will be removed
+        @param supplyOfQuestions
+        @param grade the grade level of the questions to pick from;
+        has no effect on which questions are erased
     */
     var pickTwoQuestions = function(supplyOfQuestions, grade) {
         var numberOfQuestionsAdded = 0;
@@ -439,35 +442,187 @@ Questions._getLabelText = function(question) {
 
 /*
     @returns an array of instances of Question so that this array
-    contains all of the questions that the user could possible face
+    contains all of the questions that the user could possible face;
+    there are at least ten questions of different subjects for fifth
+    grade, at least eight of such questions for fourth grade,
+    at least six of such questions for third grade, at least four
+    of such questions for second grade, and at least two of
+    such questions for first grade (this prevents an infinite loop
+    in Questions._generateTenQuestions())
 */
 Questions.getEntireSupplyOfQuestions = function() {
     var supply = [];
 
-    supply.push(new Question(GRADES.FIRST, SUBJECTS.VIDEO_GAMES));
-    supply.push(new Question(GRADES.FIRST, SUBJECTS.VIDEO_GAMES));
-    supply.push(new Question(GRADES.FIRST, SUBJECTS.CRIME));
-    supply.push(new Question(GRADES.FIRST, SUBJECTS.GEOGRAPHY));
+    // Questions are ordered by grade and placed between
+    // the appropriate grade dividers
 
-    supply.push(new Question(GRADES.SECOND, SUBJECTS.STAFF));
-    supply.push(new Question(GRADES.SECOND, SUBJECTS.STAFF));
-    supply.push(new Question(GRADES.SECOND, SUBJECTS.RESTAURANTS));
-    supply.push(new Question(GRADES.SECOND, SUBJECTS.VEHICLES));
+    /*
+        First grade questions
+    */
+    var gradeOfQuestion = GRADES.FIRST;
 
-    supply.push(new Question(GRADES.THIRD, SUBJECTS.SIDE_CHARACTERS));
-    supply.push(new Question(GRADES.THIRD, SUBJECTS.SIDE_CHARACTERS));
-    supply.push(new Question(GRADES.THIRD, SUBJECTS.MAIN_CHARACTERS));
-    supply.push(new Question(GRADES.THIRD, SUBJECTS.ART));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
+        "Which of the following characters has tried to steal " +
+        "a recipe from Mr. Krabs?")); // Plankton
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.GEOGRAPHY,
+        "Which of the following areas is at a lower elevation " +
+        "than Glove World?")); // Rock Bottom
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.RESTAURANTS,
+        "Which of the following is a restaurant in Bikini " +
+        "Bottom?")); // Krusty Krab
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.TECHNOLOGY,
+        "What species is Plankton's wife?")); // computer
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
+        "What is SpongeBob's catchphrase?")); // "I'm ready."
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.VEHICLES,
+        "Which of the following vehicles " +
+        "is driven by Mermaid Man?")); // Invisible Boatmobile
+        // wrong options: Underwater Heartbreaker, Patty Wagon, bus
 
-    supply.push(new Question(GRADES.FOURTH, SUBJECTS.DRIVING));
-    supply.push(new Question(GRADES.FOURTH, SUBJECTS.DRIVING));
-    supply.push(new Question(GRADES.FOURTH, SUBJECTS.FITNESS));
-    supply.push(new Question(GRADES.FOURTH, SUBJECTS.RUMORS));
+    /*
+        Second grade questions
+    */
+    gradeOfQuestion = GRADES.SECOND;
 
-    supply.push(new Question(GRADES.FIFTH, SUBJECTS.HISTORY));
-    supply.push(new Question(GRADES.FIFTH, SUBJECTS.HISTORY));
-    supply.push(new Question(GRADES.FIFTH, SUBJECTS.TECHNOLOGY));
-    supply.push(new Question(GRADES.FIFTH, SUBJECTS.QUOTATIONS));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
+        "Which of the following characters tried to strangle " +
+        "someone who reported his littering?"));
+        // Tattle-Tale Strangler
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.SIDE_CHARACTERS,
+        "What is Squilliam's last name?")); // Fancyson
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.FITNESS,
+        "Which of the following products sold in Bikini Bottom " +
+        "can make a fish seem unreasonably fit?")); // anchor arms
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
+        "Who said the following quote: 'We should take Bikini" +
+        "Bottom, and push it somewhere else'?")); // Patrick
+
+    /*
+        Third grade questions
+    */
+    gradeOfQuestion = GRADES.THIRD;
+
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.STAFF,
+        "Who created the television show 'SpongeBob Squarepants'?"));
+        // Stephen Hillenburg
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.VEHICLES,
+        "Which of the following vehicles " +
+        "does one not need a license to drive?")); // Patty Wagon
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
+        "As SpongeBob hosted a house party, why did " +
+        "police arrest him?")); // He didn't invite them
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.RUMORS,
+        "Which of the following episodes was a rumor?"));
+        // Squidward's Suicide (other option: Someone in...)
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
+        "Who said the following quote: 'I wonder if a fall " +
+        "from this height would kill me'?")); // Squidward
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.VIDEO_GAMES,
+        "Who is the final boss in the video game version of " +
+        "the first movie?")); // King Neptune
+
+    /*
+        Fourth grade questions
+    */
+    gradeOfQuestion = GRADES.FOURTH;
+
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.DRIVING,
+        "At the beginning of the episode 'No Free Rides', " +
+        "how many points did SpongeBob need in order to pass " +
+        "his driving test?")); // 600
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.STAFF,
+        "Who is the voice actor of SpongeBob Squarepants?"));
+        // Tom Kenny
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.ART,
+        "In the episode 'Artist Unknown', which of the following " +
+        "was produced by SpongeBob and later by Squidward?")); // David
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
+        "Which of the following characters tried to steal " +
+        "someone's car keys with his mouth?")); // Bubble Bass
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.MAIN_CHARACTERS,
+        "What is Plankton's first name?")); // Sheldon
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
+        "According to Mr. Krabs, what is one of the purposes of his " +
+        "'big meaty claws'?")); // attracting mates
+        // other answers: stopping Plankton, sleeping, balance
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.GEOGRAPHY,
+        "Which of the following areas is visited by SpongeBob " +
+        "and Patrick in the first movie?")); // Shell City
+        // other answers: Glove World, Pizza Castle, Sandy's Treedome
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.TECHNOLOGY,
+        "Which of the following did Mr. Krabs' cash register " +
+        "used to be?")); // calculator
+        // other answers: blender, blow dryer, spatula
+
+    /*
+        Fifth grade questions
+    */
+    gradeOfQuestion = GRADES.FIFTH;
+
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.VIDEO_GAMES,
+        "Which of the following games is not available on the " +
+        "PlayStation 2?")); // idk - find one
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
+        "Which of the following characters let someone " +
+        "drown to death?")); // Bubble Buddy
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.HISTORY,
+        "In which of the following years did a chum famine " +
+        "take place?")); // 1959
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.ART,
+        "Which of the following words is not used to describe " +
+        "SpongeBob in the opening theme?")); // spongy
+        // wrong options: absorbent, yellow, porous
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.TECHNOLOGY,
+        "Which of the following did SpongeBob not say that " +
+        "robots cannot do?")); // dance
+        // wrong options: laugh, cry, love
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
+        "Who said the following quote: 'Everything is chrome " +
+        "in the future'?")); // SpongeTron
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.RUMORS,
+        "What is supposedly the second sign of the " +
+        "Hash-Slinging Slasher's arrival?"));
+        // The phone will ring, and there will be nobody there
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.RESTAURANTS,
+        "Which of the following is not a restaurant in Bikini " +
+        "Bottom?")); // Weenie Hut General
+        // wrong options: Fancy, Weenie Hut Juniors,
+        // Super Weenie Hut Juniors
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.STAFF,
+        "Who is the voice actor of Patrick?"));
+        // Bill Fagerbakke
+        // Wrong options: Larry the Cable Guy, Clancy Brown,
+        // Rodger Bumpass
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.VEHICLES,
+        "What is the name of the vehicle that was driven by Patrick " +
+        "and SpongeBob on the way to their panty raid?"));
+        // Underwater Heartbreaker
+        // wrong options: Boaty, X Tornado, Trailblazer
+
+    // supply.push(new Question(GRADES.FIRST, SUBJECTS.VIDEO_GAMES));
+    // supply.push(new Question(GRADES.FIRST, SUBJECTS.VIDEO_GAMES));
+    // supply.push(new Question(GRADES.FIRST, SUBJECTS.CRIME));
+    // supply.push(new Question(GRADES.FIRST, SUBJECTS.GEOGRAPHY));
+
+    // supply.push(new Question(GRADES.SECOND, SUBJECTS.STAFF));
+    // supply.push(new Question(GRADES.SECOND, SUBJECTS.STAFF));
+    // supply.push(new Question(GRADES.SECOND, SUBJECTS.RESTAURANTS));
+    // supply.push(new Question(GRADES.SECOND, SUBJECTS.VEHICLES));
+
+    // supply.push(new Question(GRADES.THIRD, SUBJECTS.SIDE_CHARACTERS));
+    // supply.push(new Question(GRADES.THIRD, SUBJECTS.SIDE_CHARACTERS));
+    // supply.push(new Question(GRADES.THIRD, SUBJECTS.MAIN_CHARACTERS));
+    // supply.push(new Question(GRADES.THIRD, SUBJECTS.ART));
+
+    // supply.push(new Question(GRADES.FOURTH, SUBJECTS.DRIVING));
+    // supply.push(new Question(GRADES.FOURTH, SUBJECTS.DRIVING));
+    // supply.push(new Question(GRADES.FOURTH, SUBJECTS.FITNESS));
+    // supply.push(new Question(GRADES.FOURTH, SUBJECTS.RUMORS));
+
+    // supply.push(new Question(GRADES.FIFTH, SUBJECTS.HISTORY));
+    // supply.push(new Question(GRADES.FIFTH, SUBJECTS.HISTORY));
+    // supply.push(new Question(GRADES.FIFTH, SUBJECTS.TECHNOLOGY));
+    // supply.push(new Question(GRADES.FIFTH, SUBJECTS.QUOTATIONS));
 
     return supply;
 }

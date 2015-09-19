@@ -338,7 +338,7 @@ function handleQuestionSelection() {
     gameShow.selectedQuestion = gameShow.questions.numberToEmphasize;
     console.log(
         gameShow.questions.getQuestion(
-            gameShow.selectedQuestion).subject);
+            gameShow.selectedQuestion).text);
 }
 
 /*
