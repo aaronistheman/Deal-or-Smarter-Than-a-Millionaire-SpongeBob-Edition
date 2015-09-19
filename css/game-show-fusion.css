@@ -55,6 +55,7 @@ canvas.show {
     background-color: black;
 }
 
-#choose-question-graphics-canvas.show {
+#choose-question-graphics-canvas.show,
+    #questioning-graphics-canvas.show {
     background-image: url(../images/chalkboard_texture.jpg);
 }

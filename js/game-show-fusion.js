@@ -29,7 +29,9 @@ gameShow.selectedBriefcaseNumber = undefined;
 gameShow.questions = new Questions(
     CANVAS_IDS.CHOOSE_QUESTION_GRAPHICS,
     CANVAS_IDS.CHOOSE_QUESTION_TEXT,
-    "none");
+    "none",
+    CANVAS_IDS.QUESTIONING_GRAPHICS,
+    CANVAS_IDS.QUESTIONING_TEXT);
 
 gameShow.selectedQuestion = undefined;
 
@@ -336,9 +338,20 @@ function handleQuestionSelection() {
 
     // Present the question
     gameShow.selectedQuestion = gameShow.questions.numberToEmphasize;
-    console.log(
-        gameShow.questions.getQuestion(
-            gameShow.selectedQuestion).text);
+    gameShow.quotesToDraw.add("Here comes the question.")
+        .deployQuoteChain(presentQuestionAndAnswers);
+}
+
+/*
+    @pre gameShow.selectedQuestion has been updated
+    @post the question, its answers, and the support options
+    have been presented
+*/
+function presentQuestionAndAnswers() {
+    gameShow.canvasStack.set(CANVAS_IDS.QUESTIONING);
+
+    gameShow.questions.drawQuestionAndAnswersText(
+        gameShow.selectedQuestion);
 }
 
 /*

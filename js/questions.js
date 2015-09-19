@@ -17,16 +17,22 @@
 */
 
 /*
-    @pre the canvas indicated by graphicsCanvasId is behind the
-    canvas indicated by textCanvasId
-    @param graphicsCanvasId id of the canvas to draw the non-text
+    @pre the canvas indicated by labelGraphicsCanvasId is behind the
+    canvas indicated by labelTextCanvasId
+    @param labelGraphicsCanvasId id of the canvas to draw the non-text
     part of the questions' display on
-    @param textCanvasId id of the canvas to draw the text part
+    @param labelTextCanvasId id of the canvas to draw the text part
     of the questions' display on
     @param numberToEmphasize number of the question to emphasize;
     set to "none" to emphasize no question label
+    @param questioningGraphicsCanvasId id of the canvas to draw
+    the non-textual parts of the presentation of a question on
+    @param questioningTextCanvasId id of the canvas to draw
+    the text parts of the presentation of a question on
 */
-function Questions(graphicsCanvasId, textCanvasId, numberToEmphasize) {
+function Questions(labelGraphicsCanvasId, labelTextCanvasId,
+    numberToEmphasize, questioningGraphicsCanvasId,
+    questioningTextCanvasId) {
     // Storage of objects of type Question
     this._questions = [];
 
@@ -38,9 +44,13 @@ function Questions(graphicsCanvasId, textCanvasId, numberToEmphasize) {
     this.numberToEmphasize = numberToEmphasize;
 
     // Store canvas data
-    this.choosingQuestionCanvases = {
-        graphicsCanvasId : graphicsCanvasId,
-        textCanvasId : textCanvasId,
+    this._choosingQuestionCanvases = {
+        labelGraphicsCanvasId : labelGraphicsCanvasId,
+        labelTextCanvasId : labelTextCanvasId,
+    };
+    this._questioningCanvases = {
+        questioningGraphicsCanvasId : questioningGraphicsCanvasId,
+        questioningTextCanvasId : questioningTextCanvasId,
     };
 }
 
@@ -62,7 +72,7 @@ Questions.prototype.getQuestion = function(whichOne) {
 Questions.prototype.displayAsChoices = function() {
     // Set up the canvas contexts
     var graphicsContext = document.getElementById(
-        this.choosingQuestionCanvases.graphicsCanvasId).getContext('2d');
+        this._choosingQuestionCanvases.labelGraphicsCanvasId).getContext('2d');
     var textContext = this._getLabelTextContext();
 
     // Iterate to draw each question label
@@ -200,7 +210,8 @@ Questions.prototype._drawCircularEdgeOfLabel =
 */
 Questions.prototype._getLabelTextContext = function() {
     var textContext = document.getElementById(
-        this.choosingQuestionCanvases.textCanvasId).getContext('2d');
+        this._choosingQuestionCanvases.labelTextCanvasId)
+            .getContext('2d');
     textContext.font = "30px Arial";
     textContext.textAlign = "center";
     return textContext;
@@ -232,9 +243,11 @@ Questions.prototype._getLabelTextFillStyle = function(number) {
 Questions.prototype.setEmphasis = function(newNumber) {
     // Set up variables
     var graphicsContext = document.getElementById(
-        this.choosingQuestionCanvases.graphicsCanvasId).getContext('2d');
+        this._choosingQuestionCanvases.labelGraphicsCanvasId)
+            .getContext('2d');
     var textContext = document.getElementById(
-        this.choosingQuestionCanvases.textCanvasId).getContext('2d');
+        this._choosingQuestionCanvases.labelTextCanvasId)
+            .getContext('2d');
     var oldNumber = this.numberToEmphasize;
 
     // Determine positions of formerly emphasized case and now
@@ -367,6 +380,24 @@ Questions.prototype._generateTenQuestions = function() {
     pickTwoQuestions(supply, GRADES.FIFTH);
 
     this._questions = tenQuestions;
+}
+
+/*
+    @post the text of the question indicated by questionNumber and
+    of that question's answers has been drawn
+    @param questionNumber
+*/
+Questions.prototype.drawQuestionAndAnswersText =
+    function(questionNumber) {
+    var ctx = document.getElementById(
+        this._questioningCanvases.questioningTextCanvasId)
+        .getContext('2d');
+    ctx.fillStyle = "white";
+    ctx.font = "30px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(this._questions[questionNumber - 1].text,
+        500,
+        500);
 }
 
 /*
