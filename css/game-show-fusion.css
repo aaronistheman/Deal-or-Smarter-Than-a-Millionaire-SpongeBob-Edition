@@ -5,6 +5,10 @@
 
 body {
     background-image: url(../images/background_texture.jpg);
+
+    /* So that the webfont gets loaded early enough for
+        drawing certain canvas text */
+    font-family: "Rock Salt";
 }
 
 #game {

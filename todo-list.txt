@@ -1,6 +1,5 @@
 Next:
 -presenting a question
-    --present the question with the whiteboard web font
     --make answers for the questions
     --properly position the questions, answers, and help options
     --allow the user to move the cursor regarding which is selected
@@ -70,7 +69,8 @@ Considerable:
     canvases
 -improve the fitting of a quote into its bubble; ideas:
     --try measuring something other than number of characters
-    --find a way to make each character take up same space
+        --see Mozilla article about measuring pixels taken by text
+    --find a way/font to make each character take up same space
     --could limit quotes to one line
     --could split each string/quote into array of words (separate
         by ' ')

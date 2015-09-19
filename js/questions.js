@@ -393,7 +393,7 @@ Questions.prototype.drawQuestionAndAnswersText =
         this._questioningCanvases.questioningTextCanvasId)
         .getContext('2d');
     ctx.fillStyle = "white";
-    ctx.font = "30px Arial";
+    ctx.font = "30px 'Rock Salt'";
     ctx.textAlign = "center";
     ctx.fillText(this._questions[questionNumber - 1].text,
         500,
