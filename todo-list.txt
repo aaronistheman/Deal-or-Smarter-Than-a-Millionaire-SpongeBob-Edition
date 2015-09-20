@@ -1,6 +1,5 @@
 Next:
 -presenting a question
-    --make answers for the questions
     --properly position the questions, answers, and help options
     --allow the user to move the cursor regarding which is selected
         --may have to make class Questions consist of two divisive objects
