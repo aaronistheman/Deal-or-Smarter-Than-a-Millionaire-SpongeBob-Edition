@@ -478,12 +478,13 @@ Questions.prototype._drawAnswersText = function(questionNumber) {
         .getContext('2d');
     ctx.fillStyle = "white";
     ctx.font = Questions.ANSWERS_FONT_SIZE + "px 'Arial'";
-    // ctx.font = Questions.ANSWERS_FONT_SIZE + "px 'Rock Salt'";
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
 
+    var answerLetters = ['A', 'B', 'C', 'D'];
+
     for (var i = 0; i < 4; ++i) {
-        var text =
+        var text = '(' + answerLetters[i] + ")    " +
             this._questions[questionNumber - 1]
                 .answerData.arrayOfAnswers[i];
         var position = Questions._getAnswerPosition(i + 1);

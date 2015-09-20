@@ -1,6 +1,5 @@
 Next:
 -presenting a question
-    --draw the answers' letters
     --throw an exception if an answer is too long
     --allow the user to move the cursor regarding which is selected
         --may have to make class Questions consist of two divisive objects
