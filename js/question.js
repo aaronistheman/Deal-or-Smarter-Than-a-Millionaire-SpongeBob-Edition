@@ -13,6 +13,7 @@
     @param text the text of the question
     @param answerData instance of AnswerData that is suitable
     to the question
+    @throws a string if invalid subject
 */
 function Question(grade, subject, text, answerData) {
     this.grade = grade;
@@ -34,6 +35,7 @@ function Question(grade, subject, text, answerData) {
 /*
     @param correctIndex index of the correct answer in arrayOfAnswers
     @param arrayOfAnswers array of strictly four available answers
+    @throws a string if either parameter is invalid
 */
 function AnswerData(correctIndex, arrayOfAnswers) {
     if (correctIndex >= 0 && correctIndex <= 3)

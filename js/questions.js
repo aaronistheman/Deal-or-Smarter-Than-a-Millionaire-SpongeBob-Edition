@@ -388,14 +388,26 @@ Questions.prototype._generateTenQuestions = function() {
     @param questionNumber
 */
 Questions.prototype.drawQuestionAndAnswersText =
-    function(questionNumber) {
+    function(questionNumber)
+{
+    this._drawQuestionText(questionNumber);
+    this._drawAnswersText(questionNumber);
+}
+
+/*
+    @post the text of the question indicated by questionNumber
+    has been drawn in a good area and properly formatted
+    @param questionNumber
+*/
+Questions.prototype._drawQuestionText = function(questionNumber) {
     // Variables that help with positioning
     var fontSize = 30;
     var verticalSpaceBetweenWords = 5;
-    var sideMargin = 10;
+    var sideMargin = 100;
     var allocatedWidthForQuestionDisplay = 800;
-    var x = 310;
-    var y = sideMargin;
+    var topMargin = 100;
+    var x = 300 + sideMargin;
+    var y = topMargin;
 
     // Set up canvas context
     var ctx = document.getElementById(
@@ -421,6 +433,57 @@ Questions.prototype.drawQuestionAndAnswersText =
         // Update x and y
         y += (fontSize + verticalSpaceBetweenWords);
     }
+};
+
+/*
+    @post the selectable answers to the question indicated by
+    questionNumber have been drawn in a good area and properly formatted
+    @param questionNumber
+*/
+Questions.prototype._drawAnswersText = function(questionNumber) {
+    // Set up canvas context
+    var fontSize = 30;
+    var ctx = document.getElementById(
+        this._questioningCanvases.questioningTextCanvasId)
+        .getContext('2d');
+    ctx.font = fontSize + "px 'Rock Salt'";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+
+    // Variables for positioning
+    var x = 10;
+    var y = 285;
+    var verticalSpaceBetweenAnswers = 5;
+
+    for (var i = 0; i < 4; ++i) {
+        this._drawAnswerText(ctx, questionNumber, i + 1, x, y,
+            verticalSpaceBetweenAnswers);
+
+        y += ((fontSize * 2) + verticalSpaceBetweenAnswers);
+    }
+}
+
+/*
+    @post the one indicated by answerNumber of the four answers
+    to the question indicated by questionNumber has been drawn
+    and surrounded by a centered rectangle
+    @param ctx context of the canvas to draw on
+    @param questionNumber
+    @param answerNumber which of the four answers to draw
+    @param x positional x-coordinate
+    @param y positional y-coordinate
+    @param verticalSpaceBetweenAnswers space in between each
+    rectangle that surrounds an answer
+*/
+Questions.prototype._drawAnswerText =
+    function(ctx, questionNumber, answerNumber, x, y,
+        verticalSpaceBetweenAnswers)
+{
+    // Draw the rectangle that surrounds the answer
+    ctx.fillRect(x, y, (1100 - (x * 2)),
+        (65 - verticalSpaceBetweenAnswers));
+
+    // ctx.fillStyle = "white";
 }
 
 /*
@@ -526,7 +589,7 @@ Questions.getEntireSupplyOfQuestions = function() {
     supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
         "Which of the following characters has tried to steal " +
         "a recipe from Mr. Krabs?",
-        new AnswerData(ANSWERS.FOURTH, ["Mrs. Puff", "Patrick",
+        new AnswerData(ANSWERS.FOURTH, ["Mrs. Puff", "Sandy",
             "Barnacle Boy", "Plankton"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.GEOGRAPHY,
         "Which of the following areas is at a much lower elevation " +

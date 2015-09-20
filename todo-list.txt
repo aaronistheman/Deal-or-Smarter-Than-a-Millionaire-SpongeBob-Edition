@@ -1,6 +1,8 @@
 Next:
 -presenting a question
-    --properly position the questions, answers, and help options
+    --make the graphical part of the drawing of questions and answers
+        only be drawn once
+    --properly position the answers
     --allow the user to move the cursor regarding which is selected
         --may have to make class Questions consist of two divisive objects
 -put some different music tracks (e.g. when presenting helpers,
@@ -10,6 +12,7 @@ Next:
     --create an object for turn variables; this'll make it easier to
         reset variables before picking next question
     --move Vector2d into its own file
+-apply convertTextIntoSmallerPieces() into quote bubble problem
 -implement answering a question correctly and moving on
     --show case open with random money amount
         --show effect on money display
