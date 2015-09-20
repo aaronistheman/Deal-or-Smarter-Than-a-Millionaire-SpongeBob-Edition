@@ -1,13 +1,19 @@
 Next:
--presenting a question
-    --the question and options (i.e. remaining help and answers)
-        are presented; with no quote bubble
+-put some different music tracks (e.g. when presenting helpers,
+    when question is presented)
 -look into loading question data (e.g. with jQuery AJAX)
--create an object for turn variables; this'll make it easier to
-    reset variables before picking next question
+-cleanup
+    --create an object for turn variables; this'll make it easier to
+        reset variables before picking next question
+    --move Vector2d into its own file
+-apply convertTextIntoSmallerPieces() into quote bubble problem
 -implement answering a question correctly and moving on
+    --allow the user to move the cursor regarding which is selected
+        --may have to make class Questions consist of two divisive objects
+        --make sure SpongeBob explains how to do this
     --show case open with random money amount
         --show effect on money display
+    --fade out the question that had been answered
     --make sure sources of help can only be used once
 -allow picking of a helper
 -make more questions
@@ -15,6 +21,7 @@ Next:
 -implement ask the audience
 -implement phone a friend
 -implement saving
+-make sure SpongeBob explains the controls for using a source of help
 -implement losing (i.e. player answered the question incorrectly
     and wasn't saved) and leaving with nothing
 -banker makes a deal
@@ -64,7 +71,8 @@ Considerable:
     canvases
 -improve the fitting of a quote into its bubble; ideas:
     --try measuring something other than number of characters
-    --find a way to make each character take up same space
+        --see Mozilla article about measuring pixels taken by text
+    --find a way/font to make each character take up same space
     --could limit quotes to one line
     --could split each string/quote into array of words (separate
         by ' ')

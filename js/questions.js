@@ -17,16 +17,22 @@
 */
 
 /*
-    @pre the canvas indicated by graphicsCanvasId is behind the
-    canvas indicated by textCanvasId
-    @param graphicsCanvasId id of the canvas to draw the non-text
+    @pre the canvas indicated by labelGraphicsCanvasId is behind the
+    canvas indicated by labelTextCanvasId
+    @param labelGraphicsCanvasId id of the canvas to draw the non-text
     part of the questions' display on
-    @param textCanvasId id of the canvas to draw the text part
+    @param labelTextCanvasId id of the canvas to draw the text part
     of the questions' display on
     @param numberToEmphasize number of the question to emphasize;
     set to "none" to emphasize no question label
+    @param questioningGraphicsCanvasId id of the canvas to draw
+    the non-textual parts of the presentation of a question on
+    @param questioningTextCanvasId id of the canvas to draw
+    the text parts of the presentation of a question on
 */
-function Questions(graphicsCanvasId, textCanvasId, numberToEmphasize) {
+function Questions(labelGraphicsCanvasId, labelTextCanvasId,
+    numberToEmphasize, questioningGraphicsCanvasId,
+    questioningTextCanvasId) {
     // Storage of objects of type Question
     this._questions = [];
 
@@ -38,10 +44,24 @@ function Questions(graphicsCanvasId, textCanvasId, numberToEmphasize) {
     this.numberToEmphasize = numberToEmphasize;
 
     // Store canvas data
-    this.choosingQuestionCanvases = {
-        graphicsCanvasId : graphicsCanvasId,
-        textCanvasId : textCanvasId,
+    this._choosingQuestionCanvases = {
+        labelGraphicsCanvasId : labelGraphicsCanvasId,
+        labelTextCanvasId : labelTextCanvasId,
     };
+    this._questioningCanvases = {
+        questioningGraphicsCanvasId : questioningGraphicsCanvasId,
+        questioningTextCanvasId : questioningTextCanvasId,
+    };
+}
+
+/*
+    @post the graphical, rarely redrawn parts of the questions'
+    label display and of the presentation of a question have
+    been drawn
+*/
+Questions.prototype.drawInitialParts = function() {
+    this._displayAsChoices();
+    this._drawRectanglesEncompassingAnswers();
 }
 
 /*
@@ -59,10 +79,10 @@ Questions.prototype.getQuestion = function(whichOne) {
     that the user could choose which to try to answer; each's
     question's grade level and subject will be displayed
 */
-Questions.prototype.displayAsChoices = function() {
+Questions.prototype._displayAsChoices = function() {
     // Set up the canvas contexts
     var graphicsContext = document.getElementById(
-        this.choosingQuestionCanvases.graphicsCanvasId).getContext('2d');
+        this._choosingQuestionCanvases.labelGraphicsCanvasId).getContext('2d');
     var textContext = this._getLabelTextContext();
 
     // Iterate to draw each question label
@@ -200,7 +220,8 @@ Questions.prototype._drawCircularEdgeOfLabel =
 */
 Questions.prototype._getLabelTextContext = function() {
     var textContext = document.getElementById(
-        this.choosingQuestionCanvases.textCanvasId).getContext('2d');
+        this._choosingQuestionCanvases.labelTextCanvasId)
+            .getContext('2d');
     textContext.font = "30px Arial";
     textContext.textAlign = "center";
     return textContext;
@@ -232,9 +253,11 @@ Questions.prototype._getLabelTextFillStyle = function(number) {
 Questions.prototype.setEmphasis = function(newNumber) {
     // Set up variables
     var graphicsContext = document.getElementById(
-        this.choosingQuestionCanvases.graphicsCanvasId).getContext('2d');
+        this._choosingQuestionCanvases.labelGraphicsCanvasId)
+            .getContext('2d');
     var textContext = document.getElementById(
-        this.choosingQuestionCanvases.textCanvasId).getContext('2d');
+        this._choosingQuestionCanvases.labelTextCanvasId)
+            .getContext('2d');
     var oldNumber = this.numberToEmphasize;
 
     // Determine positions of formerly emphasized case and now
@@ -370,6 +393,141 @@ Questions.prototype._generateTenQuestions = function() {
 }
 
 /*
+    @post the text of the question indicated by questionNumber and
+    of that question's answers has been drawn
+    @param questionNumber
+*/
+Questions.prototype.drawQuestionAndAnswersText =
+    function(questionNumber)
+{
+    this._drawQuestionText(questionNumber);
+    this._drawAnswersText(questionNumber);
+}
+
+/*
+    @post the text of the question indicated by questionNumber
+    has been drawn in a good area and properly formatted
+    @param questionNumber
+    @throws string if the question can't be fit in the designated
+    space with the used font type, style, and size
+*/
+Questions.prototype._drawQuestionText = function(questionNumber) {
+    // Variables that help with positioning
+    var fontSize = 30;
+    var verticalSpaceBetweenWords = 5;
+    var sideMargin = 100;
+    var allocatedWidthForQuestionDisplay = 800;
+    var topMargin = 100;
+    var x = 300 + sideMargin;
+    var y = topMargin;
+
+    // Set up canvas context
+    var ctx = document.getElementById(
+        this._questioningCanvases.questioningTextCanvasId)
+        .getContext('2d');
+    ctx.fillStyle = "white";
+    ctx.font = fontSize + "px 'Rock Salt'";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+
+    var textPieces = convertCanvasTextIntoSmallerPieces(ctx,
+        this._questions[questionNumber - 1].text,
+        allocatedWidthForQuestionDisplay - (sideMargin * 2));
+    for (var i in textPieces) {
+        // Throw exception if question is too big
+        if (y >= (275 - (fontSize + verticalSpaceBetweenWords))) {
+            alert("Error: question can't be fit in its designated space");
+            throw "Error: question can't be fit in its designated space";
+        }
+
+        ctx.fillText(textPieces[i], x, y);
+
+        // Update x and y
+        y += (fontSize + verticalSpaceBetweenWords);
+    }
+};
+
+/*
+    @post the four rectangles that would encompass the four
+    choosable answers to a question have been drawn
+*/
+Questions.prototype._drawRectanglesEncompassingAnswers = function() {
+    // Set up canvas context
+    var ctx = document.getElementById(
+        this._questioningCanvases.questioningTextCanvasId)
+        .getContext('2d');
+    ctx.fillStyle = "#484848";
+
+    for (var i = 0; i < 4; ++i) {
+        var position = Questions._getAnswerPosition(i + 1);
+        ctx.fillRect(position.x, position.y,
+            Questions.ANSWER_DIMENSIONS.x,
+            Questions.ANSWER_DIMENSIONS.y);
+    }
+}
+
+/*
+    @post the selectable answers to the question indicated by
+    questionNumber have been drawn in a good area and properly formatted
+    @param questionNumber
+    @throws string if an answer is too long to draw in its
+    designated area
+*/
+Questions.prototype._drawAnswersText = function(questionNumber) {
+    var textIndent = 30;
+    // Set up canvas context
+    var ctx = document.getElementById(
+        this._questioningCanvases.questioningTextCanvasId)
+        .getContext('2d');
+    ctx.fillStyle = "white";
+    ctx.font = Questions.ANSWERS_FONT_SIZE + "px 'Arial'";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+
+    var answerLetters = ['A', 'B', 'C', 'D'];
+
+    for (var i = 0; i < 4; ++i) {
+        var text = '(' + answerLetters[i] + ")    " +
+            this._questions[questionNumber - 1]
+                .answerData.arrayOfAnswers[i];
+
+        // Throw an exception of the text is too long
+        if ((textIndent + ctx.measureText(text).width) >
+            Questions.ANSWER_DIMENSIONS.x)
+        {
+            alert("Error: answer #" + (i + 1) + " of 4 can't " +
+                "be fit in its designated space");
+            throw "Error: answer #" + (i + 1) + " of 4 can't " +
+                "be fit in its designated space";
+        }
+
+
+        var position = Questions._getAnswerPosition(i + 1);
+        ctx.fillText(text, position.x + textIndent, position.y);
+    }
+}
+
+/*
+    @post the one indicated by answerNumber of the four answers
+    to the question indicated by questionNumber has been drawn
+    and surrounded by a centered rectangle
+    @param ctx context of the canvas to draw on
+    @param questionNumber
+    @param answerNumber which of the four answers to draw
+    @param x positional x-coordinate
+    @param y positional y-coordinate
+    @param verticalSpaceBetweenAnswers space in between each
+    rectangle that surrounds an answer
+*/
+Questions.prototype._drawRectangleEncompassingAnswer =
+    function(ctx, questionNumber, answerNumber, x, y,
+        verticalSpaceBetweenAnswers)
+{
+    // Draw the rectangle that surrounds the answer
+
+}
+
+/*
     Static methods and/or members
 */
 
@@ -391,6 +549,17 @@ Questions.FIRST_LABEL_POSITION = new Vector2d(
     Questions.LABEL_PADDING.y +
         (4 * Questions.MARGINAL_LABEL_POSITION.y));
 
+// For positioning the display of a question and its answers
+Questions.ANSWERS_FONT_SIZE = 30;
+Questions.VERTICAL_SPACE_BETWEEN_ANSWERS = 5;
+Questions.ANSWER_DIMENSIONS =
+    new Vector2d(1080,
+        (65 - Questions.VERTICAL_SPACE_BETWEEN_ANSWERS));
+Questions.FIRST_ANSWER_POSITION = new Vector2d(10, 285);
+Questions.MARGINAL_ANSWER_POSITION = new Vector2d(0,
+    (Questions.ANSWERS_FONT_SIZE * 2) +
+        Questions.VERTICAL_SPACE_BETWEEN_ANSWERS);
+
 /*
     @hasTest yes
     @param whichLabel number of the label to get the position of;
@@ -406,6 +575,19 @@ Questions._getLabelPosition = function(whichLabel) {
 
     return Questions.FIRST_LABEL_POSITION.getSum(
         Questions.MARGINAL_LABEL_POSITION.getProduct(adjustment));
+}
+
+/*
+    @pre 1 <= answerNumber <= 4
+    @hasTest yes
+    @returns Vector2d object containing the top left coordinate
+    of the space designated for the answer indicated by
+    answerNumber of the four answers
+*/
+Questions._getAnswerPosition = function(answerNumber) {
+    return Questions.FIRST_ANSWER_POSITION.getSum(
+        Questions.MARGINAL_ANSWER_POSITION.getProduct(
+            new Vector2d(0, (answerNumber - 1))));
 }
 
 /*
@@ -448,10 +630,20 @@ Questions._getLabelText = function(question) {
     at least six of such questions for third grade, at least four
     of such questions for second grade, and at least two of
     such questions for first grade (this prevents an infinite loop
-    in Questions._generateTenQuestions())
+    in Questions._generateTenQuestions()); each question and answer
+    should be able to fit in the display, although this depends
+    on the font
 */
 Questions.getEntireSupplyOfQuestions = function() {
     var supply = [];
+
+    // To make the answer data below more readable
+    var ANSWERS = {
+        FIRST : 0,
+        SECOND : 1,
+        THIRD : 2,
+        FOURTH : 3,
+    };
 
     // Questions are ordered by grade and placed between
     // the appropriate grade dividers
@@ -463,21 +655,32 @@ Questions.getEntireSupplyOfQuestions = function() {
 
     supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
         "Which of the following characters has tried to steal " +
-        "a recipe from Mr. Krabs?")); // Plankton
+        "a recipe from Mr. Krabs?",
+        new AnswerData(ANSWERS.FOURTH, ["Mrs. Puff", "Sandy",
+            "Barnacle Boy", "Plankton"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.GEOGRAPHY,
-        "Which of the following areas is at a lower elevation " +
-        "than Glove World?")); // Rock Bottom
+        "Which of the following areas is at a much lower elevation " +
+        "than Glove World?",
+        new AnswerData(ANSWERS.FIRST, ["Rock Bottom", "Shell City",
+            "Patrick's house", "Krusty Krab"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.RESTAURANTS,
         "Which of the following is a restaurant in Bikini " +
-        "Bottom?")); // Krusty Krab
+        "Bottom?",
+        new AnswerData(ANSWERS.SECOND, ["Goo Lagoon", "Krusty Krab",
+            "Pizza Hut", "The Wash"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.TECHNOLOGY,
-        "What species is Plankton's wife?")); // computer
+        "What species is Plankton's wife?",
+        new AnswerData(ANSWERS.THIRD, ["Sea Bear", "Lamp",
+            "Computer", "Stove"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
-        "What is SpongeBob's catchphrase?")); // "I'm ready."
+        "What is SpongeBob's catchphrase?",
+        new AnswerData(ANSWERS.FOURTH, ["Howdy ya'll.",
+            "Time is money.", "What a beautiful day.", "I'm ready."])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.VEHICLES,
         "Which of the following vehicles " +
-        "is driven by Mermaid Man?")); // Invisible Boatmobile
-        // wrong options: Underwater Heartbreaker, Patty Wagon, bus
+        "is driven by Mermaid Man?",
+        new AnswerData(ANSWERS.FIRST, ["Invisible Boatmobile",
+            "Underwater Heartbreaker", "Patty Wagon", "bus"])));
 
     /*
         Second grade questions
@@ -486,16 +689,23 @@ Questions.getEntireSupplyOfQuestions = function() {
 
     supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
         "Which of the following characters tried to strangle " +
-        "someone who reported his littering?"));
-        // Tattle-Tale Strangler
+        "someone who reported his littering?",
+        new AnswerData(ANSWERS.SECOND, ["Mr. Krabs", "Tattle-Tale Strangler",
+            "Plankton", "Mr. Puff"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.SIDE_CHARACTERS,
-        "What is Squilliam's last name?")); // Fancyson
+        "What is Squilliam's last name?",
+        new AnswerData(ANSWERS.THIRD, ["Tentacles", "Martinez",
+            "Fancyson", "Ghisolfi"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.FITNESS,
         "Which of the following products sold in Bikini Bottom " +
-        "can make a fish seem unreasonably fit?")); // anchor arms
+        "can make a fish seem unreasonably fit?",
+        new AnswerData(ANSWERS.FOURTH, ["arm cruncher",
+            "seaweed", "barnacle chips", "anchor arms"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
         "Who said the following quote: 'We should take Bikini" +
-        "Bottom, and push it somewhere else'?")); // Patrick
+        "Bottom, and push it somewhere else'?",
+        new AnswerData(ANSWERS.FIRST, ["Patrick", "Sandy",
+            "Mr. Krabs", "Squidward"])));
 
     /*
         Third grade questions
@@ -503,23 +713,34 @@ Questions.getEntireSupplyOfQuestions = function() {
     gradeOfQuestion = GRADES.THIRD;
 
     supply.push(new Question(gradeOfQuestion, SUBJECTS.STAFF,
-        "Who created the television show 'SpongeBob Squarepants'?"));
-        // Stephen Hillenburg
+        "Who created the television show 'SpongeBob Squarepants'?",
+        new AnswerData(ANSWERS.SECOND, ["Rodger Bumpass",
+            "Stephen Hillenburg", "Paul Tibbitt", "Dee Bradley Baker"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
+        "As SpongeBob hosted a house party, for what reason " +
+        "did police arrest him?",
+        new AnswerData(ANSWERS.THIRD, ["Improper dress", "Breaking in",
+            "He didn't invite the police", "His party was boring"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.VEHICLES,
         "Which of the following vehicles " +
-        "does one not need a license to drive?")); // Patty Wagon
-    supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
-        "As SpongeBob hosted a house party, why did " +
-        "police arrest him?")); // He didn't invite them
+        "does one apparently not need a license to drive?",
+        new AnswerData(ANSWERS.FOURTH, ["boat", "bus", "Boaty",
+            "Patty Wagon"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.RUMORS,
-        "Which of the following episodes was a rumor?"));
-        // Squidward's Suicide (other option: Someone in...)
+        "Which of the following episodes was a rumor?",
+        new AnswerData(ANSWERS.FIRST, ["Squidward's Suicide",
+            "Help Wanted", "Someone in the Kitchen with Sandy",
+            "Shanghaied"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
         "Who said the following quote: 'I wonder if a fall " +
-        "from this height would kill me'?")); // Squidward
+        "from this height would kill me'?",
+        new AnswerData(ANSWERS.SECOND, ["Barnacle Boy",
+            "Squidward", "Patrick", "Flatts"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.VIDEO_GAMES,
         "Who is the final boss in the video game version of " +
-        "the first movie?")); // King Neptune
+        "the first movie?",
+        new AnswerData(ANSWERS.THIRD, ["Plankton", "Robot Plankton",
+            "King Neptune", "The Flying Dutchman"])));
 
     /*
         Fourth grade questions
@@ -529,30 +750,41 @@ Questions.getEntireSupplyOfQuestions = function() {
     supply.push(new Question(gradeOfQuestion, SUBJECTS.DRIVING,
         "At the beginning of the episode 'No Free Rides', " +
         "how many points did SpongeBob need in order to pass " +
-        "his driving test?")); // 600
+        "his driving test?",
+        new AnswerData(ANSWERS.FOURTH, [254, 6, 1200, 600])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.STAFF,
-        "Who is the voice actor of SpongeBob Squarepants?"));
-        // Tom Kenny
+        "Who is the voice actor of SpongeBob Squarepants?",
+        new AnswerData(ANSWERS.FIRST, ["Tom Kenny", "Rodger Bumpass",
+            "Paul Tibbitt", "Clancy Brown"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.ART,
         "In the episode 'Artist Unknown', which of the following " +
-        "was produced by SpongeBob and later by Squidward?")); // David
+        "was produced by SpongeBob and later by Squidward?",
+        new AnswerData(ANSWERS.SECOND, ["Bold and Brash", "David",
+            "Statue of Liberty", "Gates of Paradise"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
         "Which of the following characters tried to steal " +
-        "someone's car keys with his mouth?")); // Bubble Bass
+        "someone's car keys with his mouth?",
+        new AnswerData(ANSWERS.THIRD, ["Plankton", "Tattle-Tale Strangler",
+            "Bubble Bass", "Squilliam"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.MAIN_CHARACTERS,
-        "What is Plankton's first name?")); // Sheldon
+        "What is Plankton's first name?",
+        new AnswerData(ANSWERS.FOURTH, ["Eugene", "Ralph",
+            "Lester", "Sheldon"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
         "According to Mr. Krabs, what is one of the purposes of his " +
-        "'big meaty claws'?")); // attracting mates
-        // other answers: stopping Plankton, sleeping, balance
+        "'big meaty claws'?",
+        new AnswerData(ANSWERS.FIRST, ["attracting mates",
+            "stopping Plankton", "sleeping", "balance"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.GEOGRAPHY,
         "Which of the following areas is visited by SpongeBob " +
-        "and Patrick in the first movie?")); // Shell City
-        // other answers: Glove World, Pizza Castle, Sandy's Treedome
+        "and Patrick in the first movie?",
+        new AnswerData(ANSWERS.SECOND, ["Glove World", "Shell City",
+            "Pizza Castle", "Sandy's Treedome"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.TECHNOLOGY,
         "Which of the following did Mr. Krabs' cash register " +
-        "used to be?")); // calculator
-        // other answers: blender, blow dryer, spatula
+        "used to be?",
+        new AnswerData(ANSWERS.THIRD, ["blender", "blow dryer",
+            "calculator", "spatula"])));
 
     /*
         Fifth grade questions
@@ -561,68 +793,59 @@ Questions.getEntireSupplyOfQuestions = function() {
 
     supply.push(new Question(gradeOfQuestion, SUBJECTS.VIDEO_GAMES,
         "Which of the following games is not available on the " +
-        "PlayStation 2?")); // idk - find one
+        "PlayStation 2?",
+        new AnswerData(ANSWERS.FIRST, ["The Yellow Avenger",
+            "Creature from the Krusty Krab",
+            "Revenge of the Flying Dutchman",
+            "Battle for Bikini Bottom"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
         "Which of the following characters let someone " +
-        "drown to death?")); // Bubble Buddy
+        "drown to death?",
+        new AnswerData(ANSWERS.SECOND, ["Flatts", "Bubble Buddy",
+            "Fred", "Plankton"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.HISTORY,
         "In which of the following years did a chum famine " +
-        "take place?")); // 1959
+        "take place?",
+        new AnswerData(ANSWERS.THIRD, ["1913", "1948",
+            "1959", "1968"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.ART,
         "Which of the following words is not used to describe " +
-        "SpongeBob in the opening theme?")); // spongy
-        // wrong options: absorbent, yellow, porous
+        "SpongeBob in the opening theme?",
+        new AnswerData(ANSWERS.FOURTH, ["porous", "yellow",
+            "absorbent", "spongy"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.TECHNOLOGY,
         "Which of the following did SpongeBob not say that " +
-        "robots cannot do?")); // dance
-        // wrong options: laugh, cry, love
+        "robots cannot do?",
+        new AnswerData(ANSWERS.FIRST, ["dance", "laugh", "cry", "love"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
         "Who said the following quote: 'Everything is chrome " +
-        "in the future'?")); // SpongeTron
+        "in the future'?",
+        new AnswerData(ANSWERS.SECOND, ["Robot Plankton",
+            "SpongeTron", "SpongeBob", "Karen"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.RUMORS,
         "What is supposedly the second sign of the " +
-        "Hash-Slinging Slasher's arrival?"));
-        // The phone will ring, and there will be nobody there
+        "Hash-Slinging Slasher's arrival?",
+        new AnswerData(ANSWERS.THIRD,
+            ["The walls will ooze green slime",
+            "He'll arrive in a ghost bus",
+            "The phone will ring, but there will be nobody there",
+            "The lights will flicker on and off"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.RESTAURANTS,
         "Which of the following is not a restaurant in Bikini " +
-        "Bottom?")); // Weenie Hut General
-        // wrong options: Fancy, Weenie Hut Juniors,
-        // Super Weenie Hut Juniors
+        "Bottom?",
+        new AnswerData(ANSWERS.FOURTH,
+            ["Fancy", "Weenie Hut Juniors",
+            "Super Weenie Hut Juniors", "Weenie Hut General"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.STAFF,
-        "Who is the voice actor of Patrick?"));
-        // Bill Fagerbakke
-        // Wrong options: Larry the Cable Guy, Clancy Brown,
-        // Rodger Bumpass
+        "Who is the voice actor of Patrick?",
+        new AnswerData(ANSWERS.FIRST, ["Bill Fagerbakke",
+            "Larry the Cable Guy", "Clancy Brown",
+            "Rodger Bumpass"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.VEHICLES,
         "What is the name of the vehicle that was driven by Patrick " +
-        "and SpongeBob on the way to their panty raid?"));
-        // Underwater Heartbreaker
-        // wrong options: Boaty, X Tornado, Trailblazer
-
-    // supply.push(new Question(GRADES.FIRST, SUBJECTS.VIDEO_GAMES));
-    // supply.push(new Question(GRADES.FIRST, SUBJECTS.VIDEO_GAMES));
-    // supply.push(new Question(GRADES.FIRST, SUBJECTS.CRIME));
-    // supply.push(new Question(GRADES.FIRST, SUBJECTS.GEOGRAPHY));
-
-    // supply.push(new Question(GRADES.SECOND, SUBJECTS.STAFF));
-    // supply.push(new Question(GRADES.SECOND, SUBJECTS.STAFF));
-    // supply.push(new Question(GRADES.SECOND, SUBJECTS.RESTAURANTS));
-    // supply.push(new Question(GRADES.SECOND, SUBJECTS.VEHICLES));
-
-    // supply.push(new Question(GRADES.THIRD, SUBJECTS.SIDE_CHARACTERS));
-    // supply.push(new Question(GRADES.THIRD, SUBJECTS.SIDE_CHARACTERS));
-    // supply.push(new Question(GRADES.THIRD, SUBJECTS.MAIN_CHARACTERS));
-    // supply.push(new Question(GRADES.THIRD, SUBJECTS.ART));
-
-    // supply.push(new Question(GRADES.FOURTH, SUBJECTS.DRIVING));
-    // supply.push(new Question(GRADES.FOURTH, SUBJECTS.DRIVING));
-    // supply.push(new Question(GRADES.FOURTH, SUBJECTS.FITNESS));
-    // supply.push(new Question(GRADES.FOURTH, SUBJECTS.RUMORS));
-
-    // supply.push(new Question(GRADES.FIFTH, SUBJECTS.HISTORY));
-    // supply.push(new Question(GRADES.FIFTH, SUBJECTS.HISTORY));
-    // supply.push(new Question(GRADES.FIFTH, SUBJECTS.TECHNOLOGY));
-    // supply.push(new Question(GRADES.FIFTH, SUBJECTS.QUOTATIONS));
+        "and SpongeBob on the way to their panty raid?",
+        new AnswerData(ANSWERS.SECOND, ["Underwater Heartbreaker",
+            "Boaty", "X Tornado", "Trailblazer"])));
 
     return supply;
 }
