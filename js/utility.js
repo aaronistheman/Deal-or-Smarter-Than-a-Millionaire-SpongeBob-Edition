@@ -70,6 +70,7 @@ function convertCanvasTextIntoSmallerPieces(
 {
     var textPieces = [];
     var textPiece = "";
+    var nextWord = "";
 
     // Convert text into array of words
     var words = text.split(" ");
@@ -80,11 +81,17 @@ function convertCanvasTextIntoSmallerPieces(
     // pieces, and the process is repeated for a new piece until
     // no more words remain
     while (words.length > 0) {
-        textPiece += (words.shift() + ' ');
-        if (ctx.measureText(textPiece).width >= maximumWidthInPixels) {
+        nextWord = (words.shift() + ' ');
+
+        // Check if adding the next word would make the text
+        // piece too big
+        if (ctx.measureText(textPiece + nextWord).width >=
+            maximumWidthInPixels) {
             textPieces.push(textPiece);
-            textPiece = "";
+            textPiece = nextWord;
         }
+        else
+            textPiece += nextWord;
     }
 
     // Save the last piece

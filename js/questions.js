@@ -411,7 +411,7 @@ Questions.prototype.drawQuestionAndAnswersText =
 */
 Questions.prototype._drawQuestionText = function(questionNumber) {
     // Variables that help with positioning
-    var fontSize = Questions.ANSWERS_FONT_SIZE;
+    var fontSize = 30;
     var verticalSpaceBetweenWords = 5;
     var sideMargin = 100;
     var allocatedWidthForQuestionDisplay = 800;
