@@ -389,15 +389,38 @@ Questions.prototype._generateTenQuestions = function() {
 */
 Questions.prototype.drawQuestionAndAnswersText =
     function(questionNumber) {
+    // Variables that help with positioning
+    var fontSize = 30;
+    var verticalSpaceBetweenWords = 5;
+    var sideMargin = 10;
+    var allocatedWidthForQuestionDisplay = 800;
+    var x = 310;
+    var y = sideMargin;
+
+    // Set up canvas context
     var ctx = document.getElementById(
         this._questioningCanvases.questioningTextCanvasId)
         .getContext('2d');
     ctx.fillStyle = "white";
-    ctx.font = "30px 'Rock Salt'";
-    ctx.textAlign = "center";
-    ctx.fillText(this._questions[questionNumber - 1].text,
-        500,
-        500);
+    ctx.font = fontSize + "px 'Rock Salt'";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+
+    var textPieces = convertCanvasTextIntoSmallerPieces(ctx,
+        this._questions[questionNumber - 1].text,
+        allocatedWidthForQuestionDisplay - (sideMargin * 2));
+    for (var i in textPieces) {
+        // Throw exception if question is too big
+        if (y >= (275 - (fontSize + verticalSpaceBetweenWords))) {
+            alert("Error: question can't be fit in its designated space");
+            throw "Error: question can't be fit in its designated space";
+        }
+
+        ctx.fillText(textPieces[i], x, y);
+
+        // Update x and y
+        y += (fontSize + verticalSpaceBetweenWords);
+    }
 }
 
 /*
