@@ -1,8 +1,7 @@
 Next:
 -presenting a question
-    --make the graphical part of the drawing of questions and answers
-        only be drawn once
-    --properly position the answers
+    --make some static variables for positioning these things
+    --properly position the answers' text
     --allow the user to move the cursor regarding which is selected
         --may have to make class Questions consist of two divisive objects
 -put some different music tracks (e.g. when presenting helpers,

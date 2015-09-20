@@ -55,6 +55,16 @@ function Questions(labelGraphicsCanvasId, labelTextCanvasId,
 }
 
 /*
+    @post the graphical, rarely redrawn parts of the questions'
+    label display and of the presentation of a question have
+    been drawn
+*/
+Questions.prototype.drawInitialParts = function() {
+    this._displayAsChoices();
+    this._drawRectanglesEncompassingAnswers();
+}
+
+/*
     @param whichOne number of the question to get
     @returns the question among the stored ten questions that is
     indicated by whichOne
@@ -69,7 +79,7 @@ Questions.prototype.getQuestion = function(whichOne) {
     that the user could choose which to try to answer; each's
     question's grade level and subject will be displayed
 */
-Questions.prototype.displayAsChoices = function() {
+Questions.prototype._displayAsChoices = function() {
     // Set up the canvas contexts
     var graphicsContext = document.getElementById(
         this._choosingQuestionCanvases.labelGraphicsCanvasId).getContext('2d');
@@ -391,7 +401,7 @@ Questions.prototype.drawQuestionAndAnswersText =
     function(questionNumber)
 {
     this._drawQuestionText(questionNumber);
-    this._drawAnswersText(questionNumber);
+    // this._drawAnswersText(questionNumber);
 }
 
 /*
@@ -436,32 +446,40 @@ Questions.prototype._drawQuestionText = function(questionNumber) {
 };
 
 /*
-    @post the selectable answers to the question indicated by
-    questionNumber have been drawn in a good area and properly formatted
-    @param questionNumber
+    @post the four rectangles that would encompass the four
+    choosable answers to a question have been drawn
 */
-Questions.prototype._drawAnswersText = function(questionNumber) {
+Questions.prototype._drawRectanglesEncompassingAnswers = function() {
     // Set up canvas context
-    var fontSize = 30;
     var ctx = document.getElementById(
         this._questioningCanvases.questioningTextCanvasId)
         .getContext('2d');
-    ctx.font = fontSize + "px 'Rock Salt'";
-    ctx.textAlign = "left";
-    ctx.textBaseline = "top";
+    ctx.fillStyle = "white";
 
     // Variables for positioning
     var x = 10;
     var y = 285;
+    var fontSize = 30;
     var verticalSpaceBetweenAnswers = 5;
 
     for (var i = 0; i < 4; ++i) {
-        this._drawAnswerText(ctx, questionNumber, i + 1, x, y,
-            verticalSpaceBetweenAnswers);
+        ctx.fillRect(x, y, (1100 - (x * 2)),
+            (65 - verticalSpaceBetweenAnswers));
 
         y += ((fontSize * 2) + verticalSpaceBetweenAnswers);
     }
 }
+
+/*
+    @post the selectable answers to the question indicated by
+    questionNumber have been drawn in a good area and properly formatted
+    @param questionNumber
+*/
+
+/*
+
+*/
+// Questions.prototype._draw
 
 /*
     @post the one indicated by answerNumber of the four answers
@@ -475,15 +493,12 @@ Questions.prototype._drawAnswersText = function(questionNumber) {
     @param verticalSpaceBetweenAnswers space in between each
     rectangle that surrounds an answer
 */
-Questions.prototype._drawAnswerText =
+Questions.prototype._drawRectangleEncompassingAnswer =
     function(ctx, questionNumber, answerNumber, x, y,
         verticalSpaceBetweenAnswers)
 {
     // Draw the rectangle that surrounds the answer
-    ctx.fillRect(x, y, (1100 - (x * 2)),
-        (65 - verticalSpaceBetweenAnswers));
 
-    // ctx.fillStyle = "white";
 }
 
 /*

@@ -375,7 +375,7 @@ function setUpGame() {
     setUpQuoteBubble();
     gameShow.moneyDisplay.setUp();
     gameShow.briefcaseDisplay.draw();
-    gameShow.questions.displayAsChoices();
+    gameShow.questions.drawInitialParts();
 
     // Show the appropriate canvases
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
