@@ -470,8 +470,11 @@ Questions.prototype._drawRectanglesEncompassingAnswers = function() {
     @post the selectable answers to the question indicated by
     questionNumber have been drawn in a good area and properly formatted
     @param questionNumber
+    @throws string if an answer is too long to draw in its
+    designated area
 */
 Questions.prototype._drawAnswersText = function(questionNumber) {
+    var textIndent = 30;
     // Set up canvas context
     var ctx = document.getElementById(
         this._questioningCanvases.questioningTextCanvasId)
@@ -487,8 +490,20 @@ Questions.prototype._drawAnswersText = function(questionNumber) {
         var text = '(' + answerLetters[i] + ")    " +
             this._questions[questionNumber - 1]
                 .answerData.arrayOfAnswers[i];
+
+        // Throw an exception of the text is too long
+        if ((textIndent + ctx.measureText(text).width) >
+            Questions.ANSWER_DIMENSIONS.x)
+        {
+            alert("Error: answer #" + (i + 1) + " of 4 can't " +
+                "be fit in its designated space");
+            throw "Error: answer #" + (i + 1) + " of 4 can't " +
+                "be fit in its designated space";
+        }
+
+
         var position = Questions._getAnswerPosition(i + 1);
-        ctx.fillText(text, position.x + 30, position.y);
+        ctx.fillText(text, position.x + textIndent, position.y);
     }
 }
 

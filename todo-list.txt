@@ -1,8 +1,4 @@
 Next:
--presenting a question
-    --throw an exception if an answer is too long
-    --allow the user to move the cursor regarding which is selected
-        --may have to make class Questions consist of two divisive objects
 -put some different music tracks (e.g. when presenting helpers,
     when question is presented)
 -look into loading question data (e.g. with jQuery AJAX)
@@ -12,6 +8,9 @@ Next:
     --move Vector2d into its own file
 -apply convertTextIntoSmallerPieces() into quote bubble problem
 -implement answering a question correctly and moving on
+    --allow the user to move the cursor regarding which is selected
+        --may have to make class Questions consist of two divisive objects
+        --make sure SpongeBob explains how to do this
     --show case open with random money amount
         --show effect on money display
     --fade out the question that had been answered
@@ -22,6 +21,7 @@ Next:
 -implement ask the audience
 -implement phone a friend
 -implement saving
+-make sure SpongeBob explains the controls for using a source of help
 -implement losing (i.e. player answered the question incorrectly
     and wasn't saved) and leaving with nothing
 -banker makes a deal
