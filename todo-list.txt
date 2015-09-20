@@ -1,6 +1,6 @@
 Next:
 -presenting a question
-    --make some static variables for positioning these things
+    --fix the positioning of the question
     --properly position the answers' text
     --allow the user to move the cursor regarding which is selected
         --may have to make class Questions consist of two divisive objects

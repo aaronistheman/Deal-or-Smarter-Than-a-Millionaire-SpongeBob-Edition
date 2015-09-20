@@ -401,7 +401,7 @@ Questions.prototype.drawQuestionAndAnswersText =
     function(questionNumber)
 {
     this._drawQuestionText(questionNumber);
-    // this._drawAnswersText(questionNumber);
+    this._drawAnswersText(questionNumber);
 }
 
 /*
@@ -411,7 +411,7 @@ Questions.prototype.drawQuestionAndAnswersText =
 */
 Questions.prototype._drawQuestionText = function(questionNumber) {
     // Variables that help with positioning
-    var fontSize = 30;
+    var fontSize = Questions.ANSWERS_FONT_SIZE;
     var verticalSpaceBetweenWords = 5;
     var sideMargin = 100;
     var allocatedWidthForQuestionDisplay = 800;
@@ -457,16 +457,14 @@ Questions.prototype._drawRectanglesEncompassingAnswers = function() {
     ctx.fillStyle = "white";
 
     // Variables for positioning
-    var x = 10;
-    var y = 285;
-    var fontSize = 30;
-    var verticalSpaceBetweenAnswers = 5;
+    var x = Questions.FIRST_ANSWER_POSITION.x;
+    var y = Questions.FIRST_ANSWER_POSITION.y;
 
     for (var i = 0; i < 4; ++i) {
-        ctx.fillRect(x, y, (1100 - (x * 2)),
-            (65 - verticalSpaceBetweenAnswers));
-
-        y += ((fontSize * 2) + verticalSpaceBetweenAnswers);
+        var position = Questions._getAnswerPosition(i + 1);
+        ctx.fillRect(position.x, position.y,
+            Questions.ANSWER_DIMENSIONS.x,
+            Questions.ANSWER_DIMENSIONS.y);
     }
 }
 
@@ -475,11 +473,9 @@ Questions.prototype._drawRectanglesEncompassingAnswers = function() {
     questionNumber have been drawn in a good area and properly formatted
     @param questionNumber
 */
+Question.prototype._drawAnswersText = function(questionNumber) {
 
-/*
-
-*/
-// Questions.prototype._draw
+}
 
 /*
     @post the one indicated by answerNumber of the four answers
@@ -523,6 +519,17 @@ Questions.FIRST_LABEL_POSITION = new Vector2d(
     Questions.LABEL_PADDING.y +
         (4 * Questions.MARGINAL_LABEL_POSITION.y));
 
+// For positioning the display of a question and its answers
+Questions.ANSWERS_FONT_SIZE = 30;
+Questions.VERTICAL_SPACE_BETWEEN_ANSWERS = 5;
+Questions.ANSWER_DIMENSIONS =
+    new Vector2d(1080,
+        (65 - Questions.VERTICAL_SPACE_BETWEEN_ANSWERS));
+Questions.FIRST_ANSWER_POSITION = new Vector2d(10, 285);
+Questions.MARGINAL_ANSWER_POSITION = new Vector2d(0,
+    (Questions.ANSWERS_FONT_SIZE * 2) +
+        Questions.VERTICAL_SPACE_BETWEEN_ANSWERS);
+
 /*
     @hasTest yes
     @param whichLabel number of the label to get the position of;
@@ -538,6 +545,19 @@ Questions._getLabelPosition = function(whichLabel) {
 
     return Questions.FIRST_LABEL_POSITION.getSum(
         Questions.MARGINAL_LABEL_POSITION.getProduct(adjustment));
+}
+
+/*
+    @pre 1 <= answerNumber <= 4
+    @hasTest yes
+    @returns Vector2d object containing the top left coordinate
+    of the space designated for the answer indicated by
+    answerNumber of the four answers
+*/
+Questions._getAnswerPosition = function(answerNumber) {
+    return Questions.FIRST_ANSWER_POSITION.getSum(
+        Questions.MARGINAL_ANSWER_POSITION.getProduct(
+            new Vector2d(0, (answerNumber - 1))));
 }
 
 /*

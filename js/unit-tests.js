@@ -192,6 +192,17 @@ QUnit.test("Questions._generateTenQuestions()", function(assert) {
         "grade questions having the lowest index in the array of questions.");
 });
 
+QUnit.test("Questions._getAnswerPosition()", function(assert) {
+    assert.deepEqual(Questions._getAnswerPosition(1),
+        Questions.FIRST_ANSWER_POSITION,
+        "Correct position for first answer");
+    assert.deepEqual(Questions._getAnswerPosition(4),
+        Questions.FIRST_ANSWER_POSITION.getSum(
+            Questions.MARGINAL_ANSWER_POSITION.getProduct(
+                new Vector2d(0, 3))),
+        "Correct position for fourth answer");
+});
+
 QUnit.test("Questions::_getLabelPosition()", function(assert) {
     assert.deepEqual(Questions._getLabelPosition(1),
         Questions.FIRST_LABEL_POSITION,
