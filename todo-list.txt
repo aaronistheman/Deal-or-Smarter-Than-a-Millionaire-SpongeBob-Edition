@@ -1,6 +1,7 @@
 Next:
 -presenting a question
-    --properly position the answers' text
+    --draw the answers' letters
+    --throw an exception if an answer is too long
     --allow the user to move the cursor regarding which is selected
         --may have to make class Questions consist of two divisive objects
 -put some different music tracks (e.g. when presenting helpers,

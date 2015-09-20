@@ -408,6 +408,8 @@ Questions.prototype.drawQuestionAndAnswersText =
     @post the text of the question indicated by questionNumber
     has been drawn in a good area and properly formatted
     @param questionNumber
+    @throws string if the question can't be fit in the designated
+    space with the used font type, style, and size
 */
 Questions.prototype._drawQuestionText = function(questionNumber) {
     // Variables that help with positioning
@@ -454,11 +456,7 @@ Questions.prototype._drawRectanglesEncompassingAnswers = function() {
     var ctx = document.getElementById(
         this._questioningCanvases.questioningTextCanvasId)
         .getContext('2d');
-    ctx.fillStyle = "white";
-
-    // Variables for positioning
-    var x = Questions.FIRST_ANSWER_POSITION.x;
-    var y = Questions.FIRST_ANSWER_POSITION.y;
+    ctx.fillStyle = "#484848";
 
     for (var i = 0; i < 4; ++i) {
         var position = Questions._getAnswerPosition(i + 1);
@@ -473,8 +471,24 @@ Questions.prototype._drawRectanglesEncompassingAnswers = function() {
     questionNumber have been drawn in a good area and properly formatted
     @param questionNumber
 */
-Question.prototype._drawAnswersText = function(questionNumber) {
+Questions.prototype._drawAnswersText = function(questionNumber) {
+    // Set up canvas context
+    var ctx = document.getElementById(
+        this._questioningCanvases.questioningTextCanvasId)
+        .getContext('2d');
+    ctx.fillStyle = "white";
+    ctx.font = Questions.ANSWERS_FONT_SIZE + "px 'Arial'";
+    // ctx.font = Questions.ANSWERS_FONT_SIZE + "px 'Rock Salt'";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
 
+    for (var i = 0; i < 4; ++i) {
+        var text =
+            this._questions[questionNumber - 1]
+                .answerData.arrayOfAnswers[i];
+        var position = Questions._getAnswerPosition(i + 1);
+        ctx.fillText(text, position.x + 30, position.y);
+    }
 }
 
 /*
@@ -600,7 +614,9 @@ Questions._getLabelText = function(question) {
     at least six of such questions for third grade, at least four
     of such questions for second grade, and at least two of
     such questions for first grade (this prevents an infinite loop
-    in Questions._generateTenQuestions())
+    in Questions._generateTenQuestions()); each question and answer
+    should be able to fit in the display, although this depends
+    on the font
 */
 Questions.getEntireSupplyOfQuestions = function() {
     var supply = [];
@@ -795,9 +811,8 @@ Questions.getEntireSupplyOfQuestions = function() {
         "Hash-Slinging Slasher's arrival?",
         new AnswerData(ANSWERS.THIRD,
             ["The walls will ooze green slime",
-            "The Hash-Slinging Slasher will arrive " +
-            "in the ghost of the bus that ran him over",
-            "The phone will ring, and there will be nobody there",
+            "He'll arrive in a ghost bus",
+            "The phone will ring, but there will be nobody there",
             "The lights will flicker on and off"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.RESTAURANTS,
         "Which of the following is not a restaurant in Bikini " +
