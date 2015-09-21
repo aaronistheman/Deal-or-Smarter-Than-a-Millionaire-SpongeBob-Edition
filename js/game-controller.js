@@ -44,6 +44,14 @@ function getAudioData() {
     // Here is where we add the data for each audio element
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.NEXT_QUOTE,
         "audio/next_quote.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.MOVE_CASE_SELECTOR,
+        "audio/move_case_selector.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.SELECT_CASE,
+        "audio/select_case.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.MOVE_QUESTION_SELECTOR,
+        "audio/move_question_selector.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.SELECT_QUESTION,
+        "audio/select_question.mp3"));
     audioData.push(new AudioData(MUSIC_IDS.OPENING,
         "audio/who_wants_to_be_a_millionaire_theme.mp3"));
     audioData.push(new AudioData(MUSIC_IDS.INTRODUCE_HELPERS,

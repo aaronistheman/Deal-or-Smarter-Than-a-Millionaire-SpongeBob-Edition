@@ -1,7 +1,4 @@
 Next:
--more sound effects
-    --use sound effects in moving any cursor
--look into loading question data (e.g. with jQuery AJAX)
 -cleanup
     --create an object for turn variables; this'll make it easier to
         reset variables before picking next question
@@ -86,3 +83,8 @@ Considerable:
     reference to the fraud in Who Wants to be a Millionaire)
 -separating Questions into three classes: Questions, QuestionsLabelDisplay,
     QuestioningDisplay
+-allowing up/down keys to be used in choosing briefcase
+    --ensure that SpongeBob explains this
+-attaching the playing of sound effects to the class methods (e.g.
+    BriefcaseDisplay::EmphasizePreviousCase())
+    --this was already done with drawQuoteText()
