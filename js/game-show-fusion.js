@@ -359,11 +359,16 @@ function handleQuestionSelection() {
     have been presented; audio has been updated
 */
 function presentQuestionAndAnswers() {
-    // Update what the user sees and hears
+    // Update what the user sees
     gameShow.canvasStack.set(CANVAS_IDS.QUESTIONING);
-
     gameShow.questions.drawQuestionAndAnswersText(
         gameShow.turnVariables.selectedQuestion);
+
+    // Update the key actions
+    gameShow.keyActions.set(KEY_CODES.S, function() {
+        gameShow.questions.setEmphasizedAnswer(
+            gameShow.turnVariables.selectedQuestion, 3);
+    });
 }
 
 /*

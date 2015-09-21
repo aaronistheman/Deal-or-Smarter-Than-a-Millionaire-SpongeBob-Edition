@@ -104,8 +104,8 @@ Questions.prototype._drawLabels = function() {
 };
 
 /*
-    @post question label has been drawn in the given position,
-    with the given text, and with the given fill style; the
+    @pre 1 <= number <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY
+    @post question label has been drawn in the given position; the
     graphical part is on graphicsContext; the textual part is on
     is on textContext
     @param graphicsContext context of the canvas to draw
@@ -377,6 +377,105 @@ Questions.prototype.emphasizeUpLabel = function() {
 };
 
 /*
+    @pre 1 <= questionNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY;
+    1 <= numberOfNewAnswerToEmphasize <=
+    Questions.NUMBER_OF_ANSWERS
+    @post this.numberOfAnswerToEmphasize has been updated; formerly
+    emphasized answer rectangle has been redrawn so that it's no
+    longer emphasized; now emphasized answer rectangle has been
+    redrawn so that it's emphasized
+    @param questionNumber
+    @param numberOfNewAnswerToEmphasize new number of answer to
+    emphasize; set to "none" to emphasize no answer
+*/
+Questions.prototype.setEmphasizedAnswer =
+    function(quesitonNumber, numberOfNewAnswerToEmphasize) {
+    // Set up variables
+    var graphicsContext = document.getElementById(
+        this._choosingAnswerCanvases.answersGraphicsCanvasId)
+            .getContext('2d');
+    var textContext = document.getElementById(
+        this._choosingAnswerCanvases.answersTextCanvasId)
+            .getContext('2d');
+    var oldNumber = this.numberOfAnswerToEmphasize;
+    var newNumber = numberOfNewAnswerToEmphasize;
+
+    // Determine positions of formerly emphasized case and now
+    // emphasized case
+    if (oldNumber !== "none")
+        var oldPosition = Questions._getAnswerPosition(oldNumber);
+    if (newNumber !== "none")
+        var newPosition = Questions._getAnswerPosition(newNumber);
+
+    // Update numberOfLabelToEmphasize
+    this.numberOfAnswerToEmphasize = newNumber;
+
+    // Redraw the formerly emphasized question label
+    if (oldNumber !== "none") {
+        this._eraseAnswer(graphicsContext, textContext,
+            oldPosition.x, oldPosition.y);
+        this._drawAnswer(graphicsContext, textContext,
+            oldPosition.x, oldPosition.y, quesitonNumber, oldNumber);
+    }
+
+    // Redraw the now emphasized question label
+    if (newNumber != "none") {
+        this._eraseAnswer(graphicsContext, textContext,
+            newPosition.x, newPosition.y);
+        this._drawAnswer(graphicsContext, textContext,
+            newPosition.x, newPosition.y, quesitonNumber, newNumber);
+    }
+}
+
+/*
+    @post a rectangle has been cleared in the canvases indicated by
+    the given contexts, so that the answer once shown in
+    that rectangle will have been erased
+    @param graphicsContext context of the canvas to erase
+    the answer's visible rectangle from
+    @param textContext context of the canvas to erase the
+    answer's text from
+    @param x top left x-coordinate of the answer's reserved space
+    @param y top left y-coordinate of the answer's reserved space
+*/
+Questions.prototype._eraseAnswer =
+    function(graphicsContext, textContext, x, y)
+{
+    graphicsContext.clearRect(x, y,
+        Questions.ANSWER_DIMENSIONS.x,
+        Questions.ANSWER_DIMENSIONS.y);
+    textContext.clearRect(x, y,
+        Questions.ANSWER_DIMENSIONS.x,
+        Questions.ANSWER_DIMENSIONS.y);
+}
+
+/*
+    @pre 1 <= questionNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY;
+    1 <= answerNumber <= Questions.NUMBER_OF_ANSWERS
+    @post answer has been drawn in the given position; the
+    graphical part is on graphicsContext; the textual part is on
+    is on textContext
+    @param graphicsContext context of the canvas to draw
+    the answer's on
+    @param textContext set up context of the canvas to draw the
+    answer's text on
+    @param x top left x-coordinate of the answer's reserved space
+    @param y top left y-coordinate of the answer's reserved space
+    @param answerNumber
+*/
+Questions.prototype._drawAnswer =
+    function(graphicsContext, textContext, x, y, questionNumber,
+        answerNumber)
+{
+    var position = Questions._getAnswerPosition(answerNumber);
+
+    this._drawAnswerRectangle(graphicsContext, position.x,
+        position.y, answerNumber);
+    this._drawAnswerText(textContext, x, y, questionNumber,
+        answerNumber);
+};
+
+/*
     @pre this._questions.length = 0
     @post this._questions contains ten instances of type Question;
     each of these instances has a different subject matter; two
@@ -559,6 +658,7 @@ Questions.prototype._drawAnswersText = function(questionNumber) {
     @param x of top left point of the answer's rectangle (not its
     text)
     @param y (see @param x)
+    @param questionNumber
     @param answerNumber
     @throws string if the answer is too long to draw in its
     designated area
