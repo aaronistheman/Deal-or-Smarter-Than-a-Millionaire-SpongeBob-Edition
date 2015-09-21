@@ -1,7 +1,5 @@
 Next:
 -implement answering a question correctly and moving on
-    --cursor
-        --sound effects in moving the cursor
     --show case open with random money amount
         --show effect on money display
     --consider doing something about the selector while it is on

@@ -300,10 +300,14 @@ function allowQuestionSelectorMovement(bool) {
 function allowAnswerSelectorMovement(bool) {
     if (bool === true) {
         gameShow.keyActions.set(KEY_CODES.UP_ARROW, function() {
+            gameShow.soundPlayer.play(
+                SOUND_EFFECTS_IDS.MOVE_ANSWER_SELECTOR);
             gameShow.questions.emphasizeUpAnswer(
                 gameShow.turnVariables.selectedQuestion);
         })
         .set(KEY_CODES.DOWN_ARROW, function() {
+            gameShow.soundPlayer.play(
+                SOUND_EFFECTS_IDS.MOVE_ANSWER_SELECTOR);
             gameShow.questions.emphasizeDownAnswer(
                 gameShow.turnVariables.selectedQuestion);
         });
