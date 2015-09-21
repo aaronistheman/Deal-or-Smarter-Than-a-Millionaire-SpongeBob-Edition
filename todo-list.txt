@@ -1,6 +1,7 @@
 Next:
 -put some different music tracks (e.g. when presenting helpers,
     when question is presented)
+    --create sound player
 -look into loading question data (e.g. with jQuery AJAX)
 -cleanup
     --create an object for turn variables; this'll make it easier to
@@ -55,6 +56,8 @@ After game is playable (or, perhaps, ready for release 0.1):
 -more decorated main menu
 -a guide to each assistant that can be unlocked by reaching a certain
  high score (using local storage); link in introduction
+-consider making my own graphics for some things (e.g. briefcases)
+    --in this case, consider resource identifiers for the images
 
 Before release 0.1:
 -make sure trivial functions that are no longer needed and that were

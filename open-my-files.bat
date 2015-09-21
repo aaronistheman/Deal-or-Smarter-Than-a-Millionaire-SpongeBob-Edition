@@ -21,4 +21,7 @@ start Notepad++ js/question.js
 start Notepad++ js/subjects.js
 start Notepad++ js/questions.js
 start Notepad++ js/grades.js
+start Notepad++ js/music-player.js
+start Notepad++ js/sound-player.js
+start Notepad++ js/resource-identifiers.js
 exit

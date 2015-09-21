@@ -42,10 +42,14 @@ function getAudioData() {
     var audioData = [];
 
     // Here is where we add the data for each audio element
-    audioData.push(new AudioData("next-quote-sound",
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.NEXT_QUOTE,
         "audio/next_quote.mp3"));
-    audioData.push(new AudioData("opening-theme",
+    audioData.push(new AudioData(MUSIC_IDS.OPENING,
         "audio/who_wants_to_be_a_millionaire_theme.mp3"));
+    audioData.push(new AudioData(MUSIC_IDS.FIRST_FOUR_QUESTIONS,
+        "audio/first_four_questions.mp3"));
+    audioData.push(new AudioData(MUSIC_IDS.BANKER,
+        "audio/banker_theme.mp3"));
 
     return audioData;
 }
