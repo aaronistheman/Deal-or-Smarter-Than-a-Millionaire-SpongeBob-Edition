@@ -90,19 +90,20 @@ function explainQuestionValue() {
         "Answering a question correctly reveals a random " +
         "amount from the money board.")
         .add("But wait, a twist occurs after every two questions " +
-            "and before your tenth question:")
+            "and before your tenth question.")
         .deployQuoteChain(explainBanker);
 }
 
 function explainBanker() {
     gameShow.canvasStack.set(CANVAS_IDS.QUOTE.concat(
         CANVAS_IDS.BANKER));
-    gameShow.quotesToDraw.add("the banker will offer you some money.")
+    gameShow.quotesToDraw.add("The twist is that the banker will " +
+        "offer you some money.")
         .add("He wants your briefcase, but he doesn't want to pay " +
             "too much for it.")
-        .add("You can say 'Deal' and leave the game with that money,")
-        .add("or you can say 'No Deal' and hope for an even greater " +
-            "amount of money.")
+        .add("You can say 'Deal' and leave the game with that money.")
+        .add("However, you can instead say 'No Deal' and hope for " +
+            "an even greater amount of money.")
         .deployQuoteChain(explainOutcomes);
 }
 
@@ -110,8 +111,8 @@ function explainOutcomes() {
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
     gameShow.quotesToDraw.add(
         "If you miss a question, you leave with nothing.")
-        .add("If you get past all ten questions, you can either take " +
-            "your case home,")
+        .add("If you get past all ten questions, you can take " +
+            "your case home.")
         .deployQuoteChain(explainMillionDollarQuestion);
 }
 
@@ -119,8 +120,8 @@ function explainMillionDollarQuestion() {
     gameShow.canvasStack.set(CANVAS_IDS.QUOTE.concat(
         CANVAS_IDS.MILLION_QUESTION));
     gameShow.quotesToDraw.add(
-        "or you can bet it all and try to answer the million " +
-        "dollar question.")
+        "Or, you can instead bet it all and try to answer the " +
+            "million dollar question.")
         .deployQuoteChain(explainHelp);
 }
 
@@ -156,7 +157,7 @@ function showSandy() {
 function showLarryTheLobster() {
     drawNewSpeaker(SPEAKERS.LARRY);
     gameShow.quotesToDraw.add("Hey, this party's finally " +
-        "starting to pick up. ")
+        "starting to pick up.")
         .deployQuoteChain(showGary);
 }
 
