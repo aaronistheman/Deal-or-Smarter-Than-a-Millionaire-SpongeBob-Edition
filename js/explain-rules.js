@@ -14,7 +14,37 @@
     the methods of gameShow.canvasStack.
 */
 function explainRules() {
-    explainCasePick();
+    allowSkippingRules(true);
+    gameShow.quotesToDraw.add("While I explain the rules, you " +
+        "have the option of skipping the explanation by pressing " +
+        "the 's' key.")
+        .deployQuoteChain(explainCasePick);
+}
+
+/*
+    @param bool true to allow the user to skip the explanation of
+    the rules by pressing the S key; false to remove this ability
+*/
+function allowSkippingRules(bool) {
+    if (bool)
+        gameShow.keyActions.set(KEY_CODES.S, function() {
+            // Prevent the user from causing glitches through
+            // trying to skip the already skipped rules
+            allowSkippingRules(false);
+
+            // Remove stored explanations
+            gameShow.quotesToDraw.clear();
+
+            // Skip the remaining explanations and continue the game;
+            // note that
+            // the calling of this function will disable the use of the
+            // Enter key to go to the next rules explanation function,
+            // for this function sets the Enter key action to
+            // something else
+            selectFirstCase();
+        });
+    else
+        gameShow.keyActions.erase(KEY_CODES.S);
 }
 
 /*
@@ -162,5 +192,8 @@ function explainSourcesOfHelp() {
 
         .add("However, be aware that none of your cheats and lifelines" +
             " can be used on the million dollar question.")
-        .deployQuoteChain(selectFirstCase);
+        .deployQuoteChain(function() {
+            allowSkippingRules(false);
+            selectFirstCase();
+        });
 }

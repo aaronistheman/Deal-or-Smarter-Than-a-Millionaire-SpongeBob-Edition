@@ -67,6 +67,13 @@ gameShow.quotesToDraw = {
     },
 
     /*
+        @post storage of quotes has been emptied
+    */
+    clear : function() {
+        this.storage = [];
+    },
+
+    /*
         @pre this.storage.length > 0
         @post things have been set up so that the user can go from
         one quote to the next by pressing Enter; after the last

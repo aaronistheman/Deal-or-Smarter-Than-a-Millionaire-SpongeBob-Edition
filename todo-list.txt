@@ -1,6 +1,5 @@
 Next:
 -improve rules explanation
-    --option to skip rules explanation
     --capitalize first letter of each quote, even if that's wrong
         --can make each quote a sentence, like Pokemon does
 -implement answering a question correctly and moving on
