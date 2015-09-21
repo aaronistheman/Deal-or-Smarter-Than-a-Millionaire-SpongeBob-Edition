@@ -1,7 +1,6 @@
 Next:
--put some different music tracks (e.g. when presenting helpers,
-    when question is presented)
-    --create sound player
+-implement sound player
+    --use sound effects in moving any cursor
 -look into loading question data (e.g. with jQuery AJAX)
 -cleanup
     --create an object for turn variables; this'll make it easier to
@@ -83,3 +82,7 @@ Considerable:
     below the canvas; this way, it would be properly formatted as
     a typical html element would be
 -using web fonts
+-low volume coughing if a certain answer is highlighted (as a
+    reference to the fraud in Who Wants to be a Millionaire)
+-separating Questions into three classes: Questions, QuestionsLabelDisplay,
+    QuestioningDisplay

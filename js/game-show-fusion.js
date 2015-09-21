@@ -297,6 +297,7 @@ function allowQuestionSelectorMovement(bool) {
     presses Enter
 */
 function handleCaseSelection() {
+    gameShow.musicPlayer.stop();
     allowCaseSelectorMovement(false);
 
     // Record which case was selected
@@ -346,9 +347,10 @@ function handleQuestionSelection() {
 /*
     @pre gameShow.selectedQuestion has been updated
     @post the question, its answers, and the support options
-    have been presented
+    have been presented; audio has been updated
 */
 function presentQuestionAndAnswers() {
+    // Update what the user sees and hears
     gameShow.canvasStack.set(CANVAS_IDS.QUESTIONING);
 
     gameShow.questions.drawQuestionAndAnswersText(
@@ -361,6 +363,7 @@ function presentQuestionAndAnswers() {
     by hitting Enter
 */
 function selectQuestion() {
+    gameShow.musicPlayer.play(MUSIC_IDS.FIRST_FOUR_QUESTIONS);
     gameShow.canvasStack.set(CANVAS_IDS.CHOOSE_QUESTION.concat(
         CANVAS_IDS.QUOTE));
     gameShow.questions.setEmphasis(1);

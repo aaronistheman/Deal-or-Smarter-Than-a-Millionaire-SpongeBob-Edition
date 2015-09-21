@@ -94,6 +94,7 @@ function explainMillionDollarQuestion() {
 }
 
 function explainHelp() {
+    gameShow.musicPlayer.stop();
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
     gameShow.quotesToDraw.add("However, you're not alone.")
         .add("You have helpers.")
@@ -102,6 +103,7 @@ function explainHelp() {
 }
 
 function showSquidward() {
+    gameShow.musicPlayer.play(MUSIC_IDS.INTRODUCE_HELPERS);
     drawNewSpeaker(SPEAKERS.SQUIDWARD);
     gameShow.quotesToDraw.add("Fortunately, I have enough talent " +
         "for all of you.")

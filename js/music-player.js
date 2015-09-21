@@ -28,6 +28,7 @@ MusicPlayer.prototype._storeMusicElements = function() {
     for (var i in MUSIC_IDS) {
         var id = MUSIC_IDS[i];
         this._music[id] = document.getElementById(id);
+        this._music[id].loop = true;
     }
 }
 
@@ -53,6 +54,7 @@ MusicPlayer.prototype.stop = function() {
     if (this._current !== undefined) {
         this._current.pause();
         this._current.currentTime = 0;
+        this._current = undefined;
     }
 }
 

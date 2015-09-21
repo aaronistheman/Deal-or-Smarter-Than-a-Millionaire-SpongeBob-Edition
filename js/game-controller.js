@@ -46,6 +46,8 @@ function getAudioData() {
         "audio/next_quote.mp3"));
     audioData.push(new AudioData(MUSIC_IDS.OPENING,
         "audio/who_wants_to_be_a_millionaire_theme.mp3"));
+    audioData.push(new AudioData(MUSIC_IDS.INTRODUCE_HELPERS,
+        "audio/deal_or_no_deal_theme.mp3"));
     audioData.push(new AudioData(MUSIC_IDS.FIRST_FOUR_QUESTIONS,
         "audio/first_four_questions.mp3"));
     audioData.push(new AudioData(MUSIC_IDS.BANKER,
