@@ -22,8 +22,8 @@
     1 <= numberOfLabelToEmphasize <=
         Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY, or
     numberOfLabelToEmphasize = "none";
-    the canvas indicated by questioningGraphicsCanvasId is behind the
-    canvas indicated by questioningTextCanvasId
+    the canvas indicated by answersGraphicsCanvasId is behind the
+    canvas indicated by answersTextCanvasId
     @param labelGraphicsCanvasId id of the canvas to draw the non-text
     part of the questions' display on
     @param labelTextCanvasId id of the canvas to draw the text part
@@ -31,14 +31,14 @@
     @param numberOfLabelToEmphasize number of the question that
     should have its label emphasized;
     set to "none" to emphasize no question label
-    @param questioningGraphicsCanvasId id of the canvas to draw
+    @param answersGraphicsCanvasId id of the canvas to draw
     the non-textual parts of the presentation of a question on
-    @param questioningTextCanvasId id of the canvas to draw
+    @param answersTextCanvasId id of the canvas to draw
     the text parts of the presentation of a question on
 */
 function Questions(labelGraphicsCanvasId, labelTextCanvasId,
-    numberOfLabelToEmphasize, questioningGraphicsCanvasId,
-    questioningTextCanvasId) {
+    numberOfLabelToEmphasize, answersGraphicsCanvasId,
+    answersTextCanvasId) {
     // Storage of objects of type Question
     this._questions = [];
 
@@ -58,9 +58,9 @@ function Questions(labelGraphicsCanvasId, labelTextCanvasId,
         labelGraphicsCanvasId : labelGraphicsCanvasId,
         labelTextCanvasId : labelTextCanvasId,
     };
-    this._questioningCanvases = {
-        questioningGraphicsCanvasId : questioningGraphicsCanvasId,
-        questioningTextCanvasId : questioningTextCanvasId,
+    this._choosingAnswerCanvases = {
+        answersGraphicsCanvasId : answersGraphicsCanvasId,
+        answersTextCanvasId : answersTextCanvasId,
     };
 }
 
@@ -70,8 +70,8 @@ function Questions(labelGraphicsCanvasId, labelTextCanvasId,
     been drawn
 */
 Questions.prototype.drawInitialParts = function() {
-    this._displayAsChoices();
-    this._drawAnswerRectangles();
+    this._drawLabels();
+    this._drawOnlyAnswerRectangles();
 }
 
 /*
@@ -89,7 +89,7 @@ Questions.prototype.getQuestion = function(whichOne) {
     that the user could choose which to try to answer; each's
     question's grade level and subject will be displayed
 */
-Questions.prototype._displayAsChoices = function() {
+Questions.prototype._drawLabels = function() {
     // Set up the canvas contexts
     var graphicsContext = document.getElementById(
         this._choosingQuestionCanvases.labelGraphicsCanvasId).getContext('2d');
@@ -149,6 +149,7 @@ Questions.prototype._drawQuestionLabel =
             Math.PI * 0.5);
     }
     else {
+        // Emphasized question's label has no circular edges
         graphicsContext.fillRect(x, y, Questions.LABEL_DIMENSIONS.x,
             Questions.LABEL_DIMENSIONS.y);
     }
@@ -294,7 +295,7 @@ Questions.prototype._getLabelTextFillStyle = function(number) {
     @param newNumber new number of question label to emphasize;
     set to "none" to emphasize no question
 */
-Questions.prototype.setEmphasis = function(newNumber) {
+Questions.prototype.setEmphasizedLabel = function(newNumber) {
     // Set up variables
     var graphicsContext = document.getElementById(
         this._choosingQuestionCanvases.labelGraphicsCanvasId)
@@ -339,7 +340,7 @@ Questions.prototype.setEmphasis = function(newNumber) {
 */
 Questions.prototype.emphasizeLeftLabel = function() {
     if (this.numberOfLabelToEmphasize % 2 === 0)
-        this.setEmphasis(this.numberOfLabelToEmphasize - 1);
+        this.setEmphasizedLabel(this.numberOfLabelToEmphasize - 1);
 };
 
 /*
@@ -350,7 +351,7 @@ Questions.prototype.emphasizeLeftLabel = function() {
 */
 Questions.prototype.emphasizeRightLabel = function() {
     if (this.numberOfLabelToEmphasize % 2 === 1)
-        this.setEmphasis(this.numberOfLabelToEmphasize + 1);
+        this.setEmphasizedLabel(this.numberOfLabelToEmphasize + 1);
 };
 
 /*
@@ -361,7 +362,7 @@ Questions.prototype.emphasizeRightLabel = function() {
 */
 Questions.prototype.emphasizeDownLabel = function() {
     if (this.numberOfLabelToEmphasize >= 3)
-        this.setEmphasis(this.numberOfLabelToEmphasize - 2);
+        this.setEmphasizedLabel(this.numberOfLabelToEmphasize - 2);
 };
 
 /*
@@ -372,7 +373,7 @@ Questions.prototype.emphasizeDownLabel = function() {
 */
 Questions.prototype.emphasizeUpLabel = function() {
     if (this.numberOfLabelToEmphasize <= 8)
-        this.setEmphasis(this.numberOfLabelToEmphasize + 2);
+        this.setEmphasizedLabel(this.numberOfLabelToEmphasize + 2);
 };
 
 /*
@@ -467,7 +468,7 @@ Questions.prototype._drawQuestionText = function(questionNumber) {
 
     // Set up canvas context
     var ctx = document.getElementById(
-        this._questioningCanvases.questioningTextCanvasId)
+        this._choosingAnswerCanvases.answersTextCanvasId)
         .getContext('2d');
     ctx.fillStyle = "white";
     ctx.font = fontSize + "px 'Rock Salt'";
@@ -495,19 +496,37 @@ Questions.prototype._drawQuestionText = function(questionNumber) {
     @post the four rectangles that would encompass the four
     choosable answers to a question have been drawn
 */
-Questions.prototype._drawAnswerRectangles = function() {
-    // Set up canvas context
-    var ctx = document.getElementById(
-        this._questioningCanvases.questioningTextCanvasId)
+Questions.prototype._drawOnlyAnswerRectangles = function() {
+    // Set up canvas contexts
+    var graphicsContext = document.getElementById(
+        this._choosingAnswerCanvases.answersGraphicsCanvasId)
         .getContext('2d');
 
     for (var i = 0; i < 4; ++i) {
-        ctx.fillStyle = this._getAnswerRectangleFillStyle(i + 1);
         var position = Questions._getAnswerPosition(i + 1);
-        ctx.fillRect(position.x, position.y,
-            Questions.ANSWER_DIMENSIONS.x,
-            Questions.ANSWER_DIMENSIONS.y);
+        this._drawAnswerRectangle(graphicsContext,
+            position.x, position.y, i + 1);
     }
+}
+
+/*
+    @pre 1 <= answerNumber <= Questions.NUMBER_OF_ANSWERS
+    @post the rectangle and text of the answer indicated by
+    answerNumber has been drawn
+    @param graphicsContext context of the canvas to draw
+    the rectangle on
+    @param x
+    @param y
+    @param answerNumber
+*/
+Questions.prototype._drawAnswerRectangle =
+    function(graphicsContext, x, y, answerNumber)
+{
+    graphicsContext.fillStyle =
+        this._getAnswerRectangleFillStyle(answerNumber);
+    graphicsContext.fillRect(x, y,
+        Questions.ANSWER_DIMENSIONS.x,
+        Questions.ANSWER_DIMENSIONS.y);
 }
 
 /*
@@ -521,7 +540,7 @@ Questions.prototype._drawAnswersText = function(questionNumber) {
     var textIndent = 30;
     // Set up canvas context
     var ctx = document.getElementById(
-        this._questioningCanvases.questioningTextCanvasId)
+        this._choosingAnswerCanvases.answersTextCanvasId)
         .getContext('2d');
     ctx.font = Questions.ANSWERS_FONT_SIZE + "px 'Arial'";
     ctx.textAlign = "left";
@@ -550,26 +569,6 @@ Questions.prototype._drawAnswersText = function(questionNumber) {
         var position = Questions._getAnswerPosition(i + 1);
         ctx.fillText(text, position.x + textIndent, position.y);
     }
-}
-
-/*
-    @post the one indicated by answerNumber of the four answers
-    to the question indicated by questionNumber has been drawn
-    and surrounded by a centered rectangle
-    @param ctx context of the canvas to draw on
-    @param questionNumber
-    @param answerNumber which of the four answers to draw
-    @param x positional x-coordinate
-    @param y positional y-coordinate
-    @param verticalSpaceBetweenAnswers space in between each
-    rectangle that surrounds an answer
-*/
-Questions.prototype._drawRectangleEncompassingAnswer =
-    function(ctx, questionNumber, answerNumber, x, y,
-        verticalSpaceBetweenAnswers)
-{
-    // Draw the rectangle that surrounds the answer
-
 }
 
 /*

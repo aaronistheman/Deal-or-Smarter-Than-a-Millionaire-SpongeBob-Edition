@@ -375,7 +375,7 @@ function selectQuestion() {
     gameShow.musicPlayer.play(MUSIC_IDS.FIRST_FOUR_QUESTIONS);
     gameShow.canvasStack.set(CANVAS_IDS.CHOOSE_QUESTION.concat(
         CANVAS_IDS.QUOTE));
-    gameShow.questions.setEmphasis(1);
+    gameShow.questions.setEmphasizedLabel(1);
 
     allowQuestionSelectorMovement(true);
 
