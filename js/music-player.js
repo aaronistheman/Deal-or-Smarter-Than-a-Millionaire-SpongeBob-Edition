@@ -9,7 +9,7 @@ function MusicPlayer() {
     this._current = undefined;
 
     // Storage of the html elements of the music; each element
-    // is mapped to its id
+    // will be mapped to its id
     this._music = {};
 }
 
@@ -21,6 +21,8 @@ MusicPlayer.prototype.storeElements = function() {
 }
 
 /*
+    @pre for each id in MUSIC_IDS, there is an html audio
+    element that has that id
     @post each html audio element that has music has been
     stored
 */

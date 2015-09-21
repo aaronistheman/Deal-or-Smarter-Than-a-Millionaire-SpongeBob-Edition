@@ -37,9 +37,7 @@ gameShow.selectedQuestion = undefined;
 
 gameShow.keyActions = new KeyActions();
 
-gameShow.sounds = {};
-gameShow.sounds.nextQuote;
-
+gameShow.soundPlayer = new SoundPlayer();
 gameShow.musicPlayer = new MusicPlayer();
 
 gameShow.quoteLengthForWrapAround = 70;
@@ -176,13 +174,13 @@ function drawQuoteText(text, endCallback) {
     if (endCallback !== undefined) {
         // Allow the endCallback to be called
         gameShow.keyActions.set(KEY_CODES.ENTER, function() {
-            gameShow.sounds.nextQuote.play();
+            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.NEXT_QUOTE);
             endCallback();
         });
     }
     else {
         gameShow.keyActions.set(KEY_CODES.ENTER, function() {
-            gameShow.sounds.nextQuote.play();
+            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.NEXT_QUOTE);
         });
     }
 }
@@ -250,9 +248,13 @@ function setUpQuoteBubble() {
 function allowCaseSelectorMovement(bool) {
     if (bool === true) {
         gameShow.keyActions.set(KEY_CODES.LEFT_ARROW, function() {
+            gameShow.soundPlayer.play(
+                SOUND_EFFECTS_IDS.MOVE_CASE_SELECTOR);
             gameShow.briefcaseDisplay.emphasizePreviousCase();
         })
         .set(KEY_CODES.RIGHT_ARROW, function() {
+            gameShow.soundPlayer.play(
+                SOUND_EFFECTS_IDS.MOVE_CASE_SELECTOR);
             gameShow.briefcaseDisplay.emphasizeNextCase();
         });
     }
@@ -269,15 +271,23 @@ function allowCaseSelectorMovement(bool) {
 function allowQuestionSelectorMovement(bool) {
     if (bool === true) {
         gameShow.keyActions.set(KEY_CODES.LEFT_ARROW, function() {
+            gameShow.soundPlayer.play(
+                SOUND_EFFECTS_IDS.MOVE_QUESTION_SELECTOR);
             gameShow.questions.emphasizeLeftLabel();
         })
         .set(KEY_CODES.RIGHT_ARROW, function() {
+            gameShow.soundPlayer.play(
+                SOUND_EFFECTS_IDS.MOVE_QUESTION_SELECTOR);
             gameShow.questions.emphasizeRightLabel();
         })
         .set(KEY_CODES.UP_ARROW, function() {
+            gameShow.soundPlayer.play(
+                SOUND_EFFECTS_IDS.MOVE_QUESTION_SELECTOR);
             gameShow.questions.emphasizeUpLabel();
         })
         .set(KEY_CODES.DOWN_ARROW, function() {
+            gameShow.soundPlayer.play(
+                SOUND_EFFECTS_IDS.MOVE_QUESTION_SELECTOR);
             gameShow.questions.emphasizeDownLabel();
         });
     }
@@ -328,7 +338,11 @@ function selectFirstCase() {
 
     gameShow.quotesToDraw.add("Now, you must use the left and " +
         "right arrow keys and the Enter key to  choose a case.")
-        .deployQuoteChain(handleCaseSelection);
+        .deployQuoteChain(function() {
+            gameShow.soundPlayer.play(
+                SOUND_EFFECTS_IDS.SELECT_CASE);
+            handleCaseSelection();
+        });
 }
 
 /*
@@ -372,7 +386,11 @@ function selectQuestion() {
 
     gameShow.quotesToDraw.add("Use the left and right arrow keys " +
         "and the Enter key to select a question.")
-        .deployQuoteChain(handleQuestionSelection);
+        .deployQuoteChain(function() {
+            gameShow.soundPlayer.play(
+                SOUND_EFFECTS_IDS.SELECT_QUESTION);
+            handleQuestionSelection()
+        });
 }
 
 function setUpGame() {
@@ -407,8 +425,7 @@ function setUpTitleScreen() {
 }
 
 function setUpAudio() {
-    gameShow.sounds.nextQuote =
-        document.getElementById('next-quote-sound');
+    gameShow.soundPlayer.storeElements();
     gameShow.musicPlayer.storeElements();
 }
 

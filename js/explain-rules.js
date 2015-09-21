@@ -48,7 +48,8 @@ function beginExplainingQuestions() {
         "After that, you will try to answer ten questions.")
         .add("To keep it easy for you, these questions are " +
             "elementary school level.")
-        .add("And, they're all about some television show.")
+        .add("And, they're all about the TV show " +
+            "'SpongeBob Squarepants'.")
         .deployQuoteChain(explainQuestionValue);
 }
 
