@@ -1,6 +1,8 @@
 Next:
--apply convertTextIntoSmallerPieces() into quote bubble problem
--option to skip rules explanation
+-improve rules explanation
+    --option to skip rules explanation
+    --capitalize first letter of each quote, even if that's wrong
+        --can make each quote a sentence, like Pokemon does
 -implement answering a question correctly and moving on
     --allow the user to move the cursor regarding which is selected
         --may have to make class Questions consist of two divisive objects
@@ -65,17 +67,7 @@ Considerable:
 -put truly private and priviledged members/functions in classes
 -CSS classes for manipulating the color of the background of certain
     canvases
--improve the fitting of a quote into its bubble; ideas:
-    --try measuring something other than number of characters
-        --see Mozilla article about measuring pixels taken by text
-    --find a way/font to make each character take up same space
-    --could limit quotes to one line
-    --could split each string/quote into array of words (separate
-        by ' ')
-    --could make the quote bubble not be a canvas, but make it hang
-    below the canvas; this way, it would be properly formatted as
-    a typical html element would be
--using web fonts
+-use more web fonts
 -low volume coughing if a certain answer is highlighted (as a
     reference to the fraud in Who Wants to be a Millionaire)
 -separating Questions into three classes: Questions, QuestionsLabelDisplay,
