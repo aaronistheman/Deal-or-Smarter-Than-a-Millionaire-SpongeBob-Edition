@@ -29,31 +29,23 @@ At some point:
 -make class MoneyData?
     --this can be used to update both MoneyDisplay and
         BriefcaseDisplay
--either throw a class ParameterError to trigger that kind of exception,
-    or make ParameterError a general error function
-    --maybe decide on a better way of dealing with exceptions
-    --alert for each exception
-    --alert if missing object parameter
--again consider a developed QuoteBubble object
-    --drawQuoteText() could stay in game-show-fusion.js (and either
-        stand alone or be added to the prototype)
+-replace use of ParameterError() with an alert and the throwing
+    of an unhandled exception
 
 After game is playable (or, perhaps, ready for release 0.1):
--maybe change some of host's quotes to make some of the game's
-    weird parts less weird (e.g. the use of grades for the questions)
--better looking briefcases
 -fake static advertisement panel on the side
     --could advertise some of my YouTube videos
--more decorated main menu
+-more decorated title screen
 -a guide to each assistant that can be unlocked by reaching a certain
- high score (using local storage); link in introduction
+ high score (using local storage)
+    --can use another canvas for this guide
 -consider making my own graphics for some things (e.g. briefcases)
     --in this case, consider resource identifiers for the images
 
 Before release 0.1:
 -make sure trivial functions that are no longer needed and that were
- made for the purpose of testing have been erased
--erase commented out methods of MoneyDisplay
+ made for the purpose of testing have been erased in game-show-fusion.js
+-erase commented out methods of MoneyDisplay (around lines 96-99)
 -update readme
 -put release number on each file
 -YouTube video; put link in readme
@@ -73,3 +65,4 @@ Considerable:
 -attaching the playing of sound effects to the class methods (e.g.
     BriefcaseDisplay::EmphasizePreviousCase())
     --this was already done with drawQuoteText()
+-moving quote bubble code into its own file
