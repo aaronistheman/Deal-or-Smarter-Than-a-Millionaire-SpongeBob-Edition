@@ -224,7 +224,7 @@ QUnit.test("Questions::_getLabelPosition()", function(assert) {
         "Correct position for tenth label");
 });
 
-QUnit.module("utility.js");
+QUnit.module("vector2d.js");
 
 QUnit.test("Vector2d.getSum()", function(assert) {
     var v = new Vector2d(20, 30);

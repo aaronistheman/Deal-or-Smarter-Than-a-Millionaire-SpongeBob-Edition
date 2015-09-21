@@ -1,6 +1,4 @@
 Next:
--cleanup
-    --move Vector2d into its own file
 -apply convertTextIntoSmallerPieces() into quote bubble problem
 -option to skip rules explanation
 -implement answering a question correctly and moving on
