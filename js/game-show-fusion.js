@@ -39,7 +39,8 @@ gameShow.keyActions = new KeyActions();
 
 gameShow.sounds = {};
 gameShow.sounds.nextQuote;
-gameShow.sounds.openingTheme;
+
+gameShow.musicPlayer = new MusicPlayer();
 
 gameShow.quoteLengthForWrapAround = 70;
 gameShow.quoteBubble = {};
@@ -296,6 +297,7 @@ function allowQuestionSelectorMovement(bool) {
     presses Enter
 */
 function handleCaseSelection() {
+    gameShow.musicPlayer.stop();
     allowCaseSelectorMovement(false);
 
     // Record which case was selected
@@ -345,9 +347,10 @@ function handleQuestionSelection() {
 /*
     @pre gameShow.selectedQuestion has been updated
     @post the question, its answers, and the support options
-    have been presented
+    have been presented; audio has been updated
 */
 function presentQuestionAndAnswers() {
+    // Update what the user sees and hears
     gameShow.canvasStack.set(CANVAS_IDS.QUESTIONING);
 
     gameShow.questions.drawQuestionAndAnswersText(
@@ -360,6 +363,7 @@ function presentQuestionAndAnswers() {
     by hitting Enter
 */
 function selectQuestion() {
+    gameShow.musicPlayer.play(MUSIC_IDS.FIRST_FOUR_QUESTIONS);
     gameShow.canvasStack.set(CANVAS_IDS.CHOOSE_QUESTION.concat(
         CANVAS_IDS.QUOTE));
     gameShow.questions.setEmphasis(1);
@@ -392,30 +396,10 @@ function setUpGame() {
         .deployQuoteChain(explainRules);
 }
 
-/*
-    @param toggleSetting TOGGLE.ON to turn music on; TOGGLE.OFF
-    to turn music off
-    @returns result of parameterError() if parameter error
-    @throws (caught) exception if parameter error
-*/
-function toggleOpeningTheme(toggleSetting) {
-    try {
-        if (toggleSetting === TOGGLE.ON)
-            gameShow.sounds.openingTheme.play();
-        else if (toggleSetting === TOGGLE.OFF)
-            gameShow.sounds.openingTheme.pause();
-        else
-            throw "Invalid parameter toggleSetting";
-    }
-    catch (err) {
-        return parameterError(err);
-    }
-}
-
 function setUpTitleScreen() {
     gameShow.canvasStack.set(CANVAS_IDS.TITLE_SCREEN);
     drawTitleScreenText();
-    toggleOpeningTheme(TOGGLE.ON);
+    gameShow.musicPlayer.play(MUSIC_IDS.OPENING);
 
     // Set up the user's ability to go to the game
     gameShow.keyActions.setUpEventHandler()
@@ -425,8 +409,7 @@ function setUpTitleScreen() {
 function setUpAudio() {
     gameShow.sounds.nextQuote =
         document.getElementById('next-quote-sound');
-    gameShow.sounds.openingTheme =
-        document.getElementById("opening-theme");
+    gameShow.musicPlayer.storeElements();
 }
 
 $(document).ready(function() {

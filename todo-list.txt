@@ -1,6 +1,6 @@
 Next:
--put some different music tracks (e.g. when presenting helpers,
-    when question is presented)
+-implement sound player
+    --use sound effects in moving any cursor
 -look into loading question data (e.g. with jQuery AJAX)
 -cleanup
     --create an object for turn variables; this'll make it easier to
@@ -55,6 +55,8 @@ After game is playable (or, perhaps, ready for release 0.1):
 -more decorated main menu
 -a guide to each assistant that can be unlocked by reaching a certain
  high score (using local storage); link in introduction
+-consider making my own graphics for some things (e.g. briefcases)
+    --in this case, consider resource identifiers for the images
 
 Before release 0.1:
 -make sure trivial functions that are no longer needed and that were
@@ -80,3 +82,7 @@ Considerable:
     below the canvas; this way, it would be properly formatted as
     a typical html element would be
 -using web fonts
+-low volume coughing if a certain answer is highlighted (as a
+    reference to the fraud in Who Wants to be a Millionaire)
+-separating Questions into three classes: Questions, QuestionsLabelDisplay,
+    QuestioningDisplay
