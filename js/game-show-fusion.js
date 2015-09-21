@@ -33,7 +33,9 @@ gameShow.questions = new Questions(
     CANVAS_IDS.QUESTIONING_GRAPHICS,
     CANVAS_IDS.QUESTIONING_TEXT);
 
-gameShow.selectedQuestion = undefined;
+gameShow.turnVariables = {
+    selectedQuestion : undefined,
+};
 
 gameShow.keyActions = new KeyActions();
 
@@ -353,13 +355,14 @@ function handleQuestionSelection() {
     allowQuestionSelectorMovement(false);
 
     // Present the question
-    gameShow.selectedQuestion = gameShow.questions.numberToEmphasize;
+    gameShow.turnVariables.selectedQuestion =
+        gameShow.questions.numberToEmphasize;
     gameShow.quotesToDraw.add("Here comes the question.")
         .deployQuoteChain(presentQuestionAndAnswers);
 }
 
 /*
-    @pre gameShow.selectedQuestion has been updated
+    @pre gameShow.turnVariables.selectedQuestion has been updated
     @post the question, its answers, and the support options
     have been presented; audio has been updated
 */
@@ -368,7 +371,7 @@ function presentQuestionAndAnswers() {
     gameShow.canvasStack.set(CANVAS_IDS.QUESTIONING);
 
     gameShow.questions.drawQuestionAndAnswersText(
-        gameShow.selectedQuestion);
+        gameShow.turnVariables.selectedQuestion);
 }
 
 /*

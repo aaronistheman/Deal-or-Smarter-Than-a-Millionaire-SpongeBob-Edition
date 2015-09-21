@@ -1,9 +1,6 @@
 Next:
--cleanup
-    --create an object for turn variables; this'll make it easier to
-        reset variables before picking next question
-    --move Vector2d into its own file
 -apply convertTextIntoSmallerPieces() into quote bubble problem
+-option to skip rules explanation
 -implement answering a question correctly and moving on
     --allow the user to move the cursor regarding which is selected
         --may have to make class Questions consist of two divisive objects
