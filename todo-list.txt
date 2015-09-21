@@ -1,19 +1,23 @@
 Next:
 -implement answering a question correctly and moving on
-    --allow the user to move the cursor regarding which is selected
+    --allow the user to move the cursor regarding which answer is selected
         --may have to make class Questions consist of two divisive objects
         --make sure SpongeBob explains how to do this
     --show case open with random money amount
         --show effect on money display
-    --fade out the question that had been answered
-    --make sure sources of help can only be used once
+    --consider doing something about the selector while it is on
+        a label of an answered question
+    --change background music depending on how many questions have
+        been answered
 -allow picking of a helper
 -make more questions
 -implement peeking
 -implement ask the audience
 -implement phone a friend
 -implement saving
--make sure SpongeBob explains the controls for using a source of help
+-make sure:
+    --SpongeBob explains the controls for using a source of help
+    --sources of help can only be used once
 -implement losing (i.e. player answered the question incorrectly
     and wasn't saved) and leaving with nothing
 -banker makes a deal

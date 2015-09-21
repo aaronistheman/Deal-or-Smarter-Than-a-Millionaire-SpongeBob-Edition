@@ -143,10 +143,12 @@ Questions.prototype._drawQuestionLabel =
             Questions.LABEL_DIMENSIONS.y);
     }
 
-    // Draw the text of the label
-    textContext.fillText(text,
-        x + (Questions.LABEL_DIMENSIONS.x / 2.0),
-        y + (Questions.LABEL_DIMENSIONS.y / 2.0));
+    // Draw the text of the label only of unanwered questions
+    if (!this._questions[number - 1].answered) {
+        textContext.fillText(text,
+            x + (Questions.LABEL_DIMENSIONS.x / 2.0),
+            y + (Questions.LABEL_DIMENSIONS.y / 2.0));
+    }
 };
 
 /*
@@ -155,9 +157,13 @@ Questions.prototype._drawQuestionLabel =
     labels on
 */
 Questions.prototype._getLabelFillStyle = function(number) {
-    // Color the emphasized question label differently
+    // Color the emphasized question's label differently
     if (number === this.numberToEmphasize)
         return "white";
+
+    // Color answered questions' labels differently
+    if (this._questions[number - 1].answered)
+        return "black";
 
     var grade = this._questions[number - 1].grade;
     switch (grade) {
