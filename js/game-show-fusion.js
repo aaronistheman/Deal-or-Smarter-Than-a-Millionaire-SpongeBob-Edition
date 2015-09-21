@@ -259,8 +259,8 @@ function allowCaseSelectorMovement(bool) {
 }
 
 /*
-    @param bool true to allow user to change which case is emphasized;
-    false to remove this ability
+    @param bool true to allow user to change which question's label
+    is emphasized; false to remove this ability
 */
 function allowQuestionSelectorMovement(bool) {
     if (bool === true) {
@@ -289,6 +289,27 @@ function allowQuestionSelectorMovement(bool) {
         gameShow.keyActions.erase(KEY_CODES.LEFT_ARROW)
             .erase(KEY_CODES.RIGHT_ARROW)
             .erase(KEY_CODES.UP_ARROW)
+            .erase(KEY_CODES.DOWN_ARROW);
+    }
+}
+
+/*
+    @param bool true to allow user to change which answer
+    is emphasized; false to remove this ability
+*/
+function allowAnswerSelectorMovement(bool) {
+    if (bool === true) {
+        gameShow.keyActions.set(KEY_CODES.UP_ARROW, function() {
+            gameShow.questions.emphasizeUpAnswer(
+                gameShow.turnVariables.selectedQuestion);
+        })
+        .set(KEY_CODES.DOWN_ARROW, function() {
+            gameShow.questions.emphasizeDownAnswer(
+                gameShow.turnVariables.selectedQuestion);
+        });
+    }
+    else {
+        gameShow.keyActions.erase(KEY_CODES.UP_ARROW)
             .erase(KEY_CODES.DOWN_ARROW);
     }
 }
@@ -364,11 +385,8 @@ function presentQuestionAndAnswers() {
     gameShow.questions.drawQuestionAndAnswersText(
         gameShow.turnVariables.selectedQuestion);
 
-    // Update the key actions
-    gameShow.keyActions.set(KEY_CODES.S, function() {
-        gameShow.questions.setEmphasizedAnswer(
-            gameShow.turnVariables.selectedQuestion, 3);
-    });
+    // Allow the user to pick an answer
+    allowAnswerSelectorMovement(true);
 }
 
 /*

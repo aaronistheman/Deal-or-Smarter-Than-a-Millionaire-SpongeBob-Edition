@@ -14,6 +14,12 @@
     [5, 6] - third grade
     [3, 4] - second grade
     [1, 2] - the bottom of the display; first grade questions
+
+    Similarly, the numbers of the answers are like this:
+    [1] - choice A
+    [2] - choice B
+    [3] - choice C
+    [4] - choice D
 */
 
 /*
@@ -426,6 +432,32 @@ Questions.prototype.setEmphasizedAnswer =
             newPosition.x, newPosition.y, quesitonNumber, newNumber);
     }
 }
+
+/*
+    @pre this.numberOfAnswerToEmphasize != "none"
+    @post the emphasis has been placed on the answer below
+    the currently emphasized answer; if the lowest answer
+    is already emphasized, nothing happens
+    @param questionNumber
+*/
+Questions.prototype.emphasizeDownAnswer = function(questionNumber) {
+    if (this.numberOfAnswerToEmphasize < 4)
+        this.setEmphasizedAnswer(questionNumber,
+            this.numberOfAnswerToEmphasize + 1);
+};
+
+/*
+    @pre this.numberOfAnswerToEmphasize != "none"
+    @post the emphasis has been placed on the answer above
+    the currently emphasized answer; if the uppermost answer
+    is already emphasized, nothing happens
+    @param questionNumber
+*/
+Questions.prototype.emphasizeUpAnswer = function(questionNumber) {
+    if (this.numberOfAnswerToEmphasize > 1)
+        this.setEmphasizedAnswer(questionNumber,
+            this.numberOfAnswerToEmphasize - 1);
+};
 
 /*
     @post a rectangle has been cleared in the canvases indicated by
