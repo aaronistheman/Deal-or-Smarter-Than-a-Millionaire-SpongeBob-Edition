@@ -42,12 +42,14 @@ gameShow.keyActions = new KeyActions();
 gameShow.soundPlayer = new SoundPlayer();
 gameShow.musicPlayer = new MusicPlayer();
 
-gameShow.quoteLengthForWrapAround = 70;
 gameShow.quoteBubble = {};
 gameShow.quoteBubble.x = 50;
 gameShow.quoteBubble.y = 440;
 gameShow.quoteBubble.width = 1000;
 gameShow.quoteBubble.height = 85;
+gameShow.quoteBubble.textIndent = new Vector2d(25, 35);
+gameShow.maximumTextLengthInPixels = (gameShow.quoteBubble.width -
+    (gameShow.quoteBubble.textIndent.x * 2));
 
 gameShow.quotesToDraw = {
     // quotes with lower indexes will be displayed first
@@ -80,7 +82,8 @@ gameShow.quotesToDraw = {
         if (this.storage.length !== 0) {
             // more quotes to display; display the next one
             eraseQuoteBubbleText();
-            drawQuoteText(this.storage.shift(), function() {
+            drawQuoteTextAndCallFunction(this.storage.shift(),
+                function() {
                 gameShow.quotesToDraw.deployQuoteChain(endCallback);
             });
         }
@@ -163,15 +166,14 @@ function drawNewSpeaker(speakerName) {
     bubble; endCallback is set up to be called when user wants;
     sound plays when user presses Enter on a quote
     @hasTest no
-    @param text to draw
+    @param text the text to draw
     @param endCallback to call after the user presses Enter (can
     be used for chaining quote bubbles together) (optional)
     @returns nothing
     @throws nothing
 */
-function drawQuoteText(text, endCallback) {
-    drawEachTextPiece(convertStringToArrayOfStrings(text,
-        gameShow.quoteLengthForWrapAround));
+function drawQuoteTextAndCallFunction(text, endCallback) {
+    drawQuoteText(text);
 
     if (endCallback !== undefined) {
         // Allow the endCallback to be called
@@ -189,51 +191,34 @@ function drawQuoteText(text, endCallback) {
 
 /*
     @pre canvases are set up
-    @post each string in textPieces has been drawn, with each string
-    using its own row
+    @post the text has been drawn in the quote bubble, with
+    wrap around if necessary
     @hasTest no
-    @param textPieces array of strings to draw on canvas
+    @param text the text to draw
     @returns nothing
     @throws nothing
 */
-function drawEachTextPiece(textPieces) {
+function drawQuoteText(text) {
     var canvas = document.getElementById(CANVAS_IDS.QUOTE_TEXT);
     var ctx = canvas.getContext('2d');
     var textPadding = 10;
     var fontSize = 30;
     ctx.font = fontSize + "px Arial";
     var bubble = gameShow.quoteBubble;
-    var x = bubble.x + 25;
-    var y = bubble.y + 35;
+    var x = (bubble.x + gameShow.quoteBubble.textIndent.x);
+    var y = (bubble.y + gameShow.quoteBubble.textIndent.y);
+
+    // Convert the text into pieces so that the text can be put
+    // into multiple lines, if necessary, so that the entire text
+    // fits within the quote bubble's width
+    var textPieces = convertCanvasTextIntoSmallerPieces(ctx, text,
+        gameShow.maximumTextLengthInPixels);
 
     // Draw the text
     for (var textIndex in textPieces) {
         ctx.fillText(textPieces[textIndex], x, y);
         y += (fontSize + textPadding);
     }
-}
-
-/*
-    @pre none
-    @post see @returns
-    @hasTest yes
-    @param string to split into pieces
-    @param maxStringLength for each string in the array
-    @returns array of pieces of the parameter string such that none
-    of the pieces have a length greater than maxStringLength
-    @throws nothing
-*/
-function convertStringToArrayOfStrings(string, maxStringLength) {
-    var textPieces = [];
-    var numberOfPieces = 0;
-    // Check if the entire text has been made into text pieces
-    while ((maxStringLength * numberOfPieces) < string.length) {
-        var startIndex = (maxStringLength * numberOfPieces);
-        var endIndex = startIndex + maxStringLength;
-        textPieces.push(string.slice(startIndex, endIndex));
-        numberOfPieces = textPieces.length;
-    }
-    return textPieces;
 }
 
 /*
