@@ -511,7 +511,7 @@ Questions.prototype._drawOnlyAnswerRectangles = function() {
 
 /*
     @pre 1 <= answerNumber <= Questions.NUMBER_OF_ANSWERS
-    @post the rectangle and text of the answer indicated by
+    @post the rectangle of the answer indicated by
     answerNumber has been drawn
     @param graphicsContext context of the canvas to draw
     the rectangle on
@@ -533,11 +533,8 @@ Questions.prototype._drawAnswerRectangle =
     @post the selectable answers to the question indicated by
     questionNumber have been drawn in a good area and properly formatted
     @param questionNumber
-    @throws string if an answer is too long to draw in its
-    designated area
 */
 Questions.prototype._drawAnswersText = function(questionNumber) {
-    var textIndent = 30;
     // Set up canvas context
     var ctx = document.getElementById(
         this._choosingAnswerCanvases.answersTextCanvasId)
@@ -546,29 +543,52 @@ Questions.prototype._drawAnswersText = function(questionNumber) {
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
 
+    for (var i = 0; i < 4; ++i) {
+        var position = Questions._getAnswerPosition(i + 1);
+        this._drawAnswerText(ctx, position.x, position.y,
+            questionNumber, (i + 1));
+    }
+}
+
+/*
+    @pre 1 <= questionNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY;
+    1 <= answerNumber <= Questions.NUMBER_OF_ANSWERS
+    @post the text of the answer indicated by
+    questionNumber and answerNumber has been drawn
+    @param textNumber context of the canvas to draw the text on
+    @param x of top left point of the answer's rectangle (not its
+    text)
+    @param y (see @param x)
+    @param answerNumber
+    @throws string if the answer is too long to draw in its
+    designated area
+*/
+Questions.prototype._drawAnswerText =
+    function(textContext, x, y, questionNumber, answerNumber)
+{
+    var textIndent = 30;
     var answerLetters = ['A', 'B', 'C', 'D'];
 
-    for (var i = 0; i < 4; ++i) {
-        ctx.fillStyle = this._getAnswerRectangleTextFillStyle(i + 1);
+    // Give the text the correct color
+    textContext.fillStyle =
+        this._getAnswerRectangleTextFillStyle(answerNumber);
 
-        var text = '(' + answerLetters[i] + ")    " +
-            this._questions[questionNumber - 1]
-                .answerData.arrayOfAnswers[i];
+    // Set up the text to draw
+    var text = '(' + answerLetters[answerNumber - 1] + ")    " +
+        this._questions[questionNumber - 1]
+            .answerData.arrayOfAnswers[answerNumber - 1];
 
-        // Throw an exception of the text is too long
-        if ((textIndent + ctx.measureText(text).width) >
-            Questions.ANSWER_DIMENSIONS.x)
-        {
-            alert("Error: answer #" + (i + 1) + " of 4 can't " +
-                "be fit in its designated space");
-            throw "Error: answer #" + (i + 1) + " of 4 can't " +
-                "be fit in its designated space";
-        }
-
-
-        var position = Questions._getAnswerPosition(i + 1);
-        ctx.fillText(text, position.x + textIndent, position.y);
+    // Throw an exception of the text is too long
+    if ((textIndent + textContext.measureText(text).width) >
+        Questions.ANSWER_DIMENSIONS.x)
+    {
+        alert("Error: answer #" + answerNumber + " of 4 can't " +
+            "be fit in its designated space");
+        throw "Error: answer #" + answerNumber + " of 4 can't " +
+            "be fit in its designated space";
     }
+
+    textContext.fillText(text, x + textIndent, y);
 }
 
 /*
