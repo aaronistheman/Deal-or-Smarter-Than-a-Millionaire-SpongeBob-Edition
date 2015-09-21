@@ -67,6 +67,13 @@ gameShow.quotesToDraw = {
     },
 
     /*
+        @post storage of quotes has been emptied
+    */
+    clear : function() {
+        this.storage = [];
+    },
+
+    /*
         @pre this.storage.length > 0
         @post things have been set up so that the user can go from
         one quote to the next by pressing Enter; after the last
@@ -324,7 +331,7 @@ function selectFirstCase() {
     allowCaseSelectorMovement(true);
 
     gameShow.quotesToDraw.add("Now, you must use the left and " +
-        "right arrow keys and the Enter key to  choose a case.")
+        "right arrow keys and the Enter key to choose a case.")
         .deployQuoteChain(function() {
             gameShow.soundPlayer.play(
                 SOUND_EFFECTS_IDS.SELECT_CASE);
