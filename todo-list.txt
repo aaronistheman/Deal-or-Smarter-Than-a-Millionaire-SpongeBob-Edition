@@ -1,5 +1,5 @@
 Next:
--implement sound player
+-more sound effects
     --use sound effects in moving any cursor
 -look into loading question data (e.g. with jQuery AJAX)
 -cleanup

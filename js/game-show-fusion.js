@@ -37,9 +37,7 @@ gameShow.selectedQuestion = undefined;
 
 gameShow.keyActions = new KeyActions();
 
-gameShow.sounds = {};
-gameShow.sounds.nextQuote;
-
+gameShow.soundPlayer = new SoundPlayer();
 gameShow.musicPlayer = new MusicPlayer();
 
 gameShow.quoteLengthForWrapAround = 70;
@@ -176,13 +174,13 @@ function drawQuoteText(text, endCallback) {
     if (endCallback !== undefined) {
         // Allow the endCallback to be called
         gameShow.keyActions.set(KEY_CODES.ENTER, function() {
-            gameShow.sounds.nextQuote.play();
+            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.NEXT_QUOTE);
             endCallback();
         });
     }
     else {
         gameShow.keyActions.set(KEY_CODES.ENTER, function() {
-            gameShow.sounds.nextQuote.play();
+            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.NEXT_QUOTE);
         });
     }
 }
@@ -407,8 +405,7 @@ function setUpTitleScreen() {
 }
 
 function setUpAudio() {
-    gameShow.sounds.nextQuote =
-        document.getElementById('next-quote-sound');
+    gameShow.soundPlayer.storeElements();
     gameShow.musicPlayer.storeElements();
 }
 
