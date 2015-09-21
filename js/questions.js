@@ -18,12 +18,18 @@
 
 /*
     @pre the canvas indicated by labelGraphicsCanvasId is behind the
-    canvas indicated by labelTextCanvasId
+    canvas indicated by labelTextCanvasId;
+    1 <= numberOfLabelToEmphasize <=
+        Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY, or
+    numberOfLabelToEmphasize = "none";
+    the canvas indicated by questioningGraphicsCanvasId is behind the
+    canvas indicated by questioningTextCanvasId
     @param labelGraphicsCanvasId id of the canvas to draw the non-text
     part of the questions' display on
     @param labelTextCanvasId id of the canvas to draw the text part
     of the questions' display on
-    @param numberToEmphasize number of the question to emphasize;
+    @param numberOfLabelToEmphasize number of the question that
+    should have its label emphasized;
     set to "none" to emphasize no question label
     @param questioningGraphicsCanvasId id of the canvas to draw
     the non-textual parts of the presentation of a question on
@@ -31,7 +37,7 @@
     the text parts of the presentation of a question on
 */
 function Questions(labelGraphicsCanvasId, labelTextCanvasId,
-    numberToEmphasize, questioningGraphicsCanvasId,
+    numberOfLabelToEmphasize, questioningGraphicsCanvasId,
     questioningTextCanvasId) {
     // Storage of objects of type Question
     this._questions = [];
@@ -41,7 +47,11 @@ function Questions(labelGraphicsCanvasId, labelTextCanvasId,
 
     // This number indicates which question the user is currently
     // hovering over as he selects a question
-    this.numberToEmphasize = numberToEmphasize;
+    this.numberOfLabelToEmphasize = numberOfLabelToEmphasize;
+
+    // This number represents which answer the user is currently
+    // hovering over as he selects an answer
+    this.numberOfAnswerToEmphasize = 1;
 
     // Store canvas data
     this._choosingQuestionCanvases = {
@@ -61,7 +71,7 @@ function Questions(labelGraphicsCanvasId, labelTextCanvasId,
 */
 Questions.prototype.drawInitialParts = function() {
     this._displayAsChoices();
-    this._drawRectanglesEncompassingAnswers();
+    this._drawAnswerRectangles();
 }
 
 /*
@@ -115,7 +125,7 @@ Questions.prototype._drawQuestionLabel =
 
     // Draw the graphical label; shape it differently if the
     // label is supposed to be emphasized
-    if (number !== this.numberToEmphasize) {
+    if (number !== this.numberOfLabelToEmphasize) {
         var circularEdgeRadius = Questions.LABEL_DIMENSIONS.y / 2.0;
         graphicsContext.fillRect(
             x + circularEdgeRadius,
@@ -152,13 +162,41 @@ Questions.prototype._drawQuestionLabel =
 };
 
 /*
+    @pre 1 <= number <= Questions.NUMBER_OF_ANSWERS
+    @returns the fill style appropriate for the indicated
+    answer rectangle, based on whether or not the answer is
+    emphasized
+*/
+Questions.prototype._getAnswerRectangleFillStyle = function(number) {
+    if (number === this.numberOfAnswerToEmphasize)
+        return "white";
+    else
+        return "#484848";
+}
+
+/*
+    @pre 1 <= number <= Questions.NUMBER_OF_ANSWERS
+    @returns the fill style appropriate for the indicated
+    answer's text, based on whether or not the answer is
+    emphasized
+*/
+Questions.prototype._getAnswerRectangleTextFillStyle =
+    function(number)
+{
+    if (number === this.numberOfAnswerToEmphasize)
+        return "black";
+    else
+        return "white";
+}
+
+/*
     @param number of the question label to get the fill style of
     @returns fillStyle for the context to draw the graphical
     labels on
 */
 Questions.prototype._getLabelFillStyle = function(number) {
     // Color the emphasized question's label differently
-    if (number === this.numberToEmphasize)
+    if (number === this.numberOfLabelToEmphasize)
         return "white";
 
     // Color answered questions' labels differently
@@ -239,7 +277,7 @@ Questions.prototype._getLabelTextContext = function() {
     the text of the question label on
 */
 Questions.prototype._getLabelTextFillStyle = function(number) {
-    if (number === this.numberToEmphasize) {
+    if (number === this.numberOfLabelToEmphasize) {
         // Color differently the text of emphasized question label
         return "black";
     }
@@ -249,7 +287,7 @@ Questions.prototype._getLabelTextFillStyle = function(number) {
 
 /*
     @pre 1 <= newNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY
-    @post this.numberToEmphasize has been updated; formerly
+    @post this.numberOfLabelToEmphasize has been updated; formerly
     emphasized question label has been redrawn so that it's no
     longer emphasized; now emphasized question label has been
     redrawn so that it's emphasized
@@ -264,7 +302,7 @@ Questions.prototype.setEmphasis = function(newNumber) {
     var textContext = document.getElementById(
         this._choosingQuestionCanvases.labelTextCanvasId)
             .getContext('2d');
-    var oldNumber = this.numberToEmphasize;
+    var oldNumber = this.numberOfLabelToEmphasize;
 
     // Determine positions of formerly emphasized case and now
     // emphasized case
@@ -273,8 +311,8 @@ Questions.prototype.setEmphasis = function(newNumber) {
     if (newNumber !== "none")
         var newPosition = Questions._getLabelPosition(newNumber);
 
-    // Update numberToEmphasize
-    this.numberToEmphasize = newNumber;
+    // Update numberOfLabelToEmphasize
+    this.numberOfLabelToEmphasize = newNumber;
 
     // Redraw the formerly emphasized question label
     if (oldNumber !== "none") {
@@ -294,47 +332,47 @@ Questions.prototype.setEmphasis = function(newNumber) {
 }
 
 /*
-    @pre this.numberToEmphasize != "none"
+    @pre this.numberOfLabelToEmphasize != "none"
     @post the emphasis has been placed on the label to the left
     of the currently emphasized label; if a leftmost label
     is already emphasized, nothing happens
 */
 Questions.prototype.emphasizeLeftLabel = function() {
-    if (this.numberToEmphasize % 2 === 0)
-        this.setEmphasis(this.numberToEmphasize - 1);
+    if (this.numberOfLabelToEmphasize % 2 === 0)
+        this.setEmphasis(this.numberOfLabelToEmphasize - 1);
 };
 
 /*
-    @pre this.numberToEmphasize != "none"
+    @pre this.numberOfLabelToEmphasize != "none"
     @post the emphasis has been placed on the label to the right
     of the currently emphasized label; if a rightmost label
     is already emphasized, nothing happens
 */
 Questions.prototype.emphasizeRightLabel = function() {
-    if (this.numberToEmphasize % 2 === 1)
-        this.setEmphasis(this.numberToEmphasize + 1);
+    if (this.numberOfLabelToEmphasize % 2 === 1)
+        this.setEmphasis(this.numberOfLabelToEmphasize + 1);
 };
 
 /*
-    @pre this.numberToEmphasize != "none"
+    @pre this.numberOfLabelToEmphasize != "none"
     @post the emphasis has been placed on the label below
     the currently emphasized label; if a lowest label
     is already emphasized, nothing happens
 */
 Questions.prototype.emphasizeDownLabel = function() {
-    if (this.numberToEmphasize >= 3)
-        this.setEmphasis(this.numberToEmphasize - 2);
+    if (this.numberOfLabelToEmphasize >= 3)
+        this.setEmphasis(this.numberOfLabelToEmphasize - 2);
 };
 
 /*
-    @pre this.numberToEmphasize != "none"
+    @pre this.numberOfLabelToEmphasize != "none"
     @post the emphasis has been placed on the label above
     the currently emphasized label; if a uppermost label
     is already emphasized, nothing happens
 */
 Questions.prototype.emphasizeUpLabel = function() {
-    if (this.numberToEmphasize <= 8)
-        this.setEmphasis(this.numberToEmphasize + 2);
+    if (this.numberOfLabelToEmphasize <= 8)
+        this.setEmphasis(this.numberOfLabelToEmphasize + 2);
 };
 
 /*
@@ -457,14 +495,14 @@ Questions.prototype._drawQuestionText = function(questionNumber) {
     @post the four rectangles that would encompass the four
     choosable answers to a question have been drawn
 */
-Questions.prototype._drawRectanglesEncompassingAnswers = function() {
+Questions.prototype._drawAnswerRectangles = function() {
     // Set up canvas context
     var ctx = document.getElementById(
         this._questioningCanvases.questioningTextCanvasId)
         .getContext('2d');
-    ctx.fillStyle = "#484848";
 
     for (var i = 0; i < 4; ++i) {
+        ctx.fillStyle = this._getAnswerRectangleFillStyle(i + 1);
         var position = Questions._getAnswerPosition(i + 1);
         ctx.fillRect(position.x, position.y,
             Questions.ANSWER_DIMENSIONS.x,
@@ -485,7 +523,6 @@ Questions.prototype._drawAnswersText = function(questionNumber) {
     var ctx = document.getElementById(
         this._questioningCanvases.questioningTextCanvasId)
         .getContext('2d');
-    ctx.fillStyle = "white";
     ctx.font = Questions.ANSWERS_FONT_SIZE + "px 'Arial'";
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
@@ -493,6 +530,8 @@ Questions.prototype._drawAnswersText = function(questionNumber) {
     var answerLetters = ['A', 'B', 'C', 'D'];
 
     for (var i = 0; i < 4; ++i) {
+        ctx.fillStyle = this._getAnswerRectangleTextFillStyle(i + 1);
+
         var text = '(' + answerLetters[i] + ")    " +
             this._questions[questionNumber - 1]
                 .answerData.arrayOfAnswers[i];
@@ -538,6 +577,7 @@ Questions.prototype._drawRectangleEncompassingAnswer =
 */
 
 Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY = 10;
+Questions.NUMBER_OF_ANSWERS = 4;
 
 // For positioning the question labels
 Questions.HEIGHT_SPACE_PER_LABEL = 410 / 5;

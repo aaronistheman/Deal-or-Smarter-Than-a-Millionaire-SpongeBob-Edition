@@ -348,7 +348,7 @@ function handleQuestionSelection() {
 
     // Present the question
     gameShow.turnVariables.selectedQuestion =
-        gameShow.questions.numberToEmphasize;
+        gameShow.questions.numberOfLabelToEmphasize;
     gameShow.quotesToDraw.add("Here comes the question.")
         .deployQuoteChain(presentQuestionAndAnswers);
 }

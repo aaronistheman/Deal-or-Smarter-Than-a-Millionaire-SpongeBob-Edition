@@ -35,6 +35,7 @@ At some point:
         BriefcaseDisplay
 -replace use of ParameterError() with an alert and the throwing
     of an unhandled exception
+    --update affected functions' contracts
 
 After game is playable (or, perhaps, ready for release 0.1):
 -fake static advertisement panel on the side
