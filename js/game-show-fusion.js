@@ -10,6 +10,7 @@ gameShow.speakers = getSpeakerObjects();
 
 gameShow.moneyAmounts = ['0.01', '50', '300', '750', '1,000',
     '10,000', '25,000', '100,000', '250,000', '500,000'];
+gameShow.briefcaseValue = undefined;
 
 gameShow.canvasStack = new CanvasStack();
 
@@ -332,9 +333,10 @@ function handleCaseSelection() {
     gameShow.musicPlayer.stop();
     allowCaseSelectorMovement(false);
 
-    // Record which case was selected
+    // Record which case was selected and its value
     gameShow.selectedBriefcaseNumber =
         gameShow.briefcaseDisplay.numberToEmphasize;
+    gameShow.briefcaseValue = getRandomMoneyAmount(gameShow.moneyAmounts);
 
     // Update the briefcase display
     gameShow.briefcaseDisplay.giveFade(
@@ -344,6 +346,16 @@ function handleCaseSelection() {
     gameShow.quotesToDraw.add("You have selected case " +
         gameShow.selectedBriefcaseNumber + ".")
         .deployQuoteChain(selectQuestion);
+}
+
+/*
+    @param arrayOfMoneyAmounts
+    @returns a randomly chosen value that was removed from
+    arrayOfMoneyAmounts
+*/
+function getRandomMoneyAmount(arrayOfMoneyAmounts) {
+    var randomIndex = Math.floor(Math.random() * arrayOfMoneyAmounts.length);
+    return arrayOfMoneyAmounts.splice(randomIndex, 1).pop();
 }
 
 /*
@@ -384,10 +396,10 @@ function handleQuestionSelection() {
 /*
     @pre gameShow.turnVariables.selectedQuestion has been updated
     @post the question, its answers, and the support options
-    have been presented; audio has been updated
+    have been presented
 */
 function presentQuestionAndAnswers() {
-    // Update what the user sees
+    // Update what the user sees and hears
     gameShow.canvasStack.set(CANVAS_IDS.QUESTIONING);
     gameShow.questions.drawQuestionAndAnswersText(
         gameShow.turnVariables.selectedQuestion);
@@ -413,7 +425,7 @@ function handleAnswerSelection() {
         gameShow.turnVariables.selectedQuestion);
     if (selectedCorrectAnswer(question,
         gameShow.turnVariables.selectedAnswer))
-        alert("teehee"); // handleCorrectAnswerSelection();
+        handleCorrectAnswerSelection();
     else
         handleWrongAnswerSelection();
 }
@@ -430,6 +442,31 @@ function handleAnswerSelection() {
 */
 function selectedCorrectAnswer(question, numberOfAnswer) {
     return (question.answerData.correctIndex === (numberOfAnswer - 1));
+}
+
+/*
+    @post the host has told the user what happened;
+    the question's monetary value has been revealed;
+    the number of correctly answered questions was updated;
+    turn variables were reset;
+    answered question can't be selected by user anymore;
+    game reacted both visually and auditorily
+*/
+function handleCorrectAnswerSelection() {
+    // React visually and auditorily
+    gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
+    gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.CORRECT_ANSWER);
+
+    var questionValue = getRandomMoneyAmount(gameShow.moneyAmounts);
+
+    // Update gameShow object's variables
+    gameShow.numberOfQuestionsCorrectlyAnswered++;
+    gameShow.turnVariables.selectedQuestion = undefined;
+    gameShow.turnVariables.selectedAnswer = undefined;
+
+    gameShow.quotesToDraw.add("You have selected the correct answer.")
+        .add("The question was worth: $" + questionValue + '.')
+        .deployQuoteChain(eraseQuoteBubbleText);
 }
 
 /*

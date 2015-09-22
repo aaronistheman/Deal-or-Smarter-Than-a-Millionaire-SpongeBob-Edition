@@ -1,10 +1,15 @@
 Next:
 -implement answering a question correctly and moving on
-    --say value of question
+    --allow the user to select another question, but don't let
+        him select one he already answered
+        --could make a Questions.setLabelFade(...) and
+            Questions.setEmphasizedLabel("first_non_fade")
     --consider doing something about the selector while it is on
         a label of an answered question
-    --change background music depending on how many questions have
-        been answered
+    --change background music, presented question sound, correct
+        answer sound, and (maybe) loss sound depending on
+        how many questions have been answered
+-split the music and sound effect files?
 -allow picking of a helper
 -make more questions
 -implement peeking
