@@ -55,6 +55,10 @@ function Questions(labelGraphicsCanvasId, labelTextCanvasId,
     // hovering over as he selects a question
     this.numberOfLabelToEmphasize = numberOfLabelToEmphasize;
 
+    // Which labels to prevent the user from selecting the question
+    // of
+    this.numbersOfLabelsToFade = [];
+
     // This number represents which answer the user is currently
     // hovering over as he selects an answer
     this.numberOfAnswerToEmphasize = 1;
@@ -298,6 +302,37 @@ Questions.prototype._getLabelTextFillStyle = function(number) {
 };
 
 /*
+    @pre 1 <= questionNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY
+    @post this.numbersOfLabelsToFade has been updated; now faded
+    label has been redrawn
+    @param questionNumber number of the question whose label
+    the fade will be applied to and that will have its
+    member variable 'answered' set to true
+*/
+Questions.prototype.setAnswered = function(questionNumber) {
+    // Only act if the case hasn't already been given fade
+    if (this.numbersOfLabelsToFade.indexOf(questionNumber) === -1) {
+        this.numbersOfLabelsToFade.push(questionNumber);
+        this._questions[questionNumber - 1].answered = true;
+
+        // Set up variables for redrawing
+        var graphicsContext = document.getElementById(
+            this._choosingQuestionCanvases.labelGraphicsCanvasId)
+            .getContext('2d');
+        var textContext = document.getElementById(
+            this._choosingQuestionCanvases.labelTextCanvasId)
+            .getContext('2d');
+        var position = Questions._getLabelPosition(questionNumber);
+
+        // Erase and redraw the question label
+        this._eraseQuestionLabel(graphicsContext, textContext,
+            position.x, position.y);
+        this._drawQuestionLabel(graphicsContext, textContext,
+            position.x, position.y, questionNumber);
+    }
+};
+
+/*
     @pre 1 <= newNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY
     @post this.numberOfLabelToEmphasize has been updated; formerly
     emphasized question label has been redrawn so that it's no
@@ -385,6 +420,25 @@ Questions.prototype.emphasizeDownLabel = function() {
 Questions.prototype.emphasizeUpLabel = function() {
     if (this.numberOfLabelToEmphasize <= 8)
         this.setEmphasizedLabel(this.numberOfLabelToEmphasize + 2);
+};
+
+/*
+    @pre this.numbersOfLabelsToFade.length < NUMBER_OF_QUESTIONS_TO_DISPLAY
+    @post the emphasis has been placed on the first non-faded label,
+    starting from the first (i.e. bottom-left) label
+*/
+Questions.prototype.emphasizeFirstAvailableLabel = function() {
+    // Find the number of the first available label
+    var first = undefined;
+    for (var i = 1; i <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY; ++i) {
+        if (this.numbersOfLabelsToFade.indexOf(i) === -1) {
+            // i refers to a non-faded label
+            first = i;
+            break;
+        }
+    }
+
+    this.setEmphasizedLabel(first);
 };
 
 /*
@@ -775,15 +829,15 @@ Questions.MARGINAL_ANSWER_POSITION = new Vector2d(0,
 
 /*
     @hasTest yes
-    @param whichLabel number of the label to get the position of;
-    1 <= whichLabel <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY
+    @param questionNumber number of the label to get the position of;
+    1 <= questionNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY
     @returns Vector2d object containing the top-left position at which
     to draw the question label (on the appropriate canvases)
 */
-Questions._getLabelPosition = function(whichLabel) {
+Questions._getLabelPosition = function(questionNumber) {
     // Decide how much to adjust the default label position
-    var multiplierX = ((whichLabel - 1) % 2);
-    var multiplierY = -1 * (Math.ceil(whichLabel / 2.0) - 1);
+    var multiplierX = ((questionNumber - 1) % 2);
+    var multiplierY = -1 * (Math.ceil(questionNumber / 2.0) - 1);
     var adjustment = new Vector2d(multiplierX, multiplierY);
 
     return Questions.FIRST_LABEL_POSITION.getSum(

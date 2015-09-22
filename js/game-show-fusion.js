@@ -456,6 +456,7 @@ function selectedCorrectAnswer(question, numberOfAnswer) {
 function prepareForNextTurn() {
     // Prepare the canvases
     gameShow.questions.eraseQuestionAndAnswersText();
+    gameShow.questions.setAnswered(gameShow.turnVariables.selectedQuestion);
 
     // Prepare gameShow members
     gameShow.numberOfQuestionsCorrectlyAnswered++;
@@ -514,7 +515,7 @@ function handleWrongAnswerSelection() {
 function selectQuestion() {
     gameShow.canvasStack.set(CANVAS_IDS.CHOOSE_QUESTION.concat(
         CANVAS_IDS.QUOTE));
-    gameShow.questions.setEmphasizedLabel(1);
+    gameShow.questions.emphasizeFirstAvailableLabel();
 
     allowQuestionSelectorMovement(true);
 

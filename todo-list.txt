@@ -1,8 +1,7 @@
 Next:
 -implement answering a question correctly and moving on
-    --don't let him select one he already answered
-        --could make a Questions.setLabelFade(...) and
-            Questions.setEmphasizedLabel("first_non_fade")
+    --don't let user select one he already answered
+        --don't let user move the cursor into a faded label
     --consider doing something about the selector while it is on
         a label of an answered question
     --change background music, presented question sound, correct
@@ -26,6 +25,8 @@ Next:
     million dollar question
 
 At some point:
+-for functions that emphasize things, don't erase and redraw if same thing
+    is emphasized
 -ending (for winning and losing)
     --could use an object prototype
 -effects as canvases appear or disappear (e.g. fading)
