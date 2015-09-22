@@ -586,6 +586,17 @@ Questions.prototype.drawQuestionAndAnswersText =
 }
 
 /*
+    @post the text of the displayed question and its answers has
+    been erased
+*/
+Questions.prototype.eraseQuestionAndAnswersText = function() {
+    var canvas = document.getElementById(
+        this._choosingAnswerCanvases.answersTextCanvasId);
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+/*
     @post the text of the question indicated by questionNumber
     has been drawn in a good area and properly formatted
     @param questionNumber

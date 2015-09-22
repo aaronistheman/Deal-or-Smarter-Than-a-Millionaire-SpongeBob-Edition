@@ -345,10 +345,14 @@ function handleCaseSelection() {
     // Have the host announce it and allow game continuation
     gameShow.quotesToDraw.add("You have selected case " +
         gameShow.selectedBriefcaseNumber + ".")
-        .deployQuoteChain(selectQuestion);
+        .deployQuoteChain(function() {
+            gameShow.musicPlayer.play(MUSIC_IDS.FIRST_FOUR_QUESTIONS);
+            selectQuestion();
+        });
 }
 
 /*
+    @pre arrayOfMoneyAmounts.length > 0
     @param arrayOfMoneyAmounts
     @returns a randomly chosen value that was removed from
     arrayOfMoneyAmounts
@@ -445,6 +449,21 @@ function selectedCorrectAnswer(question, numberOfAnswer) {
 }
 
 /*
+    @post the question and answer displays have been cleared;
+    the questions' label display has been updated;
+    the gameShow members have been updated
+*/
+function prepareForNextTurn() {
+    // Prepare the canvases
+    gameShow.questions.eraseQuestionAndAnswersText();
+
+    // Prepare gameShow members
+    gameShow.numberOfQuestionsCorrectlyAnswered++;
+    gameShow.turnVariables.selectedQuestion = undefined;
+    gameShow.turnVariables.selectedAnswer = undefined;
+}
+
+/*
     @post the host has told the user what happened;
     the question's monetary value has been revealed;
     the number of correctly answered questions was updated;
@@ -459,14 +478,11 @@ function handleCorrectAnswerSelection() {
 
     var questionValue = getRandomMoneyAmount(gameShow.moneyAmounts);
 
-    // Update gameShow object's variables
-    gameShow.numberOfQuestionsCorrectlyAnswered++;
-    gameShow.turnVariables.selectedQuestion = undefined;
-    gameShow.turnVariables.selectedAnswer = undefined;
+    prepareForNextTurn();
 
     gameShow.quotesToDraw.add("You have selected the correct answer.")
         .add("The question was worth: $" + questionValue + '.')
-        .deployQuoteChain(eraseQuoteBubbleText);
+        .deployQuoteChain(selectQuestion);
 }
 
 /*
@@ -496,7 +512,6 @@ function handleWrongAnswerSelection() {
     by hitting Enter
 */
 function selectQuestion() {
-    gameShow.musicPlayer.play(MUSIC_IDS.FIRST_FOUR_QUESTIONS);
     gameShow.canvasStack.set(CANVAS_IDS.CHOOSE_QUESTION.concat(
         CANVAS_IDS.QUOTE));
     gameShow.questions.setEmphasizedLabel(1);
