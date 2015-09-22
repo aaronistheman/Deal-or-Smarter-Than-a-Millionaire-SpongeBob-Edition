@@ -55,6 +55,10 @@ function getAudioData() {
         "audio/select_question.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.MOVE_ANSWER_SELECTOR,
         "audio/move_answer_selector.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.LOSS,
+        "audio/loss.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.GOOD_BYE,
+        "audio/good_bye_sound.mp3"));
 
     // add background music
     audioData.push(new AudioData(MUSIC_IDS.OPENING,

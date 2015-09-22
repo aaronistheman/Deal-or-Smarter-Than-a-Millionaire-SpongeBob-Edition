@@ -12,6 +12,8 @@ var SOUND_EFFECTS_IDS = {
     MOVE_QUESTION_SELECTOR : "move-question-selector-sound",
     SELECT_QUESTION : "select-question-sound",
     MOVE_ANSWER_SELECTOR : "move-answer-selector-sound",
+    LOSS : "loss-sound",
+    GOOD_BYE : "good-bye-sound",
 };
 
 var MUSIC_IDS = {

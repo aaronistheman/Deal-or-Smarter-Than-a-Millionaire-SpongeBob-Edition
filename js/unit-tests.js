@@ -116,6 +116,19 @@ QUnit.test("parameterError()", function(assert) {
         ERROR_MESSAGES.PARAMETER, "Correct value is returned");
 });
 
+QUnit.module("game-show-fusion.js");
+
+QUnit.test("selectedCorrectAnswer()", function(assert) {
+    var answerIndex = 3;
+    var fakeQuestion = new Question(GRADES.FIRST, SUBJECTS.ART,
+        "This is a fake question.",
+        new AnswerData(answerIndex, ["a", "b", "c", "d"]));
+    assert.deepEqual(selectedCorrectAnswer(fakeQuestion, 1),
+        false, "Wrong answer was detected");
+    assert.deepEqual(selectedCorrectAnswer(fakeQuestion, (answerIndex + 1)),
+        true, "Correct answer was detected");
+});
+
 QUnit.module("questions.js");
 
 QUnit.test("Questions._generateTenQuestions()", function(assert) {

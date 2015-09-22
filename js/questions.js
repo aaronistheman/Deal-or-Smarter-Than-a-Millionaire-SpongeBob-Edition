@@ -70,6 +70,20 @@ function Questions(labelGraphicsCanvasId, labelTextCanvasId,
     };
 }
 
+Questions.prototype.getQuestions = function() {
+    return this._questions;
+};
+
+/*
+    @pre 1 <= whichOne <= 10
+    @param whichOne number of the question to get
+    @returns the question among the stored ten questions that is
+    indicated by whichOne
+*/
+Questions.prototype.getQuestion = function(whichOne) {
+    return this._questions[whichOne - 1];
+};
+
 /*
     @post the graphical, rarely redrawn parts of the questions'
     label display and of the presentation of a question have
@@ -79,15 +93,6 @@ Questions.prototype.drawInitialParts = function() {
     this._drawLabels();
     this._drawOnlyAnswerRectangles();
 }
-
-/*
-    @param whichOne number of the question to get
-    @returns the question among the stored ten questions that is
-    indicated by whichOne
-*/
-Questions.prototype.getQuestion = function(whichOne) {
-    return this._questions[whichOne - 1];
-};
 
 /*
     @post the two canvases for this purpose have been erased,

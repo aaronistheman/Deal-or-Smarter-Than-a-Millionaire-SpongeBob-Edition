@@ -33,8 +33,11 @@ gameShow.questions = new Questions(
     CANVAS_IDS.QUESTIONING_GRAPHICS,
     CANVAS_IDS.QUESTIONING_TEXT);
 
+gameShow.numberOfQuestionsCorrectlyAnswered = 0;
+
 gameShow.turnVariables = {
     selectedQuestion : undefined,
+    selectedAnswer : undefined,
 };
 
 gameShow.keyActions = new KeyActions();
@@ -391,6 +394,63 @@ function presentQuestionAndAnswers() {
 
     // Allow the user to pick an answer
     allowAnswerSelectorMovement(true);
+    gameShow.keyActions.set(KEY_CODES.ENTER, handleAnswerSelection);
+}
+
+/*
+    @post the game has responded appropriately to the user's
+    choosing an answer
+*/
+function handleAnswerSelection() {
+    allowAnswerSelectorMovement(false);
+
+    // Save the answer
+    gameShow.turnVariables.selectedAnswer =
+        gameShow.questions.numberOfAnswerToEmphasize;
+
+    // React to whether or not the answer was correct
+    var question = gameShow.questions.getQuestion(
+        gameShow.turnVariables.selectedQuestion);
+    if (selectedCorrectAnswer(question,
+        gameShow.turnVariables.selectedAnswer))
+        alert("teehee"); // handleCorrectAnswerSelection();
+    else
+        handleWrongAnswerSelection();
+}
+
+/*
+    @pre gameShow.turnVariables.selectedQuestion and
+    gameShow.turnVariables.selectedAnswer are updated;
+    1 <= numberOfAnswer <= 4
+    @hasTest yes
+    @param question instance of Question that the user gave
+    an answer for
+    @param numberOfAnswer number of the answer selected by the user
+    @returns true if user game correct answer; false, otherwise
+*/
+function selectedCorrectAnswer(question, numberOfAnswer) {
+    return (question.answerData.correctIndex === (numberOfAnswer - 1));
+}
+
+/*
+    @post the host has told the user that he/she has lost and has
+    thus earned no money; the game has reacted visually and
+    auditorily
+*/
+function handleWrongAnswerSelection() {
+    // React visually and auditorily
+    gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
+    gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.LOSS);
+    gameShow.musicPlayer.stop();
+
+    // Tell the user what happened
+    gameShow.quotesToDraw.add("You have selected the wrong answer.")
+        .add("Unfortunately, this means you'll go home with nothing.")
+        .add("Good bye.")
+        .deployQuoteChain(function() {
+            eraseQuoteBubbleText();
+            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.GOOD_BYE);
+        });
 }
 
 /*
