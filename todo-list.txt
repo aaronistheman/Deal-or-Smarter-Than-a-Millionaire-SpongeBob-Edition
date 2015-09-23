@@ -1,7 +1,7 @@
 Next:
 -clean up Questions
     --unit tests to check if all answers would fit; make
-    an artificial canvas to modify the context of with global settings
+        an artificial canvas to modify the context of with global settings
 -make more questions
 -after ten questions, user can leave with case or try to answer
     million dollar question

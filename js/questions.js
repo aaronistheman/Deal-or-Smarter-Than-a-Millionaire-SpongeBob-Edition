@@ -583,6 +583,7 @@ Questions.prototype.setEmphasizedAnswer =
     var textContext = document.getElementById(
         this._choosingAnswerCanvases.answersTextCanvasId)
             .getContext('2d');
+    Questions.setUpAnswersTextContext(textContext);
     var oldNumber = this.numberOfAnswerToEmphasize;
     var newNumber = numberOfNewAnswerToEmphasize;
 
@@ -861,9 +862,7 @@ Questions.prototype._drawAnswersText = function(questionNumber) {
     var ctx = document.getElementById(
         this._choosingAnswerCanvases.answersTextCanvasId)
         .getContext('2d');
-    ctx.font = Questions.ANSWERS_FONT_SIZE + "px 'Arial'";
-    ctx.textAlign = "left";
-    ctx.textBaseline = "top";
+    Questions.setUpAnswersTextContext(ctx);
 
     for (var i = 0; i < 4; ++i) {
         var position = Questions._getAnswerPosition(i + 1);
@@ -1009,6 +1008,16 @@ Questions._getLabelText = function(question) {
 
     return text;
 };
+
+/*
+    @post textContext has been set up for drawing the text of answers
+    @param textContext to set up
+*/
+Questions.setUpAnswersTextContext = function(textContext) {
+    textContext.font = Questions.ANSWERS_FONT_SIZE + "px 'Arial'";
+    textContext.textAlign = "left";
+    textContext.textBaseline = "top";
+}
 
 /*
     @returns an array of instances of Question so that this array
