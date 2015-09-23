@@ -44,35 +44,35 @@ function getAudioData() {
     // Here is where we add the data for each audio element;
     // add sound effects
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.NEXT_QUOTE,
-        "audio/next_quote.mp3"));
+        "media/sound/next_quote.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.MOVE_CASE_SELECTOR,
-        "audio/move_case_selector.mp3"));
+        "media/sound/move_case_selector.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.SELECT_CASE,
-        "audio/select_case.mp3"));
+        "media/sound/select_case.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.MOVE_QUESTION_SELECTOR,
-        "audio/move_question_selector.mp3"));
+        "media/sound/move_question_selector.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.SELECT_QUESTION,
-        "audio/select_question.mp3"));
+        "media/sound/select_question.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.PRESENT_QUESTION,
-        "audio/present_question.mp3"));
+        "media/sound/present_question.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.MOVE_ANSWER_SELECTOR,
-        "audio/move_answer_selector.mp3"));
+        "media/sound/move_answer_selector.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.LOSS,
-        "audio/loss.mp3"));
+        "media/sound/loss.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.GOOD_BYE,
-        "audio/good_bye_sound.mp3"));
+        "media/sound/good_bye.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.CORRECT_ANSWER,
-        "audio/correct_answer.mp3"));
+        "media/sound/correct_answer.mp3"));
 
     // add background music
     audioData.push(new AudioData(MUSIC_IDS.OPENING,
-        "audio/who_wants_to_be_a_millionaire_theme.mp3"));
+        "media/music/who_wants_to_be_a_millionaire_theme.mp3"));
     audioData.push(new AudioData(MUSIC_IDS.INTRODUCE_HELPERS,
-        "audio/deal_or_no_deal_theme.mp3"));
+        "media/music/deal_or_no_deal_theme.mp3"));
     audioData.push(new AudioData(MUSIC_IDS.FIRST_FOUR_QUESTIONS,
-        "audio/first_four_questions.mp3"));
+        "media/music/first_four_questions.mp3"));
     audioData.push(new AudioData(MUSIC_IDS.BANKER,
-        "audio/banker_theme.mp3"));
+        "media/music/banker_theme.mp3"));
 
     return audioData;
 }

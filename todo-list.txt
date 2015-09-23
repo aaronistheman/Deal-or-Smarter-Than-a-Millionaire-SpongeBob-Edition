@@ -7,7 +7,6 @@ Next:
         labels to fade out in one way (not two ways)
 -unit tests to check if all answers would fit; make
     an artificial canvas to modify the context of with global settings
--move Music, Sound, and Textures into folder Media
 -make more questions
 -after ten questions, user can leave with case or try to answer
     million dollar question
