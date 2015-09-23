@@ -58,17 +58,17 @@ function getSpeakerObjects() {
     var canvasId = CANVAS_IDS.SPEAKER;
 
     objects[SPEAKERS.SPONGEBOB] = new Speaker(
-        "images/spongebob.png", canvasId, 600, 100, 356, 427);
+        "media/images/spongebob.png", canvasId, 600, 100, 356, 427);
     objects[SPEAKERS.SQUIDWARD] = new Speaker(
-        "images/squidward.png", canvasId, 700, 10, 177, 520);
+        "media/images/squidward.png", canvasId, 700, 10, 177, 520);
     objects[SPEAKERS.MERMAID_MAN] = new Speaker(
-        "images/mermaid_man.png", canvasId, 550, 50, 450, 339);
+        "media/images/mermaid_man.png", canvasId, 550, 50, 450, 339);
     objects[SPEAKERS.SANDY] = new Speaker(
-        "images/sandy.png", canvasId, 700, 90, 212, 438);
+        "media/images/sandy.png", canvasId, 700, 90, 212, 438);
     objects[SPEAKERS.LARRY] = new Speaker(
-        "images/larry_the_lobster.png", canvasId, 600, 50, 340, 363);
+        "media/images/larry_the_lobster.png", canvasId, 600, 50, 340, 363);
     objects[SPEAKERS.GARY] = new Speaker(
-        "images/gary.gif", canvasId, 600, 200, 273, 214);
+        "media/images/gary.gif", canvasId, 600, 200, 273, 214);
 
     return objects;
 }

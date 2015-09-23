@@ -4,7 +4,7 @@
 */
 
 body {
-    background-image: url(../images/background_texture.jpg);
+    background-image: url(../media/images/background_texture.jpg);
 
     /* So that the webfont gets loaded early enough for
         drawing certain canvas text */
@@ -61,5 +61,5 @@ canvas.show {
 
 #choose-question-graphics-canvas.show,
     #questioning-graphics-canvas.show {
-    background-image: url(../images/chalkboard_texture.jpg);
+    background-image: url(../media/images/chalkboard_texture.jpg);
 }
