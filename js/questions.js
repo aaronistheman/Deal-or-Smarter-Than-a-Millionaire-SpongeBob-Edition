@@ -310,8 +310,9 @@ Questions.prototype._getLabelTextFillStyle = function(number) {
     member variable 'answered' set to true
 */
 Questions.prototype.setAnswered = function(questionNumber) {
-    // Only act if the case hasn't already been given fade
-    if (this.numbersOfLabelsToFade.indexOf(questionNumber) === -1) {
+    // Only act if the question hasn't been set to having
+    // been answered
+    if (!this.isAnswered(questionNumber)) {
         this.numbersOfLabelsToFade.push(questionNumber);
         this._questions[questionNumber - 1].answered = true;
 
@@ -330,6 +331,16 @@ Questions.prototype.setAnswered = function(questionNumber) {
         this._drawQuestionLabel(graphicsContext, textContext,
             position.x, position.y, questionNumber);
     }
+};
+
+/*
+    @pre 1 <= questionNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY
+    @param questionNumber number of the question to check
+    @returns true if the question indicated by questionNumber
+    has been answered; false, otherwise
+*/
+Questions.prototype.isAnswered = function(questionNumber) {
+    return this._questions[questionNumber - 1].answered;
 };
 
 /*
@@ -382,44 +393,95 @@ Questions.prototype.setEmphasizedLabel = function(newNumber) {
     @pre this.numberOfLabelToEmphasize != "none"
     @post the emphasis has been placed on the label to the left
     of the currently emphasized label; if a leftmost label
-    is already emphasized, nothing happens
+    is already emphasized or the label to the left is of an
+    answered question, nothing happens
 */
 Questions.prototype.emphasizeLeftLabel = function() {
-    if (this.numberOfLabelToEmphasize % 2 === 0)
-        this.setEmphasizedLabel(this.numberOfLabelToEmphasize - 1);
+    var potentiallyNowEmphasizedLabel =
+        (this.numberOfLabelToEmphasize - 1);
+    if (this.numberOfLabelToEmphasize % 2 === 0 &&
+        !this.isAnswered(potentiallyNowEmphasizedLabel))
+    {
+        this.setEmphasizedLabel(potentiallyNowEmphasizedLabel);
+    }
 };
 
 /*
     @pre this.numberOfLabelToEmphasize != "none"
     @post the emphasis has been placed on the label to the right
     of the currently emphasized label; if a rightmost label
-    is already emphasized, nothing happens
+    is already emphasized or the label to the right is of an
+    answered question, nothing happens
 */
 Questions.prototype.emphasizeRightLabel = function() {
-    if (this.numberOfLabelToEmphasize % 2 === 1)
-        this.setEmphasizedLabel(this.numberOfLabelToEmphasize + 1);
+    var potentiallyNowEmphasizedLabel =
+        (this.numberOfLabelToEmphasize + 1);
+
+    if (this.numberOfLabelToEmphasize % 2 === 1 &&
+        !this.isAnswered(potentiallyNowEmphasizedLabel))
+    {
+        this.setEmphasizedLabel(potentiallyNowEmphasizedLabel);
+    }
 };
 
 /*
     @pre this.numberOfLabelToEmphasize != "none"
-    @post the emphasis has been placed on the label below
-    the currently emphasized label; if a lowest label
+    @post the emphasis has been placed on a qualified label below
+    the currently emphasized label; the first label below the
+    currently emphasized label that is of an unanswered question
+    will be picked; if a lowest label
     is already emphasized, nothing happens
 */
 Questions.prototype.emphasizeDownLabel = function() {
-    if (this.numberOfLabelToEmphasize >= 3)
-        this.setEmphasizedLabel(this.numberOfLabelToEmphasize - 2);
+    // Only act if a lowest label isn't already emphasized
+    if (this.numberOfLabelToEmphasize >= 3) {
+        var potentiallyNowEmphasizedLabel =
+            this.numberOfLabelToEmphasize - 2;
+
+        // Go down another label if found a label of answered
+        // question
+        while (potentiallyNowEmphasizedLabel >= 1 &&
+            this.isAnswered(potentiallyNowEmphasizedLabel))
+        {
+            potentiallyNowEmphasizedLabel -= 2;
+        }
+
+        // Do nothing if lowest label of an answered question
+        // (in the regarded column of labels)
+        // was already emphasized
+        if (potentiallyNowEmphasizedLabel >= 1)
+            this.setEmphasizedLabel(potentiallyNowEmphasizedLabel);
+    }
 };
 
 /*
     @pre this.numberOfLabelToEmphasize != "none"
-    @post the emphasis has been placed on the label above
-    the currently emphasized label; if a uppermost label
+    @post the emphasis has been placed on a qualified label above
+    the currently emphasized label; the first label above the
+    currently emphasized label that is of an unanswered question
+    will be picked; if a uppermost label
     is already emphasized, nothing happens
 */
 Questions.prototype.emphasizeUpLabel = function() {
-    if (this.numberOfLabelToEmphasize <= 8)
-        this.setEmphasizedLabel(this.numberOfLabelToEmphasize + 2);
+    // Only act if a highest label isn't already emphasized
+    if (this.numberOfLabelToEmphasize <= 8) {
+        var potentiallyNowEmphasizedLabel =
+            this.numberOfLabelToEmphasize + 2;
+
+        // Go up another label if found a label of answered
+        // question
+        while (potentiallyNowEmphasizedLabel <= 10 &&
+            this.isAnswered(potentiallyNowEmphasizedLabel))
+        {
+            potentiallyNowEmphasizedLabel += 2;
+        }
+
+        // Do nothing if highest label of an answered question
+        // (in the regarded column of labels)
+        // was already emphasized
+        if (potentiallyNowEmphasizedLabel <= 10)
+            this.setEmphasizedLabel(potentiallyNowEmphasizedLabel);
+    }
 };
 
 /*

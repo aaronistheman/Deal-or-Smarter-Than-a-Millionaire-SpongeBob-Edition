@@ -1,15 +1,19 @@
 Next:
 -implement answering a question correctly and moving on
-    --don't let user select one he already answered
-        --don't let user move the cursor into a faded label
-    --consider doing something about the selector while it is on
-        a label of an answered question
+    --find some way to not let the user's cursor get stuck in one
+        of the two columns
     --change background music, presented question sound, correct
         answer sound, and (maybe) loss sound depending on
         how many questions have been answered
+    --change Questions so that it only stores which question
+        labels to fade out in one way (not two ways)
+    --unit tests to check if all answers would fit; make
+        an artificial canvas to modify the context of with global settings
 -move Music, Sound, and Textures into folder Media
--allow picking of a helper
 -make more questions
+-after ten questions, user can leave with case or try to answer
+    million dollar question
+-allow picking of a helper
 -implement peeking
 -implement ask the audience
 -implement phone a friend
@@ -17,12 +21,10 @@ Next:
 -make sure:
     --SpongeBob explains the controls for using a source of help
     --sources of help can only be used once
--implement losing (i.e. player answered the question incorrectly
-    and wasn't saved) and leaving with nothing
 -banker makes a deal
     --user has two options
--after ten questions, user can leave with case or try to answer
-    million dollar question
+-put more to the ending? perhaps some graphical thing or words
+    "The End"
 
 At some point:
 -for functions that emphasize things, don't erase and redraw if same thing
