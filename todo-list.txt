@@ -1,7 +1,5 @@
 Next:
 -clean up Questions
-    --change Questions so that it only stores which question
-        labels to fade out in one way (not two ways)
     --unit tests to check if all answers would fit; make
     an artificial canvas to modify the context of with global settings
 -make more questions

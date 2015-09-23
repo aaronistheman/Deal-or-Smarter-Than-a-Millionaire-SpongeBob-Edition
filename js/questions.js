@@ -55,10 +55,6 @@ function Questions(labelGraphicsCanvasId, labelTextCanvasId,
     // hovering over as he selects a question
     this.numberOfLabelToEmphasize = numberOfLabelToEmphasize;
 
-    // Which labels to prevent the user from selecting the question
-    // of
-    this.numbersOfLabelsToFade = [];
-
     // This number represents which answer the user is currently
     // hovering over as he selects an answer
     this.numberOfAnswerToEmphasize = 1;
@@ -303,8 +299,8 @@ Questions.prototype._getLabelTextFillStyle = function(number) {
 
 /*
     @pre 1 <= questionNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY
-    @post this.numbersOfLabelsToFade has been updated; now faded
-    label has been redrawn
+    @post the indicated question has been set to answered; its
+    label has been redrawn with a blackening
     @param questionNumber number of the question whose label
     the fade will be applied to and that will have its
     member variable 'answered' set to true
@@ -313,7 +309,6 @@ Questions.prototype.setAnswered = function(questionNumber) {
     // Only act if the question hasn't been set to having
     // been answered
     if (!this.isAnswered(questionNumber)) {
-        this.numbersOfLabelsToFade.push(questionNumber);
         this._questions[questionNumber - 1].answered = true;
 
         // Set up variables for redrawing
@@ -550,16 +545,15 @@ Questions.prototype.emphasizeDifferentLabel = function(direction) {
 };
 
 /*
-    @pre this.numbersOfLabelsToFade.length < NUMBER_OF_QUESTIONS_TO_DISPLAY
-    @post the emphasis has been placed on the first non-faded label,
-    starting from the first (i.e. bottom-left) label
+    @pre not all the first ten questions have been answered
+    @post the emphasis has been placed on the label of the first
+    unanswered question, starting from the first question's label
 */
 Questions.prototype.emphasizeFirstAvailableLabel = function() {
     // Find the number of the first available label
     var first = undefined;
     for (var i = 1; i <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY; ++i) {
-        if (this.numbersOfLabelsToFade.indexOf(i) === -1) {
-            // i refers to a non-faded label
+        if (!this.isAnswered(i)) {
             first = i;
             break;
         }
