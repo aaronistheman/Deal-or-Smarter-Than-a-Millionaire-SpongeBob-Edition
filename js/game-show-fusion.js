@@ -263,30 +263,36 @@ function allowCaseSelectorMovement(bool) {
 }
 
 /*
+    @pre parameter direction has any of the following values: "left",
+    "right", "up", "down"
+    @post if practical, the question selector has been moved in
+    the indicated direction and a sound effect was played
+    @param direction to try to move the question selector in
+*/
+function moveQuestionSelector(direction) {
+    if (gameShow.questions.emphasizeDifferentLabel(direction)) {
+        gameShow.soundPlayer.play(
+            SOUND_EFFECTS_IDS.MOVE_QUESTION_SELECTOR);
+    }
+};
+
+/*
     @param bool true to allow user to change which question's label
     is emphasized; false to remove this ability
 */
 function allowQuestionSelectorMovement(bool) {
     if (bool === true) {
         gameShow.keyActions.set(KEY_CODES.LEFT_ARROW, function() {
-            gameShow.soundPlayer.play(
-                SOUND_EFFECTS_IDS.MOVE_QUESTION_SELECTOR);
-            gameShow.questions.emphasizeLeftLabel();
+            moveQuestionSelector("left");
         })
         .set(KEY_CODES.RIGHT_ARROW, function() {
-            gameShow.soundPlayer.play(
-                SOUND_EFFECTS_IDS.MOVE_QUESTION_SELECTOR);
-            gameShow.questions.emphasizeRightLabel();
+            moveQuestionSelector("right");
         })
         .set(KEY_CODES.UP_ARROW, function() {
-            gameShow.soundPlayer.play(
-                SOUND_EFFECTS_IDS.MOVE_QUESTION_SELECTOR);
-            gameShow.questions.emphasizeUpLabel();
+            moveQuestionSelector("up");
         })
         .set(KEY_CODES.DOWN_ARROW, function() {
-            gameShow.soundPlayer.play(
-                SOUND_EFFECTS_IDS.MOVE_QUESTION_SELECTOR);
-            gameShow.questions.emphasizeDownLabel();
+            moveQuestionSelector("down");
         });
     }
     else {

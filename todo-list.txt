@@ -1,5 +1,6 @@
 Next:
 -implement answering a question correctly and moving on
+    --make unit tests for the label-emphasizing functions
     --find some way to not let the user's cursor get stuck in one
         of the two columns
     --change background music, presented question sound, correct
@@ -78,3 +79,6 @@ Considerable:
     BriefcaseDisplay::EmphasizePreviousCase())
     --this was already done with drawQuoteText()
 -moving quote bubble code into its own file
+-(if can still make a difference) applying isUnitTesting() when
+    drawing question labels, so that they won't be drawn if
+    unit testing; could apply to drawLabel functions

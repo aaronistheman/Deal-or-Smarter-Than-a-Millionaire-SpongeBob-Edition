@@ -391,48 +391,63 @@ Questions.prototype.setEmphasizedLabel = function(newNumber) {
 
 /*
     @pre this.numberOfLabelToEmphasize != "none"
-    @post the emphasis has been placed on the label to the left
-    of the currently emphasized label; if a leftmost label
-    is already emphasized or the label to the left is of an
-    answered question, nothing happens
+    @returns number of label to the left of the currently emphasized
+    label; if there is no such number of a label of an unanswered
+    question, undefined is returned
 */
-Questions.prototype.emphasizeLeftLabel = function() {
+Questions.prototype._getNumberOfLeftwardLabelToEmphasize = function() {
     var potentiallyNowEmphasizedLabel =
         (this.numberOfLabelToEmphasize - 1);
+
     if (this.numberOfLabelToEmphasize % 2 === 0 &&
         !this.isAnswered(potentiallyNowEmphasizedLabel))
     {
-        this.setEmphasizedLabel(potentiallyNowEmphasizedLabel);
+        return potentiallyNowEmphasizedLabel;
     }
+
+    return undefined;
 };
 
 /*
     @pre this.numberOfLabelToEmphasize != "none"
-    @post the emphasis has been placed on the label to the right
-    of the currently emphasized label; if a rightmost label
-    is already emphasized or the label to the right is of an
-    answered question, nothing happens
+    @returns number of label to the right of the currently emphasized
+    label; if there is no such number of a label of an unanswered
+    question, undefined is returned
 */
-Questions.prototype.emphasizeRightLabel = function() {
-    var potentiallyNowEmphasizedLabel =
-        (this.numberOfLabelToEmphasize + 1);
+Questions.prototype._getNumberOfRightwardLabelToEmphasize = function() {
+    // Only act if a rightmost label isn't already emphasized
+    if (this.numberOfLabelToEmphasize % 2 === 1) {
+        var potentiallyNowEmphasizedLabel =
+            (this.numberOfLabelToEmphasize + 1);
 
-    if (this.numberOfLabelToEmphasize % 2 === 1 &&
-        !this.isAnswered(potentiallyNowEmphasizedLabel))
-    {
-        this.setEmphasizedLabel(potentiallyNowEmphasizedLabel);
+        // Find a label to the right of the currently emphasized
+        // one that isn't of a question that has been answered
+        var variation = 2;
+        while (potentiallyNowEmphasizedLabel >= 2 &&
+            potentiallyNowEmphasizedLabel <= 10 &&
+            this.isAnswered(potentiallyNowEmphasizedLabel))
+        {
+
+        }
+
+        // Do nothing if there wasn't a label to the right
+        // that could be emphasized
+        if (potentiallyNowEmphasizedLabel >= 2 &&
+            potentiallyNowEmphasizedLabel <= 10)
+            return potentiallyNowEmphasizedLabel;
     }
+
+    return undefined;
 };
 
 /*
     @pre this.numberOfLabelToEmphasize != "none"
-    @post the emphasis has been placed on a qualified label below
-    the currently emphasized label; the first label below the
-    currently emphasized label that is of an unanswered question
-    will be picked; if a lowest label
-    is already emphasized, nothing happens
+    @returns number of the first label below the currently
+    emphasized label that is of an unanswered question; if no
+    such label exists, or if the lowest label is already
+    emphasized, undefined is returned
 */
-Questions.prototype.emphasizeDownLabel = function() {
+Questions.prototype._getNumberOfLowerLabelToEmphasize = function() {
     // Only act if a lowest label isn't already emphasized
     if (this.numberOfLabelToEmphasize >= 3) {
         var potentiallyNowEmphasizedLabel =
@@ -450,19 +465,21 @@ Questions.prototype.emphasizeDownLabel = function() {
         // (in the regarded column of labels)
         // was already emphasized
         if (potentiallyNowEmphasizedLabel >= 1)
-            this.setEmphasizedLabel(potentiallyNowEmphasizedLabel);
+            return potentiallyNowEmphasizedLabel;
     }
+
+    return undefined;
 };
 
 /*
     @pre this.numberOfLabelToEmphasize != "none"
-    @post the emphasis has been placed on a qualified label above
-    the currently emphasized label; the first label above the
-    currently emphasized label that is of an unanswered question
-    will be picked; if a uppermost label
-    is already emphasized, nothing happens
+    @returns number of the first label above the currently
+    emphasized label that is of an unanswered question; if no
+    such label exists, or if the uppermost label is already
+    emphasized, undefined is returned
+
 */
-Questions.prototype.emphasizeUpLabel = function() {
+Questions.prototype._getNumberOfHigherLabelToEmphasize = function() {
     // Only act if a highest label isn't already emphasized
     if (this.numberOfLabelToEmphasize <= 8) {
         var potentiallyNowEmphasizedLabel =
@@ -480,8 +497,44 @@ Questions.prototype.emphasizeUpLabel = function() {
         // (in the regarded column of labels)
         // was already emphasized
         if (potentiallyNowEmphasizedLabel <= 10)
-            this.setEmphasizedLabel(potentiallyNowEmphasizedLabel);
+            return potentiallyNowEmphasizedLabel;
     }
+
+    return undefined;
+};
+
+/*
+    @pre parameter direction has any of the following values: "left",
+    "right", "up", "down"
+    @post if practical, a label in the indicated direction was emphasized
+    (and the once currently emphasized label is no longer emphasized);
+    if there isn't a label of an unanswered in the indicated direction,
+    nothing happens
+    @param direction
+    @returns true if a different label was emphasized; false otherwise
+    @throws a string if invalid parameter
+*/
+Questions.prototype.emphasizeDifferentLabel = function(direction) {
+    var labelToEmphasize = undefined;
+    if (direction === "left")
+        labelToEmphasize = this._getNumberOfLeftwardLabelToEmphasize();
+    else if (direction === "right")
+        labelToEmphasize = this._getNumberOfRightwardLabelToEmphasize();
+    else if (direction === "up")
+        labelToEmphasize = this._getNumberOfHigherLabelToEmphasize();
+    else if (direction === "down")
+        labelToEmphasize = this._getNumberOfLowerLabelToEmphasize();
+    else {
+        alert("Error: invalid parameter passed to emphasizeDifferentLabel()");
+        throw "Error: invalid parameter passed to emphasizeDifferentLabel()";
+    }
+
+    if (labelToEmphasize !== undefined) {
+        this.setEmphasizedLabel(labelToEmphasize);
+        return true;
+    }
+    else
+        return false;
 };
 
 /*
