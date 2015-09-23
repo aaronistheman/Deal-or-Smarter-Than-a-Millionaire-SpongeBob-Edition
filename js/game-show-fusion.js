@@ -471,7 +471,6 @@ function prepareForNextTurn() {
     gameShow.questions.setAnswered(gameShow.turnVariables.selectedQuestion);
 
     // Prepare gameShow members
-    gameShow.numberOfQuestionsCorrectlyAnswered++;
     gameShow.turnVariables.selectedQuestion = undefined;
     gameShow.turnVariables.selectedAnswer = undefined;
 
@@ -518,18 +517,31 @@ function adjustBackgroundMusicBasedOnQuestionsAnswered() {
     game reacted both visually and auditorily
 */
 function handleCorrectAnswerSelection() {
-    // React visually and auditorily
+    gameShow.numberOfQuestionsCorrectlyAnswered++;
+
+    // React visually
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
-    gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.CORRECT_ANSWER);
+
+    // Play special sound effect depending on how many questions
+    // user has answered
+    if (gameShow.numberOfQuestionsCorrectlyAnswered >= 5) {
+        if (gameShow.numberOfQuestionsCorrectlyAnswered === 10)
+            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.CORRECT_ANSWER_10);
+        else
+            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.CORRECT_ANSWER);
+    }
 
     var questionValue = getRandomMoneyAmount(gameShow.moneyAmounts);
 
+    // Update what the host says
     gameShow.quotesToDraw.add("You have selected the correct answer.")
-        .add("The question was worth: $" + questionValue + '.')
-        .deployQuoteChain(function() {
-            prepareForNextTurn();
-            selectQuestion();
-        });
+        .add("The question was worth: $" + questionValue + '.');
+    if (gameShow.numberOfQuestionsCorrectlyAnswered === 5)
+        gameShow.quotesToDraw.add("You're halfway there.");
+    gameShow.quotesToDraw.deployQuoteChain(function() {
+        prepareForNextTurn();
+        selectQuestion();
+    });
 }
 
 /*

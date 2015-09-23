@@ -1,15 +1,13 @@
 Next:
--react to how many questions answered
-    --change the following music based on number of answered questions:
-        --correct answer sound
-        --(maybe) loss sound
+-clean up Questions
     --change Questions so that it only stores which question
         labels to fade out in one way (not two ways)
--unit tests to check if all answers would fit; make
+    --unit tests to check if all answers would fit; make
     an artificial canvas to modify the context of with global settings
 -make more questions
 -after ten questions, user can leave with case or try to answer
     million dollar question
+    --don't "open case" after tenth question
 -allow picking of a helper
 -implement peeking
 -implement ask the audience

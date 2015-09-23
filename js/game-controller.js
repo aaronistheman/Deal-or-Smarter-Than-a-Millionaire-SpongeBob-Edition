@@ -63,6 +63,8 @@ function getAudioData() {
         "media/sound/good_bye.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.CORRECT_ANSWER,
         "media/sound/correct_answer.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.CORRECT_ANSWER_10,
+        "media/sound/correct_answer_10.mp3"));
 
     // add background music
     audioData.push(new AudioData(MUSIC_IDS.OPENING,

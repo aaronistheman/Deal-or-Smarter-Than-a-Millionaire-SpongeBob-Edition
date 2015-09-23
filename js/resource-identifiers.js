@@ -16,6 +16,7 @@ var SOUND_EFFECTS_IDS = {
     LOSS : "loss-sound",
     GOOD_BYE : "good-bye-sound",
     CORRECT_ANSWER : "correct-answer-sound",
+    CORRECT_ANSWER_10 : "correct-answer-10-sound",
 };
 
 var MUSIC_IDS = {
