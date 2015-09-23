@@ -191,14 +191,59 @@ QUnit.test("Questions._generateTenQuestions()", function(assert) {
         "grade questions having the lowest index in the array of questions.");
 });
 
-QUnit.test("Questions._getNumberOfLowerLabelToEmphasize()",
-    function(assert)
-{
+/*
+    @returns instance of Questions with the ids of a trivial
+    canvas and with emphasis on the label indicated by
+    numberOfLabelToEmphasize
+*/
+function getArtificialQuestionsInstance(numberOfLabelToEmphasize) {
     // Create trivial canvas to satisfy the constructor of Questions
     var canvasId = "junkCanvas";
     $("#qunit-fixture").append("<canvas id='" + canvasId + "'></canvas>");
-    var questions = new Questions(canvasId, canvasId, 6,
-        canvasId, canvasId);
+    return new Questions(canvasId, canvasId,
+        numberOfLabelToEmphasize, canvasId, canvasId);
+}
+
+QUnit.test("Questions._getNumberOfLeftwardLabelToEmphasize()",
+    function(assert)
+{
+    var questions = getArtificialQuestionsInstance(4);
+
+    assert.deepEqual(questions._getNumberOfLeftwardLabelToEmphasize(),
+        3, "Correct number is returned for label to the left " +
+        "of currently emphasized label");
+    questions.setAnswered(3);
+    assert.deepEqual(questions._getNumberOfLeftwardLabelToEmphasize(),
+        undefined, "No label is suggested if label to the left " +
+        "of currently emphasized label is of an answered question");
+    questions.setEmphasizedLabel(7);
+    assert.deepEqual(questions._getNumberOfLeftwardLabelToEmphasize(),
+        undefined, "No label is suggested if a label on the left " +
+        "is already emphasized");
+});
+
+QUnit.test("Questions._getNumberOfRightwardLabelToEmphasize()",
+    function(assert)
+{
+    var questions = getArtificialQuestionsInstance(3);
+
+    assert.deepEqual(questions._getNumberOfRightwardLabelToEmphasize(),
+        4, "Correct number is returned for label to the right " +
+        "of currently emphasized label");
+    questions.setAnswered(4);
+    assert.deepEqual(questions._getNumberOfRightwardLabelToEmphasize(),
+        undefined, "No label is suggested if label to the right " +
+        "of currently emphasized label is of an answered question");
+    questions.setEmphasizedLabel(8);
+    assert.deepEqual(questions._getNumberOfRightwardLabelToEmphasize(),
+        undefined, "No label is suggested if a label on the right " +
+        "is already emphasized");
+});
+
+QUnit.test("Questions._getNumberOfLowerLabelToEmphasize()",
+    function(assert)
+{
+    var questions = getArtificialQuestionsInstance(6);
 
     // Check if can correctly pick to emphasize the label immediately
     // below the currently emphasized one
@@ -238,11 +283,7 @@ QUnit.test("Questions._getNumberOfLowerLabelToEmphasize()",
 QUnit.test("Questions._getNumberOfHigherLabelToEmphasize()",
     function(assert)
 {
-    // Create trivial canvas to satisfy the constructor of Questions
-    var canvasId = "junkCanvas";
-    $("#qunit-fixture").append("<canvas id='" + canvasId + "'></canvas>");
-    var questions = new Questions(canvasId, canvasId, 4,
-        canvasId, canvasId);
+    var questions = getArtificialQuestionsInstance(4);
 
     // Check if can correctly pick to emphasize the label immediately
     // above the currently emphasized one

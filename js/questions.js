@@ -393,12 +393,16 @@ Questions.prototype.setEmphasizedLabel = function(newNumber) {
     @pre this.numberOfLabelToEmphasize != "none"
     @returns number of label to the left of the currently emphasized
     label; if there is no such number of a label of an unanswered
-    question, undefined is returned
+    question, or if a label on the left is already emphasized,
+    undefined is returned
 */
 Questions.prototype._getNumberOfLeftwardLabelToEmphasize = function() {
     var potentiallyNowEmphasizedLabel =
         (this.numberOfLabelToEmphasize - 1);
 
+    // Return the found label number if the already emphasized label
+    // is on the right and the found label isn't of an answered
+    // question
     if (this.numberOfLabelToEmphasize % 2 === 0 &&
         !this.isAnswered(potentiallyNowEmphasizedLabel))
     {
@@ -412,29 +416,20 @@ Questions.prototype._getNumberOfLeftwardLabelToEmphasize = function() {
     @pre this.numberOfLabelToEmphasize != "none"
     @returns number of label to the right of the currently emphasized
     label; if there is no such number of a label of an unanswered
-    question, undefined is returned
+    question, or if a label on the right is already emphasized,
+    undefined is returned
 */
 Questions.prototype._getNumberOfRightwardLabelToEmphasize = function() {
-    // Only act if a rightmost label isn't already emphasized
-    if (this.numberOfLabelToEmphasize % 2 === 1) {
-        var potentiallyNowEmphasizedLabel =
-            (this.numberOfLabelToEmphasize + 1);
+    var potentiallyNowEmphasizedLabel =
+        (this.numberOfLabelToEmphasize + 1);
 
-        // Find a label to the right of the currently emphasized
-        // one that isn't of a question that has been answered
-        var variation = 2;
-        while (potentiallyNowEmphasizedLabel >= 2 &&
-            potentiallyNowEmphasizedLabel <= 10 &&
-            this.isAnswered(potentiallyNowEmphasizedLabel))
-        {
-
-        }
-
-        // Do nothing if there wasn't a label to the right
-        // that could be emphasized
-        if (potentiallyNowEmphasizedLabel >= 2 &&
-            potentiallyNowEmphasizedLabel <= 10)
-            return potentiallyNowEmphasizedLabel;
+    // Return the found label number if the already emphasized label
+    // is on the left and the found label isn't of an answered
+    // question
+    if (this.numberOfLabelToEmphasize % 2 === 1 &&
+        !this.isAnswered(potentiallyNowEmphasizedLabel))
+    {
+        return potentiallyNowEmphasizedLabel;
     }
 
     return undefined;
