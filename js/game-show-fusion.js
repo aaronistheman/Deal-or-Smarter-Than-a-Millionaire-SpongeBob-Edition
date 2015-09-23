@@ -390,11 +390,17 @@ function selectFirstCase() {
 }
 
 /*
+    @pre gameShow.numberOfQuestionsCorrectlyAnswered is correct
     @post the question selected by the player has been presented
     to him/her
 */
 function handleQuestionSelection() {
     allowQuestionSelectorMovement(false);
+
+    // Play dramatic sound effect if user has answered enough
+    // questions
+    if (gameShow.numberOfQuestionsCorrectlyAnswered >= 5)
+        gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.PRESENT_QUESTION);
 
     // Present the question
     gameShow.turnVariables.selectedQuestion =
