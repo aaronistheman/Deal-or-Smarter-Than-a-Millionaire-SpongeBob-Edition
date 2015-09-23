@@ -14,25 +14,37 @@
     [5, 6] - third grade
     [3, 4] - second grade
     [1, 2] - the bottom of the display; first grade questions
+
+    Similarly, the numbers of the answers are like this:
+    [1] - choice A
+    [2] - choice B
+    [3] - choice C
+    [4] - choice D
 */
 
 /*
     @pre the canvas indicated by labelGraphicsCanvasId is behind the
-    canvas indicated by labelTextCanvasId
+    canvas indicated by labelTextCanvasId;
+    1 <= numberOfLabelToEmphasize <=
+        Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY, or
+    numberOfLabelToEmphasize = "none";
+    the canvas indicated by answersGraphicsCanvasId is behind the
+    canvas indicated by answersTextCanvasId
     @param labelGraphicsCanvasId id of the canvas to draw the non-text
     part of the questions' display on
     @param labelTextCanvasId id of the canvas to draw the text part
     of the questions' display on
-    @param numberToEmphasize number of the question to emphasize;
+    @param numberOfLabelToEmphasize number of the question that
+    should have its label emphasized;
     set to "none" to emphasize no question label
-    @param questioningGraphicsCanvasId id of the canvas to draw
+    @param answersGraphicsCanvasId id of the canvas to draw
     the non-textual parts of the presentation of a question on
-    @param questioningTextCanvasId id of the canvas to draw
+    @param answersTextCanvasId id of the canvas to draw
     the text parts of the presentation of a question on
 */
 function Questions(labelGraphicsCanvasId, labelTextCanvasId,
-    numberToEmphasize, questioningGraphicsCanvasId,
-    questioningTextCanvasId) {
+    numberOfLabelToEmphasize, answersGraphicsCanvasId,
+    answersTextCanvasId) {
     // Storage of objects of type Question
     this._questions = [];
 
@@ -41,30 +53,33 @@ function Questions(labelGraphicsCanvasId, labelTextCanvasId,
 
     // This number indicates which question the user is currently
     // hovering over as he selects a question
-    this.numberToEmphasize = numberToEmphasize;
+    this.numberOfLabelToEmphasize = numberOfLabelToEmphasize;
+
+    // Which labels to prevent the user from selecting the question
+    // of
+    this.numbersOfLabelsToFade = [];
+
+    // This number represents which answer the user is currently
+    // hovering over as he selects an answer
+    this.numberOfAnswerToEmphasize = 1;
 
     // Store canvas data
     this._choosingQuestionCanvases = {
         labelGraphicsCanvasId : labelGraphicsCanvasId,
         labelTextCanvasId : labelTextCanvasId,
     };
-    this._questioningCanvases = {
-        questioningGraphicsCanvasId : questioningGraphicsCanvasId,
-        questioningTextCanvasId : questioningTextCanvasId,
+    this._choosingAnswerCanvases = {
+        answersGraphicsCanvasId : answersGraphicsCanvasId,
+        answersTextCanvasId : answersTextCanvasId,
     };
 }
 
-/*
-    @post the graphical, rarely redrawn parts of the questions'
-    label display and of the presentation of a question have
-    been drawn
-*/
-Questions.prototype.drawInitialParts = function() {
-    this._displayAsChoices();
-    this._drawRectanglesEncompassingAnswers();
-}
+Questions.prototype.getQuestions = function() {
+    return this._questions;
+};
 
 /*
+    @pre 1 <= whichOne <= 10
     @param whichOne number of the question to get
     @returns the question among the stored ten questions that is
     indicated by whichOne
@@ -74,12 +89,22 @@ Questions.prototype.getQuestion = function(whichOne) {
 };
 
 /*
+    @post the graphical, rarely redrawn parts of the questions'
+    label display and of the presentation of a question have
+    been drawn
+*/
+Questions.prototype.drawInitialParts = function() {
+    this._drawLabels();
+    this._drawOnlyAnswerRectangles();
+}
+
+/*
     @post the two canvases for this purpose have been erased,
     after which the stored questions were drawn in a way so
     that the user could choose which to try to answer; each's
     question's grade level and subject will be displayed
 */
-Questions.prototype._displayAsChoices = function() {
+Questions.prototype._drawLabels = function() {
     // Set up the canvas contexts
     var graphicsContext = document.getElementById(
         this._choosingQuestionCanvases.labelGraphicsCanvasId).getContext('2d');
@@ -94,8 +119,8 @@ Questions.prototype._displayAsChoices = function() {
 };
 
 /*
-    @post question label has been drawn in the given position,
-    with the given text, and with the given fill style; the
+    @pre 1 <= number <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY
+    @post question label has been drawn in the given position; the
     graphical part is on graphicsContext; the textual part is on
     is on textContext
     @param graphicsContext context of the canvas to draw
@@ -115,7 +140,7 @@ Questions.prototype._drawQuestionLabel =
 
     // Draw the graphical label; shape it differently if the
     // label is supposed to be emphasized
-    if (number !== this.numberToEmphasize) {
+    if (number !== this.numberOfLabelToEmphasize) {
         var circularEdgeRadius = Questions.LABEL_DIMENSIONS.y / 2.0;
         graphicsContext.fillRect(
             x + circularEdgeRadius,
@@ -139,15 +164,46 @@ Questions.prototype._drawQuestionLabel =
             Math.PI * 0.5);
     }
     else {
+        // Emphasized question's label has no circular edges
         graphicsContext.fillRect(x, y, Questions.LABEL_DIMENSIONS.x,
             Questions.LABEL_DIMENSIONS.y);
     }
 
-    // Draw the text of the label
-    textContext.fillText(text,
-        x + (Questions.LABEL_DIMENSIONS.x / 2.0),
-        y + (Questions.LABEL_DIMENSIONS.y / 2.0));
+    // Draw the text of the label only of unanwered questions
+    if (!this._questions[number - 1].answered) {
+        textContext.fillText(text,
+            x + (Questions.LABEL_DIMENSIONS.x / 2.0),
+            y + (Questions.LABEL_DIMENSIONS.y / 2.0));
+    }
 };
+
+/*
+    @pre 1 <= number <= Questions.NUMBER_OF_ANSWERS
+    @returns the fill style appropriate for the indicated
+    answer rectangle, based on whether or not the answer is
+    emphasized
+*/
+Questions.prototype._getAnswerRectangleFillStyle = function(number) {
+    if (number === this.numberOfAnswerToEmphasize)
+        return "white";
+    else
+        return "#484848";
+}
+
+/*
+    @pre 1 <= number <= Questions.NUMBER_OF_ANSWERS
+    @returns the fill style appropriate for the indicated
+    answer's text, based on whether or not the answer is
+    emphasized
+*/
+Questions.prototype._getAnswerRectangleTextFillStyle =
+    function(number)
+{
+    if (number === this.numberOfAnswerToEmphasize)
+        return "black";
+    else
+        return "white";
+}
 
 /*
     @param number of the question label to get the fill style of
@@ -155,9 +211,13 @@ Questions.prototype._drawQuestionLabel =
     labels on
 */
 Questions.prototype._getLabelFillStyle = function(number) {
-    // Color the emphasized question label differently
-    if (number === this.numberToEmphasize)
+    // Color the emphasized question's label differently
+    if (number === this.numberOfLabelToEmphasize)
         return "white";
+
+    // Color answered questions' labels differently
+    if (this._questions[number - 1].answered)
+        return "black";
 
     var grade = this._questions[number - 1].grade;
     switch (grade) {
@@ -233,7 +293,7 @@ Questions.prototype._getLabelTextContext = function() {
     the text of the question label on
 */
 Questions.prototype._getLabelTextFillStyle = function(number) {
-    if (number === this.numberToEmphasize) {
+    if (number === this.numberOfLabelToEmphasize) {
         // Color differently the text of emphasized question label
         return "black";
     }
@@ -242,15 +302,57 @@ Questions.prototype._getLabelTextFillStyle = function(number) {
 };
 
 /*
+    @pre 1 <= questionNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY
+    @post this.numbersOfLabelsToFade has been updated; now faded
+    label has been redrawn
+    @param questionNumber number of the question whose label
+    the fade will be applied to and that will have its
+    member variable 'answered' set to true
+*/
+Questions.prototype.setAnswered = function(questionNumber) {
+    // Only act if the question hasn't been set to having
+    // been answered
+    if (!this.isAnswered(questionNumber)) {
+        this.numbersOfLabelsToFade.push(questionNumber);
+        this._questions[questionNumber - 1].answered = true;
+
+        // Set up variables for redrawing
+        var graphicsContext = document.getElementById(
+            this._choosingQuestionCanvases.labelGraphicsCanvasId)
+            .getContext('2d');
+        var textContext = document.getElementById(
+            this._choosingQuestionCanvases.labelTextCanvasId)
+            .getContext('2d');
+        var position = Questions._getLabelPosition(questionNumber);
+
+        // Erase and redraw the question label
+        this._eraseQuestionLabel(graphicsContext, textContext,
+            position.x, position.y);
+        this._drawQuestionLabel(graphicsContext, textContext,
+            position.x, position.y, questionNumber);
+    }
+};
+
+/*
+    @pre 1 <= questionNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY
+    @param questionNumber number of the question to check
+    @returns true if the question indicated by questionNumber
+    has been answered; false, otherwise
+*/
+Questions.prototype.isAnswered = function(questionNumber) {
+    return this._questions[questionNumber - 1].answered;
+};
+
+/*
     @pre 1 <= newNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY
-    @post this.numberToEmphasize has been updated; formerly
+    @post this.numberOfLabelToEmphasize has been updated; formerly
     emphasized question label has been redrawn so that it's no
     longer emphasized; now emphasized question label has been
     redrawn so that it's emphasized
     @param newNumber new number of question label to emphasize;
     set to "none" to emphasize no question
 */
-Questions.prototype.setEmphasis = function(newNumber) {
+Questions.prototype.setEmphasizedLabel = function(newNumber) {
     // Set up variables
     var graphicsContext = document.getElementById(
         this._choosingQuestionCanvases.labelGraphicsCanvasId)
@@ -258,7 +360,7 @@ Questions.prototype.setEmphasis = function(newNumber) {
     var textContext = document.getElementById(
         this._choosingQuestionCanvases.labelTextCanvasId)
             .getContext('2d');
-    var oldNumber = this.numberToEmphasize;
+    var oldNumber = this.numberOfLabelToEmphasize;
 
     // Determine positions of formerly emphasized case and now
     // emphasized case
@@ -267,8 +369,8 @@ Questions.prototype.setEmphasis = function(newNumber) {
     if (newNumber !== "none")
         var newPosition = Questions._getLabelPosition(newNumber);
 
-    // Update numberToEmphasize
-    this.numberToEmphasize = newNumber;
+    // Update numberOfLabelToEmphasize
+    this.numberOfLabelToEmphasize = newNumber;
 
     // Redraw the formerly emphasized question label
     if (oldNumber !== "none") {
@@ -288,47 +390,307 @@ Questions.prototype.setEmphasis = function(newNumber) {
 }
 
 /*
-    @pre this.numberToEmphasize != "none"
-    @post the emphasis has been placed on the label to the left
-    of the currently emphasized label; if a leftmost label
-    is already emphasized, nothing happens
+    @pre this.numberOfLabelToEmphasize != "none"
+    @returns number of label to the left of the currently emphasized
+    label; if there is no such number of a label of an unanswered
+    question, or if a label on the left is already emphasized,
+    undefined is returned
 */
-Questions.prototype.emphasizeLeftLabel = function() {
-    if (this.numberToEmphasize % 2 === 0)
-        this.setEmphasis(this.numberToEmphasize - 1);
+Questions.prototype._getNumberOfLeftwardLabelToEmphasize = function() {
+    var potentiallyNowEmphasizedLabel =
+        (this.numberOfLabelToEmphasize - 1);
+
+    // Return the found label number if the already emphasized label
+    // is on the right and the found label isn't of an answered
+    // question
+    if (this.numberOfLabelToEmphasize % 2 === 0 &&
+        !this.isAnswered(potentiallyNowEmphasizedLabel))
+    {
+        return potentiallyNowEmphasizedLabel;
+    }
+
+    return undefined;
 };
 
 /*
-    @pre this.numberToEmphasize != "none"
-    @post the emphasis has been placed on the label to the right
-    of the currently emphasized label; if a rightmost label
-    is already emphasized, nothing happens
+    @pre this.numberOfLabelToEmphasize != "none"
+    @returns number of label to the right of the currently emphasized
+    label; if there is no such number of a label of an unanswered
+    question, or if a label on the right is already emphasized,
+    undefined is returned
 */
-Questions.prototype.emphasizeRightLabel = function() {
-    if (this.numberToEmphasize % 2 === 1)
-        this.setEmphasis(this.numberToEmphasize + 1);
+Questions.prototype._getNumberOfRightwardLabelToEmphasize = function() {
+    var potentiallyNowEmphasizedLabel =
+        (this.numberOfLabelToEmphasize + 1);
+
+    // Return the found label number if the already emphasized label
+    // is on the left and the found label isn't of an answered
+    // question
+    if (this.numberOfLabelToEmphasize % 2 === 1 &&
+        !this.isAnswered(potentiallyNowEmphasizedLabel))
+    {
+        return potentiallyNowEmphasizedLabel;
+    }
+
+    return undefined;
 };
 
 /*
-    @pre this.numberToEmphasize != "none"
-    @post the emphasis has been placed on the label below
-    the currently emphasized label; if a lowest label
-    is already emphasized, nothing happens
+    @pre this.numberOfLabelToEmphasize != "none"
+    @hasTest yes
+    @returns number of the first label below (in either column,
+    starting on the column of the currently emphasized label) the
+    currently emphasized label that is of an unanswered question; if no
+    such label exists, or if the lowest label is already
+    emphasized, undefined is returned
 */
-Questions.prototype.emphasizeDownLabel = function() {
-    if (this.numberToEmphasize >= 3)
-        this.setEmphasis(this.numberToEmphasize - 2);
+Questions.prototype._getNumberOfLowerLabelToEmphasize = function() {
+    // Only act if a lowest label isn't already emphasized
+    if (this.numberOfLabelToEmphasize >= 3) {
+        var isCurrentlyEmphasizedLabelOnLeft =
+            (this.numberOfLabelToEmphasize % 2 === 1);
+        var potentiallyNowEmphasizedLabel =
+            this.numberOfLabelToEmphasize - 2;
+
+        // If label immediately below is of answered question,
+        // look at labels below in both columns
+        while (potentiallyNowEmphasizedLabel >= 1 &&
+            this.isAnswered(potentiallyNowEmphasizedLabel))
+        {
+            if (isCurrentlyEmphasizedLabelOnLeft) {
+                if (potentiallyNowEmphasizedLabel % 2 === 1)
+                    potentiallyNowEmphasizedLabel += 1;
+                else
+                    potentiallyNowEmphasizedLabel -= 3;
+            }
+            else
+                potentiallyNowEmphasizedLabel -= 1;
+        }
+
+        // Make sure an existing label was designated
+        if (potentiallyNowEmphasizedLabel >= 1)
+            return potentiallyNowEmphasizedLabel;
+    }
+
+    return undefined;
 };
 
 /*
-    @pre this.numberToEmphasize != "none"
-    @post the emphasis has been placed on the label above
-    the currently emphasized label; if a uppermost label
-    is already emphasized, nothing happens
+    @pre this.numberOfLabelToEmphasize != "none"
+    @hasTest yes
+    @returns number of the first label above the currently
+    emphasized label that is of an unanswered question; if no
+    such label exists, or if the uppermost label is already
+    emphasized, undefined is returned
+
 */
-Questions.prototype.emphasizeUpLabel = function() {
-    if (this.numberToEmphasize <= 8)
-        this.setEmphasis(this.numberToEmphasize + 2);
+Questions.prototype._getNumberOfHigherLabelToEmphasize = function() {
+    // Only act if a highest label isn't already emphasized
+    if (this.numberOfLabelToEmphasize <= 8) {
+        var isCurrentlyEmphasizedLabelOnLeft =
+            (this.numberOfLabelToEmphasize % 2 === 1);
+        var potentiallyNowEmphasizedLabel =
+            this.numberOfLabelToEmphasize + 2;
+
+        // If label immediately above is of answered question,
+        // look at labels above in both columns
+        while (potentiallyNowEmphasizedLabel <= 10 &&
+            this.isAnswered(potentiallyNowEmphasizedLabel))
+        {
+            if (isCurrentlyEmphasizedLabelOnLeft)
+                potentiallyNowEmphasizedLabel += 1;
+            else {
+                if (potentiallyNowEmphasizedLabel % 2 === 1)
+                    potentiallyNowEmphasizedLabel += 3;
+                else
+                    potentiallyNowEmphasizedLabel -= 1;
+            }
+        }
+
+        // Make sure an existing label was designated
+        if (potentiallyNowEmphasizedLabel <= 10)
+            return potentiallyNowEmphasizedLabel;
+    }
+
+    return undefined;
+};
+
+/*
+    @pre parameter direction has any of the following values: "left",
+    "right", "up", "down"
+    @post if practical, a label in the indicated direction was emphasized
+    (and the once currently emphasized label is no longer emphasized);
+    if there isn't a label of an unanswered in the indicated direction,
+    nothing happens
+    @param direction
+    @returns true if a different label was emphasized; false otherwise
+    @throws a string if invalid parameter
+*/
+Questions.prototype.emphasizeDifferentLabel = function(direction) {
+    var labelToEmphasize = undefined;
+    if (direction === "left")
+        labelToEmphasize = this._getNumberOfLeftwardLabelToEmphasize();
+    else if (direction === "right")
+        labelToEmphasize = this._getNumberOfRightwardLabelToEmphasize();
+    else if (direction === "up")
+        labelToEmphasize = this._getNumberOfHigherLabelToEmphasize();
+    else if (direction === "down")
+        labelToEmphasize = this._getNumberOfLowerLabelToEmphasize();
+    else {
+        alert("Error: invalid parameter passed to emphasizeDifferentLabel()");
+        throw "Error: invalid parameter passed to emphasizeDifferentLabel()";
+    }
+
+    if (labelToEmphasize !== undefined) {
+        this.setEmphasizedLabel(labelToEmphasize);
+        return true;
+    }
+    else
+        return false;
+};
+
+/*
+    @pre this.numbersOfLabelsToFade.length < NUMBER_OF_QUESTIONS_TO_DISPLAY
+    @post the emphasis has been placed on the first non-faded label,
+    starting from the first (i.e. bottom-left) label
+*/
+Questions.prototype.emphasizeFirstAvailableLabel = function() {
+    // Find the number of the first available label
+    var first = undefined;
+    for (var i = 1; i <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY; ++i) {
+        if (this.numbersOfLabelsToFade.indexOf(i) === -1) {
+            // i refers to a non-faded label
+            first = i;
+            break;
+        }
+    }
+
+    this.setEmphasizedLabel(first);
+};
+
+/*
+    @pre 1 <= questionNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY;
+    1 <= numberOfNewAnswerToEmphasize <=
+    Questions.NUMBER_OF_ANSWERS
+    @post this.numberOfAnswerToEmphasize has been updated; formerly
+    emphasized answer rectangle has been redrawn so that it's no
+    longer emphasized; now emphasized answer rectangle has been
+    redrawn so that it's emphasized
+    @param questionNumber
+    @param numberOfNewAnswerToEmphasize new number of answer to
+    emphasize; set to "none" to emphasize no answer
+*/
+Questions.prototype.setEmphasizedAnswer =
+    function(quesitonNumber, numberOfNewAnswerToEmphasize) {
+    // Set up variables
+    var graphicsContext = document.getElementById(
+        this._choosingAnswerCanvases.answersGraphicsCanvasId)
+            .getContext('2d');
+    var textContext = document.getElementById(
+        this._choosingAnswerCanvases.answersTextCanvasId)
+            .getContext('2d');
+    var oldNumber = this.numberOfAnswerToEmphasize;
+    var newNumber = numberOfNewAnswerToEmphasize;
+
+    // Determine positions of formerly emphasized case and now
+    // emphasized case
+    if (oldNumber !== "none")
+        var oldPosition = Questions._getAnswerPosition(oldNumber);
+    if (newNumber !== "none")
+        var newPosition = Questions._getAnswerPosition(newNumber);
+
+    // Update numberOfLabelToEmphasize
+    this.numberOfAnswerToEmphasize = newNumber;
+
+    // Redraw the formerly emphasized question label
+    if (oldNumber !== "none") {
+        this._eraseAnswer(graphicsContext, textContext,
+            oldPosition.x, oldPosition.y);
+        this._drawAnswer(graphicsContext, textContext,
+            oldPosition.x, oldPosition.y, quesitonNumber, oldNumber);
+    }
+
+    // Redraw the now emphasized question label
+    if (newNumber != "none") {
+        this._eraseAnswer(graphicsContext, textContext,
+            newPosition.x, newPosition.y);
+        this._drawAnswer(graphicsContext, textContext,
+            newPosition.x, newPosition.y, quesitonNumber, newNumber);
+    }
+}
+
+/*
+    @pre this.numberOfAnswerToEmphasize != "none"
+    @post the emphasis has been placed on the answer below
+    the currently emphasized answer; if the lowest answer
+    is already emphasized, nothing happens
+    @param questionNumber
+*/
+Questions.prototype.emphasizeDownAnswer = function(questionNumber) {
+    if (this.numberOfAnswerToEmphasize < 4)
+        this.setEmphasizedAnswer(questionNumber,
+            this.numberOfAnswerToEmphasize + 1);
+};
+
+/*
+    @pre this.numberOfAnswerToEmphasize != "none"
+    @post the emphasis has been placed on the answer above
+    the currently emphasized answer; if the uppermost answer
+    is already emphasized, nothing happens
+    @param questionNumber
+*/
+Questions.prototype.emphasizeUpAnswer = function(questionNumber) {
+    if (this.numberOfAnswerToEmphasize > 1)
+        this.setEmphasizedAnswer(questionNumber,
+            this.numberOfAnswerToEmphasize - 1);
+};
+
+/*
+    @post a rectangle has been cleared in the canvases indicated by
+    the given contexts, so that the answer once shown in
+    that rectangle will have been erased
+    @param graphicsContext context of the canvas to erase
+    the answer's visible rectangle from
+    @param textContext context of the canvas to erase the
+    answer's text from
+    @param x top left x-coordinate of the answer's reserved space
+    @param y top left y-coordinate of the answer's reserved space
+*/
+Questions.prototype._eraseAnswer =
+    function(graphicsContext, textContext, x, y)
+{
+    graphicsContext.clearRect(x, y,
+        Questions.ANSWER_DIMENSIONS.x,
+        Questions.ANSWER_DIMENSIONS.y);
+    textContext.clearRect(x, y,
+        Questions.ANSWER_DIMENSIONS.x,
+        Questions.ANSWER_DIMENSIONS.y);
+}
+
+/*
+    @pre 1 <= questionNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY;
+    1 <= answerNumber <= Questions.NUMBER_OF_ANSWERS
+    @post answer has been drawn in the given position; the
+    graphical part is on graphicsContext; the textual part is on
+    is on textContext
+    @param graphicsContext context of the canvas to draw
+    the answer's on
+    @param textContext set up context of the canvas to draw the
+    answer's text on
+    @param x top left x-coordinate of the answer's reserved space
+    @param y top left y-coordinate of the answer's reserved space
+    @param answerNumber
+*/
+Questions.prototype._drawAnswer =
+    function(graphicsContext, textContext, x, y, questionNumber,
+        answerNumber)
+{
+    var position = Questions._getAnswerPosition(answerNumber);
+
+    this._drawAnswerRectangle(graphicsContext, position.x,
+        position.y, answerNumber);
+    this._drawAnswerText(textContext, x, y, questionNumber,
+        answerNumber);
 };
 
 /*
@@ -405,6 +767,17 @@ Questions.prototype.drawQuestionAndAnswersText =
 }
 
 /*
+    @post the text of the displayed question and its answers has
+    been erased
+*/
+Questions.prototype.eraseQuestionAndAnswersText = function() {
+    var canvas = document.getElementById(
+        this._choosingAnswerCanvases.answersTextCanvasId);
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+/*
     @post the text of the question indicated by questionNumber
     has been drawn in a good area and properly formatted
     @param questionNumber
@@ -423,7 +796,7 @@ Questions.prototype._drawQuestionText = function(questionNumber) {
 
     // Set up canvas context
     var ctx = document.getElementById(
-        this._questioningCanvases.questioningTextCanvasId)
+        this._choosingAnswerCanvases.answersTextCanvasId)
         .getContext('2d');
     ctx.fillStyle = "white";
     ctx.font = fontSize + "px 'Rock Salt'";
@@ -451,80 +824,100 @@ Questions.prototype._drawQuestionText = function(questionNumber) {
     @post the four rectangles that would encompass the four
     choosable answers to a question have been drawn
 */
-Questions.prototype._drawRectanglesEncompassingAnswers = function() {
-    // Set up canvas context
-    var ctx = document.getElementById(
-        this._questioningCanvases.questioningTextCanvasId)
+Questions.prototype._drawOnlyAnswerRectangles = function() {
+    // Set up canvas contexts
+    var graphicsContext = document.getElementById(
+        this._choosingAnswerCanvases.answersGraphicsCanvasId)
         .getContext('2d');
-    ctx.fillStyle = "#484848";
 
     for (var i = 0; i < 4; ++i) {
         var position = Questions._getAnswerPosition(i + 1);
-        ctx.fillRect(position.x, position.y,
-            Questions.ANSWER_DIMENSIONS.x,
-            Questions.ANSWER_DIMENSIONS.y);
+        this._drawAnswerRectangle(graphicsContext,
+            position.x, position.y, i + 1);
     }
+}
+
+/*
+    @pre 1 <= answerNumber <= Questions.NUMBER_OF_ANSWERS
+    @post the rectangle of the answer indicated by
+    answerNumber has been drawn
+    @param graphicsContext context of the canvas to draw
+    the rectangle on
+    @param x
+    @param y
+    @param answerNumber
+*/
+Questions.prototype._drawAnswerRectangle =
+    function(graphicsContext, x, y, answerNumber)
+{
+    graphicsContext.fillStyle =
+        this._getAnswerRectangleFillStyle(answerNumber);
+    graphicsContext.fillRect(x, y,
+        Questions.ANSWER_DIMENSIONS.x,
+        Questions.ANSWER_DIMENSIONS.y);
 }
 
 /*
     @post the selectable answers to the question indicated by
     questionNumber have been drawn in a good area and properly formatted
     @param questionNumber
-    @throws string if an answer is too long to draw in its
-    designated area
 */
 Questions.prototype._drawAnswersText = function(questionNumber) {
-    var textIndent = 30;
     // Set up canvas context
     var ctx = document.getElementById(
-        this._questioningCanvases.questioningTextCanvasId)
+        this._choosingAnswerCanvases.answersTextCanvasId)
         .getContext('2d');
-    ctx.fillStyle = "white";
     ctx.font = Questions.ANSWERS_FONT_SIZE + "px 'Arial'";
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
 
-    var answerLetters = ['A', 'B', 'C', 'D'];
-
     for (var i = 0; i < 4; ++i) {
-        var text = '(' + answerLetters[i] + ")    " +
-            this._questions[questionNumber - 1]
-                .answerData.arrayOfAnswers[i];
-
-        // Throw an exception of the text is too long
-        if ((textIndent + ctx.measureText(text).width) >
-            Questions.ANSWER_DIMENSIONS.x)
-        {
-            alert("Error: answer #" + (i + 1) + " of 4 can't " +
-                "be fit in its designated space");
-            throw "Error: answer #" + (i + 1) + " of 4 can't " +
-                "be fit in its designated space";
-        }
-
-
         var position = Questions._getAnswerPosition(i + 1);
-        ctx.fillText(text, position.x + textIndent, position.y);
+        this._drawAnswerText(ctx, position.x, position.y,
+            questionNumber, (i + 1));
     }
 }
 
 /*
-    @post the one indicated by answerNumber of the four answers
-    to the question indicated by questionNumber has been drawn
-    and surrounded by a centered rectangle
-    @param ctx context of the canvas to draw on
+    @pre 1 <= questionNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY;
+    1 <= answerNumber <= Questions.NUMBER_OF_ANSWERS
+    @post the text of the answer indicated by
+    questionNumber and answerNumber has been drawn
+    @param textNumber context of the canvas to draw the text on
+    @param x of top left point of the answer's rectangle (not its
+    text)
+    @param y (see @param x)
     @param questionNumber
-    @param answerNumber which of the four answers to draw
-    @param x positional x-coordinate
-    @param y positional y-coordinate
-    @param verticalSpaceBetweenAnswers space in between each
-    rectangle that surrounds an answer
+    @param answerNumber
+    @throws string if the answer is too long to draw in its
+    designated area
 */
-Questions.prototype._drawRectangleEncompassingAnswer =
-    function(ctx, questionNumber, answerNumber, x, y,
-        verticalSpaceBetweenAnswers)
+Questions.prototype._drawAnswerText =
+    function(textContext, x, y, questionNumber, answerNumber)
 {
-    // Draw the rectangle that surrounds the answer
+    var textIndent = 30;
+    var answerLetters = ['A', 'B', 'C', 'D'];
 
+    // Give the text the correct color
+    textContext.fillStyle =
+        this._getAnswerRectangleTextFillStyle(answerNumber);
+
+    // Set up the text to draw
+    var text = '(' + answerLetters[answerNumber - 1] + ")    " +
+        this._questions[questionNumber - 1]
+            .answerData.arrayOfAnswers[answerNumber - 1];
+
+    // Throw an exception of the text is too long
+    if ((textIndent + textContext.measureText(text).width) >
+        Questions.ANSWER_DIMENSIONS.x)
+    {
+        alert("Error: answer #" + answerNumber + " of 4 can't " +
+            "be fit in its designated space");
+        throw "Error: answer #" + answerNumber + " of 4 can't " +
+            "be fit in its designated space";
+    }
+
+    textContext.fillText(text, x + textIndent, y);
 }
 
 /*
@@ -532,6 +925,7 @@ Questions.prototype._drawRectangleEncompassingAnswer =
 */
 
 Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY = 10;
+Questions.NUMBER_OF_ANSWERS = 4;
 
 // For positioning the question labels
 Questions.HEIGHT_SPACE_PER_LABEL = 410 / 5;
@@ -562,15 +956,15 @@ Questions.MARGINAL_ANSWER_POSITION = new Vector2d(0,
 
 /*
     @hasTest yes
-    @param whichLabel number of the label to get the position of;
-    1 <= whichLabel <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY
+    @param questionNumber number of the label to get the position of;
+    1 <= questionNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY
     @returns Vector2d object containing the top-left position at which
     to draw the question label (on the appropriate canvases)
 */
-Questions._getLabelPosition = function(whichLabel) {
+Questions._getLabelPosition = function(questionNumber) {
     // Decide how much to adjust the default label position
-    var multiplierX = ((whichLabel - 1) % 2);
-    var multiplierY = -1 * (Math.ceil(whichLabel / 2.0) - 1);
+    var multiplierX = ((questionNumber - 1) % 2);
+    var multiplierY = -1 * (Math.ceil(questionNumber / 2.0) - 1);
     var adjustment = new Vector2d(multiplierX, multiplierY);
 
     return Questions.FIRST_LABEL_POSITION.getSum(

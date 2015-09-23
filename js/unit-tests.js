@@ -116,6 +116,19 @@ QUnit.test("parameterError()", function(assert) {
         ERROR_MESSAGES.PARAMETER, "Correct value is returned");
 });
 
+QUnit.module("game-show-fusion.js");
+
+QUnit.test("selectedCorrectAnswer()", function(assert) {
+    var answerIndex = 3;
+    var fakeQuestion = new Question(GRADES.FIRST, SUBJECTS.ART,
+        "This is a fake question.",
+        new AnswerData(answerIndex, ["a", "b", "c", "d"]));
+    assert.deepEqual(selectedCorrectAnswer(fakeQuestion, 1),
+        false, "Wrong answer was detected");
+    assert.deepEqual(selectedCorrectAnswer(fakeQuestion, (answerIndex + 1)),
+        true, "Correct answer was detected");
+});
+
 QUnit.module("questions.js");
 
 QUnit.test("Questions._generateTenQuestions()", function(assert) {
@@ -178,7 +191,142 @@ QUnit.test("Questions._generateTenQuestions()", function(assert) {
         "grade questions having the lowest index in the array of questions.");
 });
 
-QUnit.test("Questions._getAnswerPosition()", function(assert) {
+/*
+    @returns instance of Questions with the ids of a trivial
+    canvas and with emphasis on the label indicated by
+    numberOfLabelToEmphasize
+*/
+function getArtificialQuestionsInstance(numberOfLabelToEmphasize) {
+    // Create trivial canvas to satisfy the constructor of Questions
+    var canvasId = "junkCanvas";
+    $("#qunit-fixture").append("<canvas id='" + canvasId + "'></canvas>");
+    return new Questions(canvasId, canvasId,
+        numberOfLabelToEmphasize, canvasId, canvasId);
+}
+
+QUnit.test("Questions._getNumberOfLeftwardLabelToEmphasize()",
+    function(assert)
+{
+    var questions = getArtificialQuestionsInstance(4);
+
+    assert.deepEqual(questions._getNumberOfLeftwardLabelToEmphasize(),
+        3, "Correct number is returned for label to the left " +
+        "of currently emphasized label");
+    questions.setAnswered(3);
+    assert.deepEqual(questions._getNumberOfLeftwardLabelToEmphasize(),
+        undefined, "No label is suggested if label to the left " +
+        "of currently emphasized label is of an answered question");
+    questions.setEmphasizedLabel(7);
+    assert.deepEqual(questions._getNumberOfLeftwardLabelToEmphasize(),
+        undefined, "No label is suggested if a label on the left " +
+        "is already emphasized");
+});
+
+QUnit.test("Questions._getNumberOfRightwardLabelToEmphasize()",
+    function(assert)
+{
+    var questions = getArtificialQuestionsInstance(3);
+
+    assert.deepEqual(questions._getNumberOfRightwardLabelToEmphasize(),
+        4, "Correct number is returned for label to the right " +
+        "of currently emphasized label");
+    questions.setAnswered(4);
+    assert.deepEqual(questions._getNumberOfRightwardLabelToEmphasize(),
+        undefined, "No label is suggested if label to the right " +
+        "of currently emphasized label is of an answered question");
+    questions.setEmphasizedLabel(8);
+    assert.deepEqual(questions._getNumberOfRightwardLabelToEmphasize(),
+        undefined, "No label is suggested if a label on the right " +
+        "is already emphasized");
+});
+
+QUnit.test("Questions._getNumberOfLowerLabelToEmphasize()",
+    function(assert)
+{
+    var questions = getArtificialQuestionsInstance(6);
+    assert.deepEqual(questions._getNumberOfLowerLabelToEmphasize(), 4,
+        "Correctly picked the number of the label immediately below " +
+        "the currently emphasized one");
+
+    questions.setEmphasizedLabel(9);
+    questions.setAnswered(7);
+    assert.deepEqual(questions._getNumberOfLowerLabelToEmphasize(), 8,
+        "Correctly picked the label down and to the right " +
+        "because the one below was of an answered question");
+
+    questions.setAnswered(8);
+    questions.setAnswered(5);
+    assert.deepEqual(questions._getNumberOfLowerLabelToEmphasize(), 6,
+        "With the 9th label emphasized, picked the 6th one " +
+        "because the 7th, 8th, and 5th ones were of answered questions");
+
+    var questions = getArtificialQuestionsInstance(10);
+    questions.setAnswered(8);
+    questions.setAnswered(7);
+    questions.setAnswered(6);
+    assert.deepEqual(questions._getNumberOfLowerLabelToEmphasize(), 5,
+        "With the 10th label emphasized, picked the 5th one " +
+        "because the 8th, 7th, and 6th ones were of answered questions");
+
+    questions.setEmphasizedLabel(2);
+    assert.deepEqual(questions._getNumberOfLowerLabelToEmphasize(),
+        undefined, "undefined is returned if a lowest label " +
+        "is already emphasized");
+
+    var questions = getArtificialQuestionsInstance(6);
+    questions.setAnswered(4);
+    questions.setAnswered(3);
+    questions.setAnswered(2);
+    questions.setAnswered(1);
+    assert.deepEqual(questions._getNumberOfLowerLabelToEmphasize(),
+        undefined, "undefined is returned if all of the labels " +
+            "below the emphasized one are of answered questions");
+});
+
+QUnit.test("Questions._getNumberOfHigherLabelToEmphasize()",
+    function(assert)
+{
+    var questions = getArtificialQuestionsInstance(6);
+    assert.deepEqual(questions._getNumberOfHigherLabelToEmphasize(), 8,
+        "Correctly picked the number of the label immediately above " +
+        "the currently emphasized one");
+
+    questions.setEmphasizedLabel(1);
+    questions.setAnswered(3);
+    assert.deepEqual(questions._getNumberOfHigherLabelToEmphasize(), 4,
+        "Correctly picked the label up and to the right " +
+        "because the one above was of an answered question");
+
+    questions.setAnswered(4);
+    questions.setAnswered(5);
+    assert.deepEqual(questions._getNumberOfHigherLabelToEmphasize(), 6,
+        "With the 1st label emphasized, picked the 6th one " +
+        "because the 3rd, 4th, and 5th ones were of answered questions");
+
+    var questions = getArtificialQuestionsInstance(2);
+    questions.setAnswered(4);
+    questions.setAnswered(3);
+    questions.setAnswered(6);
+    assert.deepEqual(questions._getNumberOfHigherLabelToEmphasize(), 5,
+        "With the 2nd label emphasized, picked the 5th one " +
+        "because the 4th, 3rd, and 6th ones were of answered questions");
+
+    questions.setEmphasizedLabel(9);
+    assert.deepEqual(questions._getNumberOfHigherLabelToEmphasize(),
+        undefined, "undefined is returned if a highest label " +
+        "is already emphasized");
+
+    var questions = getArtificialQuestionsInstance(6);
+    questions.setAnswered(8);
+    questions.setAnswered(7);
+    questions.setAnswered(10);
+    questions.setAnswered(9);
+    assert.deepEqual(questions._getNumberOfHigherLabelToEmphasize(),
+        undefined, "undefined is returned if all of the labels " +
+            "above the emphasized one are of answered questions");
+});
+
+QUnit.test("Questions::_getAnswerPosition()", function(assert) {
     assert.deepEqual(Questions._getAnswerPosition(1),
         Questions.FIRST_ANSWER_POSITION,
         "Correct position for first answer");

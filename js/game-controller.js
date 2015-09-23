@@ -41,7 +41,8 @@ function AudioData(id, src) {
 function getAudioData() {
     var audioData = [];
 
-    // Here is where we add the data for each audio element
+    // Here is where we add the data for each audio element;
+    // add sound effects
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.NEXT_QUOTE,
         "audio/next_quote.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.MOVE_CASE_SELECTOR,
@@ -52,6 +53,18 @@ function getAudioData() {
         "audio/move_question_selector.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.SELECT_QUESTION,
         "audio/select_question.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.PRESENT_QUESTION,
+        "audio/present_question.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.MOVE_ANSWER_SELECTOR,
+        "audio/move_answer_selector.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.LOSS,
+        "audio/loss.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.GOOD_BYE,
+        "audio/good_bye_sound.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.CORRECT_ANSWER,
+        "audio/correct_answer.mp3"));
+
+    // add background music
     audioData.push(new AudioData(MUSIC_IDS.OPENING,
         "audio/who_wants_to_be_a_millionaire_theme.mp3"));
     audioData.push(new AudioData(MUSIC_IDS.INTRODUCE_HELPERS,

@@ -10,6 +10,7 @@ gameShow.speakers = getSpeakerObjects();
 
 gameShow.moneyAmounts = ['0.01', '50', '300', '750', '1,000',
     '10,000', '25,000', '100,000', '250,000', '500,000'];
+gameShow.briefcaseValue = undefined;
 
 gameShow.canvasStack = new CanvasStack();
 
@@ -33,8 +34,11 @@ gameShow.questions = new Questions(
     CANVAS_IDS.QUESTIONING_GRAPHICS,
     CANVAS_IDS.QUESTIONING_TEXT);
 
+gameShow.numberOfQuestionsCorrectlyAnswered = 0;
+
 gameShow.turnVariables = {
     selectedQuestion : undefined,
+    selectedAnswer : undefined,
 };
 
 gameShow.keyActions = new KeyActions();
@@ -259,36 +263,67 @@ function allowCaseSelectorMovement(bool) {
 }
 
 /*
-    @param bool true to allow user to change which case is emphasized;
-    false to remove this ability
+    @pre parameter direction has any of the following values: "left",
+    "right", "up", "down"
+    @post if practical, the question selector has been moved in
+    the indicated direction and a sound effect was played
+    @param direction to try to move the question selector in
+*/
+function moveQuestionSelector(direction) {
+    if (gameShow.questions.emphasizeDifferentLabel(direction)) {
+        gameShow.soundPlayer.play(
+            SOUND_EFFECTS_IDS.MOVE_QUESTION_SELECTOR);
+    }
+};
+
+/*
+    @param bool true to allow user to change which question's label
+    is emphasized; false to remove this ability
 */
 function allowQuestionSelectorMovement(bool) {
     if (bool === true) {
         gameShow.keyActions.set(KEY_CODES.LEFT_ARROW, function() {
-            gameShow.soundPlayer.play(
-                SOUND_EFFECTS_IDS.MOVE_QUESTION_SELECTOR);
-            gameShow.questions.emphasizeLeftLabel();
+            moveQuestionSelector("left");
         })
         .set(KEY_CODES.RIGHT_ARROW, function() {
-            gameShow.soundPlayer.play(
-                SOUND_EFFECTS_IDS.MOVE_QUESTION_SELECTOR);
-            gameShow.questions.emphasizeRightLabel();
+            moveQuestionSelector("right");
         })
         .set(KEY_CODES.UP_ARROW, function() {
-            gameShow.soundPlayer.play(
-                SOUND_EFFECTS_IDS.MOVE_QUESTION_SELECTOR);
-            gameShow.questions.emphasizeUpLabel();
+            moveQuestionSelector("up");
         })
         .set(KEY_CODES.DOWN_ARROW, function() {
-            gameShow.soundPlayer.play(
-                SOUND_EFFECTS_IDS.MOVE_QUESTION_SELECTOR);
-            gameShow.questions.emphasizeDownLabel();
+            moveQuestionSelector("down");
         });
     }
     else {
         gameShow.keyActions.erase(KEY_CODES.LEFT_ARROW)
             .erase(KEY_CODES.RIGHT_ARROW)
             .erase(KEY_CODES.UP_ARROW)
+            .erase(KEY_CODES.DOWN_ARROW);
+    }
+}
+
+/*
+    @param bool true to allow user to change which answer
+    is emphasized; false to remove this ability
+*/
+function allowAnswerSelectorMovement(bool) {
+    if (bool === true) {
+        gameShow.keyActions.set(KEY_CODES.UP_ARROW, function() {
+            gameShow.soundPlayer.play(
+                SOUND_EFFECTS_IDS.MOVE_ANSWER_SELECTOR);
+            gameShow.questions.emphasizeUpAnswer(
+                gameShow.turnVariables.selectedQuestion);
+        })
+        .set(KEY_CODES.DOWN_ARROW, function() {
+            gameShow.soundPlayer.play(
+                SOUND_EFFECTS_IDS.MOVE_ANSWER_SELECTOR);
+            gameShow.questions.emphasizeDownAnswer(
+                gameShow.turnVariables.selectedQuestion);
+        });
+    }
+    else {
+        gameShow.keyActions.erase(KEY_CODES.UP_ARROW)
             .erase(KEY_CODES.DOWN_ARROW);
     }
 }
@@ -304,9 +339,10 @@ function handleCaseSelection() {
     gameShow.musicPlayer.stop();
     allowCaseSelectorMovement(false);
 
-    // Record which case was selected
+    // Record which case was selected and its value
     gameShow.selectedBriefcaseNumber =
         gameShow.briefcaseDisplay.numberToEmphasize;
+    gameShow.briefcaseValue = getRandomMoneyAmount(gameShow.moneyAmounts);
 
     // Update the briefcase display
     gameShow.briefcaseDisplay.giveFade(
@@ -315,7 +351,21 @@ function handleCaseSelection() {
     // Have the host announce it and allow game continuation
     gameShow.quotesToDraw.add("You have selected case " +
         gameShow.selectedBriefcaseNumber + ".")
-        .deployQuoteChain(selectQuestion);
+        .deployQuoteChain(function() {
+            gameShow.musicPlayer.play(MUSIC_IDS.FIRST_FOUR_QUESTIONS);
+            selectQuestion();
+        });
+}
+
+/*
+    @pre arrayOfMoneyAmounts.length > 0
+    @param arrayOfMoneyAmounts
+    @returns a randomly chosen value that was removed from
+    arrayOfMoneyAmounts
+*/
+function getRandomMoneyAmount(arrayOfMoneyAmounts) {
+    var randomIndex = Math.floor(Math.random() * arrayOfMoneyAmounts.length);
+    return arrayOfMoneyAmounts.splice(randomIndex, 1).pop();
 }
 
 /*
@@ -348,7 +398,7 @@ function handleQuestionSelection() {
 
     // Present the question
     gameShow.turnVariables.selectedQuestion =
-        gameShow.questions.numberToEmphasize;
+        gameShow.questions.numberOfLabelToEmphasize;
     gameShow.quotesToDraw.add("Here comes the question.")
         .deployQuoteChain(presentQuestionAndAnswers);
 }
@@ -356,14 +406,111 @@ function handleQuestionSelection() {
 /*
     @pre gameShow.turnVariables.selectedQuestion has been updated
     @post the question, its answers, and the support options
-    have been presented; audio has been updated
+    have been presented
 */
 function presentQuestionAndAnswers() {
     // Update what the user sees and hears
     gameShow.canvasStack.set(CANVAS_IDS.QUESTIONING);
-
     gameShow.questions.drawQuestionAndAnswersText(
         gameShow.turnVariables.selectedQuestion);
+
+    // Allow the user to pick an answer
+    allowAnswerSelectorMovement(true);
+    gameShow.keyActions.set(KEY_CODES.ENTER, handleAnswerSelection);
+}
+
+/*
+    @post the game has responded appropriately to the user's
+    choosing an answer
+*/
+function handleAnswerSelection() {
+    allowAnswerSelectorMovement(false);
+
+    // Save the answer
+    gameShow.turnVariables.selectedAnswer =
+        gameShow.questions.numberOfAnswerToEmphasize;
+
+    // React to whether or not the answer was correct
+    var question = gameShow.questions.getQuestion(
+        gameShow.turnVariables.selectedQuestion);
+    if (selectedCorrectAnswer(question,
+        gameShow.turnVariables.selectedAnswer))
+        handleCorrectAnswerSelection();
+    else
+        handleWrongAnswerSelection();
+}
+
+/*
+    @pre gameShow.turnVariables.selectedQuestion and
+    gameShow.turnVariables.selectedAnswer are updated;
+    1 <= numberOfAnswer <= 4
+    @hasTest yes
+    @param question instance of Question that the user gave
+    an answer for
+    @param numberOfAnswer number of the answer selected by the user
+    @returns true if user game correct answer; false, otherwise
+*/
+function selectedCorrectAnswer(question, numberOfAnswer) {
+    return (question.answerData.correctIndex === (numberOfAnswer - 1));
+}
+
+/*
+    @post the question and answer displays have been cleared;
+    the questions' label display has been updated;
+    the gameShow members have been updated
+*/
+function prepareForNextTurn() {
+    // Prepare the canvases
+    gameShow.questions.eraseQuestionAndAnswersText();
+    gameShow.questions.setAnswered(gameShow.turnVariables.selectedQuestion);
+
+    // Prepare gameShow members
+    gameShow.numberOfQuestionsCorrectlyAnswered++;
+    gameShow.turnVariables.selectedQuestion = undefined;
+    gameShow.turnVariables.selectedAnswer = undefined;
+}
+
+/*
+    @post the host has told the user what happened;
+    the question's monetary value has been revealed;
+    the number of correctly answered questions was updated;
+    turn variables were reset;
+    answered question can't be selected by user anymore;
+    game reacted both visually and auditorily
+*/
+function handleCorrectAnswerSelection() {
+    // React visually and auditorily
+    gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
+    gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.CORRECT_ANSWER);
+
+    var questionValue = getRandomMoneyAmount(gameShow.moneyAmounts);
+
+    prepareForNextTurn();
+
+    gameShow.quotesToDraw.add("You have selected the correct answer.")
+        .add("The question was worth: $" + questionValue + '.')
+        .deployQuoteChain(selectQuestion);
+}
+
+/*
+    @post the host has told the user that he/she has lost and has
+    thus earned no money; the game has reacted visually and
+    auditorily
+*/
+function handleWrongAnswerSelection() {
+    // React visually and auditorily
+    gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
+    gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.LOSS);
+    gameShow.musicPlayer.stop();
+
+    // Tell the user what happened
+    gameShow.quotesToDraw.add("You have selected the wrong answer.")
+        .add("Unfortunately, this means you'll go home with nothing.")
+        .add("Good bye.")
+        .deployQuoteChain(function() {
+            eraseQuoteBubbleText();
+            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.GOOD_BYE);
+        });
 }
 
 /*
@@ -372,10 +519,9 @@ function presentQuestionAndAnswers() {
     by hitting Enter
 */
 function selectQuestion() {
-    gameShow.musicPlayer.play(MUSIC_IDS.FIRST_FOUR_QUESTIONS);
     gameShow.canvasStack.set(CANVAS_IDS.CHOOSE_QUESTION.concat(
         CANVAS_IDS.QUOTE));
-    gameShow.questions.setEmphasis(1);
+    gameShow.questions.emphasizeFirstAvailableLabel();
 
     allowQuestionSelectorMovement(true);
 

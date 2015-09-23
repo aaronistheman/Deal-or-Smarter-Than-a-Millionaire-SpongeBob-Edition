@@ -1,27 +1,34 @@
 Next:
--implement answering a question correctly and moving on
-    --allow the user to move the cursor regarding which is selected
-        --may have to make class Questions consist of two divisive objects
-        --make sure SpongeBob explains how to do this
-    --show case open with random money amount
-        --show effect on money display
-    --fade out the question that had been answered
-    --make sure sources of help can only be used once
--allow picking of a helper
+-react to how many questions answered
+    --change background music, presented question sound, correct
+        answer sound, and (maybe) loss sound depending on
+        how many questions have been answered
+    --change Questions so that it only stores which question
+        labels to fade out in one way (not two ways)
+-unit tests to check if all answers would fit; make
+    an artificial canvas to modify the context of with global settings
+-move Music, Sound, and Textures into folder Media
 -make more questions
+-after ten questions, user can leave with case or try to answer
+    million dollar question
+-allow picking of a helper
 -implement peeking
 -implement ask the audience
 -implement phone a friend
 -implement saving
--make sure SpongeBob explains the controls for using a source of help
--implement losing (i.e. player answered the question incorrectly
-    and wasn't saved) and leaving with nothing
+-make sure:
+    --SpongeBob explains the controls for using a source of help
+    --sources of help can only be used once
 -banker makes a deal
     --user has two options
--after ten questions, user can leave with case or try to answer
-    million dollar question
+-put more to the ending? perhaps some graphical thing or words
+    "The End"
 
 At some point:
+-for functions that emphasize things, don't erase and redraw if same thing
+    is emphasized
+-ending (for winning and losing)
+    --could use an object prototype
 -effects as canvases appear or disappear (e.g. fading)
     --and maybe even between speakers (could maybe hide and then show
         as a trick)
@@ -31,6 +38,9 @@ At some point:
         BriefcaseDisplay
 -replace use of ParameterError() with an alert and the throwing
     of an unhandled exception
+    --update affected functions' contracts
+-WebGL for opening of briefcase
+    --and perhaps, the updating of the money display
 
 After game is playable (or, perhaps, ready for release 0.1):
 -fake static advertisement panel on the side
@@ -66,3 +76,6 @@ Considerable:
     BriefcaseDisplay::EmphasizePreviousCase())
     --this was already done with drawQuoteText()
 -moving quote bubble code into its own file
+-(if can still make a difference) applying isUnitTesting() when
+    drawing question labels, so that they won't be drawn if
+    unit testing; could apply to drawLabel functions
