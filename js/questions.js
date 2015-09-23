@@ -438,28 +438,36 @@ Questions.prototype._getNumberOfRightwardLabelToEmphasize = function() {
 /*
     @pre this.numberOfLabelToEmphasize != "none"
     @hasTest yes
-    @returns number of the first label below the currently
-    emphasized label that is of an unanswered question; if no
+    @returns number of the first label below (in either column,
+    starting on the column of the currently emphasized label) the
+    currently emphasized label that is of an unanswered question; if no
     such label exists, or if the lowest label is already
     emphasized, undefined is returned
 */
 Questions.prototype._getNumberOfLowerLabelToEmphasize = function() {
     // Only act if a lowest label isn't already emphasized
     if (this.numberOfLabelToEmphasize >= 3) {
+        var isCurrentlyEmphasizedLabelOnLeft =
+            (this.numberOfLabelToEmphasize % 2 === 1);
         var potentiallyNowEmphasizedLabel =
             this.numberOfLabelToEmphasize - 2;
 
-        // Go down another label if found a label of answered
-        // question
+        // If label immediately below is of answered question,
+        // look at labels below in both columns
         while (potentiallyNowEmphasizedLabel >= 1 &&
             this.isAnswered(potentiallyNowEmphasizedLabel))
         {
-            potentiallyNowEmphasizedLabel -= 2;
+            if (isCurrentlyEmphasizedLabelOnLeft) {
+                if (potentiallyNowEmphasizedLabel % 2 === 1)
+                    potentiallyNowEmphasizedLabel += 1;
+                else
+                    potentiallyNowEmphasizedLabel -= 3;
+            }
+            else
+                potentiallyNowEmphasizedLabel -= 1;
         }
 
-        // Do nothing if lowest label of an answered question
-        // (in the regarded column of labels)
-        // was already emphasized
+        // Make sure an existing label was designated
         if (potentiallyNowEmphasizedLabel >= 1)
             return potentiallyNowEmphasizedLabel;
     }
@@ -479,20 +487,27 @@ Questions.prototype._getNumberOfLowerLabelToEmphasize = function() {
 Questions.prototype._getNumberOfHigherLabelToEmphasize = function() {
     // Only act if a highest label isn't already emphasized
     if (this.numberOfLabelToEmphasize <= 8) {
+        var isCurrentlyEmphasizedLabelOnLeft =
+            (this.numberOfLabelToEmphasize % 2 === 1);
         var potentiallyNowEmphasizedLabel =
             this.numberOfLabelToEmphasize + 2;
 
-        // Go up another label if found a label of answered
-        // question
+        // If label immediately above is of answered question,
+        // look at labels above in both columns
         while (potentiallyNowEmphasizedLabel <= 10 &&
             this.isAnswered(potentiallyNowEmphasizedLabel))
         {
-            potentiallyNowEmphasizedLabel += 2;
+            if (isCurrentlyEmphasizedLabelOnLeft)
+                potentiallyNowEmphasizedLabel += 1;
+            else {
+                if (potentiallyNowEmphasizedLabel % 2 === 1)
+                    potentiallyNowEmphasizedLabel += 3;
+                else
+                    potentiallyNowEmphasizedLabel -= 1;
+            }
         }
 
-        // Do nothing if highest label of an answered question
-        // (in the regarded column of labels)
-        // was already emphasized
+        // Make sure an existing label was designated
         if (potentiallyNowEmphasizedLabel <= 10)
             return potentiallyNowEmphasizedLabel;
     }

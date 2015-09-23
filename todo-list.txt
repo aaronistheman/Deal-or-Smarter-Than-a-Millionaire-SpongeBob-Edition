@@ -1,15 +1,12 @@
 Next:
--implement answering a question correctly and moving on
-    --make up/down selector-moving functions reach isolated labels
-    --find some way to not let the user's cursor get stuck in one
-        of the two columns
+-react to how many questions answered
     --change background music, presented question sound, correct
         answer sound, and (maybe) loss sound depending on
         how many questions have been answered
     --change Questions so that it only stores which question
         labels to fade out in one way (not two ways)
-    --unit tests to check if all answers would fit; make
-        an artificial canvas to modify the context of with global settings
+-unit tests to check if all answers would fit; make
+    an artificial canvas to modify the context of with global settings
 -move Music, Sound, and Textures into folder Media
 -make more questions
 -after ten questions, user can leave with case or try to answer
