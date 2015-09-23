@@ -442,6 +442,7 @@ Questions.prototype._getNumberOfRightwardLabelToEmphasize = function() {
 
 /*
     @pre this.numberOfLabelToEmphasize != "none"
+    @hasTest yes
     @returns number of the first label below the currently
     emphasized label that is of an unanswered question; if no
     such label exists, or if the lowest label is already
@@ -473,6 +474,7 @@ Questions.prototype._getNumberOfLowerLabelToEmphasize = function() {
 
 /*
     @pre this.numberOfLabelToEmphasize != "none"
+    @hasTest yes
     @returns number of the first label above the currently
     emphasized label that is of an unanswered question; if no
     such label exists, or if the uppermost label is already

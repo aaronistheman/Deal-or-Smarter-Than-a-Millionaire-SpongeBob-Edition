@@ -191,7 +191,95 @@ QUnit.test("Questions._generateTenQuestions()", function(assert) {
         "grade questions having the lowest index in the array of questions.");
 });
 
-QUnit.test("Questions._getAnswerPosition()", function(assert) {
+QUnit.test("Questions._getNumberOfLowerLabelToEmphasize()",
+    function(assert)
+{
+    // Create trivial canvas to satisfy the constructor of Questions
+    var canvasId = "junkCanvas";
+    $("#qunit-fixture").append("<canvas id='" + canvasId + "'></canvas>");
+    var questions = new Questions(canvasId, canvasId, 6,
+        canvasId, canvasId);
+
+    // Check if can correctly pick to emphasize the label immediately
+    // below the currently emphasized one
+    assert.deepEqual(questions._getNumberOfLowerLabelToEmphasize(), 4,
+        "Correctly picked the number of the label immediately below " +
+        "the currently emphasized one");
+
+    // Check if can correctly skip the two labels immediately below
+    // the currently emphasized one in picking the label to
+    // emphasize
+    questions.setEmphasizedLabel(9);
+    questions.setAnswered(7);
+    questions.setAnswered(5);
+    assert.deepEqual(questions._getNumberOfLowerLabelToEmphasize(), 3,
+        "Correctly skipped the two labels immediately below the " +
+        "currently emphasized one to pick the correct number");
+
+    // Check if can identify that a lowest label is currently
+    // emphasized
+    questions.setEmphasizedLabel(2);
+    assert.deepEqual(questions._getNumberOfLowerLabelToEmphasize(),
+        undefined, "undefined is returned if a lowest label " +
+        "is already emphasized");
+
+    // Confirm that no label is suggested if all the labels
+    // below the currently emphasized one are of answered questions
+    questions.setEmphasizedLabel(10);
+    questions.setAnswered(8);
+    questions.setAnswered(6);
+    questions.setAnswered(4);
+    questions.setAnswered(2);
+    assert.deepEqual(questions._getNumberOfLowerLabelToEmphasize(),
+        undefined, "undefined is returned if all of the labels " +
+            "below the emphasized one are of answered questions");
+});
+
+QUnit.test("Questions._getNumberOfHigherLabelToEmphasize()",
+    function(assert)
+{
+    // Create trivial canvas to satisfy the constructor of Questions
+    var canvasId = "junkCanvas";
+    $("#qunit-fixture").append("<canvas id='" + canvasId + "'></canvas>");
+    var questions = new Questions(canvasId, canvasId, 4,
+        canvasId, canvasId);
+
+    // Check if can correctly pick to emphasize the label immediately
+    // above the currently emphasized one
+    assert.deepEqual(questions._getNumberOfHigherLabelToEmphasize(), 6,
+        "Correctly picked the number of the label immediately above " +
+        "the currently emphasized one");
+
+    // Check if can correctly skip the two labels immediately above
+    // the currently emphasized one in picking the label to
+    // emphasize
+    questions.setEmphasizedLabel(1);
+    questions.setAnswered(3);
+    questions.setAnswered(5);
+    assert.deepEqual(questions._getNumberOfHigherLabelToEmphasize(), 7,
+        "Correctly skipped the two labels immediately above the " +
+        "currently emphasized one to pick the correct number");
+
+    // Check if can identify that an uppermost label is currently
+    // emphasized
+    questions.setEmphasizedLabel(10);
+    assert.deepEqual(questions._getNumberOfHigherLabelToEmphasize(),
+        undefined, "undefined is returned if an uppermost label " +
+        "is already emphasized");
+
+    // Confirm that no label is suggested if all the labels
+    // above the currently emphasized one are of answered questions
+    questions.setEmphasizedLabel(2);
+    questions.setAnswered(4);
+    questions.setAnswered(6);
+    questions.setAnswered(8);
+    questions.setAnswered(10);
+    assert.deepEqual(questions._getNumberOfHigherLabelToEmphasize(),
+        undefined, "undefined is returned if all of the labels " +
+            "above the emphasized one are of answered questions");
+});
+
+QUnit.test("Questions::_getAnswerPosition()", function(assert) {
     assert.deepEqual(Questions._getAnswerPosition(1),
         Questions.FIRST_ANSWER_POSITION,
         "Correct position for first answer");

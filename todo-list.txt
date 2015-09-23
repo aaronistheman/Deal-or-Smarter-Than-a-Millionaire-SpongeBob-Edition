@@ -1,6 +1,6 @@
 Next:
 -implement answering a question correctly and moving on
-    --make unit tests for the label-emphasizing functions
+    --make unit tests for the right/left label-emphasizing functions
     --find some way to not let the user's cursor get stuck in one
         of the two columns
     --change background music, presented question sound, correct
