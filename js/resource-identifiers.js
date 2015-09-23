@@ -21,6 +21,11 @@ var SOUND_EFFECTS_IDS = {
 var MUSIC_IDS = {
     OPENING : "opening-theme",
     INTRODUCE_HELPERS : "introduce-helpers-theme",
-    FIRST_FOUR_QUESTIONS : "first-four-questions-theme",
+    QUESTION_1_TO_5 : "question-1-to-5-theme",
+    QUESTION_6 : "question-6-theme",
+    QUESTION_7 : "question-7-theme",
+    QUESTION_8 : "question-8-theme",
+    QUESTION_9 : "question-9-theme",
+    QUESTION_10 : "question-10-theme",
     BANKER : "banker-theme",
 };

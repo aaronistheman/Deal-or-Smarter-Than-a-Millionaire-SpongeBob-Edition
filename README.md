@@ -84,6 +84,9 @@ website at www.online-image-editor.com.
 
 I made the sound effects with Bfxr.
 
+The "Who Wants to Be a Millionaire" music came from the YouTube
+user MillionaireSound.
+
 Author
 ------
 

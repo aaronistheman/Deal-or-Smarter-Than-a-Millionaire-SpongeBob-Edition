@@ -352,7 +352,7 @@ function handleCaseSelection() {
     gameShow.quotesToDraw.add("You have selected case " +
         gameShow.selectedBriefcaseNumber + ".")
         .deployQuoteChain(function() {
-            gameShow.musicPlayer.play(MUSIC_IDS.FIRST_FOUR_QUESTIONS);
+            gameShow.musicPlayer.play(MUSIC_IDS.QUESTION_1_TO_5);
             selectQuestion();
         });
 }
@@ -468,6 +468,39 @@ function prepareForNextTurn() {
     gameShow.numberOfQuestionsCorrectlyAnswered++;
     gameShow.turnVariables.selectedQuestion = undefined;
     gameShow.turnVariables.selectedAnswer = undefined;
+
+    // Prepare the background music
+    adjustBackgroundMusicBasedOnQuestionsAnswered();
+}
+
+/*
+    @pre the music indicated by MUSIC_IDS.QUESTION_1_TO_5 is
+    already playing if the user hasn't answered at least five
+    questions; gameShow.numberOfQuestionsCorrectlyAnswered is correct
+    and is less than 10
+    @post background music has been changed depending on how
+    many questions have been answered
+*/
+function adjustBackgroundMusicBasedOnQuestionsAnswered() {
+    if (gameShow.numberOfQuestionsCorrectlyAnswered >= 5) {
+        switch (gameShow.numberOfQuestionsCorrectlyAnswered) {
+            case 5:
+                gameShow.musicPlayer.play(MUSIC_IDS.QUESTION_6);
+                break;
+            case 6:
+                gameShow.musicPlayer.play(MUSIC_IDS.QUESTION_7);
+                break;
+            case 7:
+                gameShow.musicPlayer.play(MUSIC_IDS.QUESTION_8);
+                break;
+            case 8:
+                gameShow.musicPlayer.play(MUSIC_IDS.QUESTION_9);
+                break;
+            case 9:
+                gameShow.musicPlayer.play(MUSIC_IDS.QUESTION_10);
+                break;
+        }
+    }
 }
 
 /*
@@ -485,11 +518,12 @@ function handleCorrectAnswerSelection() {
 
     var questionValue = getRandomMoneyAmount(gameShow.moneyAmounts);
 
-    prepareForNextTurn();
-
     gameShow.quotesToDraw.add("You have selected the correct answer.")
         .add("The question was worth: $" + questionValue + '.')
-        .deployQuoteChain(selectQuestion);
+        .deployQuoteChain(function() {
+            prepareForNextTurn();
+            selectQuestion();
+        });
 }
 
 /*

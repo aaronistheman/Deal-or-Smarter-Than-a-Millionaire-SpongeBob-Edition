@@ -1,8 +1,9 @@
 Next:
 -react to how many questions answered
-    --change background music, presented question sound, correct
-        answer sound, and (maybe) loss sound depending on
-        how many questions have been answered
+    --change the following music based on number of answered questions:
+        --presented question sound
+        --correct answer sound
+        --(maybe) loss sound
     --change Questions so that it only stores which question
         labels to fade out in one way (not two ways)
 -unit tests to check if all answers would fit; make

@@ -69,8 +69,18 @@ function getAudioData() {
         "media/music/who_wants_to_be_a_millionaire_theme.mp3"));
     audioData.push(new AudioData(MUSIC_IDS.INTRODUCE_HELPERS,
         "media/music/deal_or_no_deal_theme.mp3"));
-    audioData.push(new AudioData(MUSIC_IDS.FIRST_FOUR_QUESTIONS,
-        "media/music/first_four_questions.mp3"));
+    audioData.push(new AudioData(MUSIC_IDS.QUESTION_1_TO_5,
+        "media/music/question_1_to_5.mp3"));
+    audioData.push(new AudioData(MUSIC_IDS.QUESTION_6,
+        "media/music/question_6.mp3"));
+    audioData.push(new AudioData(MUSIC_IDS.QUESTION_7,
+        "media/music/question_7.mp3"));
+    audioData.push(new AudioData(MUSIC_IDS.QUESTION_8,
+        "media/music/question_8.mp3"));
+    audioData.push(new AudioData(MUSIC_IDS.QUESTION_9,
+        "media/music/question_9.mp3"));
+    audioData.push(new AudioData(MUSIC_IDS.QUESTION_10,
+        "media/music/question_10.mp3"));
     audioData.push(new AudioData(MUSIC_IDS.BANKER,
         "media/music/banker_theme.mp3"));
 
