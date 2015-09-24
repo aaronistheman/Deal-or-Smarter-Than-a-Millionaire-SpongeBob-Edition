@@ -787,7 +787,8 @@ Questions.prototype._drawQuestionText = function(questionNumber) {
     var verticalSpaceBetweenWords = 5;
     var sideMargin = 100;
     var allocatedWidthForQuestionDisplay = 800;
-    var topMargin = 100;
+    // var topMargin = 100;
+    var topMargin = 30;
     var x = 300 + sideMargin;
     var y = topMargin;
 
@@ -1034,8 +1035,8 @@ Questions.setUpAnswersTextContext = function(textContext) {
 }
 
 /*
-    @hasTest yes (the test checks that the answers would fit
-    in their designated areas)
+    @hasTest yes (the test checks that the questions and
+    answers would fit in their designated areas)
     @returns an array of instances of Question so that this array
     contains all of the questions that the user could possible face;
     there are at least ten questions of different subjects for fifth
