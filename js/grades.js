@@ -14,6 +14,12 @@ var GRADES = {
     THIRD : 3,
     FOURTH : 4,
     FIFTH : 5,
+
+    // For million dollar question; is a grade level so that
+    // Question constructor doesn't reject it; is a string so
+    // that no one accidentally iterates through GRADES without
+    // considering GRADES.MILLION
+    MILLION : "million",
 };
 
 /*

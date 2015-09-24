@@ -44,12 +44,14 @@
 */
 function Questions(labelGraphicsCanvasId, labelTextCanvasId,
     numberOfLabelToEmphasize, answersGraphicsCanvasId,
-    answersTextCanvasId) {
-    // Storage of objects of type Question
-    this._questions = [];
+    answersTextCanvasId)
+{
+    // Storages of objects of type Question
+    this._tenQuestions = [];
+    this._millionDollarQuestion = undefined;
 
     // Store ten questions for use in the game
-    this._generateTenQuestions();
+    this._generateElevenQuestions();
 
     // This number indicates which question the user is currently
     // hovering over as he selects a question
@@ -71,7 +73,7 @@ function Questions(labelGraphicsCanvasId, labelTextCanvasId,
 }
 
 Questions.prototype.getQuestions = function() {
-    return this._questions;
+    return this._tenQuestions;
 };
 
 /*
@@ -81,7 +83,7 @@ Questions.prototype.getQuestions = function() {
     indicated by whichOne
 */
 Questions.prototype.getQuestion = function(whichOne) {
-    return this._questions[whichOne - 1];
+    return this._tenQuestions[whichOne - 1];
 };
 
 /*
@@ -132,7 +134,7 @@ Questions.prototype._drawQuestionLabel =
 {
     graphicsContext.fillStyle = this._getLabelFillStyle(number);
     textContext.fillStyle = this._getLabelTextFillStyle(number);
-    var text = Questions._getLabelText(this._questions[number - 1]);
+    var text = Questions._getLabelText(this._tenQuestions[number - 1]);
 
     // Draw the graphical label; shape it differently if the
     // label is supposed to be emphasized
@@ -166,7 +168,7 @@ Questions.prototype._drawQuestionLabel =
     }
 
     // Draw the text of the label only of unanwered questions
-    if (!this._questions[number - 1].answered) {
+    if (!this._tenQuestions[number - 1].answered) {
         textContext.fillText(text,
             x + (Questions.LABEL_DIMENSIONS.x / 2.0),
             y + (Questions.LABEL_DIMENSIONS.y / 2.0));
@@ -212,10 +214,10 @@ Questions.prototype._getLabelFillStyle = function(number) {
         return "white";
 
     // Color answered questions' labels differently
-    if (this._questions[number - 1].answered)
+    if (this._tenQuestions[number - 1].answered)
         return "black";
 
-    var grade = this._questions[number - 1].grade;
+    var grade = this._tenQuestions[number - 1].grade;
     switch (grade) {
         case GRADES.FIRST:
             return "green";
@@ -309,7 +311,7 @@ Questions.prototype.setAnswered = function(questionNumber) {
     // Only act if the question hasn't been set to having
     // been answered
     if (!this.isAnswered(questionNumber)) {
-        this._questions[questionNumber - 1].answered = true;
+        this._tenQuestions[questionNumber - 1].answered = true;
 
         // Set up variables for redrawing
         var graphicsContext = document.getElementById(
@@ -335,7 +337,7 @@ Questions.prototype.setAnswered = function(questionNumber) {
     has been answered; false, otherwise
 */
 Questions.prototype.isAnswered = function(questionNumber) {
-    return this._questions[questionNumber - 1].answered;
+    return this._tenQuestions[questionNumber - 1].answered;
 };
 
 /*
@@ -691,15 +693,30 @@ Questions.prototype._drawAnswer =
 };
 
 /*
-    @pre this._questions.length = 0
-    @post this._questions contains ten instances of type Question;
+    @pre this._tenQuestions.length = 0;
+    this._millionDollarQuestion = undefined
+    @post the helper functions to generate eleven appropriate
+    questions have been called
+*/
+Questions.prototype._generateElevenQuestions = function() {
+    var supply = Questions.getEntireSupplyOfQuestions();
+    this._generateTenQuestions(supply);
+    this._setMillionDollarQuestion(supply);
+};
+
+/*
+    @pre this._tenQuestions.length = 0
+    @post this._tenQuestions contains ten instances of type Question;
     each of these instances has a different subject matter; two
     questions of the ten are attached to each grade level from
-    one to five, and these ten questions are sorted by grade level
+    one to five, and these ten questions are sorted by grade level;
+    all questions in parameter supply that have subject matters of
+    picked questions have been removed
     @hasTest yes
+    @param supply array of instances of Question; the supply of
+    questions to edit and choose from
 */
-Questions.prototype._generateTenQuestions = function() {
-    var supply = Questions.getEntireSupplyOfQuestions();
+Questions.prototype._generateTenQuestions = function(supply) {
     var tenQuestions = [];
 
     /*
@@ -748,7 +765,29 @@ Questions.prototype._generateTenQuestions = function() {
     pickTwoQuestions(supply, GRADES.FOURTH);
     pickTwoQuestions(supply, GRADES.FIFTH);
 
-    this._questions = tenQuestions;
+    this._tenQuestions = tenQuestions;
+}
+
+/*
+    @pre none of the questions in parameter supply have the same
+    subject as any of the questions in this._tenQuestions
+    @post this._millionDollarQuestion contains a question of
+    the appropriate grade (GRADES.MILLION)
+    @hasTest yes
+    @param supply array of instances of Question; the supply of
+    questions to edit and choose from
+*/
+Questions.prototype._setMillionDollarQuestion = function(supply) {
+    var randomIndex = Math.floor((Math.random() * supply.length));
+
+    // Only add the question indicated by randomIndex when the
+    // grade level is correct
+    while (supply[randomIndex].grade !== GRADES.MILLION) {
+        randomIndex = Math.floor((Math.random() * supply.length));
+    }
+
+    var questionToAdd = supply.splice(randomIndex, 1).pop();
+    this._millionDollarQuestion = questionToAdd;
 }
 
 /*
@@ -802,7 +841,7 @@ Questions.prototype._drawQuestionText = function(questionNumber) {
     ctx.textBaseline = "top";
 
     var textPieces = convertCanvasTextIntoSmallerPieces(ctx,
-        this._questions[questionNumber - 1].text,
+        this._tenQuestions[questionNumber - 1].text,
         allocatedWidthForQuestionDisplay - (sideMargin * 2));
     for (var i in textPieces) {
         // Throw exception if question is too big
@@ -898,7 +937,7 @@ Questions.prototype._drawAnswerText =
 
     // Set up the text to draw
     var text = Questions.getAnswerLetter(answerNumber) +
-        this._questions[questionNumber - 1]
+        this._tenQuestions[questionNumber - 1]
             .answerData.arrayOfAnswers[answerNumber - 1];
 
     // Throw an exception of the text is too long
@@ -1044,7 +1083,7 @@ Questions.setUpAnswersTextContext = function(textContext) {
     at least six of such questions for third grade, at least four
     of such questions for second grade, and at least two of
     such questions for first grade (this prevents an infinite loop
-    in Questions._generateTenQuestions()); each question and answer
+    in Questions._generateElevenQuestions()); each question and answer
     should be able to fit in the display, although this depends
     on the font
 */
@@ -1260,6 +1299,15 @@ Questions.getEntireSupplyOfQuestions = function() {
         "and SpongeBob on the way to their panty raid?",
         new AnswerData(ANSWERS.SECOND, ["Underwater Heartbreaker",
             "Boaty", "X Tornado", "Trailblazer"])));
+
+    /*
+        Million dollar questions
+    */
+    gradeOfQuestion = GRADES.MILLION;
+
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.FAKE_QUESTION,
+        "Million dollar question",
+        new AnswerData(ANSWERS.FIRST, ["", "", "", ""])));
 
     return supply;
 }
