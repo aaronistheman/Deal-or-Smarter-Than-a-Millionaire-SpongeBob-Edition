@@ -35,6 +35,8 @@ function allowSkippingRules(bool) {
             // Remove stored explanations
             gameShow.quotesToDraw.clear();
 
+            drawNewSpeaker(SPEAKERS.SPONGEBOB);
+
             // Skip the remaining explanations and continue the game;
             // note that
             // the calling of this function will disable the use of the
