@@ -55,10 +55,6 @@ function Questions(labelGraphicsCanvasId, labelTextCanvasId,
     // hovering over as he selects a question
     this.numberOfLabelToEmphasize = numberOfLabelToEmphasize;
 
-    // Which labels to prevent the user from selecting the question
-    // of
-    this.numbersOfLabelsToFade = [];
-
     // This number represents which answer the user is currently
     // hovering over as he selects an answer
     this.numberOfAnswerToEmphasize = 1;
@@ -303,8 +299,8 @@ Questions.prototype._getLabelTextFillStyle = function(number) {
 
 /*
     @pre 1 <= questionNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY
-    @post this.numbersOfLabelsToFade has been updated; now faded
-    label has been redrawn
+    @post the indicated question has been set to answered; its
+    label has been redrawn with a blackening
     @param questionNumber number of the question whose label
     the fade will be applied to and that will have its
     member variable 'answered' set to true
@@ -313,7 +309,6 @@ Questions.prototype.setAnswered = function(questionNumber) {
     // Only act if the question hasn't been set to having
     // been answered
     if (!this.isAnswered(questionNumber)) {
-        this.numbersOfLabelsToFade.push(questionNumber);
         this._questions[questionNumber - 1].answered = true;
 
         // Set up variables for redrawing
@@ -391,6 +386,7 @@ Questions.prototype.setEmphasizedLabel = function(newNumber) {
 
 /*
     @pre this.numberOfLabelToEmphasize != "none"
+    @hasTest yes
     @returns number of label to the left of the currently emphasized
     label; if there is no such number of a label of an unanswered
     question, or if a label on the left is already emphasized,
@@ -414,6 +410,7 @@ Questions.prototype._getNumberOfLeftwardLabelToEmphasize = function() {
 
 /*
     @pre this.numberOfLabelToEmphasize != "none"
+    @hasTest yes
     @returns number of label to the right of the currently emphasized
     label; if there is no such number of a label of an unanswered
     question, or if a label on the right is already emphasized,
@@ -550,16 +547,15 @@ Questions.prototype.emphasizeDifferentLabel = function(direction) {
 };
 
 /*
-    @pre this.numbersOfLabelsToFade.length < NUMBER_OF_QUESTIONS_TO_DISPLAY
-    @post the emphasis has been placed on the first non-faded label,
-    starting from the first (i.e. bottom-left) label
+    @pre not all the first ten questions have been answered
+    @post the emphasis has been placed on the label of the first
+    unanswered question, starting from the first question's label
 */
 Questions.prototype.emphasizeFirstAvailableLabel = function() {
     // Find the number of the first available label
     var first = undefined;
     for (var i = 1; i <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY; ++i) {
-        if (this.numbersOfLabelsToFade.indexOf(i) === -1) {
-            // i refers to a non-faded label
+        if (!this.isAnswered(i)) {
             first = i;
             break;
         }
@@ -589,6 +585,7 @@ Questions.prototype.setEmphasizedAnswer =
     var textContext = document.getElementById(
         this._choosingAnswerCanvases.answersTextCanvasId)
             .getContext('2d');
+    Questions.setUpAnswersTextContext(textContext);
     var oldNumber = this.numberOfAnswerToEmphasize;
     var newNumber = numberOfNewAnswerToEmphasize;
 
@@ -790,7 +787,8 @@ Questions.prototype._drawQuestionText = function(questionNumber) {
     var verticalSpaceBetweenWords = 5;
     var sideMargin = 100;
     var allocatedWidthForQuestionDisplay = 800;
-    var topMargin = 100;
+    // var topMargin = 100;
+    var topMargin = 30;
     var x = 300 + sideMargin;
     var y = topMargin;
 
@@ -867,9 +865,7 @@ Questions.prototype._drawAnswersText = function(questionNumber) {
     var ctx = document.getElementById(
         this._choosingAnswerCanvases.answersTextCanvasId)
         .getContext('2d');
-    ctx.font = Questions.ANSWERS_FONT_SIZE + "px 'Arial'";
-    ctx.textAlign = "left";
-    ctx.textBaseline = "top";
+    Questions.setUpAnswersTextContext(ctx);
 
     for (var i = 0; i < 4; ++i) {
         var position = Questions._getAnswerPosition(i + 1);
@@ -895,20 +891,19 @@ Questions.prototype._drawAnswersText = function(questionNumber) {
 Questions.prototype._drawAnswerText =
     function(textContext, x, y, questionNumber, answerNumber)
 {
-    var textIndent = 30;
-    var answerLetters = ['A', 'B', 'C', 'D'];
 
     // Give the text the correct color
     textContext.fillStyle =
         this._getAnswerRectangleTextFillStyle(answerNumber);
 
     // Set up the text to draw
-    var text = '(' + answerLetters[answerNumber - 1] + ")    " +
+    var text = Questions.getAnswerLetter(answerNumber) +
         this._questions[questionNumber - 1]
             .answerData.arrayOfAnswers[answerNumber - 1];
 
     // Throw an exception of the text is too long
-    if ((textIndent + textContext.measureText(text).width) >
+    if ((Questions.ANSWER_TEXT_INDENT +
+        textContext.measureText(text).width) >
         Questions.ANSWER_DIMENSIONS.x)
     {
         alert("Error: answer #" + answerNumber + " of 4 can't " +
@@ -917,7 +912,7 @@ Questions.prototype._drawAnswerText =
             "be fit in its designated space";
     }
 
-    textContext.fillText(text, x + textIndent, y);
+    textContext.fillText(text, x + Questions.ANSWER_TEXT_INDENT, y);
 }
 
 /*
@@ -953,6 +948,19 @@ Questions.FIRST_ANSWER_POSITION = new Vector2d(10, 285);
 Questions.MARGINAL_ANSWER_POSITION = new Vector2d(0,
     (Questions.ANSWERS_FONT_SIZE * 2) +
         Questions.VERTICAL_SPACE_BETWEEN_ANSWERS);
+Questions.ANSWER_TEXT_INDENT = 30;
+
+Questions.ANSWER_LETTERS = ['A', 'B', 'C', 'D'];
+
+/*
+    @pre 1 <= answerNumber <= Questions.NUMBER_OF_ANSWERS
+    @param answerNumber
+    @returns the appropriate answer letter (and additional whitespace)
+    to append to the front of a displayed answer
+*/
+Questions.getAnswerLetter = function(answerNumber) {
+    return '(' + Questions.ANSWER_LETTERS[answerNumber - 1] + ")    ";
+}
 
 /*
     @hasTest yes
@@ -1017,6 +1025,18 @@ Questions._getLabelText = function(question) {
 };
 
 /*
+    @post textContext has been set up for drawing the text of answers
+    @param textContext to set up
+*/
+Questions.setUpAnswersTextContext = function(textContext) {
+    textContext.font = Questions.ANSWERS_FONT_SIZE + "px 'Arial'";
+    textContext.textAlign = "left";
+    textContext.textBaseline = "top";
+}
+
+/*
+    @hasTest yes (the test checks that the questions and
+    answers would fit in their designated areas)
     @returns an array of instances of Question so that this array
     contains all of the questions that the user could possible face;
     there are at least ten questions of different subjects for fifth

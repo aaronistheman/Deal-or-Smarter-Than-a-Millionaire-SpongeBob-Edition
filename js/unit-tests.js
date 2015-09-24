@@ -358,6 +358,49 @@ QUnit.test("Questions::_getLabelPosition()", function(assert) {
         "Correct position for tenth label");
 });
 
+QUnit.test("Questions::getEntireSupplyOfQuestions()", function(assert) {
+    var questions = Questions.getEntireSupplyOfQuestions();
+
+    // Decide how well the question fits; checking characters
+    // suffices; a question of at most 125 characters should
+    // very well fit in its designated space, given the font used
+    // (i.e. Rock Salt)
+    var allQuestionsFit = true;
+    for (var i = 0; i < questions.length; ++i) {
+        if (questions[i].text.length > 125) {
+            allQuestionsFit = false;
+            break;
+        }
+    }
+
+    assert.ok(allQuestionsFit, "All questions would fit in " +
+        "their designated area");
+
+    // Decide how well the answers fit
+    var allAnswersFit = true;
+    var canvasId = "junkCanvas";
+    $("#qunit-fixture").append("<canvas id='" + canvasId + "' " +
+        "width='1000' height='1000'></canvas>");
+    var ctx = document.getElementById(canvasId).getContext('2d');
+    Questions.setUpAnswersTextContext(ctx);
+    for (var i = 0; (i < questions.length && allAnswersFit); ++i) {
+        var arrayOfAnswers = questions[i].answerData.arrayOfAnswers;
+        for (var j = 0; j < arrayOfAnswers.length; ++j) {
+            var text = Questions.getAnswerLetter(j + 1) + arrayOfAnswers[j];
+
+            if ((Questions.ANSWER_TEXT_INDENT + ctx.measureText(text).width) >
+                Questions.ANSWER_DIMENSIONS.x)
+            {
+                allAnswersFit = false;
+                break;
+            }
+        }
+    }
+
+    assert.ok(allAnswersFit, "All answers would fit in an " +
+        "answer rectangle with the usually used context settings");
+});
+
 QUnit.module("vector2d.js");
 
 QUnit.test("Vector2d.getSum()", function(assert) {
