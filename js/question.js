@@ -16,7 +16,12 @@
     @throws a string if invalid subject
 */
 function Question(grade, subject, text, answerData) {
-    this.grade = grade;
+    if (isGrade(grade))
+        this.grade = grade;
+    else {
+        alert("Error: invalid grade given to Question constructor");
+        throw "Error: invalid grade given to Question constructor";
+    }
 
     if (isSubject(subject))
         this.subject = subject;
