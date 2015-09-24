@@ -386,6 +386,7 @@ Questions.prototype.setEmphasizedLabel = function(newNumber) {
 
 /*
     @pre this.numberOfLabelToEmphasize != "none"
+    @hasTest yes
     @returns number of label to the left of the currently emphasized
     label; if there is no such number of a label of an unanswered
     question, or if a label on the left is already emphasized,
@@ -409,6 +410,7 @@ Questions.prototype._getNumberOfLeftwardLabelToEmphasize = function() {
 
 /*
     @pre this.numberOfLabelToEmphasize != "none"
+    @hasTest yes
     @returns number of label to the right of the currently emphasized
     label; if there is no such number of a label of an unanswered
     question, or if a label on the right is already emphasized,
@@ -888,20 +890,19 @@ Questions.prototype._drawAnswersText = function(questionNumber) {
 Questions.prototype._drawAnswerText =
     function(textContext, x, y, questionNumber, answerNumber)
 {
-    var textIndent = 30;
-    var answerLetters = ['A', 'B', 'C', 'D'];
 
     // Give the text the correct color
     textContext.fillStyle =
         this._getAnswerRectangleTextFillStyle(answerNumber);
 
     // Set up the text to draw
-    var text = '(' + answerLetters[answerNumber - 1] + ")    " +
+    var text = Questions.getAnswerLetter(answerNumber) +
         this._questions[questionNumber - 1]
             .answerData.arrayOfAnswers[answerNumber - 1];
 
     // Throw an exception of the text is too long
-    if ((textIndent + textContext.measureText(text).width) >
+    if ((Questions.ANSWER_TEXT_INDENT +
+        textContext.measureText(text).width) >
         Questions.ANSWER_DIMENSIONS.x)
     {
         alert("Error: answer #" + answerNumber + " of 4 can't " +
@@ -910,7 +911,7 @@ Questions.prototype._drawAnswerText =
             "be fit in its designated space";
     }
 
-    textContext.fillText(text, x + textIndent, y);
+    textContext.fillText(text, x + Questions.ANSWER_TEXT_INDENT, y);
 }
 
 /*
@@ -946,6 +947,19 @@ Questions.FIRST_ANSWER_POSITION = new Vector2d(10, 285);
 Questions.MARGINAL_ANSWER_POSITION = new Vector2d(0,
     (Questions.ANSWERS_FONT_SIZE * 2) +
         Questions.VERTICAL_SPACE_BETWEEN_ANSWERS);
+Questions.ANSWER_TEXT_INDENT = 30;
+
+Questions.ANSWER_LETTERS = ['A', 'B', 'C', 'D'];
+
+/*
+    @pre 1 <= answerNumber <= Questions.NUMBER_OF_ANSWERS
+    @param answerNumber
+    @returns the appropriate answer letter (and additional whitespace)
+    to append to the front of a displayed answer
+*/
+Questions.getAnswerLetter = function(answerNumber) {
+    return '(' + Questions.ANSWER_LETTERS[answerNumber - 1] + ")    ";
+}
 
 /*
     @hasTest yes
@@ -1020,6 +1034,8 @@ Questions.setUpAnswersTextContext = function(textContext) {
 }
 
 /*
+    @hasTest yes (the test checks that the answers would fit
+    in their designated areas)
     @returns an array of instances of Question so that this array
     contains all of the questions that the user could possible face;
     there are at least ten questions of different subjects for fifth
