@@ -649,12 +649,28 @@ function allowUserChooseMillionOrGoHome(bool) {
         })
         .set(KEY_CODES.N, function() {
             allowUserChooseMillionOrGoHome(false);
-            // userTakesCaseHome();
+            userTakesCaseHome();
         });
     }
     else {
         gameShow.keyActions.erase(KEY_CODES.Y).erase(KEY_CODES.N);
     }
+}
+
+/*
+    @post the host explained what happened and concluded the game
+*/
+function userTakesCaseHome() {
+    // React auditorily
+    gameShow.musicPlayer.stop();
+
+    // Make the host explain
+    gameShow.quotesToDraw.add("Then, congratulations.")
+        .add("You're going home with $" + gameShow.briefcaseValue + '.')
+        .deployQuoteChain(function() {
+            eraseQuoteBubbleText();
+            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.GOOD_BYE);
+        });
 }
 
 function presentMillionDollarQuestion() {

@@ -1,7 +1,4 @@
 Next:
--after ten questions, user can leave with case or try to answer
-    million dollar question
-    --handle user's rejecting the question
 -banker makes a deal
     --user has two options
 -allow picking of a helper
@@ -18,7 +15,7 @@ Next:
     "The End"
     --EndGame class?
     --play closing theme in all endings
-    --individually examine each of the five endings: (e.g. quotes)
+    --individually examine each of the five endings: (e.g. quotes, music)
         --lose one of first ten questions
         --take deal
         --take case home
