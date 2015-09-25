@@ -24,7 +24,7 @@ var SUBJECTS = {
     HISTORY : "History",
     TECHNOLOGY : "Technology",
     QUOTATIONS : "Quotations",
-    FAKE_QUESTION : "fake",
+    EPISODES : "Episodes",
 };
 
 /*

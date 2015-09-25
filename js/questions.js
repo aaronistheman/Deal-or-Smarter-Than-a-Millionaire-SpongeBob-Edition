@@ -1078,7 +1078,8 @@ Questions.setUpAnswersTextContext = function(textContext) {
     answers would fit in their designated areas)
     @returns an array of instances of Question so that this array
     contains all of the questions that the user could possible face;
-    there are at least ten questions of different subjects for fifth
+    there are at least eleven million dollar questions of different
+    subjects, ten questions of different subjects for fifth
     grade, at least eight of such questions for fourth grade,
     at least six of such questions for third grade, at least four
     of such questions for second grade, and at least two of
@@ -1134,6 +1135,10 @@ Questions.getEntireSupplyOfQuestions = function() {
         "is driven by Mermaid Man?",
         new AnswerData(ANSWERS.FIRST, ["Invisible Boatmobile",
             "Underwater Heartbreaker", "Patty Wagon", "bus"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.SIDE_CHARACTERS,
+        "Which of the following characters is not a friend of SpongeBob?",
+        new AnswerData(ANSWERS.SECOND, ["Mermaid Man", "Dennis",
+            "Stanley", "Bubble Buddy"])));
 
     /*
         Second grade questions
@@ -1159,6 +1164,15 @@ Questions.getEntireSupplyOfQuestions = function() {
         "Bottom, and push it somewhere else'?",
         new AnswerData(ANSWERS.FIRST, ["Patrick", "Sandy",
             "Mr. Krabs", "Squidward"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.EPISODES,
+        "What is the name of the first episode of the television " +
+        "'SpongeBob Squarepants'?",
+        new AnswerData(ANSWERS.SECOND, ["Reef Blower", "Help Wanted",
+            "Plankton", "Pilot"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.HISTORY,
+        "In what year was the first episode of 'SpongeBob Squarepants' " +
+        "released?",
+        new AnswerData(ANSWERS.THIRD, ["2002", "2000", "1999", "1998"])));
 
     /*
         Third grade questions
@@ -1188,12 +1202,17 @@ Questions.getEntireSupplyOfQuestions = function() {
         "Who said the following quote: 'I wonder if a fall " +
         "from this height would kill me'?",
         new AnswerData(ANSWERS.SECOND, ["Barnacle Boy",
-            "Squidward", "Patrick", "Flatts"])));
+            "Squidward", "Patrick", "Flats"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.VIDEO_GAMES,
         "Who is the final boss in the video game version of " +
         "the first movie?",
         new AnswerData(ANSWERS.THIRD, ["Plankton", "Robot Plankton",
             "King Neptune", "The Flying Dutchman"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.EPISODES,
+        "In which of the following episodes was SpongeBob's house " +
+        "destroyed?",
+        new AnswerData(ANSWERS.FOURTH, ["Squidville", "Life of Crime",
+            "Sandy's Rocket", "Home Sweet Pineapple"])));
 
     /*
         Fourth grade questions
@@ -1238,6 +1257,11 @@ Questions.getEntireSupplyOfQuestions = function() {
         "used to be?",
         new AnswerData(ANSWERS.THIRD, ["blender", "blow dryer",
             "calculator", "spatula"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.EPISODES,
+        "In which of the following episodes is there no audible " +
+        "dialogue?",
+        new AnswerData(ANSWERS.FOURTH, ["Bubblestand", "Nature Pants",
+            "Ugh", "Reef Blower"])));
 
     /*
         Fifth grade questions
@@ -1254,7 +1278,7 @@ Questions.getEntireSupplyOfQuestions = function() {
     supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
         "Which of the following characters let someone " +
         "drown to death?",
-        new AnswerData(ANSWERS.SECOND, ["Flatts", "Bubble Buddy",
+        new AnswerData(ANSWERS.SECOND, ["Flats", "Bubble Buddy",
             "Fred", "Plankton"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.HISTORY,
         "In which of the following years did a chum famine " +
@@ -1266,10 +1290,6 @@ Questions.getEntireSupplyOfQuestions = function() {
         "SpongeBob in the opening theme?",
         new AnswerData(ANSWERS.FOURTH, ["porous", "yellow",
             "absorbent", "spongy"])));
-    supply.push(new Question(gradeOfQuestion, SUBJECTS.TECHNOLOGY,
-        "Which of the following did SpongeBob not say that " +
-        "robots cannot do?",
-        new AnswerData(ANSWERS.FIRST, ["dance", "laugh", "cry", "love"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
         "Who said the following quote: 'Everything is chrome " +
         "in the future'?",
@@ -1289,25 +1309,83 @@ Questions.getEntireSupplyOfQuestions = function() {
         new AnswerData(ANSWERS.FOURTH,
             ["Fancy", "Weenie Hut Juniors",
             "Super Weenie Hut Juniors", "Weenie Hut General"])));
-    supply.push(new Question(gradeOfQuestion, SUBJECTS.STAFF,
-        "Who is the voice actor of Patrick?",
-        new AnswerData(ANSWERS.FIRST, ["Bill Fagerbakke",
-            "Larry the Cable Guy", "Clancy Brown",
-            "Rodger Bumpass"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.VEHICLES,
         "What is the name of the vehicle that was driven by Patrick " +
         "and SpongeBob on the way to their panty raid?",
         new AnswerData(ANSWERS.SECOND, ["Underwater Heartbreaker",
             "Boaty", "X Tornado", "Trailblazer"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.STAFF,
+        "Who is currently the executive producer of the television " +
+        "show 'SpongeBob Squarepants'?",
+        new AnswerData(ANSWERS.FOURTH, ["Stephen Hillenburg",
+            "Alan Smart", "Barry Anthony", "Paul Tibbitt"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.EPISODES,
+        "Which of the following episodes showed a reef blower?",
+        new AnswerData(ANSWERS.FIRST, ["Squidville", "Pressure",
+            "Good Neighbors", "Plankton!"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
+        "Which of the following did Patrick mistake for a cardinal " +
+        "direction?",
+        new AnswerData(ANSWERS.SECOND, ["nouth", "weast", "sorth", "est"])));
 
     /*
         Million dollar questions
     */
     gradeOfQuestion = GRADES.MILLION;
 
-    supply.push(new Question(gradeOfQuestion, SUBJECTS.FAKE_QUESTION,
-        "Million dollar question",
-        new AnswerData(ANSWERS.FIRST, ["", "", "", ""])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.TECHNOLOGY,
+        "Which of the following did SpongeBob not say that " +
+        "robots cannot do?",
+        new AnswerData(ANSWERS.FIRST, ["dance", "laugh", "cry", "love"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.STAFF,
+        "Who is the voice actor of Patrick?",
+        new AnswerData(ANSWERS.FIRST, ["Bill Fagerbakke",
+            "Alan Smart", "Steve Fonti", "Rodger Bumpass"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.EPISODES,
+        "Which of the following episodes has a scene that was eventually " +
+        "deleted in America?",
+        new AnswerData(ANSWERS.THIRD, ["Dying for Pie", "Jellyfishing",
+            "Just One Bite", "Gary Takes a Bath"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
+        "Which of the following characters has stolen something " +
+        "and eaten it?",
+        new AnswerData(ANSWERS.FOURTH, ["Dennis", "Bubble Bass",
+            "Sandy", "Mr. Krabs"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.DRIVING,
+        "Which of the following things has SpongeBob never truly hit with " +
+        "a boat?",
+        new AnswerData(ANSWERS.FIRST, ["Johnny Elaine", "the narrator",
+            "lighthouse", "boat"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.VIDEO_GAMES,
+        "Which of the following SpongeBob video games cannot be played " +
+        "on the Nintendo DS?",
+        new AnswerData(ANSWERS.SECOND, ["SpongeBob's Truth or Square",
+            "SpongeBob SquigglePants", "SpongeBob's Atlantis SquarePantis",
+            "Creature from the Krusty Krab"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.GEOGRAPHY,
+        "In which of the following bodies of water is Bikini " +
+        "Bottom located?",
+        new AnswerData(ANSWERS.THIRD, ["Atlantic Ocean",
+            "Austin Creek", "Pacific Ocean", "Mediterranean Sea"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.RUMORS,
+        "Which of the following episodes was rumored to have " +
+        "shown Squidward transform into a snail?",
+        new AnswerData(ANSWERS.FOURTH, ["Shanghaied", "Squidville",
+            "Nature Pants", "I Was a Teenage Gary"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.MAIN_CHARACTERS,
+        "Of which of the following species is Plankton?",
+        new AnswerData(ANSWERS.FIRST, ["copepod", "krill",
+            "pipidae", "enantiornithes"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.SIDE_CHARACTERS,
+        "Which of the following characters is a news anchor?",
+        new AnswerData(ANSWERS.SECOND, ["Old Man Jenkins",
+            "Johnny Elaine", "Gilligan Scales", "What Zit Tooya"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
+        "Who once said the following quote: 'The urge to do " +
+        "bad is gone'?",
+        new AnswerData(ANSWERS.THIRD, ["Atomic Founder", "Plankton",
+            "Man Ray", "Barnacle Boy"])));
+
 
     return supply;
 }
