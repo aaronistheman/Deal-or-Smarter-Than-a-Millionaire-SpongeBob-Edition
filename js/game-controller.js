@@ -59,12 +59,16 @@ function getAudioData() {
         "media/sound/move_answer_selector.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.LOSS,
         "media/sound/loss.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.LOSS_MILLION,
+        "media/sound/loss_million.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.GOOD_BYE,
         "media/sound/good_bye.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.CORRECT_ANSWER,
         "media/sound/correct_answer.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.CORRECT_ANSWER_10,
         "media/sound/correct_answer_10.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.CORRECT_ANSWER_MILLION,
+        "media/sound/correct_answer_million.mp3"));
 
     // add background music
     audioData.push(new AudioData(MUSIC_IDS.OPENING,
@@ -83,6 +87,8 @@ function getAudioData() {
         "media/music/question_9.mp3"));
     audioData.push(new AudioData(MUSIC_IDS.QUESTION_10,
         "media/music/question_10.mp3"));
+    audioData.push(new AudioData(MUSIC_IDS.QUESTION_MILLION,
+        "media/music/question_million.mp3"));
     audioData.push(new AudioData(MUSIC_IDS.BANKER,
         "media/music/banker_theme.mp3"));
 

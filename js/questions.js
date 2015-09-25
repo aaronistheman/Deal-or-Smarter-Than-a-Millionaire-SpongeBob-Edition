@@ -77,13 +77,17 @@ Questions.prototype.getQuestions = function() {
 };
 
 /*
-    @pre 1 <= whichOne <= 10
-    @param whichOne number of the question to get
+    @pre 1 <= questionNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY,
+    or questionNumber = Questions.MILLION_DOLLAR_QUESTION
+    @param questionNumber number of the question to get
     @returns the question among the stored ten questions that is
-    indicated by whichOne
+    indicated by questionNumber
 */
-Questions.prototype.getQuestion = function(whichOne) {
-    return this._tenQuestions[whichOne - 1];
+Questions.prototype.getQuestion = function(questionNumber) {
+    if (questionNumber !== Questions.MILLION_DOLLAR_QUESTION)
+        return this._tenQuestions[questionNumber - 1];
+    else
+        return this.getMillionDollarQuestion();
 };
 
 Questions.prototype.getMillionDollarQuestion = function() {
@@ -795,6 +799,8 @@ Questions.prototype._setMillionDollarQuestion = function(supply) {
 }
 
 /*
+    @pre 1 <= questionNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY,
+    or questionNumber = Questions.MILLION_DOLLAR_QUESTION
     @post the text of the question indicated by questionNumber and
     of that question's answers has been drawn
     @param questionNumber
@@ -818,6 +824,8 @@ Questions.prototype.eraseQuestionAndAnswersText = function() {
 }
 
 /*
+    @pre 1 <= questionNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY,
+    or questionNumber = Questions.MILLION_DOLLAR_QUESTION
     @post the text of the question indicated by questionNumber
     has been drawn in a good area and properly formatted
     @param questionNumber
@@ -844,8 +852,14 @@ Questions.prototype._drawQuestionText = function(questionNumber) {
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
 
-    var textPieces = convertCanvasTextIntoSmallerPieces(ctx,
-        this._tenQuestions[questionNumber - 1].text,
+    // Get question text
+    if (questionNumber === Questions.MILLION_DOLLAR_QUESTION)
+        var text = this._millionDollarQuestion.text;
+    else
+        var text = this._tenQuestions[questionNumber - 1].text;
+
+    // Draw the question
+    var textPieces = convertCanvasTextIntoSmallerPieces(ctx, text,
         allocatedWidthForQuestionDisplay - (sideMargin * 2));
     for (var i in textPieces) {
         // Throw exception if question is too big
@@ -899,6 +913,8 @@ Questions.prototype._drawAnswerRectangle =
 }
 
 /*
+    @pre 1 <= questionNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY,
+    or questionNumber = Questions.MILLION_DOLLAR_QUESTION
     @post the selectable answers to the question indicated by
     questionNumber have been drawn in a good area and properly formatted
     @param questionNumber
@@ -918,7 +934,8 @@ Questions.prototype._drawAnswersText = function(questionNumber) {
 }
 
 /*
-    @pre 1 <= questionNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY;
+    @pre 1 <= questionNumber <= Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY,
+    or questionNumber = Questions.MILLION_DOLLAR_QUESTION;
     1 <= answerNumber <= Questions.NUMBER_OF_ANSWERS
     @post the text of the answer indicated by
     questionNumber and answerNumber has been drawn
@@ -934,15 +951,21 @@ Questions.prototype._drawAnswersText = function(questionNumber) {
 Questions.prototype._drawAnswerText =
     function(textContext, x, y, questionNumber, answerNumber)
 {
-
     // Give the text the correct color
     textContext.fillStyle =
         this._getAnswerRectangleTextFillStyle(answerNumber);
 
     // Set up the text to draw
-    var text = Questions.getAnswerLetter(answerNumber) +
-        this._tenQuestions[questionNumber - 1]
+    if (questionNumber === Questions.MILLION_DOLLAR_QUESTION) {
+        var answerText = this._millionDollarQuestion.
+            answerData.arrayOfAnswers[answerNumber - 1];
+    }
+    else {
+        var answerText = this._tenQuestions[questionNumber - 1]
             .answerData.arrayOfAnswers[answerNumber - 1];
+    }
+    var text = Questions.getAnswerLetter(answerNumber) + answerText;
+
 
     // Throw an exception of the text is too long
     if ((Questions.ANSWER_TEXT_INDENT +
@@ -964,6 +987,7 @@ Questions.prototype._drawAnswerText =
 
 Questions.NUMBER_OF_QUESTIONS_TO_DISPLAY = 10;
 Questions.NUMBER_OF_ANSWERS = 4;
+Questions.MILLION_DOLLAR_QUESTION = 100;
 
 // For positioning the question labels
 Questions.HEIGHT_SPACE_PER_LABEL = 410 / 5;
@@ -1351,10 +1375,10 @@ Questions.getEntireSupplyOfQuestions = function() {
         new AnswerData(ANSWERS.THIRD, ["Dying for Pie", "Jellyfishing",
             "Just One Bite", "Gary Takes a Bath"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
-        "Which of the following characters has stolen something " +
+        "Which of the following characters has stolen footwear " +
         "and eaten it?",
         new AnswerData(ANSWERS.FOURTH, ["Dennis", "Bubble Bass",
-            "Sandy", "Mr. Krabs"])));
+            "Patrick", "Mr. Krabs"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.DRIVING,
         "Which of the following things has SpongeBob never truly hit with " +
         "a boat?",

@@ -14,9 +14,11 @@ var SOUND_EFFECTS_IDS = {
     PRESENT_QUESTION : "present-question-sound",
     MOVE_ANSWER_SELECTOR : "move-answer-selector-sound",
     LOSS : "loss-sound",
+    LOSS_MILLION : "loss-million-sound",
     GOOD_BYE : "good-bye-sound",
     CORRECT_ANSWER : "correct-answer-sound",
     CORRECT_ANSWER_10 : "correct-answer-10-sound",
+    CORRECT_ANSWER_MILLION: "correct-answer-million-sound",
 };
 
 var MUSIC_IDS = {
@@ -28,5 +30,6 @@ var MUSIC_IDS = {
     QUESTION_8 : "question-8-theme",
     QUESTION_9 : "question-9-theme",
     QUESTION_10 : "question-10-theme",
+    QUESTION_MILLION : "question-million-theme",
     BANKER : "banker-theme",
 };

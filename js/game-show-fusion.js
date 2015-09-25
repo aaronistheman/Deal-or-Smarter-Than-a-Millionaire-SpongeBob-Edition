@@ -35,6 +35,7 @@ gameShow.questions = new Questions(
     CANVAS_IDS.QUESTIONING_TEXT);
 
 gameShow.numberOfQuestionsCorrectlyAnswered = 0;
+gameShow.millionDollarQuestion = false;
 
 gameShow.turnVariables = {
     selectedQuestion : undefined,
@@ -440,10 +441,18 @@ function handleAnswerSelection() {
     var question = gameShow.questions.getQuestion(
         gameShow.turnVariables.selectedQuestion);
     if (selectedCorrectAnswer(question,
-        gameShow.turnVariables.selectedAnswer))
-        handleCorrectAnswerSelection();
-    else
-        handleWrongAnswerSelection();
+        gameShow.turnVariables.selectedAnswer)) {
+        if (gameShow.millionDollarQuestion)
+            handleCorrectMillionAnswerSelection();
+        else
+            handleCorrectAnswerSelection();
+    }
+    else {
+        if (gameShow.millionDollarQuestion)
+            handleWrongMillionAnswerSelection();
+        else
+            handleWrongAnswerSelection();
+    }
 }
 
 /*
@@ -509,6 +518,49 @@ function adjustBackgroundMusicBasedOnQuestionsAnswered() {
 }
 
 /*
+    @post the host has told the user what happened and concludes
+    the game
+*/
+function handleCorrectMillionAnswerSelection() {
+    // React visually and auditorily
+    gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
+    gameShow.musicPlayer.stop();
+
+    // Tell the user what happened
+    gameShow.quotesToDraw.add("That answer is: ")
+        .deployQuoteChain(function() {
+            gameShow.soundPlayer.play(
+                SOUND_EFFECTS_IDS.CORRECT_ANSWER_MILLION);
+            gameShow.quotesToDraw.add("CORRECT!")
+                .add("Congratulations!")
+                .add("You've beat the banker!")
+                .add("And you go home a millionaire!")
+                .deployQuoteChain(eraseQuoteBubbleText);
+        });
+}
+
+/*
+    @post the host has told the user what happened and concludes
+    the game
+*/
+function handleWrongMillionAnswerSelection() {
+    // React visually and auditorily
+    gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
+    gameShow.musicPlayer.stop();
+
+    // Tell the user what happened
+    gameShow.quotesToDraw.add("That answer is: ")
+        .deployQuoteChain(function() {
+            gameShow.soundPlayer.play(
+                SOUND_EFFECTS_IDS.LOSS_MILLION);
+            gameShow.quotesToDraw.add("INCORRECT!")
+                .add("Now, you must leave with nothing.")
+                .add("Good bye.")
+                .deployQuoteChain(eraseQuoteBubbleText);
+        });
+}
+
+/*
     @post the host has told the user what happened;
     the question's monetary value has been revealed;
     the number of correctly answered questions was updated;
@@ -531,9 +583,10 @@ function handleCorrectAnswerSelection() {
             gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.CORRECT_ANSWER);
     }
 
-        var questionValue = getRandomMoneyAmount(gameShow.moneyAmounts);
+    prepareForNextTurn();
 
     // Update what the host says
+    var questionValue = getRandomMoneyAmount(gameShow.moneyAmounts);
     gameShow.quotesToDraw.add("You have selected the correct answer.");
     if (gameShow.numberOfQuestionsCorrectlyAnswered < 10) {
             gameShow.quotesToDraw
@@ -541,12 +594,11 @@ function handleCorrectAnswerSelection() {
         if (gameShow.numberOfQuestionsCorrectlyAnswered === 5)
             gameShow.quotesToDraw.add("You're halfway there.");
         gameShow.quotesToDraw.deployQuoteChain(function() {
-            prepareForNextTurn();
             selectQuestion();
         });
     }
     else
-        letUserChooseMillionOrGoHome();
+        explainUserChooseMillionOrGoHome();
 }
 
 /*
@@ -555,7 +607,7 @@ function handleCorrectAnswerSelection() {
     has told her the value of her case and the question's subject;
     key actions have been updated to allow her to choose
 */
-function letUserChooseMillionOrGoHome() {
+function explainUserChooseMillionOrGoHome() {
     gameShow.quotesToDraw.add("You now have a tough choice.")
         .add("You can take home your case, which you know must " +
             "have a value of $" + gameShow.briefcaseValue + ".")
@@ -570,10 +622,48 @@ function letUserChooseMillionOrGoHome() {
             "the question.")
         .add("It's subject is: " +
             gameShow.questions.getMillionDollarQuestion().subject + '.')
-        .add("Would you like to try the million dollar question?")
+        .add("Now you must make your decision.")
         .deployQuoteChain(function() {
-            alert(gameShow.questions.getMillionDollarQuestion().text);
+            allowUserChooseMillionOrGoHome(true);
+            gameShow.quotesToDraw.add("Press the 'y' key to see " +
+                "the question. Press the 'n' key to quit.")
+                .deployQuoteChain();
         });
+}
+
+/*
+    @param bool true to enable the key actions that let the user
+    choose whether or not she wishes to face the million dollar
+    question; false, otherwise
+*/
+function allowUserChooseMillionOrGoHome(bool) {
+    if (bool === true) {
+        gameShow.keyActions.set(KEY_CODES.Y, function() {
+            allowUserChooseMillionOrGoHome(false);
+            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.PRESENT_QUESTION);
+
+            // Host gives dramatic introduction to the question
+            gameShow.quotesToDraw.add("Here it is.")
+                .add("For one million dollars, here is the question.")
+                .deployQuoteChain(presentMillionDollarQuestion);
+        })
+        .set(KEY_CODES.N, function() {
+            allowUserChooseMillionOrGoHome(false);
+            // userTakesCaseHome();
+        });
+    }
+    else {
+        gameShow.keyActions.erase(KEY_CODES.Y).erase(KEY_CODES.N);
+    }
+}
+
+function presentMillionDollarQuestion() {
+    gameShow.millionDollarQuestion = true;
+    gameShow.turnVariables.selectedQuestion =
+                        Questions.MILLION_DOLLAR_QUESTION;
+
+    gameShow.musicPlayer.play(MUSIC_IDS.QUESTION_MILLION);
+    presentQuestionAndAnswers();
 }
 
 /*

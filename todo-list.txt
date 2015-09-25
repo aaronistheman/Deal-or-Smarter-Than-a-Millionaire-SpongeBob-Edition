@@ -1,8 +1,11 @@
 Next:
 -after ten questions, user can leave with case or try to answer
     million dollar question
-    --don't "open case" after tenth question
+    --handle user's rejecting the question
+-banker makes a deal
+    --user has two options
 -allow picking of a helper
+-make separate canvas for help options
 -implement peeking
 -implement ask the audience
 -implement phone a friend
@@ -10,10 +13,17 @@ Next:
 -make sure:
     --SpongeBob explains the controls for using a source of help
     --sources of help can only be used once
--banker makes a deal
-    --user has two options
+    --sources of help can't be used on million dollar question
 -put more to the ending? perhaps some graphical thing or words
     "The End"
+    --EndGame class?
+    --play closing theme in all endings
+    --individually examine each of the five endings: (e.g. quotes)
+        --lose one of first ten questions
+        --take deal
+        --take case home
+        --lose on million dollar question
+        --win a million
 
 At some point:
 -for functions that emphasize things, don't erase and redraw if same thing
