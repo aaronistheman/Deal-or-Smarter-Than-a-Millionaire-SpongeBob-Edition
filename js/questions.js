@@ -86,6 +86,10 @@ Questions.prototype.getQuestion = function(whichOne) {
     return this._tenQuestions[whichOne - 1];
 };
 
+Questions.prototype.getMillionDollarQuestion = function() {
+    return this._millionDollarQuestion;
+};
+
 /*
     @post the graphical, rarely redrawn parts of the questions'
     label display and of the presentation of a question have

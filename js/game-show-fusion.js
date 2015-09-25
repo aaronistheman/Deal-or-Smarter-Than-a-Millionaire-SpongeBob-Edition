@@ -531,17 +531,49 @@ function handleCorrectAnswerSelection() {
             gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.CORRECT_ANSWER);
     }
 
-    var questionValue = getRandomMoneyAmount(gameShow.moneyAmounts);
+        var questionValue = getRandomMoneyAmount(gameShow.moneyAmounts);
 
     // Update what the host says
-    gameShow.quotesToDraw.add("You have selected the correct answer.")
-        .add("The question was worth: $" + questionValue + '.');
-    if (gameShow.numberOfQuestionsCorrectlyAnswered === 5)
-        gameShow.quotesToDraw.add("You're halfway there.");
-    gameShow.quotesToDraw.deployQuoteChain(function() {
-        prepareForNextTurn();
-        selectQuestion();
-    });
+    gameShow.quotesToDraw.add("You have selected the correct answer.");
+    if (gameShow.numberOfQuestionsCorrectlyAnswered < 10) {
+            gameShow.quotesToDraw
+                .add("The question was worth: $" + questionValue + '.');
+        if (gameShow.numberOfQuestionsCorrectlyAnswered === 5)
+            gameShow.quotesToDraw.add("You're halfway there.");
+        gameShow.quotesToDraw.deployQuoteChain(function() {
+            prepareForNextTurn();
+            selectQuestion();
+        });
+    }
+    else
+        letUserChooseMillionOrGoHome();
+}
+
+/*
+    @post the user has been presented the option of either taking
+    her case home or facing the million dollar question; the host
+    has told her the value of her case and the question's subject;
+    key actions have been updated to allow her to choose
+*/
+function letUserChooseMillionOrGoHome() {
+    gameShow.quotesToDraw.add("You now have a tough choice.")
+        .add("You can take home your case, which you know must " +
+            "have a value of $" + gameShow.briefcaseValue + ".")
+        .add("Or, you can face the million dollar question.")
+        .add("If you choose to see the question, you must answer it.")
+        .add("If you choose the wrong answer, you go home with nothing.")
+        .add("However, if you choose the right answer, you go home " +
+            "a millionaire.")
+        .add("Remember: your helpers, lifelines, and cheats can't help " +
+            "you on this question.")
+        .add("Before I let you choose, I'll tell you the subject of " +
+            "the question.")
+        .add("It's subject is: " +
+            gameShow.questions.getMillionDollarQuestion().subject + '.')
+        .add("Would you like to try the million dollar question?")
+        .deployQuoteChain(function() {
+            alert(gameShow.questions.getMillionDollarQuestion().text);
+        });
 }
 
 /*
