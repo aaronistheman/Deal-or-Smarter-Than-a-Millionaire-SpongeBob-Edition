@@ -44,12 +44,14 @@
 */
 function Questions(labelGraphicsCanvasId, labelTextCanvasId,
     numberOfLabelToEmphasize, answersGraphicsCanvasId,
-    answersTextCanvasId) {
-    // Storage of objects of type Question
-    this._questions = [];
+    answersTextCanvasId)
+{
+    // Storages of objects of type Question
+    this._tenQuestions = [];
+    this._millionDollarQuestion = undefined;
 
     // Store ten questions for use in the game
-    this._generateTenQuestions();
+    this._generateElevenQuestions();
 
     // This number indicates which question the user is currently
     // hovering over as he selects a question
@@ -71,7 +73,7 @@ function Questions(labelGraphicsCanvasId, labelTextCanvasId,
 }
 
 Questions.prototype.getQuestions = function() {
-    return this._questions;
+    return this._tenQuestions;
 };
 
 /*
@@ -81,7 +83,7 @@ Questions.prototype.getQuestions = function() {
     indicated by whichOne
 */
 Questions.prototype.getQuestion = function(whichOne) {
-    return this._questions[whichOne - 1];
+    return this._tenQuestions[whichOne - 1];
 };
 
 /*
@@ -132,7 +134,7 @@ Questions.prototype._drawQuestionLabel =
 {
     graphicsContext.fillStyle = this._getLabelFillStyle(number);
     textContext.fillStyle = this._getLabelTextFillStyle(number);
-    var text = Questions._getLabelText(this._questions[number - 1]);
+    var text = Questions._getLabelText(this._tenQuestions[number - 1]);
 
     // Draw the graphical label; shape it differently if the
     // label is supposed to be emphasized
@@ -166,7 +168,7 @@ Questions.prototype._drawQuestionLabel =
     }
 
     // Draw the text of the label only of unanwered questions
-    if (!this._questions[number - 1].answered) {
+    if (!this._tenQuestions[number - 1].answered) {
         textContext.fillText(text,
             x + (Questions.LABEL_DIMENSIONS.x / 2.0),
             y + (Questions.LABEL_DIMENSIONS.y / 2.0));
@@ -212,10 +214,10 @@ Questions.prototype._getLabelFillStyle = function(number) {
         return "white";
 
     // Color answered questions' labels differently
-    if (this._questions[number - 1].answered)
+    if (this._tenQuestions[number - 1].answered)
         return "black";
 
-    var grade = this._questions[number - 1].grade;
+    var grade = this._tenQuestions[number - 1].grade;
     switch (grade) {
         case GRADES.FIRST:
             return "green";
@@ -309,7 +311,7 @@ Questions.prototype.setAnswered = function(questionNumber) {
     // Only act if the question hasn't been set to having
     // been answered
     if (!this.isAnswered(questionNumber)) {
-        this._questions[questionNumber - 1].answered = true;
+        this._tenQuestions[questionNumber - 1].answered = true;
 
         // Set up variables for redrawing
         var graphicsContext = document.getElementById(
@@ -335,7 +337,7 @@ Questions.prototype.setAnswered = function(questionNumber) {
     has been answered; false, otherwise
 */
 Questions.prototype.isAnswered = function(questionNumber) {
-    return this._questions[questionNumber - 1].answered;
+    return this._tenQuestions[questionNumber - 1].answered;
 };
 
 /*
@@ -691,15 +693,30 @@ Questions.prototype._drawAnswer =
 };
 
 /*
-    @pre this._questions.length = 0
-    @post this._questions contains ten instances of type Question;
+    @pre this._tenQuestions.length = 0;
+    this._millionDollarQuestion = undefined
+    @post the helper functions to generate eleven appropriate
+    questions have been called
+*/
+Questions.prototype._generateElevenQuestions = function() {
+    var supply = Questions.getEntireSupplyOfQuestions();
+    this._generateTenQuestions(supply);
+    this._setMillionDollarQuestion(supply);
+};
+
+/*
+    @pre this._tenQuestions.length = 0
+    @post this._tenQuestions contains ten instances of type Question;
     each of these instances has a different subject matter; two
     questions of the ten are attached to each grade level from
-    one to five, and these ten questions are sorted by grade level
+    one to five, and these ten questions are sorted by grade level;
+    all questions in parameter supply that have subject matters of
+    picked questions have been removed
     @hasTest yes
+    @param supply array of instances of Question; the supply of
+    questions to edit and choose from
 */
-Questions.prototype._generateTenQuestions = function() {
-    var supply = Questions.getEntireSupplyOfQuestions();
+Questions.prototype._generateTenQuestions = function(supply) {
     var tenQuestions = [];
 
     /*
@@ -748,7 +765,29 @@ Questions.prototype._generateTenQuestions = function() {
     pickTwoQuestions(supply, GRADES.FOURTH);
     pickTwoQuestions(supply, GRADES.FIFTH);
 
-    this._questions = tenQuestions;
+    this._tenQuestions = tenQuestions;
+}
+
+/*
+    @pre none of the questions in parameter supply have the same
+    subject as any of the questions in this._tenQuestions
+    @post this._millionDollarQuestion contains a question of
+    the appropriate grade (GRADES.MILLION)
+    @hasTest yes
+    @param supply array of instances of Question; the supply of
+    questions to edit and choose from
+*/
+Questions.prototype._setMillionDollarQuestion = function(supply) {
+    var randomIndex = Math.floor((Math.random() * supply.length));
+
+    // Only add the question indicated by randomIndex when the
+    // grade level is correct
+    while (supply[randomIndex].grade !== GRADES.MILLION) {
+        randomIndex = Math.floor((Math.random() * supply.length));
+    }
+
+    var questionToAdd = supply.splice(randomIndex, 1).pop();
+    this._millionDollarQuestion = questionToAdd;
 }
 
 /*
@@ -802,7 +841,7 @@ Questions.prototype._drawQuestionText = function(questionNumber) {
     ctx.textBaseline = "top";
 
     var textPieces = convertCanvasTextIntoSmallerPieces(ctx,
-        this._questions[questionNumber - 1].text,
+        this._tenQuestions[questionNumber - 1].text,
         allocatedWidthForQuestionDisplay - (sideMargin * 2));
     for (var i in textPieces) {
         // Throw exception if question is too big
@@ -898,7 +937,7 @@ Questions.prototype._drawAnswerText =
 
     // Set up the text to draw
     var text = Questions.getAnswerLetter(answerNumber) +
-        this._questions[questionNumber - 1]
+        this._tenQuestions[questionNumber - 1]
             .answerData.arrayOfAnswers[answerNumber - 1];
 
     // Throw an exception of the text is too long
@@ -1039,12 +1078,13 @@ Questions.setUpAnswersTextContext = function(textContext) {
     answers would fit in their designated areas)
     @returns an array of instances of Question so that this array
     contains all of the questions that the user could possible face;
-    there are at least ten questions of different subjects for fifth
+    there are at least eleven million dollar questions of different
+    subjects, ten questions of different subjects for fifth
     grade, at least eight of such questions for fourth grade,
     at least six of such questions for third grade, at least four
     of such questions for second grade, and at least two of
     such questions for first grade (this prevents an infinite loop
-    in Questions._generateTenQuestions()); each question and answer
+    in Questions._generateElevenQuestions()); each question and answer
     should be able to fit in the display, although this depends
     on the font
 */
@@ -1095,6 +1135,10 @@ Questions.getEntireSupplyOfQuestions = function() {
         "is driven by Mermaid Man?",
         new AnswerData(ANSWERS.FIRST, ["Invisible Boatmobile",
             "Underwater Heartbreaker", "Patty Wagon", "bus"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.SIDE_CHARACTERS,
+        "Which of the following characters is not a friend of SpongeBob?",
+        new AnswerData(ANSWERS.SECOND, ["Mermaid Man", "Dennis",
+            "Stanley", "Bubble Buddy"])));
 
     /*
         Second grade questions
@@ -1120,6 +1164,15 @@ Questions.getEntireSupplyOfQuestions = function() {
         "Bottom, and push it somewhere else'?",
         new AnswerData(ANSWERS.FIRST, ["Patrick", "Sandy",
             "Mr. Krabs", "Squidward"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.EPISODES,
+        "What is the name of the first episode of the television " +
+        "'SpongeBob Squarepants'?",
+        new AnswerData(ANSWERS.SECOND, ["Reef Blower", "Help Wanted",
+            "Plankton", "Pilot"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.HISTORY,
+        "In what year was the first episode of 'SpongeBob Squarepants' " +
+        "released?",
+        new AnswerData(ANSWERS.THIRD, ["2002", "2000", "1999", "1998"])));
 
     /*
         Third grade questions
@@ -1149,12 +1202,17 @@ Questions.getEntireSupplyOfQuestions = function() {
         "Who said the following quote: 'I wonder if a fall " +
         "from this height would kill me'?",
         new AnswerData(ANSWERS.SECOND, ["Barnacle Boy",
-            "Squidward", "Patrick", "Flatts"])));
+            "Squidward", "Patrick", "Flats"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.VIDEO_GAMES,
         "Who is the final boss in the video game version of " +
         "the first movie?",
         new AnswerData(ANSWERS.THIRD, ["Plankton", "Robot Plankton",
             "King Neptune", "The Flying Dutchman"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.EPISODES,
+        "In which of the following episodes was SpongeBob's house " +
+        "destroyed?",
+        new AnswerData(ANSWERS.FOURTH, ["Squidville", "Life of Crime",
+            "Sandy's Rocket", "Home Sweet Pineapple"])));
 
     /*
         Fourth grade questions
@@ -1199,6 +1257,11 @@ Questions.getEntireSupplyOfQuestions = function() {
         "used to be?",
         new AnswerData(ANSWERS.THIRD, ["blender", "blow dryer",
             "calculator", "spatula"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.EPISODES,
+        "In which of the following episodes is there no audible " +
+        "dialogue?",
+        new AnswerData(ANSWERS.FOURTH, ["Bubblestand", "Nature Pants",
+            "Ugh", "Reef Blower"])));
 
     /*
         Fifth grade questions
@@ -1215,7 +1278,7 @@ Questions.getEntireSupplyOfQuestions = function() {
     supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
         "Which of the following characters let someone " +
         "drown to death?",
-        new AnswerData(ANSWERS.SECOND, ["Flatts", "Bubble Buddy",
+        new AnswerData(ANSWERS.SECOND, ["Flats", "Bubble Buddy",
             "Fred", "Plankton"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.HISTORY,
         "In which of the following years did a chum famine " +
@@ -1227,10 +1290,6 @@ Questions.getEntireSupplyOfQuestions = function() {
         "SpongeBob in the opening theme?",
         new AnswerData(ANSWERS.FOURTH, ["porous", "yellow",
             "absorbent", "spongy"])));
-    supply.push(new Question(gradeOfQuestion, SUBJECTS.TECHNOLOGY,
-        "Which of the following did SpongeBob not say that " +
-        "robots cannot do?",
-        new AnswerData(ANSWERS.FIRST, ["dance", "laugh", "cry", "love"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
         "Who said the following quote: 'Everything is chrome " +
         "in the future'?",
@@ -1250,16 +1309,83 @@ Questions.getEntireSupplyOfQuestions = function() {
         new AnswerData(ANSWERS.FOURTH,
             ["Fancy", "Weenie Hut Juniors",
             "Super Weenie Hut Juniors", "Weenie Hut General"])));
-    supply.push(new Question(gradeOfQuestion, SUBJECTS.STAFF,
-        "Who is the voice actor of Patrick?",
-        new AnswerData(ANSWERS.FIRST, ["Bill Fagerbakke",
-            "Larry the Cable Guy", "Clancy Brown",
-            "Rodger Bumpass"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.VEHICLES,
         "What is the name of the vehicle that was driven by Patrick " +
         "and SpongeBob on the way to their panty raid?",
         new AnswerData(ANSWERS.SECOND, ["Underwater Heartbreaker",
             "Boaty", "X Tornado", "Trailblazer"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.STAFF,
+        "Who is currently the executive producer of the television " +
+        "show 'SpongeBob Squarepants'?",
+        new AnswerData(ANSWERS.FOURTH, ["Stephen Hillenburg",
+            "Alan Smart", "Barry Anthony", "Paul Tibbitt"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.EPISODES,
+        "Which of the following episodes showed a reef blower?",
+        new AnswerData(ANSWERS.FIRST, ["Squidville", "Pressure",
+            "Good Neighbors", "Plankton!"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
+        "Which of the following did Patrick mistake for a cardinal " +
+        "direction?",
+        new AnswerData(ANSWERS.SECOND, ["nouth", "weast", "sorth", "est"])));
+
+    /*
+        Million dollar questions
+    */
+    gradeOfQuestion = GRADES.MILLION;
+
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.TECHNOLOGY,
+        "Which of the following did SpongeBob not say that " +
+        "robots cannot do?",
+        new AnswerData(ANSWERS.FIRST, ["dance", "laugh", "cry", "love"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.STAFF,
+        "Who is the voice actor of Patrick?",
+        new AnswerData(ANSWERS.FIRST, ["Bill Fagerbakke",
+            "Alan Smart", "Steve Fonti", "Rodger Bumpass"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.EPISODES,
+        "Which of the following episodes has a scene that was eventually " +
+        "deleted in America?",
+        new AnswerData(ANSWERS.THIRD, ["Dying for Pie", "Jellyfishing",
+            "Just One Bite", "Gary Takes a Bath"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
+        "Which of the following characters has stolen something " +
+        "and eaten it?",
+        new AnswerData(ANSWERS.FOURTH, ["Dennis", "Bubble Bass",
+            "Sandy", "Mr. Krabs"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.DRIVING,
+        "Which of the following things has SpongeBob never truly hit with " +
+        "a boat?",
+        new AnswerData(ANSWERS.FIRST, ["Johnny Elaine", "the narrator",
+            "lighthouse", "boat"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.VIDEO_GAMES,
+        "Which of the following SpongeBob video games cannot be played " +
+        "on the Nintendo DS?",
+        new AnswerData(ANSWERS.SECOND, ["SpongeBob's Truth or Square",
+            "SpongeBob SquigglePants", "SpongeBob's Atlantis SquarePantis",
+            "Creature from the Krusty Krab"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.GEOGRAPHY,
+        "In which of the following bodies of water is Bikini " +
+        "Bottom located?",
+        new AnswerData(ANSWERS.THIRD, ["Atlantic Ocean",
+            "Austin Creek", "Pacific Ocean", "Mediterranean Sea"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.RUMORS,
+        "Which of the following episodes was rumored to have " +
+        "shown Squidward transform into a snail?",
+        new AnswerData(ANSWERS.FOURTH, ["Shanghaied", "Squidville",
+            "Nature Pants", "I Was a Teenage Gary"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.MAIN_CHARACTERS,
+        "Of which of the following species is Plankton?",
+        new AnswerData(ANSWERS.FIRST, ["copepod", "krill",
+            "pipidae", "enantiornithes"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.SIDE_CHARACTERS,
+        "Which of the following characters is a news anchor?",
+        new AnswerData(ANSWERS.SECOND, ["Old Man Jenkins",
+            "Johnny Elaine", "Gilligan Scales", "What Zit Tooya"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
+        "Who once said the following quote: 'The urge to do " +
+        "bad is gone'?",
+        new AnswerData(ANSWERS.THIRD, ["Atomic Founder", "Plankton",
+            "Man Ray", "Barnacle Boy"])));
+
 
     return supply;
 }

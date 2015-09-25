@@ -137,7 +137,7 @@ QUnit.test("Questions._generateTenQuestions()", function(assert) {
     // the constructor calls the tested function, so testing
     // can already be done
     var questionsObject = new Questions();
-    var questions = questionsObject._questions;
+    var questions = questionsObject._tenQuestions;
 
     QUnit.deepEqual(questions.length, 10,
         "Ten instances of type Question were generated.");
@@ -189,6 +189,16 @@ QUnit.test("Questions._generateTenQuestions()", function(assert) {
         "corresponds to a grade level going up from first to fifth, " +
         "and the questions are sorted by grade level, with the first " +
         "grade questions having the lowest index in the array of questions.");
+});
+
+QUnit.test("Questions._setMillionDollarQuestion()", function(assert) {
+    // the constructor calls the tested function, so testing
+    // can already be done
+    var questionsObject = new Questions();
+    var question = questionsObject._millionDollarQuestion;
+
+    assert.deepEqual(question.grade, GRADES.MILLION,
+        "A million dollar question of the correct grade was picked");
 });
 
 /*

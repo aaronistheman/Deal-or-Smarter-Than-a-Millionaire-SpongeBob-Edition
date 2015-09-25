@@ -1,5 +1,4 @@
 Next:
--make more questions
 -after ten questions, user can leave with case or try to answer
     million dollar question
     --don't "open case" after tenth question
@@ -48,6 +47,7 @@ Before release 0.1:
 -make sure trivial functions that are no longer needed and that were
  made for the purpose of testing have been erased in game-show-fusion.js
 -erase commented out methods of MoneyDisplay (around lines 96-99)
+-Facebook/Twitter integration
 -update readme
 -put release number on each file
 -YouTube video; put link in readme
@@ -71,3 +71,4 @@ Considerable:
 -(if can still make a difference) applying isUnitTesting() when
     drawing question labels, so that they won't be drawn if
     unit testing; could apply to drawLabel functions
+-unit test to check sufficient subject variety
