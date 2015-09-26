@@ -1,9 +1,5 @@
 Next:
--with WebGL:
-    --show opening of briefcase with WebGL
-    --show updating of money display with WebGL
 -banker makes a deal
-    --use WebGL to present banker's offer with a rotating rectangle
     --user has two options
 -allow picking of a helper
 -make separate canvas for help options
@@ -29,26 +25,28 @@ Next:
         --win a million
 
 At some point:
+-fix SpongeBob's directions about arrow keys and choosing question
+    --make sure the introductory directions are all correct
 -look into that one error that always pops up in the console
 -make SpongeBob do dramatic pauses before announcing every answer
-
-After game is playable (or, perhaps, ready for release 0.1):
--fake static advertisement panel on the side
-    --could advertise some of my YouTube videos
+-with WebGL:
+    --show opening of briefcase with WebGL
+    --show updating of money display with WebGL
+    --use WebGL to present banker's offer with a rotating rectangle
 -more decorated title screen
--a guide to each assistant that can be unlocked by reaching a certain
- high score (using local storage)
-    --can use another canvas for this guide
 -consider making my own graphics for some things (e.g. briefcases)
+    --could use GIMP, Microsoft Word, etc.
     --in this case, consider resource identifiers for the images
 
 Before release 0.1:
 -make sure trivial functions that are no longer needed and that were
  made for the purpose of testing have been erased in game-show-fusion.js
 -erase commented out methods of MoneyDisplay (around lines 96-99)
--Facebook/Twitter integration
 -update readme
 -put release number on each file
+
+After release 0.1:
+-Facebook/Twitter integration
 -YouTube video; put link in readme
 
 Considerable:
