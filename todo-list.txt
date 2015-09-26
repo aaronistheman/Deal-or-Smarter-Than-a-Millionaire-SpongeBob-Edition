@@ -1,7 +1,11 @@
 Next:
 -million dollar question display
     --try drawing it with a line
+-with WebGL:
+    --show opening of briefcase with WebGL
+    --show updating of money display with WebGL
 -banker makes a deal
+    --use WebGL to present banker's offer with a rotating rectangle
     --user has two options
 -allow picking of a helper
 -make separate canvas for help options
@@ -16,6 +20,8 @@ Next:
 -put more to the ending? perhaps some graphical thing or words
     "The End"
     --EndGame class?
+        --could pass the context (i.e. the type of ending) to get
+            the appropriate reaction
     --play closing theme in all endings
     --individually examine each of the five endings: (e.g. quotes, music)
         --lose one of first ten questions
@@ -25,22 +31,7 @@ Next:
         --win a million
 
 At some point:
--for functions that emphasize things, don't erase and redraw if same thing
-    is emphasized
--ending (for winning and losing)
-    --could use an object prototype
--effects as canvases appear or disappear (e.g. fading)
-    --and maybe even between speakers (could maybe hide and then show
-        as a trick)
 -look into that one error that always pops up in the console
--make class MoneyData?
-    --this can be used to update both MoneyDisplay and
-        BriefcaseDisplay
--replace use of ParameterError() with an alert and the throwing
-    of an unhandled exception
-    --update affected functions' contracts
--WebGL for opening of briefcase
-    --and perhaps, the updating of the money display
 
 After game is playable (or, perhaps, ready for release 0.1):
 -fake static advertisement panel on the side
@@ -81,3 +72,16 @@ Considerable:
     drawing question labels, so that they won't be drawn if
     unit testing; could apply to drawLabel functions
 -unit test to check sufficient subject variety
+-replace use of ParameterError() with an alert and the throwing
+    of an unhandled exception
+    --update affected functions' contracts
+-for functions that emphasize things, don't erase and redraw if same thing
+    is emphasized
+-effects as canvases appear or disappear (e.g. fading)
+    --could be issue if a canvas is hidden and redrawn (as occurs
+        to the quote bubble frequently in rules explanation)
+    --and maybe even between speakers (could maybe hide and then show
+        as a trick)
+-make class MoneyData
+    --this can be used to update both MoneyDisplay and
+        BriefcaseDisplay
