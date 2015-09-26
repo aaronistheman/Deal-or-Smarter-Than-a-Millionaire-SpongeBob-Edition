@@ -64,3 +64,7 @@ canvas.show {
     #million-question-canvas.show {
     background-image: url(../media/images/chalkboard_texture.jpg);
 }
+
+#banker-canvas.show {
+    background-image: url(../media/images/banker_background.jpg);
+}

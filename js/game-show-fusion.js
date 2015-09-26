@@ -8,6 +8,9 @@
 var gameShow = {};
 gameShow.speakers = getSpeakerObjects();
 
+gameShow.bankerImage = new Image();
+gameShow.bankerImage.src = "media/images/banker.png";
+
 gameShow.moneyAmounts = ['0.01', '50', '300', '750', '1,000',
     '10,000', '25,000', '100,000', '250,000', '500,000'];
 gameShow.briefcaseValue = undefined;
@@ -272,6 +275,31 @@ function setUpMillionDollarQuestionLabel() {
     ctx.lineWidth = 2;
     ctx.strokeStyle = "black";
     ctx.strokeText("MILLION DOLLAR QUESTION", leftX + (width / 2), topY);
+}
+
+/*
+    @post banker and his environment has been drawn on appropriate
+    canvas
+*/
+function setUpBanker() {
+    var canvas = document.getElementById("banker-canvas");
+    var ctx = canvas.getContext('2d');
+
+    // Draw the banker (i.e. Mr. Krabs)
+    var imageSizeMultiplier = 1.3;
+    var imageWidth = 257 * imageSizeMultiplier;
+    var imageHeight = 224 * imageSizeMultiplier;
+    var x = (canvas.width / 2.0) - (imageWidth / 2);
+    var y = (canvas.height / 2.0) - (imageHeight / 2) - 40;
+    ctx.drawImage(gameShow.bankerImage, x, y, imageWidth, imageHeight);
+
+    // Draw a dark rectangle (i.e. "table")
+    var x = 20;
+    var y = 300;
+    var width = canvas.width - (x * 2);
+    var height = canvas.height - y;
+    ctx.fillStyle = "black";
+    ctx.fillRect(x, y, width, height);
 }
 
 /*
@@ -765,6 +793,7 @@ function selectQuestion() {
 function setUpGame() {
     setUpQuoteBubble();
     setUpMillionDollarQuestionLabel();
+    setUpBanker();
     gameShow.moneyDisplay.setUp();
     gameShow.briefcaseDisplay.draw();
     gameShow.questions.drawInitialParts();
