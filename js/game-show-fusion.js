@@ -245,43 +245,33 @@ function setUpQuoteBubble() {
     has been drawn on the appropriate canvas
 */
 function setUpMillionDollarQuestionLabel() {
+    // Prepare helpful variables
     var canvas = document.getElementById(CANVAS_IDS.MILLION_QUESTION);
     var ctx = canvas.getContext('2d');
-
-    // Draw the rectangular part of the label
     var canvasWidth = 1100;
     var canvasHeight = 550;
     var width = 800;
     var height = 100;
-    var topLeftX = (canvasWidth - width) / 2;
-    var topLeftY = ((canvasHeight - height) / 2) - 50;
-    ctx.fillStyle = "#FFDF00";
-    ctx.fillRect(topLeftX, topLeftY, width, height);
+    var leftX = (canvasWidth - width) / 2;
+    var topY = (canvasHeight - height) / 2;
 
-    // Draw circular edges of the label
-    var circularEdgeRadius = height / 2.0;
-    ctx.beginPath();
-    ctx.arc(topLeftX, topLeftY + circularEdgeRadius,
-        circularEdgeRadius, Math.PI * 0.5, Math.PI * 1.5);
-    ctx.closePath();
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(topLeftX + width, topLeftY + circularEdgeRadius,
-        circularEdgeRadius, Math.PI * 1.5, Math.PI * 0.5);
-    ctx.closePath();
-    ctx.fill();
+    // Draw the label
+    ctx.lineWidth = height;
+    ctx.strokeStyle = "#FFDF00";
+    ctx.lineCap = "round";
+    ctx.moveTo(leftX, topY);
+    ctx.lineTo(leftX + width, topY);
+    ctx.stroke();
 
     // Draw the label's text
     ctx.fillStyle = "#c0c0c0";
     ctx.font = "bold 45px Arial";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText("MILLION DOLLAR QUESTION", topLeftX + (width / 2),
-        topLeftY + (height / 2));
+    ctx.fillText("MILLION DOLLAR QUESTION", leftX + (width / 2), topY);
     ctx.lineWidth = 2;
     ctx.strokeStyle = "black";
-    ctx.strokeText("MILLION DOLLAR QUESTION", topLeftX + (width / 2),
-        topLeftY + (height / 2));
+    ctx.strokeText("MILLION DOLLAR QUESTION", leftX + (width / 2), topY);
 }
 
 /*

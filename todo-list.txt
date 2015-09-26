@@ -1,6 +1,4 @@
 Next:
--million dollar question display
-    --try drawing it with a line
 -with WebGL:
     --show opening of briefcase with WebGL
     --show updating of money display with WebGL
@@ -32,6 +30,7 @@ Next:
 
 At some point:
 -look into that one error that always pops up in the console
+-make SpongeBob do dramatic pauses before announcing every answer
 
 After game is playable (or, perhaps, ready for release 0.1):
 -fake static advertisement panel on the side
