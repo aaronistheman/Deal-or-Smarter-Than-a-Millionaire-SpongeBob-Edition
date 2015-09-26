@@ -129,6 +129,41 @@ QUnit.test("selectedCorrectAnswer()", function(assert) {
         true, "Correct answer was detected");
 });
 
+QUnit.test("getBankerOffer()", function(assert) {
+    // Prepare the function parameters
+    var stringAmount1 = "1553.46";
+    var stringAmount2 = "789.33";
+    var stringAmount3 = "11,000";
+    var moneyAmounts = [stringAmount1, stringAmount2, stringAmount3];
+
+    // Calculate the correct banker's offer
+    var amount1 = parseFloat(stringAmount1, 10);
+    var amount2 = parseFloat(stringAmount2, 10);
+    var amount3 = parseFloat(stringAmount3, 10);
+    var averageAmount = (amount1 + amount2 + amount3) / 3;
+    // Round the correct offer to nearest hundred
+    var correctOffer =
+        Math.floor(averageAmount * gameShow.BANKER_MULTIPLIER / 100) * 100;
+
+    assert.deepEqual(getBankerOffer(moneyAmounts),
+        correctOffer, "Correct banker's offer determined, rounded to " +
+            "nearest hundred, and returned");
+});
+
+QUnit.module("money-amounts.js");
+
+QUnit.test("removeCommaFromStringNumber()", function(assert) {
+    assert.deepEqual(removeCommaFromStringNumber("15,000.01"), "15000.01",
+        "Given value was correctly modified and returned");
+});
+
+QUnit.test("removeCommaFromEachStringNumber()", function(assert) {
+    assert.deepEqual(removeCommaFromEachStringNumber(
+        ["3,000.53", "123,456", "1,000"]),
+        ["3000.53", "123456", "1000"],
+        "Correct array of adjusted numbers was created and returned");
+});
+
 QUnit.module("questions.js");
 
 QUnit.test("Questions._generateTenQuestions()", function(assert) {

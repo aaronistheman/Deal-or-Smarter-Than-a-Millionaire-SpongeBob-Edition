@@ -1,6 +1,15 @@
 Next:
 -banker makes a deal
+    --round banker offer's to nearest thousand, instead
     --user has two options
+    --put comma as separator in the offer; make a function, test it,
+        and put it in utility.js
+    --if user takes the deal, have host say whether or not the
+        deal was good
+    --if user rejects the deal, have game continue
+    --play appropriate sound effects when accept or reject deal
+    --make sure the background music changes back from the banker
+        music
 -allow picking of a helper
 -make separate canvas for help options
 -implement peeking

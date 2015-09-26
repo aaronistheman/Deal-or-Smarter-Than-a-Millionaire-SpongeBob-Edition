@@ -10,9 +10,9 @@ gameShow.speakers = getSpeakerObjects();
 
 gameShow.bankerImage = new Image();
 gameShow.bankerImage.src = "media/images/banker.png";
+gameShow.BANKER_MULTIPLIER = 0.80;
 
-gameShow.moneyAmounts = ['0.01', '50', '300', '750', '1,000',
-    '10,000', '25,000', '100,000', '250,000', '500,000'];
+gameShow.moneyAmounts = getBeginningMoneyAmounts();
 gameShow.briefcaseValue = undefined;
 
 gameShow.canvasStack = new CanvasStack();
@@ -654,10 +654,113 @@ function handleCorrectAnswerSelection() {
     if (gameShow.numberOfQuestionsCorrectlyAnswered < 10) {
         gameShow.quotesToDraw
             .add("The question was worth: $" + questionValue + '.');
-        gameShow.quotesToDraw.deployQuoteChain(/*makeBankerOffer*/goToNextTurn);
+
+        // The banker makes an offer after the second, fourth, sixth,
+        // and eighth questions
+        if (gameShow.numberOfQuestionsCorrectlyAnswered % 2 === 0)
+            gameShow.quotesToDraw.deployQuoteChain(makeBankerOffer);
+        else
+            gameShow.quotesToDraw.deployQuoteChain(goToNextTurn);
     }
     else
         explainUserChooseMillionOrGoHome();
+}
+
+/*
+    @post the user has been offered a monetary amount by the banker
+    that she can either accept (and leave the game) or reject
+    (and continue the game)
+*/
+function makeBankerOffer() {
+    gameShow.canvasStack.set(CANVAS_IDS.QUOTE.concat(
+        CANVAS_IDS.BANKER));
+    gameShow.musicPlayer.play(MUSIC_IDS.BANKER);
+    var bankerOffer = getBankerOffer(
+        removeCommaFromEachStringNumber(gameShow.moneyAmounts));
+
+    gameShow.quotesToDraw.add("The banker is calling.")
+        .add("He has an offer for you.")
+        .add("Here's the offer.")
+        .add("It is $" + bankerOffer)
+        .deployQuoteChain(eraseQuoteBubbleText);
+        // .add("It is $" + bankerOffer
+        // allowUserChooseMillionOrGoHome(true);
+            // gameShow.quotesToDraw.add("Press the 'y' key to see " +
+                // "the question. Press the 'n' key to quit.")
+                // .deployQuoteChain();
+}
+
+/*
+    @pre arrayOfMoneyAmounts has numbers in the form of strings
+    with no dollar signs or commas
+    @hasTest yes
+    @param arrayOfMoneyAmounts the banker makes his offer based
+    on the remaining money amounts
+    @returns the banker's offer, which is a certain percentage
+    of the average money amount and is rounded to the nearest thounsand
+*/
+function getBankerOffer(arrayOfMoneyAmounts) {
+    // Get the average money amount
+    var sumMoneyAmounts = 0;
+    for (var i = 0; i < arrayOfMoneyAmounts.length; ++i) {
+        var moneyAmount = parseFloat(arrayOfMoneyAmounts[i], 10);
+        sumMoneyAmounts += moneyAmount;
+    }
+    var averageMoneyAmount = sumMoneyAmounts / arrayOfMoneyAmounts.length;
+
+    // Apply the banker multiplier
+    var bankerOffer = averageMoneyAmount * gameShow.BANKER_MULTIPLIER;
+
+    // Round down and to the nearest hundred the banker's offer
+    var bankerOffer = Math.floor(bankerOffer / 100) * 100;
+
+    return bankerOffer;
+}
+
+/*
+    @param bool true to enable the key actions that let the user
+    choose whether or not she wishes to accept the banker's offer;
+    false, otherwise
+*/
+function allowUserDealOrNoDeal(bool) {
+    if (bool === true) {
+        gameShow.keyActions.set(KEY_CODES.Y, function() {
+            allowUserDealOrNoDeal(false);
+            userAcceptsDeal();
+        })
+        .set(KEY_CODES.N, function() {
+            allowUserDealOrNoDeal(false);
+            userRejectsDeal();
+        });
+    }
+    else {
+        gameShow.keyActions.erase(KEY_CODES.Y).erase(KEY_CODES.N);
+    }
+}
+
+/*
+    @post game has properly reacted to the user's accepting the
+    banker's deal; the host has stated whether or not it was
+    a good deal
+*/
+function userAcceptsDeal() {
+    // Play deal accepted sound track
+
+    // Host tells the user whether or not the deal was good
+    // and concludes the game
+    // gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
+    // gameShow.quotesToDraw.add("Here it is.")
+        // .add("For one million dollars, here is the question.")
+        // .deployQuoteChain(eraseQuoteBubbleText);
+}
+
+/*
+    @post game has properly reacted to the user's rejecting the
+    banker's deal; the game has been set up to continue
+*/
+function userRejectsDeal() {
+    gameShow.quotesToDraw.add("Let's hope you made the correct decision.")
+        .deployQuoteChain(goToNextTurn);
 }
 
 /*
@@ -670,7 +773,8 @@ function goToNextTurn() {
     // Update what the host says; call of selectQuestion starts
     // the next turn
     if (gameShow.numberOfQuestionsCorrectlyAnswered === 5)
-        gameShow.quotesToDraw.add("You're halfway there.");
+        gameShow.quotesToDraw.add("You're halfway to the " +
+            "million dollar question.");
     else
         gameShow.quotesToDraw.add("Get ready to pick a question.");
     gameShow.quotesToDraw.deployQuoteChain(selectQuestion);
