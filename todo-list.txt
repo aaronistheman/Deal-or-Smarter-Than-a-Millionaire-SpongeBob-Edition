@@ -25,6 +25,7 @@ Next:
         --win a million
 
 At some point:
+-add more first and second grade questions
 -fix SpongeBob's directions about arrow keys and choosing question
     --make sure the introductory directions are all correct
 -look into that one error that always pops up in the console

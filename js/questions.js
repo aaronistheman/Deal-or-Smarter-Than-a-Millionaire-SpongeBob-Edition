@@ -1340,7 +1340,7 @@ Questions.getEntireSupplyOfQuestions = function() {
     supply.push(new Question(gradeOfQuestion, SUBJECTS.VEHICLES,
         "What is the name of the vehicle that was driven by Patrick " +
         "and SpongeBob on the way to their panty raid?",
-        new AnswerData(ANSWERS.SECOND, ["Underwater Heartbreaker",
+        new AnswerData(ANSWERS.FIRST, ["Underwater Heartbreaker",
             "Boaty", "X Tornado", "Trailblazer"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.STAFF,
         "Who is currently the executive producer of the television " +
