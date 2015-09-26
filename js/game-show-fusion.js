@@ -575,6 +575,9 @@ function adjustBackgroundMusicBasedOnQuestionsAnswered() {
             case 9:
                 gameShow.musicPlayer.play(MUSIC_IDS.QUESTION_10);
                 break;
+            case 10:
+                gameShow.musicPlayer.play(MUSIC_IDS.QUESTION_MILLION);
+                break;
         }
     }
 }
@@ -645,22 +648,32 @@ function handleCorrectAnswerSelection() {
             gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.CORRECT_ANSWER);
     }
 
-    prepareForNextTurn();
-
     // Update what the host says
     var questionValue = getRandomMoneyAmount(gameShow.moneyAmounts);
     gameShow.quotesToDraw.add("You have selected the correct answer.");
     if (gameShow.numberOfQuestionsCorrectlyAnswered < 10) {
-            gameShow.quotesToDraw
-                .add("The question was worth: $" + questionValue + '.');
-        if (gameShow.numberOfQuestionsCorrectlyAnswered === 5)
-            gameShow.quotesToDraw.add("You're halfway there.");
-        gameShow.quotesToDraw.deployQuoteChain(function() {
-            selectQuestion();
-        });
+        gameShow.quotesToDraw
+            .add("The question was worth: $" + questionValue + '.');
+        gameShow.quotesToDraw.deployQuoteChain(/*makeBankerOffer*/goToNextTurn);
     }
     else
         explainUserChooseMillionOrGoHome();
+}
+
+/*
+    @pre numberOfQuestionsCorrectlyAnswered < 10
+    @post game has adjusted so that user can pick his next question
+*/
+function goToNextTurn() {
+    prepareForNextTurn();
+
+    // Update what the host says; call of selectQuestion starts
+    // the next turn
+    if (gameShow.numberOfQuestionsCorrectlyAnswered === 5)
+        gameShow.quotesToDraw.add("You're halfway there.");
+    else
+        gameShow.quotesToDraw.add("Get ready to pick a question.");
+    gameShow.quotesToDraw.deployQuoteChain(selectQuestion);
 }
 
 /*
@@ -739,12 +752,20 @@ function userTakesCaseHome() {
         });
 }
 
+/*
+    @post variables have been adjusted so that the million dollar
+    question can be presented without any bugs involving class
+    Questions; the question and its answers have been presented
+    with appropriate music
+*/
 function presentMillionDollarQuestion() {
+    // Reset the turn-specific variables and canvases; set the music
+    prepareForNextTurn();
+
     gameShow.millionDollarQuestion = true;
     gameShow.turnVariables.selectedQuestion =
-                        Questions.MILLION_DOLLAR_QUESTION;
+        Questions.MILLION_DOLLAR_QUESTION;
 
-    gameShow.musicPlayer.play(MUSIC_IDS.QUESTION_MILLION);
     presentQuestionAndAnswers();
 }
 

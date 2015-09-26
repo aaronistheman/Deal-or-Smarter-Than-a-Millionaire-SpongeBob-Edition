@@ -1194,7 +1194,7 @@ Questions.getEntireSupplyOfQuestions = function() {
             "Mr. Krabs", "Squidward"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.EPISODES,
         "What is the name of the first episode of the television " +
-        "'SpongeBob Squarepants'?",
+        "show 'SpongeBob Squarepants'?",
         new AnswerData(ANSWERS.SECOND, ["Reef Blower", "Help Wanted",
             "Plankton", "Pilot"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.HISTORY,
