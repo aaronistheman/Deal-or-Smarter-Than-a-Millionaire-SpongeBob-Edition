@@ -60,6 +60,7 @@ canvas.show {
 }
 
 #choose-question-graphics-canvas.show,
-    #questioning-graphics-canvas.show {
+    #questioning-graphics-canvas.show,
+    #million-question-canvas.show {
     background-image: url(../media/images/chalkboard_texture.jpg);
 }

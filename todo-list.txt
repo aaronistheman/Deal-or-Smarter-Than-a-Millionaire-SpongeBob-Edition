@@ -1,4 +1,6 @@
 Next:
+-million dollar question display
+    --try drawing it with a line
 -banker makes a deal
     --user has two options
 -allow picking of a helper

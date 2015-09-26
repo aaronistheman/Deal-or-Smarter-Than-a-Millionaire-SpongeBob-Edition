@@ -241,6 +241,50 @@ function setUpQuoteBubble() {
 }
 
 /*
+    @post million dollar question label (i.e. "MILLION DOLLAR QUESTION")
+    has been drawn on the appropriate canvas
+*/
+function setUpMillionDollarQuestionLabel() {
+    var canvas = document.getElementById(CANVAS_IDS.MILLION_QUESTION);
+    var ctx = canvas.getContext('2d');
+
+    // Draw the rectangular part of the label
+    var canvasWidth = 1100;
+    var canvasHeight = 550;
+    var width = 800;
+    var height = 100;
+    var topLeftX = (canvasWidth - width) / 2;
+    var topLeftY = ((canvasHeight - height) / 2) - 50;
+    ctx.fillStyle = "#FFDF00";
+    ctx.fillRect(topLeftX, topLeftY, width, height);
+
+    // Draw circular edges of the label
+    var circularEdgeRadius = height / 2.0;
+    ctx.beginPath();
+    ctx.arc(topLeftX, topLeftY + circularEdgeRadius,
+        circularEdgeRadius, Math.PI * 0.5, Math.PI * 1.5);
+    ctx.closePath();
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(topLeftX + width, topLeftY + circularEdgeRadius,
+        circularEdgeRadius, Math.PI * 1.5, Math.PI * 0.5);
+    ctx.closePath();
+    ctx.fill();
+
+    // Draw the label's text
+    ctx.fillStyle = "#c0c0c0";
+    ctx.font = "bold 45px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("MILLION DOLLAR QUESTION", topLeftX + (width / 2),
+        topLeftY + (height / 2));
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "black";
+    ctx.strokeText("MILLION DOLLAR QUESTION", topLeftX + (width / 2),
+        topLeftY + (height / 2));
+}
+
+/*
     @param bool true to allow user to change which case is
     emphasized; false to remove this ability
 */
@@ -625,6 +669,8 @@ function explainUserChooseMillionOrGoHome() {
         .add("Now you must make your decision.")
         .deployQuoteChain(function() {
             allowUserChooseMillionOrGoHome(true);
+            gameShow.canvasStack.set(CANVAS_IDS.QUOTE.concat(
+                CANVAS_IDS.MILLION_QUESTION));
             gameShow.quotesToDraw.add("Press the 'y' key to see " +
                 "the question. Press the 'n' key to quit.")
                 .deployQuoteChain();
@@ -643,12 +689,14 @@ function allowUserChooseMillionOrGoHome(bool) {
             gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.PRESENT_QUESTION);
 
             // Host gives dramatic introduction to the question
+            gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
             gameShow.quotesToDraw.add("Here it is.")
                 .add("For one million dollars, here is the question.")
                 .deployQuoteChain(presentMillionDollarQuestion);
         })
         .set(KEY_CODES.N, function() {
             allowUserChooseMillionOrGoHome(false);
+            gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
             userTakesCaseHome();
         });
     }
@@ -726,6 +774,7 @@ function selectQuestion() {
 
 function setUpGame() {
     setUpQuoteBubble();
+    setUpMillionDollarQuestionLabel();
     gameShow.moneyDisplay.setUp();
     gameShow.briefcaseDisplay.draw();
     gameShow.questions.drawInitialParts();
