@@ -35,6 +35,7 @@ gameShow.questions = new Questions(
     CANVAS_IDS.QUESTIONING_TEXT);
 
 gameShow.numberOfQuestionsCorrectlyAnswered = 0;
+gameShow.millionDollarQuestion = false;
 
 gameShow.turnVariables = {
     selectedQuestion : undefined,
@@ -240,6 +241,40 @@ function setUpQuoteBubble() {
 }
 
 /*
+    @post million dollar question label (i.e. "MILLION DOLLAR QUESTION")
+    has been drawn on the appropriate canvas
+*/
+function setUpMillionDollarQuestionLabel() {
+    // Prepare helpful variables
+    var canvas = document.getElementById(CANVAS_IDS.MILLION_QUESTION);
+    var ctx = canvas.getContext('2d');
+    var canvasWidth = 1100;
+    var canvasHeight = 550;
+    var width = 800;
+    var height = 100;
+    var leftX = (canvasWidth - width) / 2;
+    var topY = (canvasHeight - height) / 2;
+
+    // Draw the label
+    ctx.lineWidth = height;
+    ctx.strokeStyle = "#FFDF00";
+    ctx.lineCap = "round";
+    ctx.moveTo(leftX, topY);
+    ctx.lineTo(leftX + width, topY);
+    ctx.stroke();
+
+    // Draw the label's text
+    ctx.fillStyle = "#c0c0c0";
+    ctx.font = "bold 45px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("MILLION DOLLAR QUESTION", leftX + (width / 2), topY);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "black";
+    ctx.strokeText("MILLION DOLLAR QUESTION", leftX + (width / 2), topY);
+}
+
+/*
     @param bool true to allow user to change which case is
     emphasized; false to remove this ability
 */
@@ -440,10 +475,18 @@ function handleAnswerSelection() {
     var question = gameShow.questions.getQuestion(
         gameShow.turnVariables.selectedQuestion);
     if (selectedCorrectAnswer(question,
-        gameShow.turnVariables.selectedAnswer))
-        handleCorrectAnswerSelection();
-    else
-        handleWrongAnswerSelection();
+        gameShow.turnVariables.selectedAnswer)) {
+        if (gameShow.millionDollarQuestion)
+            handleCorrectMillionAnswerSelection();
+        else
+            handleCorrectAnswerSelection();
+    }
+    else {
+        if (gameShow.millionDollarQuestion)
+            handleWrongMillionAnswerSelection();
+        else
+            handleWrongAnswerSelection();
+    }
 }
 
 /*
@@ -509,6 +552,49 @@ function adjustBackgroundMusicBasedOnQuestionsAnswered() {
 }
 
 /*
+    @post the host has told the user what happened and concludes
+    the game
+*/
+function handleCorrectMillionAnswerSelection() {
+    // React visually and auditorily
+    gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
+    gameShow.musicPlayer.stop();
+
+    // Tell the user what happened
+    gameShow.quotesToDraw.add("That answer is: ")
+        .deployQuoteChain(function() {
+            gameShow.soundPlayer.play(
+                SOUND_EFFECTS_IDS.CORRECT_ANSWER_MILLION);
+            gameShow.quotesToDraw.add("CORRECT!")
+                .add("Congratulations!")
+                .add("You've beat the banker!")
+                .add("And you go home a millionaire!")
+                .deployQuoteChain(eraseQuoteBubbleText);
+        });
+}
+
+/*
+    @post the host has told the user what happened and concludes
+    the game
+*/
+function handleWrongMillionAnswerSelection() {
+    // React visually and auditorily
+    gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
+    gameShow.musicPlayer.stop();
+
+    // Tell the user what happened
+    gameShow.quotesToDraw.add("That answer is: ")
+        .deployQuoteChain(function() {
+            gameShow.soundPlayer.play(
+                SOUND_EFFECTS_IDS.LOSS_MILLION);
+            gameShow.quotesToDraw.add("INCORRECT!")
+                .add("Now, you must leave with nothing.")
+                .add("Good bye.")
+                .deployQuoteChain(eraseQuoteBubbleText);
+        });
+}
+
+/*
     @post the host has told the user what happened;
     the question's monetary value has been revealed;
     the number of correctly answered questions was updated;
@@ -531,17 +617,107 @@ function handleCorrectAnswerSelection() {
             gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.CORRECT_ANSWER);
     }
 
-    var questionValue = getRandomMoneyAmount(gameShow.moneyAmounts);
+    prepareForNextTurn();
 
     // Update what the host says
-    gameShow.quotesToDraw.add("You have selected the correct answer.")
-        .add("The question was worth: $" + questionValue + '.');
-    if (gameShow.numberOfQuestionsCorrectlyAnswered === 5)
-        gameShow.quotesToDraw.add("You're halfway there.");
-    gameShow.quotesToDraw.deployQuoteChain(function() {
-        prepareForNextTurn();
-        selectQuestion();
-    });
+    var questionValue = getRandomMoneyAmount(gameShow.moneyAmounts);
+    gameShow.quotesToDraw.add("You have selected the correct answer.");
+    if (gameShow.numberOfQuestionsCorrectlyAnswered < 10) {
+            gameShow.quotesToDraw
+                .add("The question was worth: $" + questionValue + '.');
+        if (gameShow.numberOfQuestionsCorrectlyAnswered === 5)
+            gameShow.quotesToDraw.add("You're halfway there.");
+        gameShow.quotesToDraw.deployQuoteChain(function() {
+            selectQuestion();
+        });
+    }
+    else
+        explainUserChooseMillionOrGoHome();
+}
+
+/*
+    @post the user has been presented the option of either taking
+    her case home or facing the million dollar question; the host
+    has told her the value of her case and the question's subject;
+    key actions have been updated to allow her to choose
+*/
+function explainUserChooseMillionOrGoHome() {
+    gameShow.quotesToDraw.add("You now have a tough choice.")
+        .add("You can take home your case, which you know must " +
+            "have a value of $" + gameShow.briefcaseValue + ".")
+        .add("Or, you can face the million dollar question.")
+        .add("If you choose to see the question, you must answer it.")
+        .add("If you choose the wrong answer, you go home with nothing.")
+        .add("However, if you choose the right answer, you go home " +
+            "a millionaire.")
+        .add("Remember: your helpers, lifelines, and cheats can't help " +
+            "you on this question.")
+        .add("Before I let you choose, I'll tell you the subject of " +
+            "the question.")
+        .add("It's subject is: " +
+            gameShow.questions.getMillionDollarQuestion().subject + '.')
+        .add("Now you must make your decision.")
+        .deployQuoteChain(function() {
+            allowUserChooseMillionOrGoHome(true);
+            gameShow.canvasStack.set(CANVAS_IDS.QUOTE.concat(
+                CANVAS_IDS.MILLION_QUESTION));
+            gameShow.quotesToDraw.add("Press the 'y' key to see " +
+                "the question. Press the 'n' key to quit.")
+                .deployQuoteChain();
+        });
+}
+
+/*
+    @param bool true to enable the key actions that let the user
+    choose whether or not she wishes to face the million dollar
+    question; false, otherwise
+*/
+function allowUserChooseMillionOrGoHome(bool) {
+    if (bool === true) {
+        gameShow.keyActions.set(KEY_CODES.Y, function() {
+            allowUserChooseMillionOrGoHome(false);
+            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.PRESENT_QUESTION);
+
+            // Host gives dramatic introduction to the question
+            gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
+            gameShow.quotesToDraw.add("Here it is.")
+                .add("For one million dollars, here is the question.")
+                .deployQuoteChain(presentMillionDollarQuestion);
+        })
+        .set(KEY_CODES.N, function() {
+            allowUserChooseMillionOrGoHome(false);
+            gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
+            userTakesCaseHome();
+        });
+    }
+    else {
+        gameShow.keyActions.erase(KEY_CODES.Y).erase(KEY_CODES.N);
+    }
+}
+
+/*
+    @post the host explained what happened and concluded the game
+*/
+function userTakesCaseHome() {
+    // React auditorily
+    gameShow.musicPlayer.stop();
+
+    // Make the host explain
+    gameShow.quotesToDraw.add("Then, congratulations.")
+        .add("You're going home with $" + gameShow.briefcaseValue + '.')
+        .deployQuoteChain(function() {
+            eraseQuoteBubbleText();
+            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.GOOD_BYE);
+        });
+}
+
+function presentMillionDollarQuestion() {
+    gameShow.millionDollarQuestion = true;
+    gameShow.turnVariables.selectedQuestion =
+                        Questions.MILLION_DOLLAR_QUESTION;
+
+    gameShow.musicPlayer.play(MUSIC_IDS.QUESTION_MILLION);
+    presentQuestionAndAnswers();
 }
 
 /*
@@ -588,6 +764,7 @@ function selectQuestion() {
 
 function setUpGame() {
     setUpQuoteBubble();
+    setUpMillionDollarQuestionLabel();
     gameShow.moneyDisplay.setUp();
     gameShow.briefcaseDisplay.draw();
     gameShow.questions.drawInitialParts();

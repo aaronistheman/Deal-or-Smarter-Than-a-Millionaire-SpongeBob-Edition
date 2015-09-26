@@ -14,7 +14,9 @@ KEY_CODES.LEFT_ARROW = 37;
 KEY_CODES.UP_ARROW = 38;
 KEY_CODES.RIGHT_ARROW = 39;
 KEY_CODES.DOWN_ARROW = 40;
-KEY_CODES.S = 83
+KEY_CODES.N = 78;
+KEY_CODES.S = 83;
+KEY_CODES.Y = 89;
 
 /*
     Container for the responses to certain key's being acted on.
