@@ -1,11 +1,13 @@
 Next:
 -get the banker's offer working
-    --consider changing the deal rejected/accepted sound into music
     --play sound effect when deal is presented, depending on its size
 -fix banker offer calculation
+    --make sure when the banker's offer is compared to your case's value,
+        that there are no commas in either
     --include the user's briefcase value in the bank offer calculation
         --concatenate the value to the passed array
     --figure out why the deals always tend to be good
+        --make sure commas are appropriately removed
 -effects as canvases appear or disappear (e.g. fading)
     --could be issue if a canvas is hidden and redrawn (as occurs
         to the quote bubble frequently in rules explanation)
@@ -17,8 +19,6 @@ Next:
 -grey out the money amounts that are out of the game
     --see if can align money amounts to the right of their bars
     --could adjust the banker multiplier
--strongly consider a turn phase object that could adjust the canvases
-    and music appropriately and have constants for turn phases
 -display the banker's offer along with the other monetary amounts
     --could easily convert the money display into this
 -allow picking of a helper

@@ -698,9 +698,7 @@ function allowUserDealOrNoDeal(bool) {
     a good deal
 */
 function userAcceptsDeal() {
-    gameShow.musicPlayer.stop();
-    gameShow.soundPlayer.play(
-        SOUND_EFFECTS_IDS.ACCEPT_OR_REJECT_DEAL);
+    gameShow.musicPlayer.play(MUSIC_IDS.ACCEPT_OR_REJECT_DEAL);
 
     // Host tells the user whether or not the deal was good
     // and concludes the game
@@ -769,9 +767,7 @@ function userAcceptedBadDeal() {
     banker's deal; the game has been set up to continue
 */
 function userRejectsDeal() {
-    gameShow.musicPlayer.stop();
-    gameShow.soundPlayer.play(
-        SOUND_EFFECTS_IDS.ACCEPT_OR_REJECT_DEAL);
+    gameShow.musicPlayer.play(MUSIC_IDS.ACCEPT_OR_REJECT_DEAL);
 
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
     gameShow.quotesToDraw.add("Let's hope you made the correct decision.")
