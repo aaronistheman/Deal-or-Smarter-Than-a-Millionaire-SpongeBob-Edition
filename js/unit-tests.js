@@ -142,12 +142,15 @@ QUnit.test("getBankerOffer()", function(assert) {
     var amount2 = parseFloat(stringAmount2, 10);
     var amount3 = parseFloat(stringAmount3, 10);
     var averageAmount = (amount1 + amount2 + amount3) / 3;
-    // Round the correct offer to nearest hundred
-    var correctOffer =
+    // Round the correct offer to nearest hundred; put commas where
+    // appropriate
+    var correctOfferAsFloat =
         Math.floor(averageAmount * gameShow.BANKER_MULTIPLIER / 100) * 100;
+    var correctOfferAsString =
+        putCommasInStringInteger(correctOfferAsFloat.toString());
 
-    assert.deepEqual(getBankerOffer(moneyAmounts),
-        correctOffer, "Correct banker's offer determined, rounded to " +
+    assert.deepEqual(getBankerOffer(moneyAmounts), correctOfferAsString,
+        "Correct banker's offer determined, rounded to " +
             "nearest hundred, and returned");
 
     // Prepare another set function parameters to make a bank
@@ -162,12 +165,15 @@ QUnit.test("getBankerOffer()", function(assert) {
     var amount5 = parseFloat(stringAmount5, 10);
     var amount6 = parseFloat(stringAmount6, 10);
     averageAmount = (amount4 + amount5 + amount6) / 3;
-    // Round the correct offer to nearest thousand
-    correctOffer =
+    // Round the correct offer to nearest thousand; put commas where
+    // appropriate
+    correctOfferAsFloat =
         Math.floor(averageAmount * gameShow.BANKER_MULTIPLIER / 1000) * 1000;
+    correctOfferAsString =
+        putCommasInStringInteger(correctOfferAsFloat.toString());
 
-    assert.deepEqual(getBankerOffer(moneyAmounts),
-        correctOffer, "Correct banker's offer determined, rounded to " +
+    assert.deepEqual(getBankerOffer(moneyAmounts), correctOfferAsString,
+        "Correct banker's offer determined, rounded to " +
             "nearest thousand, and returned");
 });
 
@@ -183,6 +189,17 @@ QUnit.test("removeCommaFromEachStringNumber()", function(assert) {
         ["3,000.53", "123,456", "1,000"]),
         ["3000.53", "123456", "1000"],
         "Correct array of adjusted numbers was created and returned");
+});
+
+QUnit.test("putCommasInStringInteger()", function(assert) {
+    assert.deepEqual(putCommasInStringInteger("0"), "0",
+        "Appropriately, no commas were inserted in 0");
+    assert.deepEqual(putCommasInStringInteger("400"), "400",
+        "Appropriately, no commas were inserted in 400");
+    assert.deepEqual(putCommasInStringInteger("20000"), "20,000",
+        "Appropriately, one comma was inserted in 20000");
+    assert.deepEqual(putCommasInStringInteger("1000000"), "1,000,000",
+        "Appropriately, two commas were inserted in 1000000");
 });
 
 QUnit.module("questions.js");

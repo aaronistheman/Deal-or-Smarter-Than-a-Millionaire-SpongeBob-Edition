@@ -1,7 +1,6 @@
 Next:
 -get the banker's offer working
-    --put comma as separator in the offer; make a function, test it,
-        and put it in utility.js
+    --consider making a Banker object
     --user has two options
     --if user takes the deal, have host say whether or not the
         deal was good and conclude game
@@ -18,7 +17,7 @@ Next:
     --and maybe even between speakers (could maybe hide and then show
         as a trick)
 -display the banker's offer along with the other monetary amounts
-    --could convert the money display into this
+    --could easily convert the money display into this
 -allow picking of a helper
 -make separate canvas for help options
 -implement peeking
@@ -43,6 +42,7 @@ Next:
         --win a million
 
 At some point:
+-make sure the game progresses smoothly in all parts
 -add more first and second grade questions
 -fix SpongeBob's directions about arrow keys and choosing question
     --make sure the introductory directions are all correct

@@ -699,7 +699,8 @@ function makeBankerOffer() {
     @returns the banker's offer, which is a certain percentage
     of the average money amount; if the offer is at least 10000,
     it's rounded to the nearest thousand; otherwise, it's rounded
-    to the nearest hundred
+    to the nearest hundred; it's returned as a string and has
+    commas where appropriate
 */
 function getBankerOffer(arrayOfMoneyAmounts) {
     // Get the average money amount
@@ -723,7 +724,9 @@ function getBankerOffer(arrayOfMoneyAmounts) {
         bankerOffer = Math.floor(bankerOffer / 1000) * 1000;
     }
 
-    return bankerOffer;
+    // Return the banker's offer as a string with commas where
+    // appropriate
+    return putCommasInStringInteger(bankerOffer.toString());
 }
 
 /*
