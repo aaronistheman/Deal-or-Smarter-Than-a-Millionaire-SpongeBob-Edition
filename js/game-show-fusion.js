@@ -553,6 +553,8 @@ function adjustBackgroundMusicBasedOnQuestionsAnswered() {
                 break;
         }
     }
+    else
+        gameShow.musicPlayer.play(MUSIC_IDS.QUESTION_1_TO_5);
 }
 
 /*
@@ -655,12 +657,16 @@ function makeBankerOffer() {
         .add("He has an offer for you.")
         .add("Here's the offer.")
         .add("It is $" + bankerOffer + '.')
-        .deployQuoteChain(eraseQuoteBubbleText);
-        // .add("It is $" + bankerOffer
-        // allowUserChooseMillionOrGoHome(true);
-            // gameShow.quotesToDraw.add("Press the 'y' key to see " +
-                // "the question. Press the 'n' key to quit.")
-                // .deployQuoteChain();
+        .deployQuoteChain(function() {
+            allowUserDealOrNoDeal(true);
+            gameShow.canvasStack.set(CANVAS_IDS.MONEY_DISPLAY.concat(
+                CANVAS_IDS.QUOTE));
+            gameShow.quotesToDraw.add("Now, I must ask you: " +
+                "Deal or No Deal? (Press the 'y' key to accept " +
+                "the offer of $" + bankerOffer +
+                ". Press the 'n' key to reject it and continue.")
+                .deployQuoteChain();
+        });
 }
 
 /*
@@ -852,7 +858,7 @@ function selectQuestion() {
 
     allowQuestionSelectorMovement(true);
 
-    gameShow.quotesToDraw.add("Use the left and right arrow keys " +
+    gameShow.quotesToDraw.add("Use the four arrow keys " +
         "and the Enter key to select a question.")
         .deployQuoteChain(function() {
             gameShow.soundPlayer.play(

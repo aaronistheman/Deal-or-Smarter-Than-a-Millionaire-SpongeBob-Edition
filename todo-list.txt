@@ -1,12 +1,11 @@
 Next:
 -get the banker's offer working
-    --user has two options
+    --maybe not make already played music restart
     --if user takes the deal, have host say whether or not the
         deal was good and conclude game
-    --if user rejects the deal, have game continue
-        --make sure the background music changes back from the banker
-            music
     --play appropriate sound effects when accept or reject deal
+    --include the user's briefcase value in the bank offer calculation
+        --concatenate the value to the passed array
 -effects as canvases appear or disappear (e.g. fading)
     --could be issue if a canvas is hidden and redrawn (as occurs
         to the quote bubble frequently in rules explanation)
@@ -15,6 +14,7 @@ Next:
 		or could edit CanvasStack to ignore repeats
     --and maybe even between speakers (could maybe hide and then show
         as a trick)
+-grey out the money amounts that are out of the game
 -strongly consider a turn phase object that could adjust the canvases
     and music appropriately and have constants for turn phases
 -display the banker's offer along with the other monetary amounts
@@ -43,8 +43,11 @@ Next:
         --win a million
 
 At some point:
--make sure the game progresses smoothly in all parts
+-applause sound effect
+-make sure the game progresses smoothly in all parts (e.g. visually
+    and auditorially)
 -add more first and second grade questions
+    --Old Man Jenkins' gerapi
 -fix SpongeBob's directions about arrow keys and choosing question
     --make sure the introductory directions are all correct
 -look into that one error that always pops up in the console
