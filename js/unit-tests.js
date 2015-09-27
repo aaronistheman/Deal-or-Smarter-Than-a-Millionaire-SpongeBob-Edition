@@ -130,10 +130,11 @@ QUnit.test("selectedCorrectAnswer()", function(assert) {
 });
 
 QUnit.test("getBankerOffer()", function(assert) {
-    // Prepare the function parameters
-    var stringAmount1 = "1553.46";
-    var stringAmount2 = "789.33";
-    var stringAmount3 = "11,000";
+    // Prepare the function parameters; trigger a bank offer small
+    // enough so that it's rounded to nearest hundred
+    var stringAmount1 = "50";
+    var stringAmount2 = "300";
+    var stringAmount3 = "750";
     var moneyAmounts = [stringAmount1, stringAmount2, stringAmount3];
 
     // Calculate the correct banker's offer
@@ -148,6 +149,26 @@ QUnit.test("getBankerOffer()", function(assert) {
     assert.deepEqual(getBankerOffer(moneyAmounts),
         correctOffer, "Correct banker's offer determined, rounded to " +
             "nearest hundred, and returned");
+
+    // Prepare another set function parameters to make a bank
+    // offer big enough so that it's rounded to nearest thousand
+    var stringAmount4 = "250000";
+    var stringAmount5 = "100000";
+    var stringAmount6 = "300";
+    var moneyAmounts = [stringAmount4, stringAmount5, stringAmount6];
+
+    // Calculate the correct banker's offer
+    var amount4 = parseFloat(stringAmount4, 10);
+    var amount5 = parseFloat(stringAmount5, 10);
+    var amount6 = parseFloat(stringAmount6, 10);
+    averageAmount = (amount4 + amount5 + amount6) / 3;
+    // Round the correct offer to nearest thousand
+    correctOffer =
+        Math.floor(averageAmount * gameShow.BANKER_MULTIPLIER / 1000) * 1000;
+
+    assert.deepEqual(getBankerOffer(moneyAmounts),
+        correctOffer, "Correct banker's offer determined, rounded to " +
+            "nearest thousand, and returned");
 });
 
 QUnit.module("money-amounts.js");

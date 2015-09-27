@@ -681,7 +681,7 @@ function makeBankerOffer() {
     gameShow.quotesToDraw.add("The banker is calling.")
         .add("He has an offer for you.")
         .add("Here's the offer.")
-        .add("It is $" + bankerOffer)
+        .add("It is $" + bankerOffer + '.')
         .deployQuoteChain(eraseQuoteBubbleText);
         // .add("It is $" + bankerOffer
         // allowUserChooseMillionOrGoHome(true);
@@ -697,12 +697,15 @@ function makeBankerOffer() {
     @param arrayOfMoneyAmounts the banker makes his offer based
     on the remaining money amounts
     @returns the banker's offer, which is a certain percentage
-    of the average money amount and is rounded to the nearest thounsand
+    of the average money amount; if the offer is at least 10000,
+    it's rounded to the nearest thousand; otherwise, it's rounded
+    to the nearest hundred
 */
 function getBankerOffer(arrayOfMoneyAmounts) {
     // Get the average money amount
     var sumMoneyAmounts = 0;
     for (var i = 0; i < arrayOfMoneyAmounts.length; ++i) {
+        // Convert each string number into just a number
         var moneyAmount = parseFloat(arrayOfMoneyAmounts[i], 10);
         sumMoneyAmounts += moneyAmount;
     }
@@ -711,8 +714,14 @@ function getBankerOffer(arrayOfMoneyAmounts) {
     // Apply the banker multiplier
     var bankerOffer = averageMoneyAmount * gameShow.BANKER_MULTIPLIER;
 
-    // Round down and to the nearest hundred the banker's offer
-    var bankerOffer = Math.floor(bankerOffer / 100) * 100;
+    if (bankerOffer < 10000) {
+        // Round down and to the nearest hundred the banker's offer
+        bankerOffer = Math.floor(bankerOffer / 100) * 100;
+    }
+    else {
+        // Round down and to the nearest thousand the banker's offer
+        bankerOffer = Math.floor(bankerOffer / 1000) * 1000;
+    }
 
     return bankerOffer;
 }
