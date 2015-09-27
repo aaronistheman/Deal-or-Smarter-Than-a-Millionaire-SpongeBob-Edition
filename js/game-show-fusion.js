@@ -698,13 +698,17 @@ function allowUserDealOrNoDeal(bool) {
     a good deal
 */
 function userAcceptsDeal() {
-    // Play deal accepted sound track
+    gameShow.musicPlayer.stop();
+    gameShow.soundPlayer.play(
+        SOUND_EFFECTS_IDS.ACCEPT_OR_REJECT_DEAL);
 
     // Host tells the user whether or not the deal was good
     // and concludes the game
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
-    gameShow.quotesToDraw.add("Now the question is: did you get " +
-        "a good deal?")
+    gameShow.quotesToDraw.add("You're taking home $" +
+        gameShow.turnVariables.bankerOffer + '.')
+        .add("Now the question is: did you get " +
+            "a good deal?")
         .add("The banker's offer was $" +
             gameShow.turnVariables.bankerOffer + '.')
         .add("You picked case number " +
@@ -760,6 +764,11 @@ function userAcceptedBadDeal() {
     banker's deal; the game has been set up to continue
 */
 function userRejectsDeal() {
+    gameShow.musicPlayer.stop();
+    gameShow.soundPlayer.play(
+        SOUND_EFFECTS_IDS.ACCEPT_OR_REJECT_DEAL);
+
+    gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
     gameShow.quotesToDraw.add("Let's hope you made the correct decision.")
         .deployQuoteChain(goToNextTurn);
 }

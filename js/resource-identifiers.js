@@ -18,7 +18,8 @@ var SOUND_EFFECTS_IDS = {
     GOOD_BYE : "good-bye-sound",
     CORRECT_ANSWER : "correct-answer-sound",
     CORRECT_ANSWER_10 : "correct-answer-10-sound",
-    CORRECT_ANSWER_MILLION: "correct-answer-million-sound",
+    CORRECT_ANSWER_MILLION : "correct-answer-million-sound",
+    ACCEPT_OR_REJECT_DEAL : "accept-or-reject-deal-sound",
 };
 
 var MUSIC_IDS = {
