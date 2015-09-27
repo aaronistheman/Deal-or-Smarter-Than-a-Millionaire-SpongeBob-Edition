@@ -1,6 +1,5 @@
 Next:
 -get the banker's offer working
-    --maybe not make already played music restart
     --if user takes the deal, have host say whether or not the
         deal was good and conclude game
     --play appropriate sound effects when accept or reject deal

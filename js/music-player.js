@@ -38,15 +38,20 @@ MusicPlayer.prototype._storeMusicElements = function() {
     @pre id is a constant in global variable MUSIC_IDS;
     audio elements have been stored
     @param id of the html element of the audio to play
-    @post the currently playing track has been stopped;
+    @post if the given id isn't of the currently playing track,
+    then the currently playing track has been stopped, and
     the track indicated by id has been played
 */
 MusicPlayer.prototype.play = function(id) {
-    this.stop();
+    // Only do something if the music indicated by id isn't
+    // already playing
+    if (this._music[id] !== this._current) {
+        this.stop();
 
-    // Play the new track
-    this._current = this._music[id];
-    this._current.play();
+        // Play the new track
+        this._current = this._music[id];
+        this._current.play();
+    }
 }
 
 /*
