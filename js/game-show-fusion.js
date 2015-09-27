@@ -41,6 +41,7 @@ gameShow.millionDollarQuestion = false;
 gameShow.turnVariables = {
     selectedQuestion : undefined,
     selectedAnswer : undefined,
+    bankerOffer : undefined,
 };
 
 gameShow.keyActions = new KeyActions();
@@ -517,6 +518,7 @@ function prepareForNextTurn() {
     // Prepare gameShow members
     gameShow.turnVariables.selectedQuestion = undefined;
     gameShow.turnVariables.selectedAnswer = undefined;
+    gameShow.turnVariables.bankerOffer = undefined;
 
     // Prepare the background music
     adjustBackgroundMusicBasedOnQuestionsAnswered();
@@ -650,20 +652,20 @@ function makeBankerOffer() {
     gameShow.canvasStack.set(CANVAS_IDS.QUOTE.concat(
         CANVAS_IDS.BANKER));
     gameShow.musicPlayer.play(MUSIC_IDS.BANKER);
-    var bankerOffer = gameShow.banker.getOffer(
+    gameShow.turnVariables.bankerOffer = gameShow.banker.getOffer(
         removeCommaFromEachStringNumber(gameShow.moneyAmounts));
 
     gameShow.quotesToDraw.add("The banker is calling.")
         .add("He has an offer for you.")
         .add("Here's the offer.")
-        .add("It is $" + bankerOffer + '.')
+        .add("It is $" + gameShow.turnVariables.bankerOffer + '.')
         .deployQuoteChain(function() {
             allowUserDealOrNoDeal(true);
             gameShow.canvasStack.set(CANVAS_IDS.MONEY_DISPLAY.concat(
                 CANVAS_IDS.QUOTE));
             gameShow.quotesToDraw.add("Now, I must ask you: " +
                 "Deal or No Deal? (Press the 'y' key to accept " +
-                "the offer of $" + bankerOffer +
+                "the offer of $" + gameShow.turnVariables.bankerOffer +
                 ". Press the 'n' key to reject it and continue.")
                 .deployQuoteChain();
         });
@@ -700,10 +702,57 @@ function userAcceptsDeal() {
 
     // Host tells the user whether or not the deal was good
     // and concludes the game
-    // gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
-    // gameShow.quotesToDraw.add("Here it is.")
-        // .add("For one million dollars, here is the question.")
-        // .deployQuoteChain(eraseQuoteBubbleText);
+    gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
+    gameShow.quotesToDraw.add("Now the question is: did you get " +
+        "a good deal?")
+        .add("The banker's offer was $" +
+            gameShow.turnVariables.bankerOffer + '.')
+        .add("You picked case number " +
+            gameShow.selectedBriefcaseNumber + '.')
+        .add("That case was worth: ")
+        .deployQuoteChain(function() {
+            if (gameShow.turnVariables.bankerOffer > gameShow.briefcaseValue)
+                userAcceptedGoodDeal();
+            else
+                userAcceptedBadDeal();
+        });
+}
+
+/*
+    @post host has explained that the deal was good and concluded
+    the game
+*/
+function userAcceptedGoodDeal() {
+    gameShow.quotesToDraw.add('$' + gameShow.briefcaseValue + '.')
+        .deployQuoteChain(function() {
+            // Play appropriate music
+
+            gameShow.quotesToDraw.add("You got a good deal.")
+                .add("Congratulations!")
+                .add("That concludes this game.")
+                .add("This is SpongeBob Squarepants signing off.")
+                .add("See you next time.")
+                .deployQuoteChain(eraseQuoteBubbleText);
+        });
+}
+
+/*
+    @post host has explained that the deal was bad and concluded
+    the game
+*/
+function userAcceptedBadDeal() {
+    gameShow.quotesToDraw.add('$' + gameShow.briefcaseValue + '.')
+        .deployQuoteChain(function() {
+            // Play appropriate music
+
+            gameShow.quotesToDraw.add("Oh! The banker " +
+                "one-upped you this time.")
+                .add("How unfortunate.")
+                .add("That concludes this game.")
+                .add("This is SpongeBob Squarepants signing off.")
+                .add("See you next time.")
+                .deployQuoteChain(eraseQuoteBubbleText);
+        });
 }
 
 /*

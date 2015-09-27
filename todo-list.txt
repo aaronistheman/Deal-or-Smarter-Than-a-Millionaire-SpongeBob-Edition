@@ -1,8 +1,8 @@
 Next:
 -get the banker's offer working
-    --if user takes the deal, have host say whether or not the
-        deal was good and conclude game
     --play appropriate sound effects when accept or reject deal
+    --play appropriate sound based on whether or not the deal was good
+    --play sound effect when deal is presented, depending on its size
     --include the user's briefcase value in the bank offer calculation
         --concatenate the value to the passed array
 -effects as canvases appear or disappear (e.g. fading)
@@ -14,6 +14,8 @@ Next:
     --and maybe even between speakers (could maybe hide and then show
         as a trick)
 -grey out the money amounts that are out of the game
+    --see if can align money amounts to the right of their bars
+    --could adjust the banker multiplier
 -strongly consider a turn phase object that could adjust the canvases
     and music appropriately and have constants for turn phases
 -display the banker's offer along with the other monetary amounts
@@ -53,6 +55,7 @@ At some point:
 -make SpongeBob do dramatic pauses before announcing every answer
 -with WebGL:
     --show opening of briefcase with WebGL
+    --show visual briefcase when determining if user took good deal
     --show updating of money display with WebGL
     --use WebGL to present banker's offer with a rotating rectangle
     --if I decide not to use WebGL, alternative must be used
