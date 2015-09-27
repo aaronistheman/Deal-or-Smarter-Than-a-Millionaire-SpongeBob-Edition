@@ -1,6 +1,5 @@
 Next:
 -get the banker's offer working
-    --adjust banker image's size
     --user has two options
     --if user takes the deal, have host say whether or not the
         deal was good and conclude game

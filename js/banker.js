@@ -23,9 +23,8 @@ Banker.prototype.draw = function(canvasId) {
     var ctx = canvas.getContext('2d');
 
     // Draw the banker (i.e. Mr. Krabs)
-    var imageSizeMultiplier = 1.3;
-    var imageWidth = 257 * imageSizeMultiplier;
-    var imageHeight = 224 * imageSizeMultiplier;
+    var imageWidth = this.image.width;
+    var imageHeight = this.image.height;
     var x = (canvas.width / 2.0) - (imageWidth / 2);
     var y = (canvas.height / 2.0) - (imageHeight / 2) - 40;
     ctx.drawImage(this.image, x, y, imageWidth, imageHeight);
