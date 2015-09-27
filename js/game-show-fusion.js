@@ -8,9 +8,7 @@
 var gameShow = {};
 gameShow.speakers = getSpeakerObjects();
 
-gameShow.bankerImage = new Image();
-gameShow.bankerImage.src = "media/images/banker.png";
-gameShow.BANKER_MULTIPLIER = 0.80;
+gameShow.banker = new Banker("media/images/banker.png");
 
 gameShow.moneyAmounts = getBeginningMoneyAmounts();
 gameShow.briefcaseValue = undefined;
@@ -275,31 +273,6 @@ function setUpMillionDollarQuestionLabel() {
     ctx.lineWidth = 2;
     ctx.strokeStyle = "black";
     ctx.strokeText("MILLION DOLLAR QUESTION", leftX + (width / 2), topY);
-}
-
-/*
-    @post banker and his environment has been drawn on appropriate
-    canvas
-*/
-function setUpBanker() {
-    var canvas = document.getElementById("banker-canvas");
-    var ctx = canvas.getContext('2d');
-
-    // Draw the banker (i.e. Mr. Krabs)
-    var imageSizeMultiplier = 1.3;
-    var imageWidth = 257 * imageSizeMultiplier;
-    var imageHeight = 224 * imageSizeMultiplier;
-    var x = (canvas.width / 2.0) - (imageWidth / 2);
-    var y = (canvas.height / 2.0) - (imageHeight / 2) - 40;
-    ctx.drawImage(gameShow.bankerImage, x, y, imageWidth, imageHeight);
-
-    // Draw a dark rectangle (i.e. "table")
-    var x = 20;
-    var y = 300;
-    var width = canvas.width - (x * 2);
-    var height = canvas.height - y;
-    ctx.fillStyle = "black";
-    ctx.fillRect(x, y, width, height);
 }
 
 /*
@@ -675,7 +648,7 @@ function makeBankerOffer() {
     gameShow.canvasStack.set(CANVAS_IDS.QUOTE.concat(
         CANVAS_IDS.BANKER));
     gameShow.musicPlayer.play(MUSIC_IDS.BANKER);
-    var bankerOffer = getBankerOffer(
+    var bankerOffer = gameShow.banker.getOffer(
         removeCommaFromEachStringNumber(gameShow.moneyAmounts));
 
     gameShow.quotesToDraw.add("The banker is calling.")
@@ -688,45 +661,6 @@ function makeBankerOffer() {
             // gameShow.quotesToDraw.add("Press the 'y' key to see " +
                 // "the question. Press the 'n' key to quit.")
                 // .deployQuoteChain();
-}
-
-/*
-    @pre arrayOfMoneyAmounts has numbers in the form of strings
-    with no dollar signs or commas
-    @hasTest yes
-    @param arrayOfMoneyAmounts the banker makes his offer based
-    on the remaining money amounts
-    @returns the banker's offer, which is a certain percentage
-    of the average money amount; if the offer is at least 10000,
-    it's rounded to the nearest thousand; otherwise, it's rounded
-    to the nearest hundred; it's returned as a string and has
-    commas where appropriate
-*/
-function getBankerOffer(arrayOfMoneyAmounts) {
-    // Get the average money amount
-    var sumMoneyAmounts = 0;
-    for (var i = 0; i < arrayOfMoneyAmounts.length; ++i) {
-        // Convert each string number into just a number
-        var moneyAmount = parseFloat(arrayOfMoneyAmounts[i], 10);
-        sumMoneyAmounts += moneyAmount;
-    }
-    var averageMoneyAmount = sumMoneyAmounts / arrayOfMoneyAmounts.length;
-
-    // Apply the banker multiplier
-    var bankerOffer = averageMoneyAmount * gameShow.BANKER_MULTIPLIER;
-
-    if (bankerOffer < 10000) {
-        // Round down and to the nearest hundred the banker's offer
-        bankerOffer = Math.floor(bankerOffer / 100) * 100;
-    }
-    else {
-        // Round down and to the nearest thousand the banker's offer
-        bankerOffer = Math.floor(bankerOffer / 1000) * 1000;
-    }
-
-    // Return the banker's offer as a string with commas where
-    // appropriate
-    return putCommasInStringInteger(bankerOffer.toString());
 }
 
 /*
@@ -930,7 +864,7 @@ function selectQuestion() {
 function setUpGame() {
     setUpQuoteBubble();
     setUpMillionDollarQuestionLabel();
-    setUpBanker();
+    gameShow.banker.draw(CANVAS_IDS.BANKER);
     gameShow.moneyDisplay.setUp();
     gameShow.briefcaseDisplay.draw();
     gameShow.questions.drawInitialParts();

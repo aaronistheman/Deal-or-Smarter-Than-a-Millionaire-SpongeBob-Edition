@@ -26,4 +26,5 @@ start Notepad++ js/sound-player.js
 start Notepad++ js/resource-identifiers.js
 start Notepad++ js/vector2d.js
 start Notepad++ js/money-amounts.js
+start Notepad++ js/banker.js
 exit

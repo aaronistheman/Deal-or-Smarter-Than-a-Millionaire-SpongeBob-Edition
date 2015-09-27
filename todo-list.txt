@@ -1,6 +1,6 @@
 Next:
 -get the banker's offer working
-    --consider making a Banker object
+    --adjust banker image's size
     --user has two options
     --if user takes the deal, have host say whether or not the
         deal was good and conclude game
@@ -16,6 +16,8 @@ Next:
 		or could edit CanvasStack to ignore repeats
     --and maybe even between speakers (could maybe hide and then show
         as a trick)
+-strongly consider a turn phase object that could adjust the canvases
+    and music appropriately and have constants for turn phases
 -display the banker's offer along with the other monetary amounts
     --could easily convert the money display into this
 -allow picking of a helper
