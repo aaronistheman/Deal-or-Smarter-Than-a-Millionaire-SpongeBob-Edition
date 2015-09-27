@@ -1,10 +1,11 @@
 Next:
 -get the banker's offer working
-    --play sound effect depending on if deal is good or bad
     --consider changing the deal rejected/accepted sound into music
     --play sound effect when deal is presented, depending on its size
+-fix banker offer calculation
     --include the user's briefcase value in the bank offer calculation
         --concatenate the value to the passed array
+    --figure out why the deals always tend to be good
 -effects as canvases appear or disappear (e.g. fading)
     --could be issue if a canvas is hidden and redrawn (as occurs
         to the quote bubble frequently in rules explanation)

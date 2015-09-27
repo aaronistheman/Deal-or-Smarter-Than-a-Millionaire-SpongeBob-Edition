@@ -730,6 +730,9 @@ function userAcceptsDeal() {
     the game
 */
 function userAcceptedGoodDeal() {
+    gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.GOOD_DEAL);
+    gameShow.musicPlayer.stop();
+
     gameShow.quotesToDraw.add('$' + gameShow.briefcaseValue + '.')
         .deployQuoteChain(function() {
             gameShow.quotesToDraw.add("You got a good deal.")
@@ -746,7 +749,9 @@ function userAcceptedGoodDeal() {
     the game
 */
 function userAcceptedBadDeal() {
-    // gameShow.quotesToDraw.
+    gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.BAD_DEAL);
+    gameShow.musicPlayer.stop();
+
     gameShow.quotesToDraw.add('$' + gameShow.briefcaseValue + '.')
         .deployQuoteChain(function() {
             gameShow.quotesToDraw.add("Oh! The banker " +

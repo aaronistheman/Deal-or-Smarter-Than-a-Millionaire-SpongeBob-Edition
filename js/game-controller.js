@@ -71,6 +71,10 @@ function getAudioData() {
         "media/sound/correct_answer_million.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.ACCEPT_OR_REJECT_DEAL,
         "media/sound/accept_or_reject_deal.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.GOOD_DEAL,
+        "media/sound/good_deal.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.BAD_DEAL,
+        "media/sound/bad_deal.mp3"));
 
     // add background music
     audioData.push(new AudioData(MUSIC_IDS.OPENING,
