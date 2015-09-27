@@ -93,6 +93,8 @@ function getAudioData() {
         "media/music/question_million.mp3"));
     audioData.push(new AudioData(MUSIC_IDS.BANKER,
         "media/music/banker_theme.mp3"));
+    audioData.push(new AudioData(MUSIC_IDS.WAS_A_GOOD_DEAL_ACCEPTED,
+        "media/music/was_a_good_deal_accepted.mp3"));
 
     return audioData;
 }

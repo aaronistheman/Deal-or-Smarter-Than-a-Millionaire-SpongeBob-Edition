@@ -707,18 +707,21 @@ function userAcceptsDeal() {
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
     gameShow.quotesToDraw.add("You're taking home $" +
         gameShow.turnVariables.bankerOffer + '.')
-        .add("Now the question is: did you get " +
-            "a good deal?")
-        .add("The banker's offer was $" +
-            gameShow.turnVariables.bankerOffer + '.')
-        .add("You picked case number " +
-            gameShow.selectedBriefcaseNumber + '.')
-        .add("That case was worth: ")
         .deployQuoteChain(function() {
-            if (gameShow.turnVariables.bankerOffer > gameShow.briefcaseValue)
-                userAcceptedGoodDeal();
-            else
-                userAcceptedBadDeal();
+            gameShow.musicPlayer.play(MUSIC_IDS.WAS_A_GOOD_DEAL_ACCEPTED);
+            gameShow.quotesToDraw.add(
+                "Now the question is: did you get a good deal?")
+            .add("The banker's offer was $" +
+                gameShow.turnVariables.bankerOffer + '.')
+            .add("You picked case number " +
+                gameShow.selectedBriefcaseNumber + '.')
+            .add("That case was worth: ")
+            .deployQuoteChain(function() {
+                if (gameShow.turnVariables.bankerOffer > gameShow.briefcaseValue)
+                    userAcceptedGoodDeal();
+                else
+                    userAcceptedBadDeal();
+            });
         });
 }
 
@@ -729,8 +732,6 @@ function userAcceptsDeal() {
 function userAcceptedGoodDeal() {
     gameShow.quotesToDraw.add('$' + gameShow.briefcaseValue + '.')
         .deployQuoteChain(function() {
-            // Play appropriate music
-
             gameShow.quotesToDraw.add("You got a good deal.")
                 .add("Congratulations!")
                 .add("That concludes this game.")
@@ -745,10 +746,9 @@ function userAcceptedGoodDeal() {
     the game
 */
 function userAcceptedBadDeal() {
+    // gameShow.quotesToDraw.
     gameShow.quotesToDraw.add('$' + gameShow.briefcaseValue + '.')
         .deployQuoteChain(function() {
-            // Play appropriate music
-
             gameShow.quotesToDraw.add("Oh! The banker " +
                 "one-upped you this time.")
                 .add("How unfortunate.")

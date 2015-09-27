@@ -1,6 +1,7 @@
 Next:
 -get the banker's offer working
-    --play appropriate music before determining if deal was good
+    --play sound effect depending on if deal is good or bad
+    --consider changing the deal rejected/accepted sound into music
     --play sound effect when deal is presented, depending on its size
     --include the user's briefcase value in the bank offer calculation
         --concatenate the value to the passed array

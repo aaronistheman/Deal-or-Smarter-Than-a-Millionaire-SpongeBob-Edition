@@ -33,4 +33,5 @@ var MUSIC_IDS = {
     QUESTION_10 : "question-10-theme",
     QUESTION_MILLION : "question-million-theme",
     BANKER : "banker-theme",
+    WAS_A_GOOD_DEAL_ACCEPTED : "was-a-good-deal-accepted-theme",
 };
