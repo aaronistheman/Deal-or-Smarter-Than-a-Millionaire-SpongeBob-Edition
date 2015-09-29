@@ -69,6 +69,12 @@ function getAudioData() {
         "media/sound/correct_answer_10.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.CORRECT_ANSWER_MILLION,
         "media/sound/correct_answer_million.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.OFFERED_BIG_DEAL,
+        "media/sound/offered_big_deal.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.TOOK_GOOD_DEAL,
+        "media/sound/took_good_deal.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.TOOK_BAD_DEAL,
+        "media/sound/took_bad_deal.mp3"));
 
     // add background music
     audioData.push(new AudioData(MUSIC_IDS.OPENING,
@@ -91,6 +97,10 @@ function getAudioData() {
         "media/music/question_million.mp3"));
     audioData.push(new AudioData(MUSIC_IDS.BANKER,
         "media/music/banker_theme.mp3"));
+    audioData.push(new AudioData(MUSIC_IDS.ACCEPT_OR_REJECT_DEAL,
+        "media/music/accept_or_reject_deal.mp3"));
+    audioData.push(new AudioData(MUSIC_IDS.WAS_A_GOOD_DEAL_ACCEPTED,
+        "media/music/was_a_good_deal_accepted.mp3"));
 
     return audioData;
 }

@@ -18,7 +18,10 @@ var SOUND_EFFECTS_IDS = {
     GOOD_BYE : "good-bye-sound",
     CORRECT_ANSWER : "correct-answer-sound",
     CORRECT_ANSWER_10 : "correct-answer-10-sound",
-    CORRECT_ANSWER_MILLION: "correct-answer-million-sound",
+    CORRECT_ANSWER_MILLION : "correct-answer-million-sound",
+    OFFERED_BIG_DEAL : "offered-big-deal-sound",
+    TOOK_GOOD_DEAL : "took-good-deal-sound",
+    TOOK_BAD_DEAL : "took-bad-deal-sound",
 };
 
 var MUSIC_IDS = {
@@ -32,4 +35,6 @@ var MUSIC_IDS = {
     QUESTION_10 : "question-10-theme",
     QUESTION_MILLION : "question-million-theme",
     BANKER : "banker-theme",
+    ACCEPT_OR_REJECT_DEAL : "accept-or-reject-deal-sound",
+    WAS_A_GOOD_DEAL_ACCEPTED : "was-a-good-deal-accepted-theme",
 };

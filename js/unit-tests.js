@@ -11,6 +11,58 @@
     order by the name of the represented file.
 */
 
+QUnit.module("banker.js");
+
+QUnit.test("Banker.getOffer()", function(assert) {
+    var banker = new Banker();
+
+    // Prepare the function parameters; trigger a bank offer small
+    // enough so that it's rounded to nearest hundred
+    var stringAmount1 = "50";
+    var stringAmount2 = "300";
+    var stringAmount3 = "750";
+    var moneyAmounts = [stringAmount1, stringAmount2, stringAmount3];
+
+    // Calculate the correct banker's offer
+    var amount1 = parseFloat(stringAmount1, 10);
+    var amount2 = parseFloat(stringAmount2, 10);
+    var amount3 = parseFloat(stringAmount3, 10);
+    var averageAmount = (amount1 + amount2 + amount3) / 3;
+    // Round the correct offer to nearest hundred; put commas where
+    // appropriate
+    var correctOfferAsFloat =
+        Math.floor(averageAmount * Banker.MULTIPLIER / 100) * 100;
+    var correctOfferAsString =
+        putCommasInStringInteger(correctOfferAsFloat.toString());
+
+    assert.deepEqual(banker.getOffer(moneyAmounts), correctOfferAsString,
+        "Correct banker's offer determined, rounded to " +
+            "nearest hundred, and returned");
+
+    // Prepare another set function parameters to make a bank
+    // offer big enough so that it's rounded to nearest thousand
+    var stringAmount4 = "250000";
+    var stringAmount5 = "100000";
+    var stringAmount6 = "300";
+    var moneyAmounts = [stringAmount4, stringAmount5, stringAmount6];
+
+    // Calculate the correct banker's offer
+    var amount4 = parseFloat(stringAmount4, 10);
+    var amount5 = parseFloat(stringAmount5, 10);
+    var amount6 = parseFloat(stringAmount6, 10);
+    averageAmount = (amount4 + amount5 + amount6) / 3;
+    // Round the correct offer to nearest thousand; put commas where
+    // appropriate
+    correctOfferAsFloat =
+        Math.floor(averageAmount * Banker.MULTIPLIER / 1000) * 1000;
+    correctOfferAsString =
+        putCommasInStringInteger(correctOfferAsFloat.toString());
+
+    assert.deepEqual(banker.getOffer(moneyAmounts), correctOfferAsString,
+        "Correct banker's offer determined, rounded to " +
+            "nearest thousand, and returned");
+});
+
 QUnit.module("briefcase-display.js");
 
 QUnit.test("BriefcaseDisplay::getCasePosition()", function(assert) {
@@ -127,6 +179,31 @@ QUnit.test("selectedCorrectAnswer()", function(assert) {
         false, "Wrong answer was detected");
     assert.deepEqual(selectedCorrectAnswer(fakeQuestion, (answerIndex + 1)),
         true, "Correct answer was detected");
+});
+
+QUnit.module("money-amounts.js");
+
+QUnit.test("removeCommaFromStringNumber()", function(assert) {
+    assert.deepEqual(removeCommaFromStringNumber("15,000.01"), "15000.01",
+        "Given value was correctly modified and returned");
+});
+
+QUnit.test("removeCommaFromEachStringNumber()", function(assert) {
+    assert.deepEqual(removeCommaFromEachStringNumber(
+        ["3,000.53", "123,456", "1,000"]),
+        ["3000.53", "123456", "1000"],
+        "Correct array of adjusted numbers was created and returned");
+});
+
+QUnit.test("putCommasInStringInteger()", function(assert) {
+    assert.deepEqual(putCommasInStringInteger("0"), "0",
+        "Appropriately, no commas were inserted in 0");
+    assert.deepEqual(putCommasInStringInteger("400"), "400",
+        "Appropriately, no commas were inserted in 400");
+    assert.deepEqual(putCommasInStringInteger("20000"), "20,000",
+        "Appropriately, one comma was inserted in 20000");
+    assert.deepEqual(putCommasInStringInteger("1000000"), "1,000,000",
+        "Appropriately, two commas were inserted in 1000000");
 });
 
 QUnit.module("questions.js");
