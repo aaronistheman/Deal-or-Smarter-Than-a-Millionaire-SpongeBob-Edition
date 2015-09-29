@@ -110,22 +110,40 @@ QUnit.test("CanvasStack.set()", function(assert) {
 QUnit.test("CanvasStack.add()", function(assert) {
     // Set up
     var canvasStack = new CanvasStack();
+    var idToUse = CANVAS_IDS.TITLE_SCREEN;
     var comparisonArray = [];
-    comparisonArray.push(CANVAS_IDS.TITLE_SCREEN);
+    comparisonArray.push(idToUse);
+    $("#qunit-fixture").append("<canvas id='" + idToUse + "'></canvas>");
 
-    assert.deepEqual(canvasStack.add(
-        CANVAS_IDS.TITLE_SCREEN)._storage,
-        comparisonArray,
-        "A canvas was successfully stored");
+    // Test the addition of one canvas
+    assert.deepEqual(canvasStack.add(idToUse)._storage,
+        comparisonArray, "A canvas was successfully stored");
+    assert.ok($("#" + idToUse).hasClass('show'),
+        "CSS class 'show' was added to the canvas");
 
     // Adjust setup
-    comparisonArray = comparisonArray.concat(
-        CANVAS_IDS.BRIEFCASE_DISPLAY);
+    var idsToUse = CANVAS_IDS.BRIEFCASE_DISPLAY;
+    comparisonArray = comparisonArray.concat(idsToUse);
+    for (var i in idsToUse) {
+        $("#qunit-fixture").append(
+            "<canvas id='" + idsToUse[i] + "'></canvas>");
+    }
 
-    assert.deepEqual(canvasStack.add(
-        CANVAS_IDS.BRIEFCASE_DISPLAY)._storage.sort(),
-        comparisonArray.sort(),
+    // Test the addition of multiple canvases and the use of fade in effect
+    assert.deepEqual(canvasStack.add(idsToUse,
+        CanvasStack.EFFECTS.FADE_IN)._storage.sort(), comparisonArray.sort(),
         "After, two more canvas were successfully, simultaneously stored");
+    var classesAddedToEach = true;
+    for (var i in idsToUse) {
+        if (($("#" + idsToUse[i]).hasClass('show') === false) ||
+            ($("#" + idsToUse[i]).hasClass(
+                CanvasStack.EFFECTS.FADE_IN) === false)) {
+            classesAddedToEach = false;
+            break;
+        }
+    }
+    assert.ok(classesAddedToEach, "The class 'show' and the class " +
+        "indicated by CanvasStack.EFFECTS.FADE_IN were added");
 });
 
 QUnit.test("CanvasStack.remove()", function(assert) {
@@ -134,8 +152,15 @@ QUnit.test("CanvasStack.remove()", function(assert) {
     var comparisonArray = [];
     comparisonArray = comparisonArray.concat(CANVAS_IDS.MONEY_DISPLAY);
     comparisonArray.push(CANVAS_IDS.QUOTE_BUBBLE);
-    // add four canvas ids
-    canvasStack.add(CANVAS_IDS.MONEY_DISPLAY).add(CANVAS_IDS.QUOTE);
+    // Create a DOM element for the money display canvases
+    for (var i in CANVAS_IDS.MONEY_DISPLAY) {
+        $("#qunit-fixture").append(
+            "<canvas id='" + CANVAS_IDS.MONEY_DISPLAY[i] + "'></canvas>");
+    }
+    // add four canvas ids to the sample CanvasStack object;
+    // give the fade-in effect to the money display canvases
+    canvasStack.add(CANVAS_IDS.MONEY_DISPLAY, CanvasStack.EFFECTS.FADE_IN)
+        .add(CANVAS_IDS.QUOTE);
 
     assert.deepEqual(canvasStack.remove(
         CANVAS_IDS.QUOTE_TEXT)._storage.sort(),
@@ -149,6 +174,20 @@ QUnit.test("CanvasStack.remove()", function(assert) {
         CANVAS_IDS.MONEY_DISPLAY)._storage.sort(),
         comparisonArray.sort(),
         "After, two canvases were successfully removed");
+    var classesRemovedFromEach = true;
+    for (var i in CANVAS_IDS.MONEY_DISPLAY) {
+        if (($("#" + CANVAS_IDS.MONEY_DISPLAY[i]).hasClass('show') ===
+            true) ||
+            ($("#" + CANVAS_IDS.MONEY_DISPLAY[i]).hasClass(
+                CanvasStack.EFFECTS.FADE_IN) === true)) {
+            classesRemovedFromEach = false;
+            break;
+        }
+    }
+    assert.ok(classesRemovedFromEach,
+        "The class 'show' and the class " +
+        "indicated by CanvasStack.EFFECTS.FADE_IN were removed " +
+        "from the two indicated canvases");
 });
 
 QUnit.test("CanvasStack.clear()", function(assert) {

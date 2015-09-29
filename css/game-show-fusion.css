@@ -39,7 +39,7 @@ body {
 }
 
 canvas {
-    display: none;
+    opacity: 0;
 
     /* Allows canvases to stack on top of each other without blocking
     each other completely */
@@ -47,7 +47,13 @@ canvas {
 }
 
 canvas.show {
-    display: block;
+    opacity: 1;
+}
+
+canvas.fade-in {
+    -moz-transition: opacity 2.0s linear;
+    -webkit-transition: opacity 2.0s linear;
+    transition: opacity 2.0s linear;
 }
 
 #title-screen-canvas.show {

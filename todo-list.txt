@@ -1,12 +1,4 @@
 Next:
--effects as canvases appear or disappear (e.g. fading)
-    --could be issue if a canvas is hidden and redrawn (as occurs
-        to the quote bubble frequently in rules explanation)
-	--to resolve this issue, could only apply the fading effect
-		to certain canvases (e.g. not the quote bubble),
-		or could edit CanvasStack to ignore repeats
-    --and maybe even between speakers (could maybe hide and then show
-        as a trick)
 -fix banker offer calculation
     --make sure when the banker's offer is compared to your case's value,
         that there are no commas in either
@@ -109,3 +101,4 @@ Considerable:
 -make class MoneyData
     --this can be used to update both MoneyDisplay and
         BriefcaseDisplay
+-other uses of canvas transition effects; or more creative use of them

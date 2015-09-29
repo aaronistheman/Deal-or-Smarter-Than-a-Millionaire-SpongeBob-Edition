@@ -18,17 +18,19 @@ function CanvasStack() {
     @param whatToSet id or ids of the canvas or canvases to show
     and store; must be a value in CANVAS_IDS (or a concatenation
     of them)
+    @param effect (optional) with which to have the canvas(es) show
+    up; should be value in CanvasStack.EFFECTS
     @returns "this" pointer
     @throws nothing
 */
-CanvasStack.prototype.set = function(whatToSet) {
+CanvasStack.prototype.set = function(whatToSet, effect) {
     // Hide each canvas indicated by the currently stored ids,
     // then clear the storage
     this.clear();
 
     // For each canvas indicated by the id or ids in whatToSet,
     // show the canvas and store the id
-    this.add(whatToSet);
+    this.add(whatToSet, effect);
 
     return this;
 }
@@ -37,24 +39,32 @@ CanvasStack.prototype.set = function(whatToSet) {
     @pre the ids indicated by whatToAdd are not already stored
     @post whatToAdd has been added to this._storage, and the
     canvas represented by whatToAdd has been given CSS class
-    'show'
+    'show' and the CSS class indicated by parameter effect
     @hasTest yes
     @param whatToAdd to affect as the postcondition specifies;
     must be a value in CANVAS_IDS
+    @param effect (optional) with which to have the canvas(es) show
+    up; should be value in CanvasStack.EFFECTS
     @returns "this" pointer
     @throws nothing
 */
-CanvasStack.prototype.add = function(whatToAdd) {
+CanvasStack.prototype.add = function(whatToAdd, effect) {
+    // Determine which CSS class(es) to add
+    if (effect !== undefined)
+        var classToAdd = "show " + effect;
+    else
+        var classToAdd = "show";
+
     if (typeof whatToAdd == "string") {
         // only one canvas to add and show
         this._storage.push(whatToAdd);
-        $('#' + whatToAdd).addClass('show');
+        $('#' + whatToAdd).addClass(classToAdd);
     }
     else {
         // array of canvases to add
         this._storage = this._storage.concat(whatToAdd);
         for (var i in whatToAdd)
-            $('#' + whatToAdd[i]).addClass('show');
+            $('#' + whatToAdd[i]).addClass(classToAdd);
     }
     return this;
 };
@@ -79,12 +89,17 @@ CanvasStack.prototype.remove = function(whatToRemove) {
     else
         canvasIdsToRemove = whatToRemove;
 
+    // Ensure all CanvasStack-related CSS classes are removed
+    var classesToRemove = "show";
+    for (var i in CanvasStack.EFFECTS)
+        classesToRemove += (' ' + CanvasStack.EFFECTS[i]);
+
     // Find each canvas that should be hidden, hide it, and remove
     // its id from the storage
     for (var i in canvasIdsToRemove) {
         for (var j = 0; j < this._storage.length; ) {
             if (this._storage[j] === canvasIdsToRemove[i]) {
-                $('#' + this._storage[j]).removeClass('show');
+                $('#' + this._storage[j]).removeClass(classesToRemove);
                 this._storage.splice(j, 1);
                 break;
             }
@@ -110,3 +125,7 @@ CanvasStack.prototype.clear = function() {
     // using slice() here should be fine
     return this.remove(this._storage.slice());
 }
+
+CanvasStack.EFFECTS = {
+    FADE_IN : "fade-in",
+};
