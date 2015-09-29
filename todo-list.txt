@@ -1,15 +1,15 @@
 Next:
 -fix banker offer calculation
+    --include the user's briefcase value in the bank offer calculation
+        --concatenate the value to the passed array
     --make sure when the banker's offer is compared to your case's value,
         that there are no commas in either
         --the comparison thinks 69,000 > 250,000 and 50 > 26,000
         --could have the Banker object store the offer and call
-            generateOffer() when appropriate; then there could be
+            updateOffer() when appropriate; then there could be
             Banker.getOfferAsFloat() and Banker.getOfferAsString()
         --make sure the big deal sound effect plays when appropriate
-    --include the user's briefcase value in the bank offer calculation
-        --concatenate the value to the passed array
-    --figure out why the deals always tend to be good
+    --figure out why the deals always tend to be good; if they do
         --make sure commas are appropriately removed
         --perhaps don't solely use the average of the deals
 -grey out the money amounts that are out of the game
