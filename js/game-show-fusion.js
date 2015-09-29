@@ -658,16 +658,30 @@ function makeBankerOffer() {
     gameShow.quotesToDraw.add("The banker is calling.")
         .add("He has an offer for you.")
         .add("Here's the offer.")
-        .add("It is $" + gameShow.turnVariables.bankerOffer + '.')
         .deployQuoteChain(function() {
-            allowUserDealOrNoDeal(true);
-            gameShow.canvasStack.set(CANVAS_IDS.MONEY_DISPLAY.concat(
-                CANVAS_IDS.QUOTE));
-            gameShow.quotesToDraw.add("Now, I must ask you: " +
-                "Deal or No Deal? (Press the 'y' key to accept " +
-                "the offer of $" + gameShow.turnVariables.bankerOffer +
-                ". Press the 'n' key to reject it and continue.")
-                .deployQuoteChain();
+            // Place special sound effect if big enough offer
+            var offerValue =
+                parseFloat(removeCommaFromStringNumber(
+                    gameShow.turnVariables.bankerOffer));
+            if (offerValue >= 100000)
+                gameShow.soundPlayer.play(
+                    SOUND_EFFECTS_IDS.OFFERED_BIG_DEAL);
+
+            gameShow.quotesToDraw.add("It is $" +
+                gameShow.turnVariables.bankerOffer + '.')
+                .deployQuoteChain(function() {
+                    allowUserDealOrNoDeal(true);
+
+                    gameShow.canvasStack.set(CANVAS_IDS.MONEY_DISPLAY.concat(
+                        CANVAS_IDS.QUOTE));
+
+                    gameShow.quotesToDraw.add("Now, I must ask you: " +
+                        "Deal or No Deal? (Press the 'y' key to accept " +
+                        "the offer of $" +
+                        gameShow.turnVariables.bankerOffer +
+                        ". Press the 'n' key to reject it and continue.")
+                        .deployQuoteChain();
+            });
         });
 }
 

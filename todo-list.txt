@@ -1,6 +1,4 @@
 Next:
--get the banker's offer working
-    --play sound effect when deal is presented, depending on its size
 -effects as canvases appear or disappear (e.g. fading)
     --could be issue if a canvas is hidden and redrawn (as occurs
         to the quote bubble frequently in rules explanation)
@@ -12,16 +10,16 @@ Next:
 -fix banker offer calculation
     --make sure when the banker's offer is compared to your case's value,
         that there are no commas in either
-        --the comparison thinks 69,000 > 250,000
+        --the comparison thinks 69,000 > 250,000 and 50 > 26,000
         --could have the Banker object store the offer and call
             generateOffer() when appropriate; then there could be
             Banker.getOfferAsFloat() and Banker.getOfferAsString()
         --make sure the big deal sound effect plays when appropriate
-        --remove console log of banker offer
     --include the user's briefcase value in the bank offer calculation
         --concatenate the value to the passed array
     --figure out why the deals always tend to be good
         --make sure commas are appropriately removed
+        --perhaps don't solely use the average of the deals
 -grey out the money amounts that are out of the game
     --see if can align money amounts to the right of their bars
     --could adjust the banker multiplier

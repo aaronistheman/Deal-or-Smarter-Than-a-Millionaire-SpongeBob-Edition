@@ -69,6 +69,8 @@ function getAudioData() {
         "media/sound/correct_answer_10.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.CORRECT_ANSWER_MILLION,
         "media/sound/correct_answer_million.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.OFFERED_BIG_DEAL,
+        "media/sound/offered_big_deal.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.TOOK_GOOD_DEAL,
         "media/sound/took_good_deal.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.TOOK_BAD_DEAL,
