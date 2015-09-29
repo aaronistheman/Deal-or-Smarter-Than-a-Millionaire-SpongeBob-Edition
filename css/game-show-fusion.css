@@ -39,7 +39,6 @@ body {
 }
 
 canvas {
-    /* display: none; */
     opacity: 0;
 
     /* Allows canvases to stack on top of each other without blocking
@@ -48,12 +47,7 @@ canvas {
 }
 
 canvas.show {
-    /* display: block; */
     opacity: 1;
-
-    -moz-transition: opacity 0.1s linear;
-    -webkit-transition: opacity 0.1s linear;
-    transition: opacity 0.1s linear;
 }
 
 #title-screen-canvas.show {
@@ -74,7 +68,7 @@ canvas.show {
 #banker-canvas.show {
     background-image: url(../media/images/banker_background.jpg);
 
-    -moz-transition: opacity 1.0s linear;
-    -webkit-transition: opacity 1.0s linear;
-    transition: opacity 1.0s linear;
+    -moz-transition: opacity 2.0s linear;
+    -webkit-transition: opacity 2.0s linear;
+    transition: opacity 2.0s linear;
 }
