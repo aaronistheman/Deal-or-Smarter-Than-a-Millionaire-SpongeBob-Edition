@@ -19,8 +19,8 @@ var SOUND_EFFECTS_IDS = {
     CORRECT_ANSWER : "correct-answer-sound",
     CORRECT_ANSWER_10 : "correct-answer-10-sound",
     CORRECT_ANSWER_MILLION : "correct-answer-million-sound",
-    GOOD_DEAL : "good-deal-sound",
-    BAD_DEAL : "bad-deal-sound",
+    TOOK_GOOD_DEAL : "took-good-deal-sound",
+    TOOK_BAD_DEAL : "took-bad-deal-sound",
 };
 
 var MUSIC_IDS = {

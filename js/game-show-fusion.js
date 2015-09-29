@@ -728,7 +728,7 @@ function userAcceptsDeal() {
     the game
 */
 function userAcceptedGoodDeal() {
-    gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.GOOD_DEAL);
+    gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.TOOK_GOOD_DEAL);
     gameShow.musicPlayer.stop();
 
     gameShow.quotesToDraw.add('$' + gameShow.briefcaseValue + '.')
@@ -747,7 +747,7 @@ function userAcceptedGoodDeal() {
     the game
 */
 function userAcceptedBadDeal() {
-    gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.BAD_DEAL);
+    gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.TOOK_BAD_DEAL);
     gameShow.musicPlayer.stop();
 
     gameShow.quotesToDraw.add('$' + gameShow.briefcaseValue + '.')
