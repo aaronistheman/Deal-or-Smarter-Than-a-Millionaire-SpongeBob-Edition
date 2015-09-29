@@ -453,7 +453,11 @@ function handleQuestionSelection() {
 */
 function presentQuestionAndAnswers() {
     // Update what the user sees and hears
-    gameShow.canvasStack.set(CANVAS_IDS.QUESTIONING);
+    if (gameShow.millionDollarQuestion)
+        gameShow.canvasStack.set(CANVAS_IDS.QUESTIONING,
+            CanvasStack.EFFECTS.FADE_IN);
+    else
+        gameShow.canvasStack.set(CANVAS_IDS.QUESTIONING);
     gameShow.questions.drawQuestionAndAnswersText(
         gameShow.turnVariables.selectedQuestion);
 
