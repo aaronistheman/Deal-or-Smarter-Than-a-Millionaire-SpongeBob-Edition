@@ -1,4 +1,7 @@
 Next:
+-effects as canvases appear or disappear (e.g. fading)
+    --allow use of the canvas stack to make
+        million dollar question fade in
 -fix banker offer calculation
     --make sure when the banker's offer is compared to your case's value,
         that there are no commas in either

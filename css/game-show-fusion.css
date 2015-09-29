@@ -50,6 +50,12 @@ canvas.show {
     opacity: 1;
 }
 
+canvas.fade-in {
+    -moz-transition: opacity 2.0s linear;
+    -webkit-transition: opacity 2.0s linear;
+    transition: opacity 2.0s linear;
+}
+
 #title-screen-canvas.show {
     background-color: #eee;
 }
@@ -67,8 +73,4 @@ canvas.show {
 
 #banker-canvas.show {
     background-image: url(../media/images/banker_background.jpg);
-
-    -moz-transition: opacity 2.0s linear;
-    -webkit-transition: opacity 2.0s linear;
-    transition: opacity 2.0s linear;
 }

@@ -650,7 +650,7 @@ function handleCorrectAnswerSelection() {
 */
 function makeBankerOffer() {
     gameShow.canvasStack.set(CANVAS_IDS.QUOTE.concat(
-        CANVAS_IDS.BANKER));
+        CANVAS_IDS.BANKER), CanvasStack.EFFECTS.FADE_IN);
     gameShow.musicPlayer.play(MUSIC_IDS.BANKER);
     gameShow.turnVariables.bankerOffer = gameShow.banker.getOffer(
         removeCommaFromEachStringNumber(gameShow.moneyAmounts));
