@@ -1167,6 +1167,28 @@ Questions.getEntireSupplyOfQuestions = function() {
         "Which of the following characters is not a friend of SpongeBob?",
         new AnswerData(ANSWERS.SECOND, ["Mermaid Man", "Dennis",
             "Stanley", "Bubble Buddy"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.GEOGRAPHY,
+        "Which of the following is a beach in Bikini Bottom?",
+        new AnswerData(ANSWERS.THIRD, ["Galleria Diphteria",
+            "Bikini Atoll", "Goo Lagoon", "Weenie Hut Jr."])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.EPISODES,
+        "In which of the following episodes did Plankton first appear?",
+        new AnswerData(ANSWERS.FOURTH, ["F.U.N.", "Culture Shock",
+            "Welcome to the Chum Bucket", "Plankton!"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.EPISODES,
+        "Which of the following episodes has a " +
+        "scene in which Mr. Krabs asks for a pony for Christmas?",
+        new AnswerData(ANSWERS.FIRST, ["Christmas Who?", "Shanghaied",
+            "Welcome to the Chum Bucket", "One Krab's Trash"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.VIDEO_GAMES,
+        "On which of the following has a SpongeBob video game never " +
+        "been released?",
+        new AnswerData(ANSWERS.SECOND, ["Xbox 360", "Virtual Boy",
+            "Game Boy Advance", "GameCube"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.MAIN_CHARACTERS,
+        "Which of the following is Squidward's last name?",
+        new AnswerData(ANSWERS.THIRD, ["Tennisballs", "Tentpoles",
+            "Tentacles", "Tortellini"])));
 
     /*
         Second grade questions
@@ -1201,6 +1223,15 @@ Questions.getEntireSupplyOfQuestions = function() {
         "In what year was the first episode of 'SpongeBob Squarepants' " +
         "released?",
         new AnswerData(ANSWERS.THIRD, ["2002", "2000", "1999", "1998"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.VEHICLES,
+        "Which of the following vehicles does Old Man Jenkins drive?",
+        new AnswerData(ANSWERS.FOURTH, ["Underwater Heartbreaker",
+            "garbage truck", "fire truck", "jalopy"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.EPISODES,
+        "In the episode 'Plankton!', Karen says that Plankton is " +
+        "one percent evil and ninety-nine percent what?",
+        new AnswerData(ANSWERS.FIRST, ["hot gas", "nitrogen",
+            "good", "green peas"])));
 
     /*
         Third grade questions
@@ -1241,6 +1272,15 @@ Questions.getEntireSupplyOfQuestions = function() {
         "destroyed?",
         new AnswerData(ANSWERS.FOURTH, ["Squidville", "Life of Crime",
             "Sandy's Rocket", "Home Sweet Pineapple"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.TECHNOLOGY,
+        "Which of the following is not a feature of the " +
+            "hydro-dynamic spatula from the episode 'Help Wanted'?",
+        new AnswerData(ANSWERS.FIRST, ["thermoelectric cooler",
+            "turbo drive", "port-and-starboard attachments", "spinning"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
+        "Which of the following did Patrick once stab Squidward's hand with?",
+        new AnswerData(ANSWERS.SECOND, ["knife", "jellyfishing net",
+            "spatula", "keys"])));
 
     /*
         Fourth grade questions
@@ -1290,6 +1330,10 @@ Questions.getEntireSupplyOfQuestions = function() {
         "dialogue?",
         new AnswerData(ANSWERS.FOURTH, ["Bubblestand", "Nature Pants",
             "Ugh", "Reef Blower"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.MUSIC,
+        "In which of the following episodes does SpongeBob not sing?",
+        new AnswerData(ANSWERS.FIRST, ["Your Shoe's Untied",
+            "As Seen on TV", "Ripped Pants", "F.U.N."])));
 
     /*
         Fifth grade questions
@@ -1313,7 +1357,7 @@ Questions.getEntireSupplyOfQuestions = function() {
         "take place?",
         new AnswerData(ANSWERS.THIRD, ["1913", "1948",
             "1959", "1968"])));
-    supply.push(new Question(gradeOfQuestion, SUBJECTS.ART,
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.MUSIC,
         "Which of the following words is not used to describe " +
         "SpongeBob in the opening theme?",
         new AnswerData(ANSWERS.FOURTH, ["porous", "yellow",
@@ -1355,6 +1399,11 @@ Questions.getEntireSupplyOfQuestions = function() {
         "Which of the following did Patrick mistake for a cardinal " +
         "direction?",
         new AnswerData(ANSWERS.SECOND, ["nouth", "weast", "sorth", "est"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.EPISODES,
+        "In the episode 'Bubblestand', for how much did SpongeBob " +
+        "charge to teach how to blow bubbles?",
+        new AnswerData(ANSWERS.THIRD, ["one cent", "ten cents",
+            "twenty-five cents", "fifty cents"])));
 
     /*
         Million dollar questions

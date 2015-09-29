@@ -2,6 +2,9 @@ Next:
 -fix banker offer calculation
     --include the user's briefcase value in the bank offer calculation
         --concatenate the value to the passed array
+        --can confirm the change by looking at Mr. Krabs' final bank offer
+	--or use Briefcase objects to keep track (and maybe pass an array of
+		them to the banker)
     --make sure when the banker's offer is compared to your case's value,
         that there are no commas in either
         --the comparison thinks 69,000 > 250,000 and 50 > 26,000
@@ -44,8 +47,6 @@ At some point:
 -applause sound effect
 -make sure the game progresses smoothly in all parts (e.g. visually
     and auditorially)
--add more first and second grade questions
-    --Old Man Jenkins' gerapi
 -fix SpongeBob's directions about arrow keys and choosing question
     --make sure the introductory directions are all correct
 -look into that one error that always pops up in the console
@@ -66,11 +67,11 @@ Before release 0.1:
 -make sure trivial functions that are no longer needed and that were
  made for the purpose of testing have been erased in game-show-fusion.js
 -erase commented out methods of MoneyDisplay (around lines 96-99)
--update readme
+-update readme; get number of questions
 -put release number on each file
 
 After release 0.1:
--Facebook/Twitter integration
+-Facebook/Twitter integration?
 -YouTube video; put link in readme
 
 Considerable:
@@ -102,3 +103,4 @@ Considerable:
     --this can be used to update both MoneyDisplay and
         BriefcaseDisplay
 -other uses of canvas transition effects; or more creative use of them
+-more questions

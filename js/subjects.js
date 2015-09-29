@@ -25,6 +25,7 @@ var SUBJECTS = {
     TECHNOLOGY : "Technology",
     QUOTATIONS : "Quotations",
     EPISODES : "Episodes",
+    MUSIC : "Music",
 };
 
 /*
