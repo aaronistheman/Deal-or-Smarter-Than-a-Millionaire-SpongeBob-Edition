@@ -634,7 +634,8 @@ function handleCorrectAnswerSelection() {
     gameShow.quotesToDraw.add("You have selected the correct answer.");
     if (gameShow.numberOfQuestionsCorrectlyAnswered < 10) {
         gameShow.quotesToDraw
-            .add("The question was worth: $" + questionValue + '.');
+            .add("The question was worth: $" +
+                questionValue.asString() + '.');
 
         // The banker makes an offer after the second, fourth, sixth,
         // and eighth questions
@@ -657,23 +658,19 @@ function makeBankerOffer() {
         CANVAS_IDS.BANKER), CanvasStack.EFFECTS.FADE_IN);
     gameShow.musicPlayer.play(MUSIC_IDS.BANKER);
     gameShow.turnVariables.bankerOffer = gameShow.banker.getOffer(
-        removeCommaFromEachStringNumber(
-            gameShow.moneyAmounts.concat([gameShow.briefcaseValue])));
+        gameShow.moneyAmounts.concat([gameShow.briefcaseValue]));
 
     gameShow.quotesToDraw.add("The banker is calling.")
         .add("He has an offer for you.")
         .add("Here's the offer.")
         .deployQuoteChain(function() {
             // Place special sound effect if big enough offer
-            var offerValue =
-                parseFloat(removeCommaFromStringNumber(
-                    gameShow.turnVariables.bankerOffer));
-            if (offerValue >= 100000)
+            if (gameShow.turnVariables.bankerOffer.asNumber() >= 100000)
                 gameShow.soundPlayer.play(
                     SOUND_EFFECTS_IDS.OFFERED_BIG_DEAL);
 
             gameShow.quotesToDraw.add("It is $" +
-                gameShow.turnVariables.bankerOffer + '.')
+                gameShow.turnVariables.bankerOffer.asString() + '.')
                 .deployQuoteChain(function() {
                     allowUserDealOrNoDeal(true);
 
@@ -683,7 +680,7 @@ function makeBankerOffer() {
                     gameShow.quotesToDraw.add("Now, I must ask you: " +
                         "Deal or No Deal? (Press the 'y' key to accept " +
                         "the offer of $" +
-                        gameShow.turnVariables.bankerOffer +
+                        gameShow.turnVariables.bankerOffer.asString() +
                         ". Press the 'n' key to reject it and continue.")
                         .deployQuoteChain();
             });
@@ -723,18 +720,19 @@ function userAcceptsDeal() {
     // and concludes the game
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
     gameShow.quotesToDraw.add("You're taking home $" +
-        gameShow.turnVariables.bankerOffer + '.')
+        gameShow.turnVariables.bankerOffer.asString() + '.')
         .deployQuoteChain(function() {
             gameShow.musicPlayer.play(MUSIC_IDS.WAS_A_GOOD_DEAL_ACCEPTED);
             gameShow.quotesToDraw.add(
                 "Now the question is: did you get a good deal?")
             .add("The banker's offer was $" +
-                gameShow.turnVariables.bankerOffer + '.')
+                gameShow.turnVariables.bankerOffer.asString() + '.')
             .add("You picked case number " +
                 gameShow.selectedBriefcaseNumber + '.')
             .add("That case was worth: ")
             .deployQuoteChain(function() {
-                if (gameShow.turnVariables.bankerOffer > gameShow.briefcaseValue)
+                if (gameShow.turnVariables.bankerOffer.asNumber() >
+                    gameShow.briefcaseValue.asNumber())
                     userAcceptedGoodDeal();
                 else
                     userAcceptedBadDeal();
@@ -750,7 +748,7 @@ function userAcceptedGoodDeal() {
     gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.TOOK_GOOD_DEAL);
     gameShow.musicPlayer.stop();
 
-    gameShow.quotesToDraw.add('$' + gameShow.briefcaseValue + '.')
+    gameShow.quotesToDraw.add('$' + gameShow.briefcaseValue.asString() + '.')
         .deployQuoteChain(function() {
             gameShow.quotesToDraw.add("You got a good deal.")
                 .add("Congratulations!")
@@ -769,7 +767,7 @@ function userAcceptedBadDeal() {
     gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.TOOK_BAD_DEAL);
     gameShow.musicPlayer.stop();
 
-    gameShow.quotesToDraw.add('$' + gameShow.briefcaseValue + '.')
+    gameShow.quotesToDraw.add('$' + gameShow.briefcaseValue.asString() + '.')
         .deployQuoteChain(function() {
             gameShow.quotesToDraw.add("Oh! The banker " +
                 "one-upped you this time.")
@@ -819,7 +817,7 @@ function goToNextTurn() {
 function explainUserChooseMillionOrGoHome() {
     gameShow.quotesToDraw.add("You now have a tough choice.")
         .add("You can take home your case, which you know must " +
-            "have a value of $" + gameShow.briefcaseValue + ".")
+            "have a value of $" + gameShow.briefcaseValue.asString() + ".")
         .add("Or, you can face the million dollar question.")
         .add("If you choose to see the question, you must answer it.")
         .add("If you choose the wrong answer, you go home with nothing.")
@@ -879,7 +877,8 @@ function userTakesCaseHome() {
 
     // Make the host explain
     gameShow.quotesToDraw.add("Then, congratulations.")
-        .add("You're going home with $" + gameShow.briefcaseValue + '.')
+        .add("You're going home with $" +
+            gameShow.briefcaseValue.asString() + '.')
         .deployQuoteChain(function() {
             eraseQuoteBubbleText();
             gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.GOOD_BYE);

@@ -39,25 +39,20 @@ Banker.prototype.draw = function(canvasId) {
 }
 
 /*
-    @pre arrayOfMoneyAmounts has numbers in the form of strings
-    with no dollar signs or commas
+    @pre arrayOfMoneyAmounts is array of instances of MoneyAmount
     @hasTest yes
     @param arrayOfMoneyAmounts the banker makes his offer based
     on the remaining money amounts
     @returns the banker's offer, which is a certain percentage
     of the average money amount; if the offer is at least 10000,
     it's rounded to the nearest thousand; otherwise, it's rounded
-    to the nearest hundred; it's returned as a string and has
-    commas where appropriate
+    to the nearest hundred; it's returned as an instance of MoneyAmount
 */
 Banker.prototype.getOffer = function(arrayOfMoneyAmounts) {
     // Get the average money amount
     var sumMoneyAmounts = 0;
-    for (var i = 0; i < arrayOfMoneyAmounts.length; ++i) {
-        // Convert each string number into just a number
-        var moneyAmount = parseFloat(arrayOfMoneyAmounts[i], 10);
-        sumMoneyAmounts += moneyAmount;
-    }
+    for (var i = 0; i < arrayOfMoneyAmounts.length; ++i)
+        sumMoneyAmounts += arrayOfMoneyAmounts[i].asNumber();
     var averageMoneyAmount = sumMoneyAmounts / arrayOfMoneyAmounts.length;
 
     // Apply the banker multiplier
@@ -72,9 +67,8 @@ Banker.prototype.getOffer = function(arrayOfMoneyAmounts) {
         bankerOffer = Math.floor(bankerOffer / 1000) * 1000;
     }
 
-    // Return the banker's offer as a string with commas where
-    // appropriate
-    return putCommasInStringInteger(bankerOffer.toString());
+    // Return the banker's offer as an instance of MoneyAmount
+    return new MoneyAmount(bankerOffer);
 };
 
 /*

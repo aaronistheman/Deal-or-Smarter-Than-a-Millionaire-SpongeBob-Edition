@@ -10,7 +10,8 @@
     @param barCanvasId id of the canvas to draw the bars on
     @param textCanvasId id of the canvas to draw the text (i.e.
     the money amounts) on
-    @param moneyAmounts array of 10 money amounts to display
+    @param moneyAmounts array of 10 instances of MoneyAmount, the
+    values of which will be displayed
 */
 function MoneyDisplay(barCanvasId, textCanvasId, moneyAmounts) {
     this.barCanvasId = barCanvasId;
@@ -74,7 +75,7 @@ MoneyDisplay.prototype.draw = function(whatToDraw) {
             ctx.fillRect(x, y, barWidth, barHeight);
         }
         else if (whatToDraw === 'text') {
-            var textToDraw = '$ ' + this.moneyAmounts[i];
+            var textToDraw = '$ ' + this.moneyAmounts[i].asString();
             ctx.fillText(textToDraw, x, y);
         }
 
