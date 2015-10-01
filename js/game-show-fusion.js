@@ -665,15 +665,12 @@ function makeBankerOffer() {
         .add("Here's the offer.")
         .deployQuoteChain(function() {
             // Place special sound effect if big enough offer
-            var offerValue =
-                parseFloat(removeCommaFromStringNumber(
-                    gameShow.turnVariables.bankerOffer));
-            if (offerValue >= 100000)
+            if (gameShow.turnVariables.bankerOffer.asNumber() >= 100000)
                 gameShow.soundPlayer.play(
                     SOUND_EFFECTS_IDS.OFFERED_BIG_DEAL);
 
             gameShow.quotesToDraw.add("It is $" +
-                gameShow.turnVariables.bankerOffer + '.')
+                gameShow.turnVariables.bankerOffer.asString() + '.')
                 .deployQuoteChain(function() {
                     allowUserDealOrNoDeal(true);
 
@@ -683,7 +680,7 @@ function makeBankerOffer() {
                     gameShow.quotesToDraw.add("Now, I must ask you: " +
                         "Deal or No Deal? (Press the 'y' key to accept " +
                         "the offer of $" +
-                        gameShow.turnVariables.bankerOffer +
+                        gameShow.turnVariables.bankerOffer.asString() +
                         ". Press the 'n' key to reject it and continue.")
                         .deployQuoteChain();
             });

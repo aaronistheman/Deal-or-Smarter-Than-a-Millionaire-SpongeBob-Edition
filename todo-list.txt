@@ -1,10 +1,7 @@
 Next:
 -fix banker offer calculation
     --make MoneyAmount object
-        --implement MoneyAmount in the rest of the code
         --remove putCommasInStringInteger()
-	--or use Briefcase objects to keep track (and maybe pass an array of
-		them to the banker)
     --make sure when the banker's offer is compared to your case's value,
         that there are no commas in either
         --the comparison thinks 69,000 > 250,000 and 50 > 26,000 and
@@ -13,6 +10,8 @@ Next:
             updateOffer() when appropriate; then there could be
             Banker.getOfferAsFloat() and Banker.getOfferAsString()
         --make sure the big deal sound effect plays when appropriate
+	--or use Briefcase objects to keep track (and maybe pass an array of
+		them to the banker)
     --figure out why the deals always tend to be good; if they do
         --make sure commas are appropriately removed
         --perhaps don't solely use the average of the deals

@@ -11,6 +11,7 @@
 */
 function getBeginningMoneyAmounts() {
     var moneyAmounts = [];
+
     moneyAmounts.push(new MoneyAmount(0.01));
     moneyAmounts.push(new MoneyAmount(50));
     moneyAmounts.push(new MoneyAmount(300));
@@ -21,4 +22,6 @@ function getBeginningMoneyAmounts() {
     moneyAmounts.push(new MoneyAmount(100000));
     moneyAmounts.push(new MoneyAmount(250000));
     moneyAmounts.push(new MoneyAmount(500000));
+
+    return moneyAmounts;
 }
