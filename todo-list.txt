@@ -1,19 +1,12 @@
 Next:
 -fix banker offer calculation
-    --make sure when the banker's offer is compared to your case's value,
-        that there are no commas in either
-        --the comparison thinks 69,000 > 250,000 and 50 > 26,000 and
-            750 > 100,000
-        --could have the Banker object store the offer and call
-            updateOffer() when appropriate; then there could be
-            Banker.getOfferAsFloat() and Banker.getOfferAsString()
-        --make sure the big deal sound effect plays when appropriate
-	--or use Briefcase objects to keep track (and maybe pass an array of
-		them to the banker)
+    --make some MoneyAmount methods private and static
     --figure out why the deals always tend to be good; if they do
         --make sure commas are appropriately removed
         --perhaps don't solely use the average of the deals
--grey out the money amounts that are out of the game
+-fix money display
+    --show it when a question's value is revealed
+    --grey out the money amounts that are out of the game
     --see if can align money amounts to the right of their bars
     --could adjust the banker multiplier
 -display the banker's offer along with the other monetary amounts
