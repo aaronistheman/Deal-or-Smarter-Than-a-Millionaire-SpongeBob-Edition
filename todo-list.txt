@@ -1,10 +1,9 @@
 Next:
 -fix banker offer calculation
-    --include the user's briefcase value in the bank offer calculation
-        --concatenate the value to the passed array
-        --can confirm the change by looking at Mr. Krabs' final bank offer
 	--or use Briefcase objects to keep track (and maybe pass an array of
 		them to the banker)
+    --make MoneyAmount object; can have MoneyAmount.asFloat() and
+        MoneyAmount.asString()
     --make sure when the banker's offer is compared to your case's value,
         that there are no commas in either
         --the comparison thinks 69,000 > 250,000 and 50 > 26,000
@@ -59,6 +58,8 @@ At some point:
     --if I decide not to use WebGL, alternative must be used
         (e.g. 2d drawing)
 -more decorated title screen
+	--disclaim that SpongeBob or any of the involved game shows are
+	at all my possession
 -consider making my own graphics for some things (e.g. briefcases)
     --could use GIMP, Microsoft Word, etc.
     --in this case, consider resource identifiers for the images

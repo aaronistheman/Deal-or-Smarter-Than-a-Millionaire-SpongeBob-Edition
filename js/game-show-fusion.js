@@ -657,7 +657,8 @@ function makeBankerOffer() {
         CANVAS_IDS.BANKER), CanvasStack.EFFECTS.FADE_IN);
     gameShow.musicPlayer.play(MUSIC_IDS.BANKER);
     gameShow.turnVariables.bankerOffer = gameShow.banker.getOffer(
-        removeCommaFromEachStringNumber(gameShow.moneyAmounts));
+        removeCommaFromEachStringNumber(
+            gameShow.moneyAmounts.concat([gameShow.briefcaseValue])));
 
     gameShow.quotesToDraw.add("The banker is calling.")
         .add("He has an offer for you.")
