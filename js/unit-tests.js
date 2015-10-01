@@ -236,17 +236,6 @@ QUnit.test("removeCommaFromEachStringNumber()", function(assert) {
         "Correct array of adjusted numbers was created and returned");
 });
 
-QUnit.test("putCommasInStringInteger()", function(assert) {
-    assert.deepEqual(putCommasInStringInteger("0"), "0",
-        "Appropriately, no commas were inserted in 0");
-    assert.deepEqual(putCommasInStringInteger("400"), "400",
-        "Appropriately, no commas were inserted in 400");
-    assert.deepEqual(putCommasInStringInteger("20000"), "20,000",
-        "Appropriately, one comma was inserted in 20000");
-    assert.deepEqual(putCommasInStringInteger("1000000"), "1,000,000",
-        "Appropriately, two commas were inserted in 1000000");
-});
-
 QUnit.test("putCommasInStringNumber()", function(assert) {
     assert.deepEqual(putCommasInStringNumber("0.01"), "0.01",
         "Appropriately, no commas were inserted");

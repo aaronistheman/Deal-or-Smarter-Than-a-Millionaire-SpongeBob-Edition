@@ -56,34 +56,6 @@ function removeCommaFromEachStringNumber(arrayOfStringNumbers) {
 }
 
 /*
-    @pre stringInteger is a string representation of a positive
-    integer with no non-numerical components (e.g. commas, periods)
-    and that's first/leftmost digit is not zero
-    @hasTest yes
-    @param stringInteger the string representation to add commas to
-    @returns a version of stringInteger that has commas as
-    separators of every three digits from the end of the number
-*/
-function putCommasInStringInteger(stringInteger) {
-    var stringToReturn = "";
-
-    for (var i = stringInteger.length - 1; i >= 0; --i) {
-        // Add the digit to the front of stringToReturn
-        stringToReturn = stringInteger[i] + stringToReturn;
-
-        if (i !== 0) {
-            // Add a comma if the digit in question is a multiple
-            // of three digits away from the end/rightmost of the number
-            var distanceFromEnd = stringInteger.length - i;
-            if (distanceFromEnd % 3 === 0)
-                stringToReturn = ',' + stringToReturn;
-        }
-    }
-
-    return stringToReturn;
-}
-
-/*
     @pre stringNumber is a string representation of a positive
     number with no commas and that's first/leftmost digit isn't zero
     (unless it's the ones digit)
