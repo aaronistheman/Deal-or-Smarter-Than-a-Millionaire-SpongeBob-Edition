@@ -10,7 +10,8 @@
     @param caseCanvasId id of the canvas to draw the briefcases on
     @param textCanvasId id of the canvas to draw the text (i.e.
     the briefcase numbers) on
-    @param moneyAmounts array of money amounts to display
+    @param moneyAmounts array of instances of MoneyAmount to display
+    the values of
     @param numberToEmphasize number of the case to emphasize; set to
     "none" to emphasize no case
 */

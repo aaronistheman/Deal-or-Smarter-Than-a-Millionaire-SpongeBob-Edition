@@ -1,12 +1,16 @@
 Next:
 -fix banker offer calculation
-	--or use Briefcase objects to keep track (and maybe pass an array of
-		them to the banker)
     --make MoneyAmount object; can have MoneyAmount.asFloat() and
         MoneyAmount.asString()
+        --fix asString()
+        --implement MoneyAmount in the rest of the code
+        --remove putCommasInStringInteger()
+	--or use Briefcase objects to keep track (and maybe pass an array of
+		them to the banker)
     --make sure when the banker's offer is compared to your case's value,
         that there are no commas in either
-        --the comparison thinks 69,000 > 250,000 and 50 > 26,000
+        --the comparison thinks 69,000 > 250,000 and 50 > 26,000 and
+            750 > 100,000
         --could have the Banker object store the offer and call
             updateOffer() when appropriate; then there could be
             Banker.getOfferAsFloat() and Banker.getOfferAsString()

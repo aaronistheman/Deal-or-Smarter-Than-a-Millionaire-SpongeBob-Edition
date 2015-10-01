@@ -634,7 +634,8 @@ function handleCorrectAnswerSelection() {
     gameShow.quotesToDraw.add("You have selected the correct answer.");
     if (gameShow.numberOfQuestionsCorrectlyAnswered < 10) {
         gameShow.quotesToDraw
-            .add("The question was worth: $" + questionValue + '.');
+            .add("The question was worth: $" +
+                questionValue.asString() + '.');
 
         // The banker makes an offer after the second, fourth, sixth,
         // and eighth questions
@@ -657,8 +658,7 @@ function makeBankerOffer() {
         CANVAS_IDS.BANKER), CanvasStack.EFFECTS.FADE_IN);
     gameShow.musicPlayer.play(MUSIC_IDS.BANKER);
     gameShow.turnVariables.bankerOffer = gameShow.banker.getOffer(
-        removeCommaFromEachStringNumber(
-            gameShow.moneyAmounts.concat([gameShow.briefcaseValue])));
+        gameShow.moneyAmounts.concat([gameShow.briefcaseValue]));
 
     gameShow.quotesToDraw.add("The banker is calling.")
         .add("He has an offer for you.")
