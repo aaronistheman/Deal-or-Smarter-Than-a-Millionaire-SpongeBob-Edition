@@ -1,8 +1,6 @@
 Next:
 -fix banker offer calculation
-    --make MoneyAmount object; can have MoneyAmount.asFloat() and
-        MoneyAmount.asString()
-        --fix asString()
+    --make MoneyAmount object
         --implement MoneyAmount in the rest of the code
         --remove putCommasInStringInteger()
 	--or use Briefcase objects to keep track (and maybe pass an array of

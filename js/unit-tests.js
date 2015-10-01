@@ -210,11 +210,17 @@ QUnit.test("MoneyAmount.asNumber()", function(assert) {
     var moneyAmount = new MoneyAmount(35000);
     assert.deepEqual(moneyAmount.asNumber(), 35000,
         "Correctly formatted value returned");
+    moneyAmount = new MoneyAmount(0.01);
+    assert.deepEqual(moneyAmount.asNumber(), 0.01,
+        "Correctly formatted value returned");
 });
 
 QUnit.test("MoneyAmount.asString()", function(assert) {
     var moneyAmount = new MoneyAmount(35000);
     assert.deepEqual(moneyAmount.asString(), "35,000",
+        "Correctly formatted value returned");
+    moneyAmount = new MoneyAmount(0.01);
+    assert.deepEqual(moneyAmount.asString(), "0.01",
         "Correctly formatted value returned");
 });
 
@@ -244,14 +250,20 @@ QUnit.test("putCommasInStringInteger()", function(assert) {
 QUnit.test("putCommasInStringNumber()", function(assert) {
     assert.deepEqual(putCommasInStringNumber("0.01"), "0.01",
         "Appropriately, no commas were inserted");
+    assert.deepEqual(putCommasInStringNumber("400"), "400",
+        "Appropriately, no commas were inserted");
     assert.deepEqual(putCommasInStringNumber("400.00"), "400.00",
         "Appropriately, no commas were inserted");
     assert.deepEqual(putCommasInStringNumber("20000.00"), "20,000.00",
+        "Appropriately, one comma was inserted");
+    assert.deepEqual(putCommasInStringNumber("35000"), "35,000",
         "Appropriately, one comma was inserted");
     assert.deepEqual(putCommasInStringNumber("250000.00"), "250,000.00",
         "Appropriately, one comma was inserted");
     assert.deepEqual(putCommasInStringNumber("1000000.3567"),
         "1,000,000.3567", "Appropriately, two commas were inserted");
+    assert.deepEqual(putCommasInStringNumber("1000000"),
+        "1,000,000", "Appropriately, two commas were inserted");
 });
 
 QUnit.module("questions.js");

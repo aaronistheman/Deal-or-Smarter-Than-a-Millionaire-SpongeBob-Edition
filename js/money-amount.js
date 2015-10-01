@@ -26,7 +26,7 @@ MoneyAmount.prototype.asNumber = function() {
     @returns this._value as a string with commas to increase readability
 */
 MoneyAmount.prototype.asString = function() {
-    // return putCommasInStringInteger(this._value.toString());
+    return putCommasInStringNumber(this._value.toString());
 }
 
 /*
@@ -95,14 +95,16 @@ function putCommasInStringInteger(stringInteger) {
 function putCommasInStringNumber(stringNumber) {
     var stringToReturn = "";
     var atRightOfDecimalPoint = false;
-    var indexOfDecimalPoint = undefined;
+    var indexOfDecimalPoint = stringNumber.length;
 
     // Check if stringNumber has a decimal; if it does, can't
     // focus on adding commas until the numbers to the right
     // of the decimal point have been read
     for (var i = 0; i < stringNumber.length; ++i) {
-        if (stringNumber[i] === '.')
+        if (stringNumber[i] === '.') {
             atRightOfDecimalPoint = true;
+            indexOfDecimalPoint = undefined;
+        }
     }
 
     // Start from the right of the number and recreate it,
