@@ -1,4 +1,6 @@
 Next:
+-make more questions
+    --get count of questions; put on readme
 -fix banker offer calculation
     --make some MoneyAmount methods private and static
     --figure out why the deals always tend to be good; if they do
@@ -92,8 +94,10 @@ Considerable:
     --update affected functions' contracts
 -for functions that emphasize things, don't erase and redraw if same thing
     is emphasized
--make class MoneyData
-    --this can be used to update both MoneyDisplay and
-        BriefcaseDisplay
--other uses of canvas transition effects; or more creative use of them
 -more questions
+-having the order of the answers be randomized
+    --could have object prototype Answer with member isCorrect
+-consider a way to disable questions about "modern" SpongeBob
+    --e.g. pressing the down arrow three times in the title screen
+        --announce how to do it in the YouTube video's ending
+    --make sure the minimum question spread is met
