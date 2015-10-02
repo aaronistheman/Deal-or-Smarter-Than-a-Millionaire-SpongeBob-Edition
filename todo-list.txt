@@ -2,8 +2,9 @@ Next:
 -fix money display
     --show it when a question's value is revealed
     --grey out the money amounts that are out of the game
--display the banker's offer along with the other monetary amounts
+-display the banker's offer along with the other monetary amounts?
     --could easily convert the money display into this
+    --other option: be okay with the offer being in quote bubble
 -allow picking of a helper
 -make separate canvas for help options
 -implement peeking
@@ -44,7 +45,7 @@ At some point:
         (e.g. 2d drawing)
 -more decorated title screen
 	--disclaim that SpongeBob or any of the involved game shows are
-	at all my possession
+        at all my possession
 -consider making my own graphics for some things (e.g. briefcases)
     --could use GIMP, Microsoft Word, etc.
     --in this case, consider resource identifiers for the images
@@ -52,8 +53,7 @@ At some point:
 Before release 0.1:
 -make sure trivial functions that are no longer needed and that were
  made for the purpose of testing have been erased in game-show-fusion.js
--erase commented out methods of MoneyDisplay (around lines 96-99)
--update readme; get number of questions
+-update readme's number of questions
 -put release number on each file
 
 After release 0.1:
@@ -68,17 +68,15 @@ Considerable:
 -use more web fonts
 -low volume coughing if a certain answer is highlighted (as a
     reference to the fraud in Who Wants to be a Millionaire)
--separating Questions into three classes: Questions, QuestionsLabelDisplay,
-    QuestioningDisplay
 -allowing up/down keys to be used in choosing briefcase
     --ensure that SpongeBob explains this
 -attaching the playing of sound effects to the class methods (e.g.
     BriefcaseDisplay::EmphasizePreviousCase())
     --this was already done with drawQuoteText()
--moving quote bubble code into its own file
 -(if can still make a difference) applying isUnitTesting() when
     drawing question labels, so that they won't be drawn if
     unit testing; could apply to drawLabel functions
+    --this will make the tests faster (if it matters)
 -unit test to check sufficient subject variety
 -replace use of ParameterError() with an alert and the throwing
     of an unhandled exception

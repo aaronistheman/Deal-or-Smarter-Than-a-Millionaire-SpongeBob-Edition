@@ -94,11 +94,6 @@ MoneyDisplay.prototype.setUp = function() {
     this.draw('text');
 };
 
-// Maybe to come:
-// MoneyDisplay.prototype.erase(whatToErase)
-// MoneyDisplay.prototype.update(array)
-// MoneyDisplay.prototype.makeDull(which)
-
 /*
     Static members and methods
 */
