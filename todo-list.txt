@@ -1,14 +1,7 @@
 Next:
--fix banker offer calculation
-    --make some MoneyAmount methods private and static
-    --figure out why the deals always tend to be good; if they do
-        --make sure commas are appropriately removed
-        --perhaps don't solely use the average of the deals
 -fix money display
     --show it when a question's value is revealed
     --grey out the money amounts that are out of the game
-    --see if can align money amounts to the right of their bars
-    --could adjust the banker multiplier
 -display the banker's offer along with the other monetary amounts
     --could easily convert the money display into this
 -allow picking of a helper
@@ -99,3 +92,7 @@ Considerable:
     --e.g. pressing the down arrow three times in the title screen
         --announce how to do it in the YouTube video's ending
     --make sure the minimum question spread is met
+-see if can align money amounts to the right of their bars
+-adjust banker multiplier based on certain factors
+    --e.g. grades of the answered questions
+    --multiplier could be adjusted randomly within a range

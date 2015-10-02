@@ -224,34 +224,27 @@ QUnit.test("MoneyAmount.asString()", function(assert) {
         "Correctly formatted value returned");
 });
 
-QUnit.test("removeCommaFromStringNumber()", function(assert) {
-    assert.deepEqual(removeCommaFromStringNumber("15,000.01"), "15000.01",
-        "Given value was correctly modified and returned");
+QUnit.test("MoneyAmount::_removeCommaFromStringNumber()", function(assert) {
+    assert.deepEqual(MoneyAmount._removeCommaFromStringNumber("15,000.01"),
+        "15000.01", "Given value was correctly modified and returned");
 });
 
-QUnit.test("removeCommaFromEachStringNumber()", function(assert) {
-    assert.deepEqual(removeCommaFromEachStringNumber(
-        ["3,000.53", "123,456", "1,000"]),
-        ["3000.53", "123456", "1000"],
-        "Correct array of adjusted numbers was created and returned");
-});
-
-QUnit.test("putCommasInStringNumber()", function(assert) {
-    assert.deepEqual(putCommasInStringNumber("0.01"), "0.01",
+QUnit.test("MoneyAmount::_putCommasInStringNumber()", function(assert) {
+    assert.deepEqual(MoneyAmount._putCommasInStringNumber("0.01"), "0.01",
         "Appropriately, no commas were inserted");
-    assert.deepEqual(putCommasInStringNumber("400"), "400",
+    assert.deepEqual(MoneyAmount._putCommasInStringNumber("400"), "400",
         "Appropriately, no commas were inserted");
-    assert.deepEqual(putCommasInStringNumber("400.00"), "400.00",
+    assert.deepEqual(MoneyAmount._putCommasInStringNumber("400.00"), "400.00",
         "Appropriately, no commas were inserted");
-    assert.deepEqual(putCommasInStringNumber("20000.00"), "20,000.00",
+    assert.deepEqual(MoneyAmount._putCommasInStringNumber("20000.00"),
+        "20,000.00", "Appropriately, one comma was inserted");
+    assert.deepEqual(MoneyAmount._putCommasInStringNumber("35000"), "35,000",
         "Appropriately, one comma was inserted");
-    assert.deepEqual(putCommasInStringNumber("35000"), "35,000",
-        "Appropriately, one comma was inserted");
-    assert.deepEqual(putCommasInStringNumber("250000.00"), "250,000.00",
-        "Appropriately, one comma was inserted");
-    assert.deepEqual(putCommasInStringNumber("1000000.3567"),
+    assert.deepEqual(MoneyAmount._putCommasInStringNumber("250000.00"),
+        "250,000.00", "Appropriately, one comma was inserted");
+    assert.deepEqual(MoneyAmount._putCommasInStringNumber("1000000.3567"),
         "1,000,000.3567", "Appropriately, two commas were inserted");
-    assert.deepEqual(putCommasInStringNumber("1000000"),
+    assert.deepEqual(MoneyAmount._putCommasInStringNumber("1000000"),
         "1,000,000", "Appropriately, two commas were inserted");
 });
 
