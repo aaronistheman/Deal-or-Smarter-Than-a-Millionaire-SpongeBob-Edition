@@ -1232,6 +1232,15 @@ Questions.getEntireSupplyOfQuestions = function() {
         "one percent evil and ninety-nine percent what?",
         new AnswerData(ANSWERS.FIRST, ["hot gas", "nitrogen",
             "good", "green peas"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
+        "Who once infamously said the following quote: 'I prefer " +
+        "salad over Plankton anyway'?",
+        new AnswerData(ANSWERS.SECOND, ["Mr. Krabs", "Pearl",
+            "Bubble Bass", "Karen"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.TECHNOLOGY,
+        "Which of the following does invisible spray stain?",
+        new AnswerData(ANSWERS.THIRD, ["eyelashes", "shoes",
+            "clothes", "spatulas"])));
 
     /*
         Third grade questions
@@ -1334,6 +1343,11 @@ Questions.getEntireSupplyOfQuestions = function() {
         "In which of the following episodes does SpongeBob not sing?",
         new AnswerData(ANSWERS.FIRST, ["Your Shoe's Untied",
             "As Seen on TV", "Ripped Pants", "F.U.N."])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.EPISODES,
+        "Which of the following episodes was released before the first " +
+        "SpongeBob movie was released?",
+        new AnswerData(ANSWERS.SECOND, ["Fear of a Krabby Patty",
+            "Plankton's Army", "Best Day Ever", "The Original Fry Cook"])));
 
     /*
         Fifth grade questions
@@ -1404,6 +1418,22 @@ Questions.getEntireSupplyOfQuestions = function() {
         "charge to teach how to blow bubbles?",
         new AnswerData(ANSWERS.THIRD, ["one cent", "ten cents",
             "twenty-five cents", "fifty cents"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.STAFF,
+        "Who is the voice actor of Sandy?",
+        new AnswerData(ANSWERS.SECOND, ["Tom Kenny", "Carolyn Lawrence",
+            "Jill Talley", "Lori Alan"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.EPISODES,
+        "In which of the following episodes does Mr. Krabs drive " +
+        "Plankton to attempt suicide?",
+        new AnswerData(ANSWERS.THIRD, ["Welcome to the Chum Bucket",
+            "The Algae's Always Greener", "One Coarse Meal",
+            "Friend or Foe"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.EPISODES,
+        "In which of the following episodes does Mrs. Puff try to " +
+        "murder SpongeBob?",
+        new AnswerData(ANSWERS.FOURTH, ["No Free Rides",
+            "Mrs. Puff, You're Fired", "Boating School",
+            "Demolition Doofus"])));
 
     /*
         Million dollar questions
@@ -1418,6 +1448,10 @@ Questions.getEntireSupplyOfQuestions = function() {
         "Who is the voice actor of Patrick?",
         new AnswerData(ANSWERS.FIRST, ["Bill Fagerbakke",
             "Alan Smart", "Steve Fonti", "Rodger Bumpass"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.STAFF,
+        "Who is the voice actor of Plankton?",
+        new AnswerData(ANSWERS.SECOND, ["Bill Fagerbakke",
+            "Doug Lawrence", "Rodger Bumpass", "Clancy Brown"])))
     supply.push(new Question(gradeOfQuestion, SUBJECTS.EPISODES,
         "Which of the following episodes has a scene that was eventually " +
         "deleted in America?",
@@ -1462,7 +1496,11 @@ Questions.getEntireSupplyOfQuestions = function() {
         "bad is gone'?",
         new AnswerData(ANSWERS.THIRD, ["Atomic Founder", "Plankton",
             "Man Ray", "Barnacle Boy"])));
-
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
+        "Who once infamously said the following quote: 'That flies " +
+        "in the face of my good nature'?",
+        new AnswerData(ANSWERS.FOURTH, ["Mr. Krabs", "Plankton",
+            "Patrick", "SpongeBob"])));
 
     return supply;
 }
