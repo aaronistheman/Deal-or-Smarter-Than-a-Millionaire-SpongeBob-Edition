@@ -1,6 +1,4 @@
 Next:
--make more questions
-    --get count of questions; put on readme
 -fix banker offer calculation
     --make some MoneyAmount methods private and static
     --figure out why the deals always tend to be good; if they do
