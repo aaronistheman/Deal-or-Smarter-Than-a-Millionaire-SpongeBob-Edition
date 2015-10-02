@@ -26,7 +26,7 @@ MoneyAmount.prototype.asNumber = function() {
     @returns this._value as a string with commas to increase readability
 */
 MoneyAmount.prototype.asString = function() {
-    return putCommasInStringNumber(this._value.toString());
+    return MoneyAmount._putCommasInStringNumber(this._value.toString());
 }
 
 /*
@@ -35,24 +35,8 @@ MoneyAmount.prototype.asString = function() {
     @hasTest yes
     @returns version of stringNumber without any commas in it
 */
-function removeCommaFromStringNumber(stringNumber) {
+MoneyAmount._removeCommaFromStringNumber = function(stringNumber) {
     return stringNumber.replace(/\,/g,'');
-}
-
-/*
-    @pre each element of arrayOfStringNumbers, besides having commas,
-    is a string version of a number (e.g. "20,000.01")
-    @hasTest yes
-    @returns version of arrayOfStringNumbers in which none of the
-    elements have any commas
-*/
-function removeCommaFromEachStringNumber(arrayOfStringNumbers) {
-    var resultantArray = [];
-    for (var i = 0; i < arrayOfStringNumbers.length; ++i) {
-        var stringNumber = arrayOfStringNumbers[i];
-        resultantArray.push(removeCommaFromStringNumber(stringNumber));
-    }
-    return resultantArray;
 }
 
 /*
@@ -64,7 +48,7 @@ function removeCommaFromEachStringNumber(arrayOfStringNumbers) {
     @returns a version of stringNumber that has commas as separators
     of every three digits from the ones digit
 */
-function putCommasInStringNumber(stringNumber) {
+MoneyAmount._putCommasInStringNumber = function(stringNumber) {
     var stringToReturn = "";
     var atRightOfDecimalPoint = false;
     var indexOfDecimalPoint = stringNumber.length;
