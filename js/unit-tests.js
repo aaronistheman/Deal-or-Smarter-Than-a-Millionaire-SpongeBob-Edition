@@ -248,6 +248,34 @@ QUnit.test("MoneyAmount::_putCommasInStringNumber()", function(assert) {
         "1,000,000", "Appropriately, two commas were inserted");
 });
 
+QUnit.module("money-display.js");
+
+QUnit.test("MoneyDisplay::getBarPosition()", function(assert) {
+    assert.deepEqual(MoneyDisplay.getBarPosition(1),
+        MoneyDisplay.firstBarPosition,
+        "Correct position for first bar");
+    assert.deepEqual(MoneyDisplay.getBarPosition(4),
+        MoneyDisplay.firstBarPosition.getSum(
+            MoneyDisplay.marginalBarPosition.getProduct(
+                new Vector2d(0, 3))),
+        "Correct position for fourth bar");
+    assert.deepEqual(MoneyDisplay.getBarPosition(5),
+        MoneyDisplay.firstBarPosition.getSum(
+            MoneyDisplay.marginalBarPosition.getProduct(
+                new Vector2d(0, 4))),
+        "Correct position for fifth bar");
+    assert.deepEqual(MoneyDisplay.getBarPosition(6),
+        MoneyDisplay.firstBarPosition.getSum(
+            MoneyDisplay.marginalBarPosition.getProduct(
+                new Vector2d(1, 0))),
+        "Correct position for sixth bar");
+    assert.deepEqual(MoneyDisplay.getBarPosition(10),
+        MoneyDisplay.firstBarPosition.getSum(
+            MoneyDisplay.marginalBarPosition.getProduct(
+                new Vector2d(1, 4))),
+        "Correct position for tenth bar");
+});
+
 QUnit.module("questions.js");
 
 QUnit.test("Questions._generateTenQuestions()", function(assert) {
