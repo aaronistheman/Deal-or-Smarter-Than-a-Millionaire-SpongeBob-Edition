@@ -1,6 +1,10 @@
 Next:
 -fix money display
     --grey out the money amounts that are out of the game
+        --could move getRandomMoneyAmount to be part of MoneyDisplay
+            --the function could have a bool parameter splice that
+                is true if the money amount is being removed and greyed
+    --say value of player's case after ninth question
 -display the banker's offer along with the other monetary amounts?
     --could easily convert the money display into this
     --other option: be okay with the offer being in quote bubble

@@ -24,97 +24,52 @@
     values of which will be displayed
 */
 function MoneyDisplay(barCanvasId, textCanvasId, moneyAmounts) {
-    this.barCanvasId = barCanvasId;
-    this.textCanvasId = textCanvasId;
-    this.moneyAmounts = moneyAmounts;
+    this._barCanvasId = barCanvasId;
+    this._textCanvasId = textCanvasId;
+    this._moneyAmounts = moneyAmounts;
+    this._numbersOfBarsToFade = [];
+}
+
+MoneyDisplay.prototype.giveFade = function(barNumber) {
+    // Only act if the bar hasn't already been given fade
+    if (this._numbersOfBarsToFade.indexOf(barNumber) === -1) {
+        this._numbersOfBarsToFade.push(barNumber);
+
+        // Set up variables for redrawing the bar
+        var barContext = document.getElementById(this._barCanvasId).
+            getContext('2d');
+        barContext.fillStyle = this._getBarFillStyle(barNumber);
+        var textContext = this._getSetUpTextContext();
+        var position = MoneyDisplay.getBarPosition(barNumber);
+
+        // Erase and redraw the bar
+        this._eraseBar(barContext, position.x, position.y);
+        this._drawBar(barContext, position.x, position.y);
+    }
 }
 
 /*
-    @pre what the caller wants to draw hasn't been drawn
-    @post what the caller wants to draw (see @param) has been
-    drawn
-    @hasTest no
-    @param whatToDraw either has value of "bars" or "text"
-    @returns parameterError() if invalid whatToDraw value; otherwise,
-    nothing
-    @throws caught exception if invalid whatToDraw value
+    @pre 1 <= barNumber <= MoneyDisplay.NUMBER_OF_BARS
+    @param barNumber number of the bar to get the fill style of
+    @returns the fill style that would be appropriate for the context
+    that will be used to draw the indicated bar
 */
-// MoneyDisplay.prototype.draw = function(whatToDraw) {
-    // // Get variables that apply to drawing bars and text
-    // var barSettings = MoneyDisplay.barSettings;
-    // var textSettings = MoneyDisplay.textSettings;
-
-    // var barWidth = barSettings.width;
-    // var horizontalPadding = barSettings.horizontalPadding;
-    // var barHeight = barSettings.height;
-    // var verticalPadding = barSettings.verticalPadding;
-
-    // // Get variables that are specific to what's being drawn
-    // try {
-        // if (whatToDraw === 'bars') {
-            // // Set variables specific to drawing bars
-            // var canvas = document.getElementById(this.barCanvasId);
-            // var ctx = canvas.getContext('2d');
-            // ctx.fillStyle = barSettings.fillStyle;
-            // var x = horizontalPadding;
-            // var firstBarY = verticalPadding; // facilitates
-                                             // // resetting y
-            // var y = firstBarY;
-        // }
-        // else if (whatToDraw === 'text') {
-            // // Set variables specific to drawing text
-            // var canvas = document.getElementById(this.textCanvasId);
-            // var ctx = canvas.getContext('2d');
-            // ctx.fillStyle = textSettings.fillStyle;
-            // ctx.font = textSettings.fontSize + "px Arial";
-            // var x = horizontalPadding + 20;
-            // var firstBarY = verticalPadding + 45; // facilitates
-                                                  // // resetting y
-            // var y = firstBarY;
-        // }
-        // else
-            // throw "Invalid value for whatToDraw";
-    // }
-    // catch (err) {
-        // return parameterError(err);
-    // }
-
-    // for (var i = 0; i < this.moneyAmounts.length; ++i) {
-        // if (whatToDraw === 'bars') {
-            // // draw the bar
-            // ctx.fillRect(x, y, barWidth, barHeight);
-        // }
-        // else if (whatToDraw === 'text') {
-            // var textToDraw = '$ ' + this.moneyAmounts[i].asString();
-            // ctx.fillText(textToDraw, x, y);
-        // }
-
-        // y += (barHeight + verticalPadding);
-
-        // // if five bars have been drawn, go to next column
-        // if (i === 4) {
-            // x += (barWidth + horizontalPadding);
-            // y = firstBarY;
-        // }
-    // }
-// };
-
-/*
-    @returns the set up context of the canvas to draw graphical
-    part of the bars on
-*/
-MoneyDisplay.prototype._getSetUpBarContext = function() {
-    var barContext = document.getElementById(this.barCanvasId).
-        getContext('2d');
-    barContext.fillStyle = "#FFDF00";
-    return barContext;
+MoneyDisplay.prototype._getBarFillStyle = function(barNumber) {
+    if (this._numbersOfBarsToFade.indexOf(barNumber) !== -1) {
+        // Grey out this bar
+        return "rgba(192, 192, 192, 0.3)";
+    }
+    else {
+        // Display this bar normally
+        return "#FFDF00";
+    }
 }
 
 /*
     @returns the set up context of the canvas to draw bars' text on
 */
 MoneyDisplay.prototype._getSetUpTextContext = function() {
-    var textContext = document.getElementById(this.textCanvasId).
+    var textContext = document.getElementById(this._textCanvasId).
         getContext('2d');
     textContext.fillStyle = "black";
     textContext.font = MoneyDisplay.textFontSize + "px Arial";
@@ -126,10 +81,12 @@ MoneyDisplay.prototype._getSetUpTextContext = function() {
 */
 MoneyDisplay.prototype._drawEntireDisplay = function() {
     // Set up the canvases' contexts
-    var barContext = this._getSetUpBarContext();
+    var barContext = document.getElementById(this._barCanvasId).
+        getContext('2d');
     var textContext = this._getSetUpTextContext();
 
     for (var i = 0; i < MoneyDisplay.NUMBER_OF_BARS; ++i) {
+        barContext.fillStyle = this._getBarFillStyle(i + 1);
         var position = MoneyDisplay.getBarPosition(i + 1);
         this._drawBar(barContext, position.x, position.y);
         this._drawBarText(textContext, position.x, position.y, (i + 1));
@@ -143,9 +100,22 @@ MoneyDisplay.prototype._drawEntireDisplay = function() {
     @param x of top left corner of the bar
     @param y of top left corner of the bar
 */
-MoneyDisplay.prototype._drawBar = function(barContext, x, y)
-{
+MoneyDisplay.prototype._drawBar = function(barContext, x, y) {
     barContext.fillRect(x, y, MoneyDisplay.barDimensions.x,
+        MoneyDisplay.barDimensions.y);
+}
+
+/*
+    @post the rectangle at the indicated position has been cleared
+    on only the graphical bar canvas; this will erase the graphical
+    part of a bar, if x and y are correct
+    @param barContext context of the canvas on which the graphical
+    (non-textual) part of the bar is drawn
+    @param x coordinate of the top left of the bar
+    @param y coordinate of the top left of the bar
+*/
+MoneyDisplay.prototype._eraseBar = function(barContext, x, y) {
+    barContext.clearRect(x, y, MoneyDisplay.barDimensions.x,
         MoneyDisplay.barDimensions.y);
 }
 
@@ -162,7 +132,7 @@ MoneyDisplay.prototype._drawBar = function(barContext, x, y)
 MoneyDisplay.prototype._drawBarText =
     function(textContext, x, y, number)
 {
-    var textToDraw = '$ ' + this.moneyAmounts[number - 1].asString();
+    var textToDraw = '$ ' + this._moneyAmounts[number - 1].asString();
     textContext.fillText(textToDraw, x + 20, y + 45);
 }
 
