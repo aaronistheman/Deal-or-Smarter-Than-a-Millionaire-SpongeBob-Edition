@@ -1,6 +1,5 @@
 Next:
 -fix money display
-    --show it when a question's value is revealed
     --grey out the money amounts that are out of the game
 -display the banker's offer along with the other monetary amounts?
     --could easily convert the money display into this

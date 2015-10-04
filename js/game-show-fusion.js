@@ -631,21 +631,23 @@ function handleCorrectAnswerSelection() {
 
     // Update what the host says
     var questionValue = getRandomMoneyAmount(gameShow.moneyAmounts);
-    gameShow.quotesToDraw.add("You have selected the correct answer.");
-    if (gameShow.numberOfQuestionsCorrectlyAnswered < 10) {
-        gameShow.quotesToDraw
-            .add("The question was worth: $" +
-                questionValue.asString() + '.');
-
-        // The banker makes an offer after the second, fourth, sixth,
-        // and eighth questions
-        if (gameShow.numberOfQuestionsCorrectlyAnswered % 2 === 0)
-            gameShow.quotesToDraw.deployQuoteChain(makeBankerOffer);
-        else
-            gameShow.quotesToDraw.deployQuoteChain(goToNextTurn);
-    }
-    else
-        explainUserChooseMillionOrGoHome();
+    gameShow.quotesToDraw.add("You have selected the correct answer.")
+        .deployQuoteChain(function() {
+            if (gameShow.numberOfQuestionsCorrectlyAnswered < 10) {
+                gameShow.canvasStack.set(CANVAS_IDS.MONEY_DISPLAY.concat(
+                    CANVAS_IDS.QUOTE));
+                gameShow.quotesToDraw.add("The question was worth: $" +
+                    questionValue.asString() + '.');
+                // The banker makes an offer after the second, fourth, sixth,
+                // and eighth questions
+                if (gameShow.numberOfQuestionsCorrectlyAnswered % 2 === 0)
+                    gameShow.quotesToDraw.deployQuoteChain(makeBankerOffer);
+                else
+                    gameShow.quotesToDraw.deployQuoteChain(goToNextTurn);
+            }
+            else
+                explainUserChooseMillionOrGoHome();
+        });
 }
 
 /*
@@ -800,6 +802,7 @@ function goToNextTurn() {
 
     // Update what the host says; call of selectQuestion starts
     // the next turn
+    gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
     if (gameShow.numberOfQuestionsCorrectlyAnswered === 5)
         gameShow.quotesToDraw.add("You're halfway to the " +
             "million dollar question.");
