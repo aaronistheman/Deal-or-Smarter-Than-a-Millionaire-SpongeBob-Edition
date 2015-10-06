@@ -1,7 +1,5 @@
 Next:
 -fix money display
-    --grey out the money amounts that are out of the game
-        --see if user's briefcase value can still be given to another question
     --say value of player's case after ninth question
 -display the banker's offer along with the other monetary amounts?
     --could easily convert the money display into this

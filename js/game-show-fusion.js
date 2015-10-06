@@ -8,12 +8,12 @@
 var gameShow = {};
 gameShow.speakers = getSpeakerObjects();
 
+gameShow.canvasStack = new CanvasStack();
+
 gameShow.banker = new Banker("media/images/banker.png");
 
 gameShow.moneyAmounts = getBeginningMoneyAmounts();
 gameShow.briefcaseValue = undefined;
-
-gameShow.canvasStack = new CanvasStack();
 
 gameShow.moneyDisplay = new MoneyDisplay(
     CANVAS_IDS.MONEY_DISPLAY_BARS,
@@ -380,7 +380,8 @@ function handleCaseSelection() {
     gameShow.selectedBriefcaseNumber =
         gameShow.briefcaseDisplay.numberToEmphasize;
     gameShow.briefcaseValue =
-        getRandomMoneyAmount(gameShow.moneyAmounts, false);
+        getRandomMoneyAmount(gameShow.moneyAmounts, false,
+        gameShow.moneyDislay);
 
     // Update the briefcase display
     gameShow.briefcaseDisplay.giveFade(
@@ -400,32 +401,23 @@ function handleCaseSelection() {
     @hasTest yes
     @param arrayOfMoneyAmounts array of instances of MoneyAmount from
     which to get an instance to return
-    @param isSplicing true to remove the returned instance and grey
-    out its respective bar on the money display; false to
-    not remove it (but to still return it)
+    @param makeGrey true to use the given instance of MoneyDisplay to
+    make grey the money bar of the removed
+    money amount; false to not make the bar grey
+    @param moneyDislay instance of MoneyDisplay with which the money bar can
+    be greyed (only required if makeGrey is true)
     @returns a randomly chosen instance of MoneyAmount that was removed from
     arrayOfMoneyAmounts
 */
-function getRandomMoneyAmount(arrayOfMoneyAmounts, isSplicing) {
+function getRandomMoneyAmount(arrayOfMoneyAmounts, makeGrey, moneyDisplay) {
     var randomIndex = Math.floor(Math.random() * arrayOfMoneyAmounts.length);
-    if (isSplicing) {
-        var moneyAmount = arrayOfMoneyAmounts.splice(randomIndex, 1).pop();
-
-        if (!isUnitTesting()) {
-            // make grey the bar of the money amount to splice
-            var index = gameShow.moneyDisplay.getBarIndex(moneyAmount);
-            gameShow.moneyDisplay.giveFade(index + 1);
-        }
-
-        // remove the randomly obtained MoneyAmount from the array
-        // and return it
-        return moneyAmount;
+    var moneyAmount = arrayOfMoneyAmounts.splice(randomIndex, 1).pop();
+    if (makeGrey) {
+        // make grey the bar of the money amount to splice
+        var index = gameShow.moneyDisplay.getBarIndex(moneyAmount);
+        moneyDisplay.giveFade(index + 1);
     }
-    else {
-        // without removing the randomly obtained MoneyAmount from the array,
-        // return it
-        return arrayOfMoneyAmounts[randomIndex];
-    }
+    return moneyAmount;
 }
 
 /*
@@ -653,12 +645,14 @@ function handleCorrectAnswerSelection() {
     }
 
     // Update what the host says
-    var questionValue = getRandomMoneyAmount(gameShow.moneyAmounts, true);
     gameShow.quotesToDraw.add("You have selected the correct answer.")
         .deployQuoteChain(function() {
             if (gameShow.numberOfQuestionsCorrectlyAnswered < 10) {
                 gameShow.canvasStack.set(CANVAS_IDS.MONEY_DISPLAY.concat(
                     CANVAS_IDS.QUOTE));
+                var questionValue =
+                    getRandomMoneyAmount(gameShow.moneyAmounts, true,
+                    gameShow.moneyDisplay);
                 gameShow.quotesToDraw.add("The question was worth: $" +
                     questionValue.asString() + '.');
                 // The banker makes an offer after the second, fourth, sixth,

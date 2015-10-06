@@ -58,16 +58,18 @@ MoneyDisplay.prototype.giveFade = function(barNumber) {
     if (this._numbersOfBarsToFade.indexOf(barNumber) === -1) {
         this._numbersOfBarsToFade.push(barNumber);
 
-        // Set up variables for redrawing the bar
-        var barContext = document.getElementById(this._barCanvasId).
-            getContext('2d');
-        barContext.fillStyle = this._getBarFillStyle(barNumber);
-        var textContext = this._getSetUpTextContext();
-        var position = MoneyDisplay.getBarPosition(barNumber);
+        if (!isUnitTesting()) {
+            // Set up variables for redrawing the bar
+            var barContext = document.getElementById(this._barCanvasId).
+                getContext('2d');
+            barContext.fillStyle = this._getBarFillStyle(barNumber);
+            var textContext = this._getSetUpTextContext();
+            var position = MoneyDisplay.getBarPosition(barNumber);
 
-        // Erase and redraw the bar
-        this._eraseBar(barContext, position.x, position.y);
-        this._drawBar(barContext, position.x, position.y);
+            // Erase and redraw the bar
+            this._eraseBar(barContext, position.x, position.y);
+            this._drawBar(barContext, position.x, position.y);
+        }
     }
 }
 

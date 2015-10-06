@@ -196,15 +196,18 @@ QUnit.module("game-show-fusion.js");
 QUnit.test("getRandomMoneyAmount()", function(assert) {
     var moneyAmounts = [new MoneyAmount(4), new MoneyAmount(80),
         new MoneyAmount(2)];
+    var moneyDisplay = new MoneyDisplay("trivialId", "trivialId",
+        moneyAmounts);
 
     assert.deepEqual(typeof getRandomMoneyAmount(moneyAmounts, false),
-        "object", "An object was returned when not splicing array parameter");
-    assert.deepEqual(moneyAmounts.length, 3,
-        "Correctly, nothing was removed from the array of money amounts");
-    assert.deepEqual(typeof getRandomMoneyAmount(moneyAmounts, true),
-        "object", "An object was returned when splicing array parameter");
-    assert.deepEqual(moneyAmounts.length, 2,
-        "Correctly, an object was removed from the array of money amounts");
+        "object", "An object was returned when not greying a money bar");
+    assert.deepEqual(moneyDisplay._numbersOfBarsToFade.length, 0,
+        "Correctly, no bar was given a grey fade");
+    assert.deepEqual(typeof getRandomMoneyAmount(
+        moneyAmounts, true, moneyDisplay),
+        "object", "An object was returned after greying a money bar");
+    assert.deepEqual(moneyDisplay._numbersOfBarsToFade.length, 1,
+        "Correctly, one bar was given a grey fade");
 });
 
 QUnit.test("selectedCorrectAnswer()", function(assert) {
