@@ -58,6 +58,9 @@ MoneyDisplay.prototype.giveFade = function(barNumber) {
     if (this._numbersOfBarsToFade.indexOf(barNumber) === -1) {
         this._numbersOfBarsToFade.push(barNumber);
 
+        // Although there isn't a test for giveFade(), another test
+        // calls that function, so sealing off the following code
+        // from the unit tests is more efficient
         if (!isUnitTesting()) {
             // Set up variables for redrawing the bar
             var barContext = document.getElementById(this._barCanvasId).
@@ -86,7 +89,7 @@ MoneyDisplay.prototype._getBarFillStyle = function(barNumber) {
     }
     else {
         // Display this bar normally
-        return "#FFDF00";
+        return MoneyDisplay.defaultBarColor;
     }
 }
 
@@ -98,11 +101,15 @@ MoneyDisplay.prototype._getSetUpTextContext = function() {
         getContext('2d');
     textContext.fillStyle = "black";
     textContext.font = MoneyDisplay.textFontSize + "px Arial";
+    textContext.textBaseline = "middle";
     return textContext;
 }
 
 /*
-    @post each bar has been drawn
+    @pre the canvases indicated by this._barCanvasId and this.textCanvasId
+    are ready to be drawn on
+    @post each bar (including the one that will display the banker's
+    offer) has been drawn
 */
 MoneyDisplay.prototype._drawEntireDisplay = function() {
     // Set up the canvases' contexts
@@ -110,9 +117,83 @@ MoneyDisplay.prototype._drawEntireDisplay = function() {
         getContext('2d');
     var textContext = this._getSetUpTextContext();
 
+    this._drawTenBarsAndText(barContext, textContext);
+    this._drawBankerOfferBar(barContext);
+}
+
+/*
+    @post the bar on which the banker's offer can be displayed
+    has been drawn
+*/
+MoneyDisplay.prototype._drawBankerOfferBar = function(barContext) {
+    barContext.fillStyle = MoneyDisplay.defaultBarColor;
+    barContext.fillRect(MoneyDisplay.bankerOfferBarPosition.x,
+        MoneyDisplay.bankerOfferBarPosition.y,
+        MoneyDisplay.bankerOfferBarDimensions.x,
+        MoneyDisplay.bankerOfferBarDimensions.y);
+}
+
+/*
+    @pre offer is instance of MoneyAmount
+    @post the specified text has been drawn on the banker offer bar
+    @param textContext set up context to use for drawing the bar's text
+    @param offer to draw on the bnker offer bar
+*/
+MoneyDisplay.prototype._drawBankerOfferBarText =
+    function(textContext, offer)
+{
+    textContext.font =
+        "bold " + MoneyDisplay.bankerOfferTextFontSize + "px Arial";
+    textContext.textAlign = "center";
+    var textToDraw = '$ ' + offer.asString();
+    textContext.fillText(textToDraw,
+        MoneyDisplay.bankerOfferBarPosition.x +
+            (MoneyDisplay.bankerOfferBarDimensions.x / 2),
+        MoneyDisplay.bankerOfferBarPosition.y +
+            (MoneyDisplay.bankerOfferBarDimensions.y / 2));
+}
+
+/*
+    @post the text in the banker offer bar has been erased
+    @param textContext set up context to use for erasing the bar's text
+*/
+MoneyDisplay.prototype._eraseBankerOfferBarText = function(textContext) {
+    textContext.clearRect(MoneyDisplay.bankerOfferBarPosition.x,
+        MoneyDisplay.bankerOfferBarPosition.y,
+        MoneyDisplay.bankerOfferBarDimensions.x,
+        MoneyDisplay.bankerOfferBarDimensions.y);
+}
+
+/*
+    @pre isShown has either the value true or the value false;
+    newOffer is instance of MoneyAmount
+    @param isShown true to show the banker's offer; false to erase
+    the text that would show it
+    @param newOffer to draw as text on the banker offer bar; can
+    be ignored if isShown is false
+*/
+MoneyDisplay.prototype.setBankerOffer = function(isShown, newOffer) {
+    var textContext = this._getSetUpTextContext();
+    if (isShown)
+        this._drawBankerOfferBarText(textContext, newOffer);
+    else
+        this._eraseBankerOfferBarText(textContext);
+}
+
+/*
+    @post the bars that display the ten briefcases' values have
+    been drawn (graphically and textually)
+    @param barContext context for drawing the bars graphically
+    @param textContext set up context for drawing the bars' text
+*/
+MoneyDisplay.prototype._drawTenBarsAndText =
+    function(barContext, textContext)
+{
     for (var i = 0; i < MoneyDisplay.NUMBER_OF_BARS; ++i) {
+        // Get the bar's unique color and position
         barContext.fillStyle = this._getBarFillStyle(i + 1);
         var position = MoneyDisplay.getBarPosition(i + 1);
+
         this._drawBar(barContext, position.x, position.y);
         this._drawBarText(textContext, position.x, position.y, (i + 1));
     }
@@ -158,9 +239,14 @@ MoneyDisplay.prototype._drawBarText =
     function(textContext, x, y, number)
 {
     var textToDraw = '$ ' + this._moneyAmounts[number - 1].asString();
-    textContext.fillText(textToDraw, x + 20, y + 45);
+    textContext.fillText(textToDraw, x + MoneyDisplay.textIndent,
+        y + (MoneyDisplay.barDimensions.y / 2));
 }
 
+/*
+    @pre canvases indicatd by the ids given to this instance are
+    ready to be drawn on
+*/
 MoneyDisplay.prototype.setUp = function() {
     this._drawEntireDisplay();
 };
@@ -170,19 +256,29 @@ MoneyDisplay.prototype.setUp = function() {
 */
 
 MoneyDisplay.NUMBER_OF_BARS = 10;
+MoneyDisplay.defaultBarColor = "#FFDF00";
+MoneyDisplay.barDimensions = new Vector2d(400, 50);
 
-MoneyDisplay.barDimensions = new Vector2d(400, 60);
-
+// Space between bars (and the top and left canvas edges)
 MoneyDisplay.paddings = new Vector2d(
-    (1100 - (MoneyDisplay.barDimensions.x * 2)) / 3, 20);
+    (CANVAS_WIDTH - (MoneyDisplay.barDimensions.x * 2)) / 3, 15);
 
-MoneyDisplay.firstBarPosition = MoneyDisplay.paddings;
+MoneyDisplay.firstBarPosition =
+    MoneyDisplay.paddings.getSum(new Vector2d(0, 95));
 
 MoneyDisplay.marginalBarPosition = new Vector2d(
     MoneyDisplay.barDimensions.x + MoneyDisplay.paddings.x,
     MoneyDisplay.barDimensions.y + MoneyDisplay.paddings.y);
 
-MoneyDisplay.textFontSize = (MoneyDisplay.barDimensions.y - 20);
+MoneyDisplay.textFontSize = (MoneyDisplay.barDimensions.y - 10);
+MoneyDisplay.textIndent = 20; // how much to indent the text in a bar
+
+MoneyDisplay.bankerOfferBarPosition = MoneyDisplay.paddings;
+MoneyDisplay.bankerOfferBarDimensions = new Vector2d(
+    CANVAS_WIDTH - (MoneyDisplay.paddings.x * 2),
+    MoneyDisplay.firstBarPosition.y - (MoneyDisplay.paddings.y * 2));
+MoneyDisplay.bankerOfferTextFontSize =
+    (MoneyDisplay.bankerOfferBarDimensions.y - 10);
 
 /*
     @pre 1 <= whichOne <= MoneyDisplay.NUMBER_OF_BARS

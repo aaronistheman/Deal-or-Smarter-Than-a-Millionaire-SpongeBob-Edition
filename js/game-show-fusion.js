@@ -250,12 +250,10 @@ function setUpMillionDollarQuestionLabel() {
     // Prepare helpful variables
     var canvas = document.getElementById(CANVAS_IDS.MILLION_QUESTION);
     var ctx = canvas.getContext('2d');
-    var canvasWidth = 1100;
-    var canvasHeight = 550;
     var width = 800;
     var height = 100;
-    var leftX = (canvasWidth - width) / 2;
-    var topY = (canvasHeight - height) / 2;
+    var leftX = (CANVAS_WIDTH - width) / 2;
+    var topY = (CANVAS_HEIGHT - height) / 2;
 
     // Draw the label
     ctx.lineWidth = height;
@@ -699,6 +697,8 @@ function makeBankerOffer() {
                 .deployQuoteChain(function() {
                     allowUserDealOrNoDeal(true);
 
+                    gameShow.moneyDisplay.setBankerOffer(true,
+                        gameShow.turnVariables.bankerOffer);
                     gameShow.canvasStack.set(CANVAS_IDS.MONEY_DISPLAY.concat(
                         CANVAS_IDS.QUOTE));
 
@@ -810,6 +810,7 @@ function userAcceptedBadDeal() {
 */
 function userRejectsDeal() {
     gameShow.musicPlayer.play(MUSIC_IDS.ACCEPT_OR_REJECT_DEAL);
+    gameShow.moneyDisplay.setBankerOffer(false);
 
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
     gameShow.quotesToDraw.add("Let's hope you made the correct decision.")
