@@ -1,7 +1,6 @@
 Next:
 -display the banker's offer along with the other monetary amounts?
     --could easily convert the money display into this
-    --other option: be okay with the offer being in quote bubble
 -allow picking of a helper
 -make separate canvas for help options
 -implement peeking
@@ -33,6 +32,7 @@ At some point:
     --make sure the introductory directions are all correct
 -look into that one error that always pops up in the console
 -make SpongeBob do dramatic pauses before announcing every answer
+    and question value
 -with WebGL:
     --show opening of briefcase with WebGL
     --show visual briefcase when determining if user took good deal

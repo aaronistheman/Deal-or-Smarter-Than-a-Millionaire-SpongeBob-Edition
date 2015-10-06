@@ -98,6 +98,7 @@ MoneyDisplay.prototype._getSetUpTextContext = function() {
         getContext('2d');
     textContext.fillStyle = "black";
     textContext.font = MoneyDisplay.textFontSize + "px Arial";
+    textContext.textBaseline = "middle";
     return textContext;
 }
 
@@ -158,7 +159,8 @@ MoneyDisplay.prototype._drawBarText =
     function(textContext, x, y, number)
 {
     var textToDraw = '$ ' + this._moneyAmounts[number - 1].asString();
-    textContext.fillText(textToDraw, x + 20, y + 45);
+    textContext.fillText(textToDraw, x + MoneyDisplay.textIndent,
+        y + (MoneyDisplay.barDimensions.y / 2));
 }
 
 MoneyDisplay.prototype.setUp = function() {
@@ -171,18 +173,21 @@ MoneyDisplay.prototype.setUp = function() {
 
 MoneyDisplay.NUMBER_OF_BARS = 10;
 
-MoneyDisplay.barDimensions = new Vector2d(400, 60);
+MoneyDisplay.barDimensions = new Vector2d(400, 50);
 
+// Space between bars (and the top and left canvas edges)
 MoneyDisplay.paddings = new Vector2d(
-    (1100 - (MoneyDisplay.barDimensions.x * 2)) / 3, 20);
+    (1100 - (MoneyDisplay.barDimensions.x * 2)) / 3, 15);
 
-MoneyDisplay.firstBarPosition = MoneyDisplay.paddings;
+MoneyDisplay.firstBarPosition =
+    MoneyDisplay.paddings.getSum(new Vector2d(0, 95));
 
 MoneyDisplay.marginalBarPosition = new Vector2d(
     MoneyDisplay.barDimensions.x + MoneyDisplay.paddings.x,
     MoneyDisplay.barDimensions.y + MoneyDisplay.paddings.y);
 
-MoneyDisplay.textFontSize = (MoneyDisplay.barDimensions.y - 20);
+MoneyDisplay.textFontSize = (MoneyDisplay.barDimensions.y - 10);
+MoneyDisplay.textIndent = 20; // how much to indent the text in a bar
 
 /*
     @pre 1 <= whichOne <= MoneyDisplay.NUMBER_OF_BARS
