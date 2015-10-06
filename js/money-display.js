@@ -154,6 +154,17 @@ MoneyDisplay.prototype._drawBankerOfferBarText =
 }
 
 /*
+    @post the text in the banker offer bar has been erased
+    @param textContext set up context to use for erasing the bar's text
+*/
+MoneyDisplay.prototype._eraseBankerOfferBarText = function(textContext) {
+    textContext.clearRect(MoneyDisplay.bankerOfferBarPosition.x,
+        MoneyDisplay.bankerOfferBarPosition.y,
+        MoneyDisplay.bankerOfferBarDimensions.x,
+        MoneyDisplay.bankerOfferBarDimensions.y);
+}
+
+/*
     @pre isShown has either the value true or the value false;
     newOffer is instance of MoneyAmount
     @param isShown true to show the banker's offer; false to erase
@@ -163,7 +174,10 @@ MoneyDisplay.prototype._drawBankerOfferBarText =
 */
 MoneyDisplay.prototype.setBankerOffer = function(isShown, newOffer) {
     var textContext = this._getSetUpTextContext();
-    this._drawBankerOfferBarText(textContext, newOffer);
+    if (isShown)
+        this._drawBankerOfferBarText(textContext, newOffer);
+    else
+        this._eraseBankerOfferBarText(textContext);
 }
 
 /*

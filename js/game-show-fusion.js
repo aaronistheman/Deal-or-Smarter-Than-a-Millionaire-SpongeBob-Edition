@@ -697,6 +697,8 @@ function makeBankerOffer() {
                 .deployQuoteChain(function() {
                     allowUserDealOrNoDeal(true);
 
+                    gameShow.moneyDisplay.setBankerOffer(true,
+                        gameShow.turnVariables.bankerOffer);
                     gameShow.canvasStack.set(CANVAS_IDS.MONEY_DISPLAY.concat(
                         CANVAS_IDS.QUOTE));
 
@@ -808,6 +810,7 @@ function userAcceptedBadDeal() {
 */
 function userRejectsDeal() {
     gameShow.musicPlayer.play(MUSIC_IDS.ACCEPT_OR_REJECT_DEAL);
+    gameShow.moneyDisplay.setBankerOffer(false);
 
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
     gameShow.quotesToDraw.add("Let's hope you made the correct decision.")
@@ -973,7 +976,6 @@ function setUpGame() {
     setUpMillionDollarQuestionLabel();
     gameShow.banker.draw(CANVAS_IDS.BANKER);
     gameShow.moneyDisplay.setUp();
-    gameShow.moneyDisplay.setBankerOffer(true, new MoneyAmount(550000));
     gameShow.briefcaseDisplay.draw();
     gameShow.questions.drawInitialParts();
 

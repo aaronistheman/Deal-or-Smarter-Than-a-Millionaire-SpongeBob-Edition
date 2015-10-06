@@ -1,6 +1,4 @@
 Next:
--display the banker's offer along with the other monetary amounts?
-    --could easily convert the money display into this
 -allow picking of a helper
 -make separate canvas for help options
 -implement peeking
@@ -95,3 +93,7 @@ Considerable:
     --could be good or bad
 -something unique in situations that would cause a really low bank offer
     --e.g. currently, having only 0.01 and 50 left leads to offer of $0
+-putting something (e.g. game logo) in a blank banker offer bar
+-improving the timing of the good offer sound (that is, show the money
+    display during the "dink" part of the sound)
+    --would require setTimeout() for the drawing of the offer
