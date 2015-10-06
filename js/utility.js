@@ -5,6 +5,9 @@
     Release number: 0.1
 */
 
+var CANVAS_WIDTH = 1100;
+var CANVAS_HEIGHT = 550;
+
 /*
     This file includes code that isn't easily assigned to one
     of the other JavaScript files.

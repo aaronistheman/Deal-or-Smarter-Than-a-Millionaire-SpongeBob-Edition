@@ -250,12 +250,10 @@ function setUpMillionDollarQuestionLabel() {
     // Prepare helpful variables
     var canvas = document.getElementById(CANVAS_IDS.MILLION_QUESTION);
     var ctx = canvas.getContext('2d');
-    var canvasWidth = 1100;
-    var canvasHeight = 550;
     var width = 800;
     var height = 100;
-    var leftX = (canvasWidth - width) / 2;
-    var topY = (canvasHeight - height) / 2;
+    var leftX = (CANVAS_WIDTH - width) / 2;
+    var topY = (CANVAS_HEIGHT - height) / 2;
 
     // Draw the label
     ctx.lineWidth = height;

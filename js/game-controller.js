@@ -25,8 +25,8 @@ function getCanvasData() {
     canvasData.ids = getCanvasIds();
 
     // Canvas dimensions
-    canvasData.width = "1100";
-    canvasData.height = "550";
+    canvasData.width = CANVAS_WIDTH.toString();
+    canvasData.height = CANVAS_HEIGHT.toString();
 
     return canvasData;
 }

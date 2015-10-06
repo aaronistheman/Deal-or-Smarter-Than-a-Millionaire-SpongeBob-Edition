@@ -172,12 +172,12 @@ MoneyDisplay.prototype.setUp = function() {
 */
 
 MoneyDisplay.NUMBER_OF_BARS = 10;
-
+MoneyDisplay.defaultBarColor = "#FFDF00";
 MoneyDisplay.barDimensions = new Vector2d(400, 50);
 
 // Space between bars (and the top and left canvas edges)
 MoneyDisplay.paddings = new Vector2d(
-    (1100 - (MoneyDisplay.barDimensions.x * 2)) / 3, 15);
+    (CANVAS_WIDTH - (MoneyDisplay.barDimensions.x * 2)) / 3, 15);
 
 MoneyDisplay.firstBarPosition =
     MoneyDisplay.paddings.getSum(new Vector2d(0, 95));
