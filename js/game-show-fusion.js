@@ -655,6 +655,12 @@ function handleCorrectAnswerSelection() {
                     gameShow.moneyDisplay);
                 gameShow.quotesToDraw.add("The question was worth: $" +
                     questionValue.asString() + '.');
+                if (gameShow.numberOfQuestionsCorrectlyAnswered === 9) {
+                    gameShow.quotesToDraw.add("You now know what your " +
+                        "case holds.")
+                        .add("For the option to take it home, you must " +
+                            "answer one more question.");
+                }
                 // The banker makes an offer after the second, fourth, sixth,
                 // and eighth questions
                 if (gameShow.numberOfQuestionsCorrectlyAnswered % 2 === 0)
