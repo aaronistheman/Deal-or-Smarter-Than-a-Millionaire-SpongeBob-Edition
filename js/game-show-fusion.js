@@ -973,6 +973,7 @@ function setUpGame() {
     setUpMillionDollarQuestionLabel();
     gameShow.banker.draw(CANVAS_IDS.BANKER);
     gameShow.moneyDisplay.setUp();
+    gameShow.moneyDisplay.setBankerOffer(true, new MoneyAmount(550000));
     gameShow.briefcaseDisplay.draw();
     gameShow.questions.drawInitialParts();
 
