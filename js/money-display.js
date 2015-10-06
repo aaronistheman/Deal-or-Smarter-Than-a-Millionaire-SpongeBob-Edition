@@ -26,10 +26,33 @@
 function MoneyDisplay(barCanvasId, textCanvasId, moneyAmounts) {
     this._barCanvasId = barCanvasId;
     this._textCanvasId = textCanvasId;
-    this._moneyAmounts = moneyAmounts;
+
+    // Store this so we know what text to put on each bar
+    this._moneyAmounts = moneyAmounts.slice();
+
     this._numbersOfBarsToFade = [];
 }
 
+/*
+    @hasTest yes
+    @param moneyAmount instance of MoneyAmount
+    @returns the index in this._moneyAmounts of the instance of
+    MoneyAmount that is exactly the same as the given MoneyAmount
+    instance; if none is found, -1 is returned
+*/
+MoneyDisplay.prototype.getBarIndex = function(moneyAmount) {
+    for (var i = 0; i < this._moneyAmounts.length; ++i) {
+        if (this._moneyAmounts[i].asNumber() === moneyAmount.asNumber())
+            return i;
+    }
+    return -1;
+}
+
+/*
+    @post this._numbersOfBarsToFade has been updated; now faded bar
+    has been redrawn
+    @param barNumber of the bar to apply the fade to
+*/
 MoneyDisplay.prototype.giveFade = function(barNumber) {
     // Only act if the bar hasn't already been given fade
     if (this._numbersOfBarsToFade.indexOf(barNumber) === -1) {

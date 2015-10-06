@@ -193,6 +193,20 @@ QUnit.test("parameterError()", function(assert) {
 
 QUnit.module("game-show-fusion.js");
 
+QUnit.test("getRandomMoneyAmount()", function(assert) {
+    var moneyAmounts = [new MoneyAmount(4), new MoneyAmount(80),
+        new MoneyAmount(2)];
+
+    assert.deepEqual(typeof getRandomMoneyAmount(moneyAmounts, false),
+        "object", "An object was returned when not splicing array parameter");
+    assert.deepEqual(moneyAmounts.length, 3,
+        "Correctly, nothing was removed from the array of money amounts");
+    assert.deepEqual(typeof getRandomMoneyAmount(moneyAmounts, true),
+        "object", "An object was returned when splicing array parameter");
+    assert.deepEqual(moneyAmounts.length, 2,
+        "Correctly, an object was removed from the array of money amounts");
+});
+
 QUnit.test("selectedCorrectAnswer()", function(assert) {
     var answerIndex = 3;
     var fakeQuestion = new Question(GRADES.FIRST, SUBJECTS.ART,
@@ -249,6 +263,21 @@ QUnit.test("MoneyAmount::_putCommasInStringNumber()", function(assert) {
 });
 
 QUnit.module("money-display.js");
+
+QUnit.test("MoneyDisplay.getBarIndex()", function(assert) {
+    var moneyDisplay = new MoneyDisplay("trivialId", "trivialId",
+        [new MoneyAmount(500), new MoneyAmount(0.01), new MoneyAmount(1000)]);
+    assert.deepEqual(moneyDisplay.getBarIndex(new MoneyAmount(500)), 0,
+        "Index of first bar returned");
+    assert.deepEqual(moneyDisplay.getBarIndex(new MoneyAmount(0.01)), 1,
+        "Index of second bar returned");
+    assert.deepEqual(moneyDisplay.getBarIndex(new MoneyAmount(1000)), 2,
+        "Index of third bar returned");
+    assert.deepEqual(moneyDisplay.getBarIndex(new MoneyAmount(100)), -1,
+        "-1 returned if appropriate bar not found");
+    assert.deepEqual(moneyDisplay.getBarIndex(new MoneyAmount(500000)), -1,
+        "-1 returned if appropriate bar not found");
+});
 
 QUnit.test("MoneyDisplay::getBarPosition()", function(assert) {
     assert.deepEqual(MoneyDisplay.getBarPosition(1),

@@ -379,7 +379,8 @@ function handleCaseSelection() {
     // Record which case was selected and its value
     gameShow.selectedBriefcaseNumber =
         gameShow.briefcaseDisplay.numberToEmphasize;
-    gameShow.briefcaseValue = getRandomMoneyAmount(gameShow.moneyAmounts);
+    gameShow.briefcaseValue =
+        getRandomMoneyAmount(gameShow.moneyAmounts, false);
 
     // Update the briefcase display
     gameShow.briefcaseDisplay.giveFade(
@@ -396,13 +397,35 @@ function handleCaseSelection() {
 
 /*
     @pre arrayOfMoneyAmounts.length > 0
-    @param arrayOfMoneyAmounts
-    @returns a randomly chosen value that was removed from
+    @hasTest yes
+    @param arrayOfMoneyAmounts array of instances of MoneyAmount from
+    which to get an instance to return
+    @param isSplicing true to remove the returned instance and grey
+    out its respective bar on the money display; false to
+    not remove it (but to still return it)
+    @returns a randomly chosen instance of MoneyAmount that was removed from
     arrayOfMoneyAmounts
 */
-function getRandomMoneyAmount(arrayOfMoneyAmounts) {
+function getRandomMoneyAmount(arrayOfMoneyAmounts, isSplicing) {
     var randomIndex = Math.floor(Math.random() * arrayOfMoneyAmounts.length);
-    return arrayOfMoneyAmounts.splice(randomIndex, 1).pop();
+    if (isSplicing) {
+        var moneyAmount = arrayOfMoneyAmounts.splice(randomIndex, 1).pop();
+
+        if (!isUnitTesting()) {
+            // make grey the bar of the money amount to splice
+            var index = gameShow.moneyDisplay.getBarIndex(moneyAmount);
+            gameShow.moneyDisplay.giveFade(index + 1);
+        }
+
+        // remove the randomly obtained MoneyAmount from the array
+        // and return it
+        return moneyAmount;
+    }
+    else {
+        // without removing the randomly obtained MoneyAmount from the array,
+        // return it
+        return arrayOfMoneyAmounts[randomIndex];
+    }
 }
 
 /*
@@ -630,7 +653,7 @@ function handleCorrectAnswerSelection() {
     }
 
     // Update what the host says
-    var questionValue = getRandomMoneyAmount(gameShow.moneyAmounts);
+    var questionValue = getRandomMoneyAmount(gameShow.moneyAmounts, true);
     gameShow.quotesToDraw.add("You have selected the correct answer.")
         .deployQuoteChain(function() {
             if (gameShow.numberOfQuestionsCorrectlyAnswered < 10) {
