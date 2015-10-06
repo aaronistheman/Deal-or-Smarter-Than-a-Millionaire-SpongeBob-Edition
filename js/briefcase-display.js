@@ -19,7 +19,7 @@ function BriefcaseDisplay(caseCanvasId, textCanvasId, moneyAmounts,
         numberToEmphasize) {
     this.caseCanvasId = caseCanvasId;
     this.textCanvasId = textCanvasId;
-    this.moneyAmounts = moneyAmounts;
+    this.moneyAmounts = moneyAmounts.slice();
     this.numberToEmphasize = numberToEmphasize;
     this.numbersToFade = [];
 }

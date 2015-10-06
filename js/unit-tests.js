@@ -193,6 +193,23 @@ QUnit.test("parameterError()", function(assert) {
 
 QUnit.module("game-show-fusion.js");
 
+QUnit.test("getRandomMoneyAmount()", function(assert) {
+    var moneyAmounts = [new MoneyAmount(4), new MoneyAmount(80),
+        new MoneyAmount(2)];
+    var moneyDisplay = new MoneyDisplay("trivialId", "trivialId",
+        moneyAmounts);
+
+    assert.deepEqual(typeof getRandomMoneyAmount(moneyAmounts, false),
+        "object", "An object was returned when not greying a money bar");
+    assert.deepEqual(moneyDisplay._numbersOfBarsToFade.length, 0,
+        "Correctly, no bar was given a grey fade");
+    assert.deepEqual(typeof getRandomMoneyAmount(
+        moneyAmounts, true, moneyDisplay),
+        "object", "An object was returned after greying a money bar");
+    assert.deepEqual(moneyDisplay._numbersOfBarsToFade.length, 1,
+        "Correctly, one bar was given a grey fade");
+});
+
 QUnit.test("selectedCorrectAnswer()", function(assert) {
     var answerIndex = 3;
     var fakeQuestion = new Question(GRADES.FIRST, SUBJECTS.ART,
@@ -246,6 +263,49 @@ QUnit.test("MoneyAmount::_putCommasInStringNumber()", function(assert) {
         "1,000,000.3567", "Appropriately, two commas were inserted");
     assert.deepEqual(MoneyAmount._putCommasInStringNumber("1000000"),
         "1,000,000", "Appropriately, two commas were inserted");
+});
+
+QUnit.module("money-display.js");
+
+QUnit.test("MoneyDisplay.getBarIndex()", function(assert) {
+    var moneyDisplay = new MoneyDisplay("trivialId", "trivialId",
+        [new MoneyAmount(500), new MoneyAmount(0.01), new MoneyAmount(1000)]);
+    assert.deepEqual(moneyDisplay.getBarIndex(new MoneyAmount(500)), 0,
+        "Index of first bar returned");
+    assert.deepEqual(moneyDisplay.getBarIndex(new MoneyAmount(0.01)), 1,
+        "Index of second bar returned");
+    assert.deepEqual(moneyDisplay.getBarIndex(new MoneyAmount(1000)), 2,
+        "Index of third bar returned");
+    assert.deepEqual(moneyDisplay.getBarIndex(new MoneyAmount(100)), -1,
+        "-1 returned if appropriate bar not found");
+    assert.deepEqual(moneyDisplay.getBarIndex(new MoneyAmount(500000)), -1,
+        "-1 returned if appropriate bar not found");
+});
+
+QUnit.test("MoneyDisplay::getBarPosition()", function(assert) {
+    assert.deepEqual(MoneyDisplay.getBarPosition(1),
+        MoneyDisplay.firstBarPosition,
+        "Correct position for first bar");
+    assert.deepEqual(MoneyDisplay.getBarPosition(4),
+        MoneyDisplay.firstBarPosition.getSum(
+            MoneyDisplay.marginalBarPosition.getProduct(
+                new Vector2d(0, 3))),
+        "Correct position for fourth bar");
+    assert.deepEqual(MoneyDisplay.getBarPosition(5),
+        MoneyDisplay.firstBarPosition.getSum(
+            MoneyDisplay.marginalBarPosition.getProduct(
+                new Vector2d(0, 4))),
+        "Correct position for fifth bar");
+    assert.deepEqual(MoneyDisplay.getBarPosition(6),
+        MoneyDisplay.firstBarPosition.getSum(
+            MoneyDisplay.marginalBarPosition.getProduct(
+                new Vector2d(1, 0))),
+        "Correct position for sixth bar");
+    assert.deepEqual(MoneyDisplay.getBarPosition(10),
+        MoneyDisplay.firstBarPosition.getSum(
+            MoneyDisplay.marginalBarPosition.getProduct(
+                new Vector2d(1, 4))),
+        "Correct position for tenth bar");
 });
 
 QUnit.module("questions.js");

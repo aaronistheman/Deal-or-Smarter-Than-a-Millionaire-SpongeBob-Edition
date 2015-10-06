@@ -1234,7 +1234,7 @@ Questions.getEntireSupplyOfQuestions = function() {
             "good", "green peas"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
         "Who once infamously said the following quote: 'I prefer " +
-        "salad over Plankton anyway'?",
+        "salad over plankton anyway'?",
         new AnswerData(ANSWERS.SECOND, ["Mr. Krabs", "Pearl",
             "Bubble Bass", "Karen"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.TECHNOLOGY,

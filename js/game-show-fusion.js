@@ -8,12 +8,12 @@
 var gameShow = {};
 gameShow.speakers = getSpeakerObjects();
 
+gameShow.canvasStack = new CanvasStack();
+
 gameShow.banker = new Banker("media/images/banker.png");
 
 gameShow.moneyAmounts = getBeginningMoneyAmounts();
 gameShow.briefcaseValue = undefined;
-
-gameShow.canvasStack = new CanvasStack();
 
 gameShow.moneyDisplay = new MoneyDisplay(
     CANVAS_IDS.MONEY_DISPLAY_BARS,
@@ -379,7 +379,9 @@ function handleCaseSelection() {
     // Record which case was selected and its value
     gameShow.selectedBriefcaseNumber =
         gameShow.briefcaseDisplay.numberToEmphasize;
-    gameShow.briefcaseValue = getRandomMoneyAmount(gameShow.moneyAmounts);
+    gameShow.briefcaseValue =
+        getRandomMoneyAmount(gameShow.moneyAmounts, false,
+        gameShow.moneyDislay);
 
     // Update the briefcase display
     gameShow.briefcaseDisplay.giveFade(
@@ -396,13 +398,26 @@ function handleCaseSelection() {
 
 /*
     @pre arrayOfMoneyAmounts.length > 0
-    @param arrayOfMoneyAmounts
-    @returns a randomly chosen value that was removed from
+    @hasTest yes
+    @param arrayOfMoneyAmounts array of instances of MoneyAmount from
+    which to get an instance to return
+    @param makeGrey true to use the given instance of MoneyDisplay to
+    make grey the money bar of the removed
+    money amount; false to not make the bar grey
+    @param moneyDislay instance of MoneyDisplay with which the money bar can
+    be greyed (only required if makeGrey is true)
+    @returns a randomly chosen instance of MoneyAmount that was removed from
     arrayOfMoneyAmounts
 */
-function getRandomMoneyAmount(arrayOfMoneyAmounts) {
+function getRandomMoneyAmount(arrayOfMoneyAmounts, makeGrey, moneyDisplay) {
     var randomIndex = Math.floor(Math.random() * arrayOfMoneyAmounts.length);
-    return arrayOfMoneyAmounts.splice(randomIndex, 1).pop();
+    var moneyAmount = arrayOfMoneyAmounts.splice(randomIndex, 1).pop();
+    if (makeGrey) {
+        // make grey the bar of the money amount to splice
+        var index = gameShow.moneyDisplay.getBarIndex(moneyAmount);
+        moneyDisplay.giveFade(index + 1);
+    }
+    return moneyAmount;
 }
 
 /*
@@ -630,22 +645,32 @@ function handleCorrectAnswerSelection() {
     }
 
     // Update what the host says
-    var questionValue = getRandomMoneyAmount(gameShow.moneyAmounts);
-    gameShow.quotesToDraw.add("You have selected the correct answer.");
-    if (gameShow.numberOfQuestionsCorrectlyAnswered < 10) {
-        gameShow.quotesToDraw
-            .add("The question was worth: $" +
-                questionValue.asString() + '.');
-
-        // The banker makes an offer after the second, fourth, sixth,
-        // and eighth questions
-        if (gameShow.numberOfQuestionsCorrectlyAnswered % 2 === 0)
-            gameShow.quotesToDraw.deployQuoteChain(makeBankerOffer);
-        else
-            gameShow.quotesToDraw.deployQuoteChain(goToNextTurn);
-    }
-    else
-        explainUserChooseMillionOrGoHome();
+    gameShow.quotesToDraw.add("You have selected the correct answer.")
+        .deployQuoteChain(function() {
+            if (gameShow.numberOfQuestionsCorrectlyAnswered < 10) {
+                gameShow.canvasStack.set(CANVAS_IDS.MONEY_DISPLAY.concat(
+                    CANVAS_IDS.QUOTE));
+                var questionValue =
+                    getRandomMoneyAmount(gameShow.moneyAmounts, true,
+                    gameShow.moneyDisplay);
+                gameShow.quotesToDraw.add("The question was worth: $" +
+                    questionValue.asString() + '.');
+                if (gameShow.numberOfQuestionsCorrectlyAnswered === 9) {
+                    gameShow.quotesToDraw.add("You now know what your " +
+                        "case holds.")
+                        .add("For the option to take it home, you must " +
+                            "answer one more question.");
+                }
+                // The banker makes an offer after the second, fourth, sixth,
+                // and eighth questions
+                if (gameShow.numberOfQuestionsCorrectlyAnswered % 2 === 0)
+                    gameShow.quotesToDraw.deployQuoteChain(makeBankerOffer);
+                else
+                    gameShow.quotesToDraw.deployQuoteChain(goToNextTurn);
+            }
+            else
+                explainUserChooseMillionOrGoHome();
+        });
 }
 
 /*
@@ -800,6 +825,7 @@ function goToNextTurn() {
 
     // Update what the host says; call of selectQuestion starts
     // the next turn
+    gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
     if (gameShow.numberOfQuestionsCorrectlyAnswered === 5)
         gameShow.quotesToDraw.add("You're halfway to the " +
             "million dollar question.");

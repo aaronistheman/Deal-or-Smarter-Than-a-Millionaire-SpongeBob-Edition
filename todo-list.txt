@@ -1,7 +1,4 @@
 Next:
--fix money display
-    --show it when a question's value is revealed
-    --grey out the money amounts that are out of the game
 -display the banker's offer along with the other monetary amounts?
     --could easily convert the money display into this
     --other option: be okay with the offer being in quote bubble
@@ -94,3 +91,7 @@ Considerable:
 -adjust banker multiplier based on certain factors
     --e.g. grades of the answered questions
     --multiplier could be adjusted randomly within a range
+-certain sound effects based on how much a question was worth
+    --could be good or bad
+-something unique in situations that would cause a really low bank offer
+    --e.g. currently, having only 0.01 and 50 left leads to offer of $0
