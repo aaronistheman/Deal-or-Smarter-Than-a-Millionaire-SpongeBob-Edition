@@ -44,6 +44,11 @@ At some point:
 -consider making my own graphics for some things (e.g. briefcases)
     --could use GIMP, Microsoft Word, etc.
     --in this case, consider resource identifiers for the images
+-having the order of the answers be randomized
+    --could have object prototype Answer with member isCorrect
+    --for Question constructor, the first answer given is made into
+        the correct one; each is made into Answer object (out of the
+        given AnswerData object)
 
 Before release 0.1:
 -make sure trivial functions that are no longer needed and that were
@@ -79,8 +84,6 @@ Considerable:
 -for functions that emphasize things, don't erase and redraw if same thing
     is emphasized
 -more questions
--having the order of the answers be randomized
-    --could have object prototype Answer with member isCorrect
 -consider a way to disable questions about "modern" SpongeBob
     --e.g. pressing the down arrow three times in the title screen
         --announce how to do it in the YouTube video's ending

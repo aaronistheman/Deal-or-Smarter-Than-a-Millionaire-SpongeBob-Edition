@@ -1189,6 +1189,16 @@ Questions.getEntireSupplyOfQuestions = function() {
         "Which of the following is Squidward's last name?",
         new AnswerData(ANSWERS.THIRD, ["Tennisballs", "Tentpoles",
             "Tentacles", "Tortellini"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.MAIN_CHARACTERS,
+        "Which of the following characters mostly only ever says 'meow'?",
+        new AnswerData(ANSWERS.FOURTH, ["Sandy", "Mermaid Man", "Karen",
+            "Gary"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.MUSIC,
+        "What was the name of the song that SpongeBob sang in " +
+        "'The Camping Episode'?",
+        new AnswerData(ANSWERS.SECOND, ["Campfire Song",
+            "Campfire Song Song", "Campfire Song Song Song",
+            "Sweet Victory"])));
 
     /*
         Second grade questions
@@ -1290,6 +1300,16 @@ Questions.getEntireSupplyOfQuestions = function() {
         "Which of the following did Patrick once stab Squidward's hand with?",
         new AnswerData(ANSWERS.SECOND, ["knife", "jellyfishing net",
             "spatula", "keys"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.FITNESS,
+        "In the episode 'MuscleBob BuffPants', who won the " +
+        "anchor throwing contest?",
+        new AnswerData(ANSWERS.THIRD, ["Larry", "SpongeBob", "Sandy",
+            "Don"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.MUSIC,
+        "In which of the following episodes does SpongeBob sing " +
+        "about a striped sweater?",
+        new AnswerData(ANSWERS.FOURTH, ["F.U.N.", "Ripped Pants",
+            "Band Geeks", "As Seen on TV"])));
 
     /*
         Fourth grade questions
@@ -1348,6 +1368,11 @@ Questions.getEntireSupplyOfQuestions = function() {
         "SpongeBob movie was released?",
         new AnswerData(ANSWERS.SECOND, ["Fear of a Krabby Patty",
             "Plankton's Army", "Best Day Ever", "The Original Fry Cook"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.FITNESS,
+        "In the episode 'MuscleBob BuffPants', what did SpongeBob claim " +
+        "to be his secret to getting huge muscles?",
+        new AnswerData(ANSWERS.THIRD, ["bench pressing", "inflatable arms",
+            "armpit farts", "fry cooking"])));
 
     /*
         Fifth grade questions
@@ -1434,6 +1459,11 @@ Questions.getEntireSupplyOfQuestions = function() {
         new AnswerData(ANSWERS.FOURTH, ["No Free Rides",
             "Mrs. Puff, You're Fired", "Boating School",
             "Demolition Doofus"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.EPISODES,
+        "In the episode 'Born Again Krabs', for how much did Mr. Krabs " +
+        "sell SpongeBob's soul to the Flying Dutchman?",
+        new AnswerData(ANSWERS.FOURTH, ["one cent", "twenty-five cents",
+            "fourty-two cents", "sixty-two cents"])));
 
     /*
         Million dollar questions
@@ -1501,6 +1531,11 @@ Questions.getEntireSupplyOfQuestions = function() {
         "in the face of my good nature'?",
         new AnswerData(ANSWERS.FOURTH, ["Mr. Krabs", "Plankton",
             "Patrick", "SpongeBob"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.MUSIC,
+        "Which of the following is a line in the song that SpongeBob " +
+        "sings to Gary in the episode 'Missing Identity'?",
+        new AnswerData(ANSWERS.FIRST, ["Serving it up",
+            "I know of a place", "It's feeding time", "Meow"])));
 
     return supply;
 }
