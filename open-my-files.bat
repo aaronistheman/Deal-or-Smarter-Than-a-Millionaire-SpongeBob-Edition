@@ -28,4 +28,5 @@ start Notepad++ js/vector2d.js
 start Notepad++ js/money-amounts.js
 start Notepad++ js/banker.js
 start Notepad++ js/money-amount.js
+start Notepad++ js/helper.js
 exit

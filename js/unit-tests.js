@@ -3,9 +3,7 @@
 /*
     Author: Aaron Kaloti
     Release number: 0.1
-*/
 
-/*
     Using modules, I've divided the tests based on which file
     each tested function comes from. Modules are in alphabetical
     order by the name of the represented file.
@@ -219,6 +217,16 @@ QUnit.test("selectedCorrectAnswer()", function(assert) {
         false, "Wrong answer was detected");
     assert.deepEqual(selectedCorrectAnswer(fakeQuestion, (answerIndex + 1)),
         true, "Correct answer was detected");
+});
+
+QUnit.module("helper.js");
+
+QUnit.test("Helper.prototype.addStrength()", function(assert) {
+    var helper = new Helper("Trivial Man", 0.65);
+    assert.deepEqual(helper.addStrength(SUBJECTS.TECHNOLOGY), helper,
+        "Correct return value");
+    assert.deepEqual(helper._strengths.indexOf(SUBJECTS.TECHNOLOGY), 0,
+        "The subject was added to the helper's array of strengths");
 });
 
 QUnit.module("money-amount.js");
