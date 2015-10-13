@@ -20,8 +20,8 @@
 function Helper(name, defaultCorrectRate, introductoryQuote, iconSource) {
     // Confirm valid parameters
     if (defaultCorrectRate <= 0 || defaultCorrectRate > 1) {
-        alert("Invalid defaultCorrectRate given to Helper constructor");
-        throw "Invalid defaultCorrectRate given to Helper constructor";
+        alertAndThrowException(
+            "Invalid defaultCorrectRate given to Helper constructor");
     }
 
     this.name = name;

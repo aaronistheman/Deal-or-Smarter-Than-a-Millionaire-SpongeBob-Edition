@@ -1,6 +1,10 @@
 Next:
 -allow picking of a helper
     --implement prototypes to make menu for this purpose
+    --make the helpers' icons good
+    --allow repicking of a helper when appropriate
+        --un-choose the old helper, and choose the new one
+    --un-choose the current helper before million dollar question
 -change the style used in the names of the unit tests
 -remove game web font, or make it optional secretly
 -make separate canvas for help options

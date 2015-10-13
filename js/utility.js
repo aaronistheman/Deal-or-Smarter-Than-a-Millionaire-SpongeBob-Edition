@@ -26,6 +26,16 @@ function isUnitTesting() {
 }
 
 /*
+    @post the message has been used in an alert and thrown as an
+    exception
+    @param message
+*/
+function alertAndThrowException(message) {
+    alert(message);
+    throw message;
+}
+
+/*
     @pre none of the words in text are so big that no matter what,
     if the word, with the given context, were drawn without breaks in
     it, the maximum width would be exceeded; violation of this
