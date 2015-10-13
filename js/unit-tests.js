@@ -222,7 +222,7 @@ QUnit.test("selectedCorrectAnswer()", function(assert) {
 QUnit.module("helper.js");
 
 QUnit.test("Helper.prototype.addStrength()", function(assert) {
-    var helper = new Helper("Trivial Man", 0.65);
+    var helper = new Helper(SPEAKERS.SQUIDWARD, 0.65);
     assert.deepEqual(helper.addStrength(SUBJECTS.TECHNOLOGY), helper,
         "Correct return value");
     assert.deepEqual(helper._strengths.indexOf(SUBJECTS.TECHNOLOGY), 0,

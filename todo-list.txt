@@ -1,10 +1,8 @@
 Next:
 -allow picking of a helper
-    --move the logic for drawing the helpers as speakers to the Helper
-        prototype
-    --implement options for helpers' skill (i.e. Good, Great)
     --implement prototypes to make menu for this purpose
 -change the style used in the names of the unit tests
+-remove game web font, or make it optional secretly
 -make separate canvas for help options
 -implement peeking
 -implement ask the audience
@@ -109,3 +107,4 @@ Considerable:
     display during the "dink" part of the sound)
     --would require setTimeout() for the drawing of the offer
 -sprite sheets
+-hidden Saw music/visuals mode

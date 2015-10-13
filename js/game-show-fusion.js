@@ -38,6 +38,9 @@ gameShow.questions = new Questions(
 gameShow.numberOfQuestionsCorrectlyAnswered = 0;
 gameShow.millionDollarQuestion = false;
 
+// array of instances of Helper
+gameShow.helpers = [];
+
 gameShow.turnVariables = {
     selectedQuestion : undefined,
     selectedAnswer : undefined,
@@ -971,9 +974,26 @@ function selectQuestion() {
         });
 }
 
+/*
+    @post gameShow.helpers has been filled with an instance of Helper
+    per helper in the game
+*/
+function setUpHelpers() {
+    gameShow.helpers.push(new Helper(SPEAKERS.SQUIDWARD, 0.90,
+        "Fortunately, I have enough talent for all of you.", ""));
+    gameShow.helpers.push(
+        new Helper(SPEAKERS.MERMAID_MAN, 0.80, "EVIL!", ""));
+    gameShow.helpers.push(
+        new Helper(SPEAKERS.SANDY, 0.95, "Howdy ya'll.", ""));
+    gameShow.helpers.push(new Helper(SPEAKERS.LARRY, 0.85,
+        "Hey, this party's finally starting to pick up.", ""));
+    gameShow.helpers.push(new Helper(SPEAKERS.GARY, 0.90, "Meow.", ""));
+}
+
 function setUpGame() {
     setUpQuoteBubble();
     setUpMillionDollarQuestionLabel();
+    setUpHelpers();
     gameShow.banker.draw(CANVAS_IDS.BANKER);
     gameShow.moneyDisplay.setUp();
     gameShow.briefcaseDisplay.draw();

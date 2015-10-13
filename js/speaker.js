@@ -38,6 +38,7 @@ Speaker.prototype.draw = function() {
         this.sizeX, this.sizeY);
 };
 
+// Note that the values of these constants are used
 var SPEAKERS = {
     SPONGEBOB : "SpongeBob",
     SQUIDWARD : "Squidward",
