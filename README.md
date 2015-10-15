@@ -37,7 +37,7 @@ The user, should he answer the first ten questions, can attempt
 to answer a "million dollar question", or he can take
 his case home.
 
-Currently, the game has seventy-seven questions.
+Currently, the game has eighty questions.
 
 Anything SpongeBob or any of the helpers say is displayed in a
 quote bubble.
