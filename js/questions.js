@@ -1199,6 +1199,10 @@ Questions.getEntireSupplyOfQuestions = function() {
         new AnswerData(ANSWERS.SECOND, ["Campfire Song",
             "Campfire Song Song", "Campfire Song Song Song",
             "Sweet Victory"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.MUSIC,
+        "Which of the following instruments is played most by Squidward?",
+        new AnswerData(ANSWERS.THIRD, ["drums", "triangle", "clarinet",
+            "mayonnaise"])));
 
     /*
         Second grade questions
@@ -1251,6 +1255,11 @@ Questions.getEntireSupplyOfQuestions = function() {
         "Which of the following does invisible spray stain?",
         new AnswerData(ANSWERS.THIRD, ["eyelashes", "shoes",
             "clothes", "spatulas"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.ART,
+        "In the episode 'Can You Spare a Dime?', which of the following " +
+        "characters ate paintings?",
+        new AnswerData(ANSWERS.FIRST, ["Squidward", "SpongeBob", "Mr. Krabs",
+            "Plankton"])));
 
     /*
         Third grade questions
@@ -1536,6 +1545,11 @@ Questions.getEntireSupplyOfQuestions = function() {
         "sings to Gary in the episode 'Missing Identity'?",
         new AnswerData(ANSWERS.FIRST, ["Serving it up",
             "I know of a place", "It's feeding time", "Meow"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.ART,
+        "Which of the following tools is capable of creating " +
+        "drawings that come to life?",
+        new AnswerData(ANSWERS.SECOND, ["paintbrush", "pencil",
+            "clay", "pen"])));
 
     return supply;
 }
