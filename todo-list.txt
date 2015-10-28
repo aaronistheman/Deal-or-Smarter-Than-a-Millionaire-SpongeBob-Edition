@@ -1,15 +1,13 @@
 Next:
--experiment with JavaScript inheritance in separate repository
-    --transfer original versions of GUI custom types and their unit tests
-    --apply changes from each file in that repository
-    (even utility.js and readme)
 -allow picking of a helper
-    --implement prototypes to make menu for this purpose
+    --make ChooseHelperState, modelled after MenuState from the
+        experimental repository
     --make the helpers' icons good
     --allow repicking of a helper when appropriate
         --un-choose the old helper, and choose the new one
     --un-choose the current helper before million dollar question
 -change the style used in the names of the unit tests
+    --e.g. change "type.method()" to "type.prototype.method()"
 -remove game web font, or make it optional secretly
 -apply some of what was learned in "Canvas Cookbook"; e.g.
     --give the quote bubble a border (using stroke)
