@@ -1,4 +1,8 @@
 Next:
+-experiment with JavaScript inheritance in separate repository
+    --transfer original versions of GUI custom types and their unit tests
+    --apply changes from each file in that repository
+    (even utility.js and readme)
 -allow picking of a helper
     --implement prototypes to make menu for this purpose
     --make the helpers' icons good
@@ -7,6 +11,8 @@ Next:
     --un-choose the current helper before million dollar question
 -change the style used in the names of the unit tests
 -remove game web font, or make it optional secretly
+-apply some of what was learned in "Canvas Cookbook"; e.g.
+    --give the quote bubble a border (using stroke)
 -make separate canvas for help options
 -implement peeking
 -implement ask the audience
@@ -33,6 +39,7 @@ Next:
 -make SpongeBob do dramatic pauses before announcing every answer
     and question value
 -more decorated title screen
+    --will probably have to implement image preloading
 	--disclaim that SpongeBob or any of the involved game shows are
         at all my possession
 
@@ -112,3 +119,4 @@ Considerable:
     --would require setTimeout() for the drawing of the offer
 -sprite sheets
 -hidden Saw music/visuals mode
+-image preloading

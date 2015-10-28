@@ -81,6 +81,29 @@ to "pre-commit".
 Acknowledgements
 ----------------
 
+The book "HTML5 Games Development by Example" by Makzan provided me
+with an introduction to canvas-based web games.
+
+The book "HTML5 Canvas Cookbook" by Eric Rowell helped me learn
+many things about the HTML5 canvas API.
+
+The book "The Principles of Object-Oriented JavaScript" by Nicholas C.
+Zakas helped me greatly as I wrote the object-oriented GUI custom
+types.
+
+The book "SFML Game Development" by Artur Moreira, Henrik Vogelius
+Hansson, and Jan Haller indirectly helped me by providing me
+with C++ versions of those aforementioned GUI custom types and of the
+custom types MusicPlayer and SoundPlayer.
+
+The first few chapters of the book "Pro Git" by Scott Chacon and
+Ben Straub taught me how to use Git Bash, which proved convenient
+as I wrote this application.
+
+The book "The Pragmatic Programmer" by Andy Hunt and Dave Thomas and
+the book "jQuery Game Development Essentials" helped
+me make better decisions with this program.
+
 I made the background of many of the images transparent with the
 website at www.online-image-editor.com.
 
