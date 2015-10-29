@@ -41,6 +41,9 @@ gameShow.millionDollarQuestion = false;
 // array of instances of Helper
 gameShow.helpers = [];
 
+gameShow.chooseHelperMenuState = new ChooseHelperMenuState(
+    CANVAS_IDS.CHOOSE_HELPER_GRAPHICS, CANVAS_IDS.CHOOSE_HELPER_TEXT);
+
 gameShow.turnVariables = {
     selectedQuestion : undefined,
     selectedAnswer : undefined,
@@ -393,7 +396,7 @@ function handleCaseSelection() {
         gameShow.selectedBriefcaseNumber + ".")
         .deployQuoteChain(function() {
             gameShow.musicPlayer.play(MUSIC_IDS.QUESTION_1_TO_5);
-            selectQuestion();
+            haveUserPickHelper();
         });
 }
 
@@ -709,7 +712,7 @@ function makeBankerOffer() {
                         "Deal or No Deal? (Press the 'y' key to accept " +
                         "the offer of $" +
                         gameShow.turnVariables.bankerOffer.asString() +
-                        ". Press the 'n' key to reject it and continue.")
+                        ". Press the 'n' key to reject it and continue.)")
                         .deployQuoteChain();
             });
         });
@@ -817,7 +820,45 @@ function userRejectsDeal() {
 
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
     gameShow.quotesToDraw.add("Let's hope you made the correct decision.")
+        // .deployQuoteChain(haveUserPickHelper);
         .deployQuoteChain(goToNextTurn);
+}
+
+/*
+    @post the user has been told to pick a new helper and been
+    given the ability to do so; after he/she does so, the game
+    continues
+*/
+function haveUserPickHelper() {
+    // Don't end up calling goToNextTurn if the user hasn't answered
+    // a question yet
+    var endCallback =
+        (gameShow.numberOfQuestionsCorrectlyAnswered === 0) ?
+        selectQuestion : goToNextTurn;
+
+    /*
+        The user can only pick a helper after having answered an
+        even number of questions (besides the tenth one, and including
+        before the first one). Thus, go to the next question selection
+        if user shouldn't be choosing a helper right now.
+    */
+    if (gameShow.numberOfQuestionsCorrectlyAnswered % 2 === 1)
+        endCallback();
+    else {
+        // Have the host explain the user's job
+        gameShow.chooseHelperMenuState.draw();
+        gameShow.canvasStack.set(CANVAS_IDS.QUOTE.concat(
+            CANVAS_IDS.CHOOSE_HELPER));
+        gameShow.chooseHelperMenuState.setResponseToInput(true);
+        gameShow.quotesToDraw.add("Use the arrow keys and the Enter " +
+            "key to select a helper for two questions.")
+            .deployQuoteChain(function() {
+                gameShow.chooseHelperMenuState.setResponseToInput(false);
+
+                // Go to the selection of a question
+                endCallback();
+            });
+    }
 }
 
 /*
@@ -998,6 +1039,7 @@ function setUpGame() {
     gameShow.moneyDisplay.setUp();
     gameShow.briefcaseDisplay.draw();
     gameShow.questions.drawInitialParts();
+    gameShow.chooseHelperMenuState.loadCanvases();
 
     // Show the appropriate canvases
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);

@@ -2,9 +2,22 @@ Next:
 -allow picking of a helper
     --make ChooseHelperState, modelled after MenuState from the
         experimental repository
-    --make the helpers' icons good
+        --see if button alerts still pop up inappropriately
+            --remove alerts in Container.setEventHandling
+            --could handle input with menus the typical way I would
+        --put a sound effect when change selected component
+        --create and display helper icons
+            --may need to have a public function addButton() or
+                addHelper()
+            --use "ChooseHelperMenuState.activatedComponent", or erase it
+        --then, create the real menu, and figure out how to use Button's
+            callback appropriately here
+            --do sound effect when pick helper
+    --allow picking of helper at beginning
     --allow repicking of a helper when appropriate
         --un-choose the old helper, and choose the new one
+        --make a helper unable to be rechosen (remove it from
+        the GUI container)
     --un-choose the current helper before million dollar question
 -change the style used in the names of the unit tests
     --e.g. change "type.method()" to "type.prototype.method()"
@@ -118,3 +131,5 @@ Considerable:
 -sprite sheets
 -hidden Saw music/visuals mode
 -image preloading
+-apply the GUI components to the other menus
+    --e.g. could have subtypes such as QuestionLabelButton

@@ -13,6 +13,8 @@
 // for each string in CANVAS_IDS, a canvas will be created
 // using AngularJS
 var CANVAS_IDS = {
+    CHOOSE_HELPER_GRAPHICS : "choose-helper-graphics-canvas",
+    CHOOSE_HELPER_TEXT : "choose-helper-text-canvas",
     BANKER : "banker-canvas",
     BRIEFCASES : "briefcase-display-canvas",
     BRIEFCASES_TEXT : "briefcase-text-canvas",
@@ -33,6 +35,8 @@ var CANVAS_IDS = {
 CANVAS_IDS.QUOTE = [CANVAS_IDS.QUOTE_TEXT, CANVAS_IDS.QUOTE_BUBBLE];
 CANVAS_IDS.SPEAKER_QUOTE =
     CANVAS_IDS.QUOTE.concat([CANVAS_IDS.SPEAKER]);
+CANVAS_IDS.CHOOSE_HELPER =
+    [CANVAS_IDS.CHOOSE_HELPER_GRAPHICS, CANVAS_IDS.CHOOSE_HELPER_TEXT];
 CANVAS_IDS.MONEY_DISPLAY =
     [CANVAS_IDS.MONEY_DISPLAY_TEXT, CANVAS_IDS.MONEY_DISPLAY_BARS];
 CANVAS_IDS.BRIEFCASE_DISPLAY =

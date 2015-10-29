@@ -1,7 +1,10 @@
 "use strict";
 
 /*
-    Author: Aaron Kaloti
+    Authors of original (C++, SFML-supporting) version:
+        Artur Moreira, Henrik Vogelius Hansson, and Jan Haller
+    Translated (from C++, SFML-supporting version to
+        JavaScript, canvas-supporting version) by: Aaron Kaloti
     Release number: 0.1
 */
 
