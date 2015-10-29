@@ -19,7 +19,7 @@
     (i.e. non-graphical) parts of the menu will be drawn
 */
 function ChooseHelperMenuState(graphicalCanvasId, textualCanvasId) {
-    this._GUIContainer = new GUI.Container();
+    this.GUIContainer = new GUI.Container();
 
     // To store which component has been activated; should be
     // edited in activated component's callback
@@ -91,30 +91,19 @@ ChooseHelperMenuState.prototype = {
         var label1 = new GUI.Label("Label 1", "Arial");
         label1.setPosition(400, 200);
 
-        this._GUIContainer.pack(button1);
-        this._GUIContainer.pack(button2);
-        this._GUIContainer.pack(label1);
+        this.GUIContainer.pack(button1);
+        this.GUIContainer.pack(button2);
+        this.GUIContainer.pack(label1);
     },
 
     /*
         @pre this.graphicalCanvas !== undefined;
         this.textualCanvas !== undefined
-        @post each component in this._GUIContainer has been
+        @post each component in this.GUIContainer has been
         drawn on this ChooseHelperMenuState instance's canvases
     */
     draw : function() {
-        this._GUIContainer.draw(
-            this.graphicalCanvas, this.textualCanvas);
-    },
-
-    /*
-        @post if isEnabled is true, this instance of ChooseHelperMenuState
-        will respond to input; if false, that ability to respond
-        will be disabled
-        @param isEnabled
-    */
-    setResponseToInput : function(isEnabled) {
-        this._GUIContainer.setResponseToInput(isEnabled,
+        this.GUIContainer.draw(
             this.graphicalCanvas, this.textualCanvas);
     },
 }

@@ -849,15 +849,49 @@ function haveUserPickHelper() {
         gameShow.chooseHelperMenuState.draw();
         gameShow.canvasStack.set(CANVAS_IDS.QUOTE.concat(
             CANVAS_IDS.CHOOSE_HELPER));
-        gameShow.chooseHelperMenuState.setResponseToInput(true);
+        allowUserPickHelper(true);
         gameShow.quotesToDraw.add("Use the arrow keys and the Enter " +
             "key to select a helper for two questions.")
             .deployQuoteChain(function() {
-                gameShow.chooseHelperMenuState.setResponseToInput(false);
+                allowUserPickHelper(false);
+
+                if (gameShow.chooseHelperMenuState
+                    .GUIContainer.hasSelection()) {
+                    gameShow.chooseHelperMenuState.GUIContainer
+                        .activateSelectedComponent();
+                }
+                else {
+                    // should never happen!
+                    alertAndThrowException("gameShow.chooseHelperMenuState" +
+                        ".GUIContainer has no selected component");
+                }
 
                 // Go to the selection of a question
                 endCallback();
             });
+    }
+}
+
+/*
+    @param bool true to allow user to change which helper's icon
+    is selected; false to disable this ability
+*/
+function allowUserPickHelper(bool) {
+    if (bool === true) {
+        gameShow.keyActions.set(KEY_CODES.UP_ARROW, function() {
+            gameShow.chooseHelperMenuState.GUIContainer.selectPrevious(
+                gameShow.chooseHelperMenuState.graphicalCanvas,
+                gameShow.chooseHelperMenuState.textualCanvas);
+        })
+        .set(KEY_CODES.DOWN_ARROW, function() {
+            gameShow.chooseHelperMenuState.GUIContainer.selectNext(
+                gameShow.chooseHelperMenuState.graphicalCanvas,
+                gameShow.chooseHelperMenuState.textualCanvas);
+        });
+    }
+    else {
+        gameShow.keyActions.erase(KEY_CODES.UP_ARROW)
+            .erase(KEY_CODES.DOWN_ARROW);
     }
 }
 
