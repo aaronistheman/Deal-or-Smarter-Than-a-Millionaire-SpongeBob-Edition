@@ -49,6 +49,10 @@ function getAudioData() {
         "media/sound/move_case_selector.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.SELECT_CASE,
         "media/sound/select_case.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.MOVE_HELPER_SELECTOR,
+        "media/sound/move_helper_selector.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.SELECT_HELPER,
+        "media/sound/select_helper.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.MOVE_QUESTION_SELECTOR,
         "media/sound/move_question_selector.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.SELECT_QUESTION,

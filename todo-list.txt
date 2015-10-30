@@ -1,7 +1,7 @@
 Next:
 -allow picking of a helper
-    --put a sound effect when change selected component
     --create and display helper icons
+        --make the icons
         --may need to have a public function addButton() or
             addHelper(); or could use another container for each helper
             (this'll make it easier to remove each helper; could
@@ -131,5 +131,6 @@ Considerable:
 -sprite sheets
 -hidden Saw music/visuals mode
 -image preloading
+    --sound preloading, too? (is this necessary or even a thing?)
 -apply the GUI components to the other menus
     --e.g. could have subtypes such as QuestionLabelButton

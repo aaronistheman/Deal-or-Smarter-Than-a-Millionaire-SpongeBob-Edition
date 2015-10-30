@@ -854,6 +854,7 @@ function haveUserPickHelper() {
             "key to select a helper for two questions.")
             .deployQuoteChain(function() {
                 allowUserPickHelper(false);
+                gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.SELECT_HELPER);
 
                 if (gameShow.chooseHelperMenuState
                     .GUIContainer.hasSelection()) {
@@ -879,11 +880,13 @@ function haveUserPickHelper() {
 function allowUserPickHelper(bool) {
     if (bool === true) {
         gameShow.keyActions.set(KEY_CODES.UP_ARROW, function() {
+            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.MOVE_HELPER_SELECTOR);
             gameShow.chooseHelperMenuState.GUIContainer.selectPrevious(
                 gameShow.chooseHelperMenuState.graphicalCanvas,
                 gameShow.chooseHelperMenuState.textualCanvas);
         })
         .set(KEY_CODES.DOWN_ARROW, function() {
+            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.MOVE_HELPER_SELECTOR);
             gameShow.chooseHelperMenuState.GUIContainer.selectNext(
                 gameShow.chooseHelperMenuState.graphicalCanvas,
                 gameShow.chooseHelperMenuState.textualCanvas);
