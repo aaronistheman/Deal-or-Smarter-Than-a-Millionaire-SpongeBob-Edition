@@ -5,11 +5,12 @@
         Artur Moreira, Henrik Vogelius Hansson, and Jan Haller
     Translated (from C++, SFML-supporting version to
         JavaScript, Canvas-supporting version) by: Aaron Kaloti
-    For experimentation
+    Release number: 0.1
 */
 
 /*
     This class is meant to be abstract.
+
     @hasTest yes
 */
 GUI.Component = function() {
@@ -30,6 +31,7 @@ GUI.Component.prototype = {
 
     /*
         Note that this is an abstract method.
+
         @hasTest yes
         @returns true if this instance is selectable; false, otherwise
     */
@@ -69,6 +71,7 @@ GUI.Component.prototype = {
 
     /*
         Note that this is an abstract method.
+
         @param graphicalCanvas the canvas on which the graphical
         (i.e. non-textual) parts of the component will be drawn
         @param textualCanvas the canvas on which the textual

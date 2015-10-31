@@ -1,6 +1,7 @@
 Next:
 -allow picking of a helper
     --create and display helper icons
+        --fill up each helper's array of strengths
         --may need to have a public function addButton() or
             addHelper(); or could use another container for each helper
             (this'll make it easier to remove each helper; could
@@ -8,7 +9,7 @@ Next:
             activation causing its button to be activated)
         --use "ChooseHelperMenuState.activatedComponent", or erase it;
         use the buttons' callbacks
-        --if desired, make the icons' images' transparent
+        --if desired, make the icons' images' backgrounds' transparent
     --allow picking of helper at beginning
         --that is, store the data regarding this
     --allow repicking of a helper when appropriate
@@ -133,3 +134,4 @@ Considerable:
     --sound preloading, too? (is this necessary or even a thing?)
 -apply the GUI components to the other menus
     --e.g. could have subtypes such as QuestionLabelButton
+-function to define a truly private own property

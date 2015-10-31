@@ -5,11 +5,12 @@
         Artur Moreira, Henrik Vogelius Hansson, and Jan Haller
     Translated (from C++, SFML-supporting version to
         JavaScript, Canvas-supporting version) by: Aaron Kaloti
-    For experimentation
+    Release number: 0.1
 */
 
 /*
     Inherits from GUI.Component
+
     @pre the image parameters are instances of Image
     @hasTest yes
     @param fontFace the font face to use for drawing the button's text;
@@ -57,13 +58,18 @@ GUI.Button.prototype.setCallback = function(callback) {
     this._callback = callback;
 };
 
+/*
+    @Override
+*/
 GUI.Button.prototype.isSelectable = function() {
     return true;
 };
 
 /*
+    @Override
     See draw() of supertype GUI.Component for general
     description
+
     @post the button's graphical part has been drawn on
     the graphical canvas, and its textual part has been
     drawn on the textual canvas; note that the button's
@@ -125,6 +131,8 @@ GUI.Button.prototype.redrawTextualPart = function(textualCanvas) {
 }
 
 /*
+    @Override
+
     @post the button has been updated to reflect its having been
     selected; its text color has been changed
     @hasTest yes
@@ -145,6 +153,8 @@ GUI.Button.prototype.select = function(graphicalCanvas, textualCanvas) {
 };
 
 /*
+    @Override
+
     @post the button has been updated to reflect its having been
     deselected; its text color has been changed
     @hasTest yes
@@ -165,6 +175,8 @@ GUI.Button.prototype.deselect = function(graphicalCanvas, textualCanvas) {
 };
 
 /*
+    @Override
+
     @post the button has been updated appropriately, and its
     callback, if defined, has been called
     @hasTest yes

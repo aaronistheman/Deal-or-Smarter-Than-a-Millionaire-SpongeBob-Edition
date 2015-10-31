@@ -2,11 +2,12 @@
 
 /*
     Original Author: Aaron Kaloti
-    For experimentation
+    Release number: 0.1
 */
 
 /*
     Inherits from GUI.Component
+
     @hasTest yes
     @param image instance of Image to attach to the icon
 */
@@ -42,14 +43,19 @@ GUI.Icon.prototype = Object.create(GUI.Component.prototype, {
     }
 });
 
+/*
+    @Override
+*/
 GUI.Icon.prototype.isSelectable = function() {
     return false;
 }
 
 /*
+    @Override
     See draw() of supertype GUI.Component for general
     description; note that the textualCanvas argument
     isn't used here
+
     @pre this.image.complete must be true
     @post the icon, which is solely an image, has been
     drawn on the given graphical canvas; note that the icon's

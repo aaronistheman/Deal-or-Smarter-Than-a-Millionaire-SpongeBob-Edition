@@ -5,11 +5,12 @@
         Artur Moreira, Henrik Vogelius Hansson, and Jan Haller
     Translated (from C++, SFML-supporting version to
         JavaScript, Canvas-supporting version) by: Aaron Kaloti
-    For experimentation
+    Release number: 0.1
 */
 
 /*
     Inherits from GUI.Component
+
     @hasTest yes
 */
 GUI.Container = function() {
@@ -45,16 +46,21 @@ GUI.Container.prototype.pack = function(component) {
     this._children.push(component);
 
     if (!this.hasSelection() && component.isSelectable())
-        this.select(this._children.length - 1, undefined, undefined);
+        this.selectChild(this._children.length - 1, undefined, undefined);
 };
 
+/*
+    @Override
+*/
 GUI.Container.prototype.isSelectable = function() {
     return false;
 };
 
 /*
+    @Override
     See draw() of supertype GUI.Component for general
     description
+
     @post each stored component has been drawn on the indicated
     canvases
 */
@@ -79,7 +85,7 @@ GUI.Container.prototype.hasSelection = function() {
     @param textualCanvas canvas on which to redraw the textual
     part of the selected component
 */
-GUI.Container.prototype.select =
+GUI.Container.prototype.selectChild =
     function(index, graphicalCanvas, textualCanvas) {
     if (this._children[index].isSelectable()) {
         if (this.hasSelection())
@@ -112,7 +118,7 @@ GUI.Container.prototype.selectNext =
     while (!this._children[next].isSelectable());
 
     // Select that component
-    this.select(next, graphicalCanvas, textualCanvas);
+    this.selectChild(next, graphicalCanvas, textualCanvas);
 };
 
 /*
@@ -136,7 +142,7 @@ GUI.Container.prototype.selectPrevious =
     while (!this._children[prev].isSelectable());
 
     // Select that component
-    this.select(prev, graphicalCanvas, textualCanvas);
+    this.selectChild(prev, graphicalCanvas, textualCanvas);
 };
 
 /*

@@ -321,18 +321,18 @@ QUnit.test("Container.prototype.pack()", function(assert) {
         "Correctly, none of the wrong Components were selected");
 });
 
-QUnit.test("Container.prototype.select()", function(assert) {
+QUnit.test("Container.prototype.selectChild()", function(assert) {
     var container = new GUI.Container();
     container.pack(new GUI.Label());
     container.pack(new GUI.Button());
     container.pack(new GUI.Button());
 
-    container.select(0, undefined, undefined);
+    container.selectChild(0, undefined, undefined);
     assert.ok((container._selectedChild === 1) &&
         (!container._children[0].isSelected()) &&
         container._children[1].isSelected(),
         "Nothing happens if indicated component isn't selectable");
-    container.select(2, undefined, undefined);
+    container.selectChild(2, undefined, undefined);
     assert.ok((container._selectedChild === 2) &&
         (!container._children[1].isSelected()) &&
         container._children[2].isSelected(),
