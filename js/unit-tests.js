@@ -376,14 +376,15 @@ QUnit.test("selectedCorrectAnswer()", function(assert) {
         true, "Correct answer was detected");
 });
 
-QUnit.module("helper.js");
+QUnit.test("setUpHelpers()", function(assert) {
+    gameShow.helpers = [];
+    setUpHelpers();
 
-QUnit.test("Helper.prototype.addStrength()", function(assert) {
-    var helper = new Helper(SPEAKERS.SQUIDWARD, 0.65);
-    assert.deepEqual(helper.addStrength(SUBJECTS.TECHNOLOGY), helper,
-        "Correct return value");
-    assert.deepEqual(helper._strengths.indexOf(SUBJECTS.TECHNOLOGY), 0,
-        "The subject was added to the helper's array of strengths");
+    assert.deepEqual(gameShow.helpers.length, gameShow.NUMBER_OF_HELPERS,
+        "Correct number of helpers added to the appropriate array");
+    if (gameShow.NUMBER_OF_HELPERS > 0)
+        assert.ok(gameShow.helpers[0].getStrengths().length > 0,
+            "At least one strength was given to the first helper");
 });
 
 QUnit.module("icon.js");

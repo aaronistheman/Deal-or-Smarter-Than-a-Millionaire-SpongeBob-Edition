@@ -15,9 +15,12 @@
     introduces him/her
     @param iconSource source of the image containing this helper's
     icon (which shows as the user decides which helper to pick)
+    @param arrayOfStrenghts array of the subjects that the helper
+    has an advantage in; should be array of members of object SUBJECTS
     @throws exception if invalid defaultCorrectRate
 */
-function Helper(name, defaultCorrectRate, introductoryQuote, iconSource) {
+function Helper(name, defaultCorrectRate, introductoryQuote, iconSource,
+    arrayOfStrenghts) {
     // Confirm valid parameters
     if (defaultCorrectRate <= 0 || defaultCorrectRate > 1) {
         alertAndThrowException(
@@ -28,21 +31,19 @@ function Helper(name, defaultCorrectRate, introductoryQuote, iconSource) {
     this.defaultCorrectRate = defaultCorrectRate;
     this.introductoryQuote = introductoryQuote;
 
-    // Array that contains the subjects that this helper will always
-    // correctly answer questions of
-    this._strengths = [];
+    // Array that contains the subjects that this helper has an
+    // advantage with
+    this._strengths = arrayOfStrenghts;
+
+    // Is this helper currently the active one?
+    this.isChosen = false;
 
     this.iconSource = iconSource;
 }
 
 /*
-    @post instance of Helper has had the given subject added to
-    this._strengths
-    @hasTest yes
-    @param subject member of SUBJECTS to add to this._strenghts
-    @returns the "this" instance (to allow chaining)
+    @returns the array of this helper's strengths
 */
-Helper.prototype.addStrength = function(subject) {
-    this._strengths.push(subject);
-    return this;
+Helper.prototype.getStrengths = function() {
+    return this._strengths;
 }

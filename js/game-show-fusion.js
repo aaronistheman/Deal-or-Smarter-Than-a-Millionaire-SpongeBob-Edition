@@ -38,8 +38,8 @@ gameShow.questions = new Questions(
 gameShow.numberOfQuestionsCorrectlyAnswered = 0;
 gameShow.millionDollarQuestion = false;
 
-// array of instances of Helper
-gameShow.helpers = [];
+gameShow.helpers = []; // array of instances of Helper
+gameShow.NUMBER_OF_HELPERS = 5;
 
 gameShow.chooseHelperMenuState = new ChooseHelperMenuState(
     CANVAS_IDS.CHOOSE_HELPER_GRAPHICS, CANVAS_IDS.CHOOSE_HELPER_TEXT);
@@ -1054,18 +1054,24 @@ function selectQuestion() {
 
 /*
     @post gameShow.helpers has been filled with an instance of Helper
-    per helper in the game
+    per helper in the game, and each helper has been given its strenghts
+    @hasTest yes (although it isn't comprehensive)
 */
 function setUpHelpers() {
     gameShow.helpers.push(new Helper(SPEAKERS.SQUIDWARD, 0.90,
-        "Fortunately, I have enough talent for all of you.", ""));
+        "Fortunately, I have enough talent for all of you.", "",
+        [SUBJECTS.ART, SUBJECTS.MUSIC]));
     gameShow.helpers.push(
-        new Helper(SPEAKERS.MERMAID_MAN, 0.80, "EVIL!", ""));
+        new Helper(SPEAKERS.MERMAID_MAN, 0.80, "EVIL!", "",
+        [SUBJECTS.CRIME, SUBJECTS.GEOGRAPHY]));
     gameShow.helpers.push(
-        new Helper(SPEAKERS.SANDY, 0.95, "Howdy ya'll.", ""));
+        new Helper(SPEAKERS.SANDY, 0.95, "Howdy ya'll.", "",
+        [SUBJECTS.TECHNOLOGY, SUBJECTS.FITNESS]));
     gameShow.helpers.push(new Helper(SPEAKERS.LARRY, 0.85,
-        "Hey, this party's finally starting to pick up.", ""));
-    gameShow.helpers.push(new Helper(SPEAKERS.GARY, 0.90, "Meow.", ""));
+        "Hey, this party's finally starting to pick up.", "",
+        [SUBJECTS.FITNESS]));
+    gameShow.helpers.push(new Helper(SPEAKERS.GARY, 0.90, "Meow.", "",
+        [SUBJECTS.RUMORS]));
 }
 
 function setUpGame() {

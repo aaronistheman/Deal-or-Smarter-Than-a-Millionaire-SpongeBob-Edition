@@ -1,7 +1,6 @@
 Next:
 -allow picking of a helper
     --create and display helper icons
-        --fill up each helper's array of strengths
         --may need to have a public function addButton() or
             addHelper(); or could use another container for each helper
             (this'll make it easier to remove each helper; could
@@ -63,6 +62,7 @@ Before release 0.1:
 After release 0.1:
 -applause sound effect
 -look into that one error that always pops up in the console
+(for both index.html and unit-tests.html)
 -consider making my own graphics for some things (e.g. briefcases)
     --could use GIMP, Microsoft Word, etc.
     --in this case, consider resource identifiers for the images
