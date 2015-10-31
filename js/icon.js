@@ -70,25 +70,4 @@ GUI.Icon.prototype.draw = function(graphicalCanvas, textualCanvas) {
         context.drawImage(this.image, this._positionX,
             this._positionY);
     }
-
-    /*
-    var that = this;
-    alert("Loaded: " + (this.image.naturalWidth.complete));
-    this.image.onload = function() {
-        alert("Loaded: " + (this.complete));
-
-        if (that.width !== undefined &&
-            that.height !== undefined) {
-            // If the icon's width and height were both specified,
-            // use those dimensions
-            context.drawImage(this, that._positionX, that._positionY,
-                that.width, that.height);
-        }
-        else {
-            // Icon's width and height weren't both specified, so
-            // use image's dimensions
-            context.drawImage(this, that._positionX, that._positionY);
-        }
-    };
-    */
 }

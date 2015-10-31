@@ -1,17 +1,16 @@
 Next:
 -allow picking of a helper
     --create and display helper icons
-        --make the icons
         --may need to have a public function addButton() or
             addHelper(); or could use another container for each helper
             (this'll make it easier to remove each helper; could
             create GUI.HelperContainer that can be selected, its
             activation causing its button to be activated)
-        --use "ChooseHelperMenuState.activatedComponent", or erase it
-    --then, create the real menu, and figure out how to use Button's
-        callback appropriately here
-        --do sound effect when pick helper
+        --use "ChooseHelperMenuState.activatedComponent", or erase it;
+        use the buttons' callbacks
+        --if desired, make the icons' images' transparent
     --allow picking of helper at beginning
+        --that is, store the data regarding this
     --allow repicking of a helper when appropriate
         --un-choose the old helper, and choose the new one
         --make a helper unable to be rechosen (remove it from
