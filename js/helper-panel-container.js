@@ -8,17 +8,63 @@
 /*
     Inherits from GUI.Container
 
+    The format of this container's children is supposed to be
+    (Note that the helper referred to is the one given as parameter):
+    -GUI.Button instance to display the helper's name and to be the
+    activatable part
+    -GUI.Icon instance to display the helper's icon
+    -GUI.Label to indicate that the list of the helper's strengths
+    is being displayed
+    -as many instances of GUI.Label as is needed to display each
+    of the helper's strenghts
+
+    @post has created an instance that uses many subtypes of Component
+    to store the data regarding the given helper instance
     @hasTest yes
     @param helper instance of Helper whose data will be used for
     this container
 */
-GUI.HelperPanelContainer = function() {
+GUI.HelperPanelContainer = function(helper) {
     if (!(this instanceof GUI.HelperPanelContainer))
-        return new GUI.HelperPanelContainer();
+        return new GUI.HelperPanelContainer(helper);
     else {
         GUI.Container.call(this);
 
+        /*
+            Store the data from the helper instance in this container
+            in the form of other components. Note that it's crucial
+            to some of this custom type's methods that the name-displaying
+            button be the first child.
+        */
 
+        // Store a button instance for the name of the helper
+        var nameButton = new GUI.Button("Arial");
+        // nameButton.setPosition(
+        nameButton.text = helper.name;
+        // nameButton.setCallback(
+        this._children.push(nameButton);
+
+        // Store an icon for the helper's icon
+        var iconImage = new Image();
+        iconImage.src = helper.iconSource;
+        var icon = new GUI.Icon(iconImage);
+        // icon.setPosition(
+        icon.width = 150;
+        icon.height = 150;
+        this._children.push(icon);
+
+        // Store a label to indicate that the helper's strenghts
+        // are listed
+        var label = new GUI.Label("Strengths: ", "Arial");
+        // label.setPosition(
+        this._children.push(label);
+
+        // Store a label for each of the helper's strenghts
+        var strengths = helper.getStrengths();
+        for (var i in strengths) {
+            label = new GUI.Label(strengths[i], "Arial");
+            this._children.push(label);
+        }
     }
 };
 

@@ -390,15 +390,16 @@ QUnit.test("setUpHelpers()", function(assert) {
 QUnit.module("helper-panel-container.js");
 
 QUnit.test("GUI.HelperPanelContainer()", function(assert) {
-    testConstructorScopeSafety(assert, GUI.HelperPanelContainer,
-        "HelperPanelContainer");
-
-    // Test indirect inheritance from GUI.Component
-    testInheritanceFromComponent(assert, GUI.HelperPanelContainer,
-        "HelperPanelContainer");
+    // Test constructor scope safety
+    var helperPanelContainer = GUI.HelperPanelContainer(new Helper(
+        "Test", .80, "Hi!", "fakeIconSource", []));
+    assert.ok((helperPanelContainer instanceof GUI.HelperPanelContainer) &&
+        (typeof helperPanelContainer === "object"),
+        "Constructor of HelperPanelContainer is scope-safe");
 
     // Test inheritance from GUI.Container
-    var helperPanelContainer = new GUI.HelperPanelContainer();
+    helperPanelContainer = new GUI.HelperPanelContainer(new Helper(
+        "Test", .80, "Hi!", "fakeIconSource", []));
     assert.ok(GUI.Container.prototype.isPrototypeOf(helperPanelContainer),
         "HelperPanelContainer inherits the prototype of Container");
     assert.ok(helperPanelContainer instanceof GUI.Container,
@@ -407,6 +408,27 @@ QUnit.test("GUI.HelperPanelContainer()", function(assert) {
     // Test constructor stealing
     assert.ok(helperPanelContainer.hasOwnProperty("_children"),
         "HelperPanelContainer steals Container's constructor in its own");
+
+    /*
+        Test that the constructor stored the data about the given helper
+        the way it was supposed to
+    */
+    var helperName = "Fake Man";
+    var defaultCorrectRate = 0.75;
+    var arrayOfStrengths = [SUBJECTS.ART, SUBJECTS.MAIN_CHARACTERS];
+    helperPanelContainer = new GUI.HelperPanelContainer(new Helper(
+        helperName, defaultCorrectRate, "Hi!",
+        "fakeIconSource", arrayOfStrengths));
+    assert.deepEqual(helperPanelContainer._children[
+        GUI.HelperPanelContainer.buttonWithNameIndex].text, helperName,
+        "Helper's name was stored appropriately as first child");
+    assert.deepEqual(helperPanelContainer._children[
+        GUI.HelperPanelContainer.strengthsTitleLabelIndex + 1].text,
+        SUBJECTS.ART, "Helper's first strength was properly stored");
+    assert.deepEqual(helperPanelContainer._children[
+        GUI.HelperPanelContainer.strengthsTitleLabelIndex + 2].text,
+        SUBJECTS.MAIN_CHARACTERS,
+        "Helper's second strength was properly stored");
 });
 
 QUnit.test("GUI.HelperPanelContainer.prototype.select()", function(assert) {
@@ -415,7 +437,8 @@ QUnit.test("GUI.HelperPanelContainer.prototype.select()", function(assert) {
         a button
     */
     // Create an instance to test and modify it in an illegal way
-    var helperPanelContainer = new GUI.HelperPanelContainer();
+    var helperPanelContainer = new GUI.HelperPanelContainer(new Helper(
+        "Test", .80, "Hi!", "fakeIconSource", []));
     // Don't do this:
     helperPanelContainer._children[
         GUI.HelperPanelContainer.buttonWithNameIndex] =
@@ -439,7 +462,8 @@ QUnit.test("GUI.HelperPanelContainer.prototype.deselect()",
         a button
     */
     // Create an instance to test and modify it in an illegal way
-    var helperPanelContainer = new GUI.HelperPanelContainer();
+    var helperPanelContainer = new GUI.HelperPanelContainer(new Helper(
+        "Test", .80, "Hi!", "fakeIconSource", []));
     // Don't do this:
     helperPanelContainer._children[
         GUI.HelperPanelContainer.buttonWithNameIndex] =
@@ -463,7 +487,8 @@ QUnit.test("GUI.HelperPanelContainer.prototype.activate()",
         a button
     */
     // Create an instance to test and modify it in an illegal way
-    var helperPanelContainer = new GUI.HelperPanelContainer();
+    var helperPanelContainer = new GUI.HelperPanelContainer(new Helper(
+        "Test", .80, "Hi!", "fakeIconSource", []));
     // Don't do this:
     helperPanelContainer._children[
         GUI.HelperPanelContainer.buttonWithNameIndex] =
