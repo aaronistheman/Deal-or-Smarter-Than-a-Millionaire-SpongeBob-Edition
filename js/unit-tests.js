@@ -387,6 +387,28 @@ QUnit.test("setUpHelpers()", function(assert) {
             "At least one strength was given to the first helper");
 });
 
+QUnit.module("helper-panel-container.js");
+
+QUnit.test("GUI.HelperPanelContainer()", function(assert) {
+    testConstructorScopeSafety(assert, GUI.HelperPanelContainer,
+        "HelperPanelContainer");
+
+    // Test indirect inheritance from GUI.Component
+    testInheritanceFromComponent(assert, GUI.HelperPanelContainer,
+        "HelperPanelContainer");
+
+    // Test inheritance from GUI.Container
+    var helperPanelContainer = new GUI.HelperPanelContainer();
+    assert.ok(GUI.Container.prototype.isPrototypeOf(helperPanelContainer),
+        "HelperPanelContainer inherits the prototype of Container");
+    assert.ok(helperPanelContainer instanceof GUI.Container,
+        "Instance of HelperPanelContainer is instance of Container");
+
+    // Test constructor stealing
+    assert.ok(helperPanelContainer.hasOwnProperty("_children"),
+        "HelperPanelContainer steals Container's constructor in its own");
+});
+
 QUnit.module("icon.js");
 
 QUnit.test("Icon()", function(assert) {
