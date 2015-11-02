@@ -32,3 +32,114 @@ GUI.HelperPanelContainer.prototype =
             writable : true
     }
 });
+
+/*
+    @Override
+    This overriden method won't ever try to select an added component.
+*/
+GUI.HelperPanelContainer.prototype.pack = function(component) {
+    this._children.push(component);
+};
+
+/*
+    @Override
+*/
+GUI.HelperPanelContainer.prototype.isSelectable = function() {
+    return true;
+}
+
+/*
+    @Override
+
+    @post this container and its name-displaying button have both
+    been selected
+    @throws exception if the container's first child isn't an
+    instance of GUI.Button
+*/
+GUI.HelperPanelContainer.prototype.select = function() {
+    // Select this container
+    GUI.Container.select.call(this);
+
+    // Select the appropriate button, which must be the first child,
+    // or else an exception is thrown
+    if (!(this._children[0] instanceof GUI.Button))
+        alertAndThrowException("GUI.HelperPanelContainer.prototype.select() " +
+            "called for instance that has a non-Button first child");
+    else
+        this._children[0].select();
+};
+
+/*
+    @Override
+
+    @post this container and its name-displaying button have both
+    been deselected
+    @throws exception if the container's first child isn't an
+    instance of GUI.Button
+*/
+GUI.HelperPanelContainer.prototype.deselect = function() {
+    // Deselect this container
+    GUI.Container.deselect.call(this);
+
+    // Deselect the appropriate button, which must be the first child,
+    // or else an exception is thrown
+    if (!(this._children[0] instanceof GUI.Button))
+        alertAndThrowException("GUI.HelperPanelContainer.prototype." +
+            "deselect() " +
+            "called for instance that has a non-Button first child");
+    else
+        this._children[0].deselect();
+};
+
+/*
+    @Override
+
+    @post this container's name-displaying button has been activated
+    @throws exception if the container's first child isn't an
+    instance of GUI.Button
+*/
+GUI.HelperPanelContainer.prototype.activate = function() {
+    GUI.Component.prototype.activate.call(this);
+
+    // Activate the container's name-displaying button. It must
+    // be the first child, or else an exception is thrown
+    if (!(this._children[0] instanceof GUI.Button))
+        alertAndThrowException("GUI.HelperPanelContainer.prototype." +
+            "activate() " +
+            "called for instance that has a non-Button first child");
+    else
+        this._children[0].activate();
+};
+
+/*
+    @Override
+    This subtype isn't meant to be able to have a selection in it;
+    it's meant to be used to display the data regarding a helper.
+*/
+GUI.HelperPanelContainer.prototype.hasSelection = function() {
+    return false;
+};
+
+/*
+    @Override
+    Don't allow selection of another component in this container.
+*/
+GUI.HelperPanelContainer.prototype.selectChild = function() {
+    return;
+};
+
+/*
+    @Override
+    Don't allow selection of another component in this container.
+*/
+GUI.HelperPanelContainer.prototype.selectNext = function() {
+    return;
+};
+
+/*
+    @Override
+    Don't allow selection of another component in this container.
+*/
+GUI.HelperPanelContainer.prototype.selectPrevious = function() {
+    return;
+};

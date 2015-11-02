@@ -1,11 +1,12 @@
 Next:
 -allow picking of a helper
     --create and display helper icons
-        --may need to have a public function addButton() or
-            addHelper(); or could use another container for each helper
-            (this'll make it easier to remove each helper; could
-            create GUI.HelperContainer that can be selected, its
-            activation causing its button to be activated)
+        --make GUI.HelperPanelContainer
+            --make sure the appropriate methods (minus draw) are overridden
+            --make constants for the indices of certain, stored components
+            --make constructor do what it's supposed to
+                --make member for things like "_button", "_icon", etc.
+            --override the draw method
         --use "ChooseHelperMenuState.activatedComponent", or erase it;
         use the buttons' callbacks
         --if desired, make the icons' images' backgrounds' transparent

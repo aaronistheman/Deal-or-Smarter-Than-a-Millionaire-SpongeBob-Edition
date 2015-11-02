@@ -409,6 +409,71 @@ QUnit.test("GUI.HelperPanelContainer()", function(assert) {
         "HelperPanelContainer steals Container's constructor in its own");
 });
 
+QUnit.test("GUI.HelperPanelContainer.prototype.select()", function(assert) {
+    /*
+        Test if exception is thrown if container's first child isn't
+        a button
+    */
+    // Create an instance to test and modify it in an illegal way
+    var helperPanelContainer = new GUI.HelperPanelContainer();
+    // Don't do this:
+    helperPanelContainer._children[0] = new GUI.Label(undefined, undefined);
+    // Test
+    var exceptionWasThrown = false;
+    try {
+        helperPanelContainer.select();
+    }
+    catch (err) {
+        exceptionWasThrown = true;
+    }
+    assert.ok(exceptionWasThrown, "Exception is thrown if container's " +
+        "first child isn't instance of Button");
+});
+
+QUnit.test("GUI.HelperPanelContainer.prototype.deselect()",
+    function(assert) {
+    /*
+        Test if exception is thrown if container's first child isn't
+        a button
+    */
+    // Create an instance to test and modify it in an illegal way
+    var helperPanelContainer = new GUI.HelperPanelContainer();
+    // Don't do this:
+    helperPanelContainer._children[0] = new GUI.Label(undefined, undefined);
+    // Test
+    var exceptionWasThrown = false;
+    try {
+        helperPanelContainer.deselect();
+    }
+    catch (err) {
+        exceptionWasThrown = true;
+    }
+    assert.ok(exceptionWasThrown, "Exception is thrown if container's " +
+        "first child isn't instance of Button");
+});
+
+QUnit.test("GUI.HelperPanelContainer.prototype.activate()",
+    function(assert) {
+    /*
+        Test if exception is thrown if container's first child isn't
+        a button
+    */
+    // Create an instance to test and modify it in an illegal way
+    var helperPanelContainer = new GUI.HelperPanelContainer();
+    // Don't do this:
+    helperPanelContainer._children[0] = new GUI.Label(undefined, undefined);
+    // Test
+    var exceptionWasThrown = false;
+    try {
+        helperPanelContainer.activate();
+    }
+    catch (err) {
+        exceptionWasThrown = true;
+    }
+    assert.ok(exceptionWasThrown, "Exception is thrown if container's " +
+        "first child isn't instance of Button");
+});
+
 QUnit.module("icon.js");
 
 QUnit.test("Icon()", function(assert) {
