@@ -62,11 +62,12 @@ GUI.HelperPanelContainer.prototype.select = function() {
 
     // Select the appropriate button, which must be the first child,
     // or else an exception is thrown
-    if (!(this._children[0] instanceof GUI.Button))
+    if (!(this._children[GUI.HelperPanelContainer.buttonWithNameIndex]
+        instanceof GUI.Button))
         alertAndThrowException("GUI.HelperPanelContainer.prototype.select() " +
             "called for instance that has a non-Button first child");
     else
-        this._children[0].select();
+        this._children[GUI.HelperPanelContainer.buttonWithNameIndex].select();
 };
 
 /*
@@ -83,12 +84,14 @@ GUI.HelperPanelContainer.prototype.deselect = function() {
 
     // Deselect the appropriate button, which must be the first child,
     // or else an exception is thrown
-    if (!(this._children[0] instanceof GUI.Button))
+    if (!(this._children[GUI.HelperPanelContainer.buttonWithNameIndex]
+        instanceof GUI.Button))
         alertAndThrowException("GUI.HelperPanelContainer.prototype." +
             "deselect() " +
             "called for instance that has a non-Button first child");
     else
-        this._children[0].deselect();
+        this._children[
+            GUI.HelperPanelContainer.buttonWithNameIndex].deselect();
 };
 
 /*
@@ -103,12 +106,14 @@ GUI.HelperPanelContainer.prototype.activate = function() {
 
     // Activate the container's name-displaying button. It must
     // be the first child, or else an exception is thrown
-    if (!(this._children[0] instanceof GUI.Button))
+    if (!(this._children[GUI.HelperPanelContainer.buttonWithNameIndex]
+        instanceof GUI.Button))
         alertAndThrowException("GUI.HelperPanelContainer.prototype." +
             "activate() " +
             "called for instance that has a non-Button first child");
     else
-        this._children[0].activate();
+        this._children[
+            GUI.HelperPanelContainer.buttonWithNameIndex].activate();
 };
 
 /*
@@ -143,3 +148,11 @@ GUI.HelperPanelContainer.prototype.selectNext = function() {
 GUI.HelperPanelContainer.prototype.selectPrevious = function() {
     return;
 };
+
+// Index of the button that's supposed to display the helper's name
+GUI.HelperPanelContainer.buttonWithNameIndex = 0;
+
+GUI.HelperPanelContainer.iconIndex = 1;
+
+// Index of the label that indicates the list of strenghts
+GUI.HelperPanelContainer.strengthsTitleLabelIndex = 2;

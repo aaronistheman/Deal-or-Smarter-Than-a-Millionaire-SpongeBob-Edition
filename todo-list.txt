@@ -2,8 +2,6 @@ Next:
 -allow picking of a helper
     --create and display helper icons
         --make GUI.HelperPanelContainer
-            --make sure the appropriate methods (minus draw) are overridden
-            --make constants for the indices of certain, stored components
             --make constructor do what it's supposed to
                 --make member for things like "_button", "_icon", etc.
             --override the draw method

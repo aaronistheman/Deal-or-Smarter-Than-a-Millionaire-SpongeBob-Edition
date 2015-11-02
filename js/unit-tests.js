@@ -417,7 +417,9 @@ QUnit.test("GUI.HelperPanelContainer.prototype.select()", function(assert) {
     // Create an instance to test and modify it in an illegal way
     var helperPanelContainer = new GUI.HelperPanelContainer();
     // Don't do this:
-    helperPanelContainer._children[0] = new GUI.Label(undefined, undefined);
+    helperPanelContainer._children[
+        GUI.HelperPanelContainer.buttonWithNameIndex] =
+        new GUI.Label(undefined, undefined);
     // Test
     var exceptionWasThrown = false;
     try {
@@ -439,7 +441,9 @@ QUnit.test("GUI.HelperPanelContainer.prototype.deselect()",
     // Create an instance to test and modify it in an illegal way
     var helperPanelContainer = new GUI.HelperPanelContainer();
     // Don't do this:
-    helperPanelContainer._children[0] = new GUI.Label(undefined, undefined);
+    helperPanelContainer._children[
+        GUI.HelperPanelContainer.buttonWithNameIndex] =
+        new GUI.Label(undefined, undefined);
     // Test
     var exceptionWasThrown = false;
     try {
@@ -461,7 +465,9 @@ QUnit.test("GUI.HelperPanelContainer.prototype.activate()",
     // Create an instance to test and modify it in an illegal way
     var helperPanelContainer = new GUI.HelperPanelContainer();
     // Don't do this:
-    helperPanelContainer._children[0] = new GUI.Label(undefined, undefined);
+    helperPanelContainer._children[
+        GUI.HelperPanelContainer.buttonWithNameIndex] =
+        new GUI.Label(undefined, undefined);
     // Test
     var exceptionWasThrown = false;
     try {
