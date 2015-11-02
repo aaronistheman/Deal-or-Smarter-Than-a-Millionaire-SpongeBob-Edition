@@ -881,13 +881,13 @@ function haveUserPickHelper() {
 */
 function allowUserPickHelper(bool) {
     if (bool === true) {
-        gameShow.keyActions.set(KEY_CODES.UP_ARROW, function() {
+        gameShow.keyActions.set(KEY_CODES.LEFT_ARROW, function() {
             gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.MOVE_HELPER_SELECTOR);
             gameShow.chooseHelperMenuState.GUIContainer.selectPrevious(
                 gameShow.chooseHelperMenuState.graphicalCanvas,
                 gameShow.chooseHelperMenuState.textualCanvas);
         })
-        .set(KEY_CODES.DOWN_ARROW, function() {
+        .set(KEY_CODES.RIGHT_ARROW, function() {
             gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.MOVE_HELPER_SELECTOR);
             gameShow.chooseHelperMenuState.GUIContainer.selectNext(
                 gameShow.chooseHelperMenuState.graphicalCanvas,
@@ -895,8 +895,8 @@ function allowUserPickHelper(bool) {
         });
     }
     else {
-        gameShow.keyActions.erase(KEY_CODES.UP_ARROW)
-            .erase(KEY_CODES.DOWN_ARROW);
+        gameShow.keyActions.erase(KEY_CODES.LEFT_ARROW)
+            .erase(KEY_CODES.RIGHT_ARROW);
     }
 }
 

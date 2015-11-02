@@ -1,7 +1,6 @@
 Next:
 -allow picking of a helper
     --create and display helper icons
-        --change the arrow keys used to change the selected panel
         --consider making the font of buttons and labels bigger
     --allow picking of helper at beginning
         --use "ChooseHelperMenuState.activatedComponent", or erase it;
