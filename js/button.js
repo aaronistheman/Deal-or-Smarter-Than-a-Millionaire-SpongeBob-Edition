@@ -194,8 +194,8 @@ GUI.Button.TEXT_COLORS = {
 }
 
 GUI.Button.DIMENSIONS = {
-    x : 130,
+    x : 150,
     y : 70,
 }
 
-GUI.Button.FONT_SIZE = 16;
+GUI.Button.FONT_SIZE = 25;

@@ -81,7 +81,7 @@ ChooseHelperMenuState.prototype = {
     _setUpMenu : function(arrayOfHelpers) {
         // For positioning the menu panels
         var positionX = 50;
-        var positionY = 50;
+        var positionY = 20;
         var deltaX = GUI.HelperPanelContainer.iconWidth +
             (CANVAS_WIDTH - 100 - (GUI.HelperPanelContainer.iconWidth *
             gameShow.NUMBER_OF_HELPERS)) / (gameShow.NUMBER_OF_HELPERS - 1);

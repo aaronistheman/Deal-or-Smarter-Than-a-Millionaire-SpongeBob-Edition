@@ -1,11 +1,9 @@
 Next:
 -allow picking of a helper
-    --create and display helper icons
-        --consider making the font of buttons and labels bigger
-    --allow picking of helper at beginning
+    --allow picking of helper at beginning;
+    that is, store the data regarding this
         --use "ChooseHelperMenuState.activatedComponent", or erase it;
         use the buttons' callbacks
-        --that is, store the data regarding this
     --allow repicking of a helper when appropriate
         --un-choose the old helper, and choose the new one
         --make a helper unable to be rechosen (remove it from

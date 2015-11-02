@@ -57,7 +57,7 @@ GUI.HelperPanelContainer = function(helper) {
 
         // Store a label to indicate that the helper's strenghts
         // are listed
-        var label = new GUI.Label("Strengths: ", "Arial");
+        var label = new GUI.Label("Strengths: ", "Calibri");
         positionY += GUI.HelperPanelContainer.distanceBetweenIconAndStrengths;
         label.setPosition(0, positionY);
         this._children.push(label);
@@ -65,7 +65,7 @@ GUI.HelperPanelContainer = function(helper) {
         // Store a label for each of the helper's strenghts
         var strengths = helper.getStrengths();
         for (var i in strengths) {
-            label = new GUI.Label(strengths[i], "Arial");
+            label = new GUI.Label(strengths[i], "Calibri");
             positionY += GUI.HelperPanelContainer.distanceBetweenChildren;
             label.setPosition(0, positionY);
             this._children.push(label);

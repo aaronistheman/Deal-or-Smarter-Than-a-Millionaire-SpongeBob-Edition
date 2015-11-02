@@ -34,7 +34,6 @@ GUI.Label = function(text, fontFace) {
         });
 
         this.fontFace = fontFace;
-        this.fontSize = 15;
     }
 };
 
@@ -68,10 +67,11 @@ GUI.Label.prototype.isSelectable = function() {
 GUI.Label.prototype.draw = function(graphicalCanvas, textualCanvas) {
     var context = textualCanvas.getContext('2d');
     context.fillStyle = GUI.Label.TEXT_COLOR;
-    context.font = this.fontSize + "px " + this.fontFace;
+    context.font = GUI.Label.FONT_SIZE + "px " + this.fontFace;
     context.textAlign = "left";
     context.textBaseline = "top";
     context.fillText(this.text, this._positionX, this._positionY);
 }
 
 GUI.Label.TEXT_COLOR = "white";
+GUI.Label.FONT_SIZE = 25;
