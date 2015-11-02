@@ -69,6 +69,13 @@ GUI.Component.prototype = {
         this._positionY = y;
     },
 
+    getPosition : function() {
+        return {
+            x : this._positionX,
+            y : this._positionY,
+        };
+    },
+
     /*
         Note that this is an abstract method.
 

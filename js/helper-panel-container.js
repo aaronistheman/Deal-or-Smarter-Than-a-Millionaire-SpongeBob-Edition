@@ -41,7 +41,7 @@ GUI.HelperPanelContainer = function(helper) {
         var nameButton = new GUI.Button("Arial");
         // nameButton.setPosition(
         nameButton.text = helper.name;
-        // nameButton.setCallback(
+        nameButton.setCallback(function() {});
         this._children.push(nameButton);
 
         // Store an icon for the helper's icon
@@ -104,7 +104,7 @@ GUI.HelperPanelContainer.prototype.isSelectable = function() {
 */
 GUI.HelperPanelContainer.prototype.select = function() {
     // Select this container
-    GUI.Container.select.call(this);
+    GUI.Container.prototype.select.call(this);
 
     // Select the appropriate button, which must be the first child,
     // or else an exception is thrown
@@ -126,7 +126,7 @@ GUI.HelperPanelContainer.prototype.select = function() {
 */
 GUI.HelperPanelContainer.prototype.deselect = function() {
     // Deselect this container
-    GUI.Container.deselect.call(this);
+    GUI.Container.prototype.deselect.call(this);
 
     // Deselect the appropriate button, which must be the first child,
     // or else an exception is thrown
@@ -193,6 +193,30 @@ GUI.HelperPanelContainer.prototype.selectNext = function() {
 */
 GUI.HelperPanelContainer.prototype.selectPrevious = function() {
     return;
+};
+
+/*
+    @Override
+
+    @post each stored component has been drawn on the indicated
+    canvases and temporarily positioned relative to this container
+*/
+GUI.HelperPanelContainer.prototype.draw =
+    function(graphicalCanvas, textualCanvas) {
+    for (var i in this._children) {
+        // Store the child's position to restore it
+        var formerPosition = this._children[i].getPosition();
+
+        // Set the child's position in relation to this container
+        this._children[i].setPosition(this._positionX + formerPosition.x,
+            this._positionY + formerPosition.y);
+
+        // Draw the child
+        this._children[i].draw(graphicalCanvas, textualCanvas);
+
+        // Restore the child's former position
+        this._children[i].setPosition(formerPosition.x, formerPosition.y);
+    }
 };
 
 // Index of the button that's supposed to display the helper's name

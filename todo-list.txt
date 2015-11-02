@@ -2,7 +2,7 @@ Next:
 -allow picking of a helper
     --create and display helper icons
         --make GUI.HelperPanelContainer
-            --override the draw method
+            --relatively position its components appropriately
         --use "ChooseHelperMenuState.activatedComponent", or erase it;
         use the buttons' callbacks
         --if desired, make the icons' images' backgrounds' transparent
@@ -16,7 +16,6 @@ Next:
 -edit unit tests' style
     --change the style used in the names of the unit tests
         --e.g. change "type.method()" to "type.prototype.method()"
-    --remove use of members that have underscore preceding their name
 -remove game web font, or make it optional secretly
 -apply some of what was learned in "Canvas Cookbook"; e.g.
     --give the quote bubble a border (using stroke)
@@ -70,23 +69,12 @@ After release 0.1:
     --use WebGL to present banker's offer with a rotating rectangle
     --if I decide not to use WebGL, alternative must be used
         (e.g. 2d drawing)
--having the order of the answers be randomized
-    --could have object prototype Answer with member isCorrect
-    --for Question constructor, the first answer given is made into
-        the correct one; each is made into Answer object (out of the
-        given AnswerData object)
--make way to disable questions about "modern" SpongeBob
-    --e.g. pressing the down arrow three times in the title screen
-        --announce how to do it in the YouTube video's ending
-    --make sure the minimum question spread is met
-    --for each question about "modern" SpongeBob, make a question
-        of the same subject and grade about old SpongeBob
 -make sure the game progresses smoothly in all parts (e.g. visually
     and auditorially)
 
 After final release (whatever that turns out to be):
 -YouTube video; put link in readme
-    --mention the way to disable questions about "modern" SpongeBob
+    --menion secret title screen cheat codes
 
 Considerable:
 -making the game work on Safari 5 for Windows
@@ -132,3 +120,14 @@ Considerable:
 -apply the GUI components to the other menus
     --e.g. could have subtypes such as QuestionLabelButton
 -function to define a truly private own property
+-make way to disable questions about "modern" SpongeBob
+    --e.g. pressing the down arrow three times in the title screen
+        --announce how to do it in the YouTube video's ending
+    --make sure the minimum question spread is met
+    --for each question about "modern" SpongeBob, make a question
+        of the same subject and grade about old SpongeBob
+-having the order of the answers be randomized
+    --could have object prototype Answer with member isCorrect
+    --for Question constructor, the first answer given is made into
+        the correct one; each is made into Answer object (out of the
+        given AnswerData object)

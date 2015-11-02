@@ -98,10 +98,19 @@ ChooseHelperMenuState.prototype = {
         icon1.width = 150;
         icon1.height = 150;
 
+        var helperName = "Fake Man";
+        var defaultCorrectRate = 0.75;
+        var arrayOfStrengths = [SUBJECTS.ART, SUBJECTS.MAIN_CHARACTERS];
+        var helperPanelContainer = new GUI.HelperPanelContainer(new Helper(
+            helperName, defaultCorrectRate, "Hi!",
+            "media/images/gary_icon.JPG", arrayOfStrengths));
+        helperPanelContainer.setPosition(900, 50);
+
         this.GUIContainer.pack(button1);
         this.GUIContainer.pack(button2);
         this.GUIContainer.pack(label1);
         this.GUIContainer.pack(icon1);
+        this.GUIContainer.pack(helperPanelContainer);
     },
 
     /*
