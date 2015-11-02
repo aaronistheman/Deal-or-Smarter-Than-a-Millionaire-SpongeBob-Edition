@@ -40,9 +40,11 @@ gameShow.millionDollarQuestion = false;
 
 gameShow.helpers = []; // array of instances of Helper
 gameShow.NUMBER_OF_HELPERS = 5;
+setUpHelpers();
 
 gameShow.chooseHelperMenuState = new ChooseHelperMenuState(
-    CANVAS_IDS.CHOOSE_HELPER_GRAPHICS, CANVAS_IDS.CHOOSE_HELPER_TEXT);
+    CANVAS_IDS.CHOOSE_HELPER_GRAPHICS, CANVAS_IDS.CHOOSE_HELPER_TEXT,
+    gameShow.helpers);
 
 gameShow.turnVariables = {
     selectedQuestion : undefined,
@@ -1059,25 +1061,26 @@ function selectQuestion() {
 */
 function setUpHelpers() {
     gameShow.helpers.push(new Helper(SPEAKERS.SQUIDWARD, 0.90,
-        "Fortunately, I have enough talent for all of you.", "",
-        [SUBJECTS.ART, SUBJECTS.MUSIC]));
+        "Fortunately, I have enough talent for all of you.",
+        "media/images/squidward_icon.JPG", [SUBJECTS.ART, SUBJECTS.MUSIC]));
     gameShow.helpers.push(
-        new Helper(SPEAKERS.MERMAID_MAN, 0.80, "EVIL!", "",
+        new Helper(SPEAKERS.MERMAID_MAN, 0.80, "EVIL!",
+        "media/images/mermaid_man_icon.JPG",
         [SUBJECTS.CRIME, SUBJECTS.GEOGRAPHY]));
     gameShow.helpers.push(
-        new Helper(SPEAKERS.SANDY, 0.95, "Howdy ya'll.", "",
+        new Helper(SPEAKERS.SANDY, 0.95, "Howdy ya'll.",
+        "media/images/sandy_icon.JPG",
         [SUBJECTS.TECHNOLOGY, SUBJECTS.FITNESS]));
     gameShow.helpers.push(new Helper(SPEAKERS.LARRY, 0.85,
-        "Hey, this party's finally starting to pick up.", "",
-        [SUBJECTS.FITNESS]));
-    gameShow.helpers.push(new Helper(SPEAKERS.GARY, 0.90, "Meow.", "",
-        [SUBJECTS.RUMORS]));
+        "Hey, this party's finally starting to pick up.",
+        "media/images/larry_icon.JPG", [SUBJECTS.FITNESS]));
+    gameShow.helpers.push(new Helper(SPEAKERS.GARY, 0.90, "Meow.",
+        "media/images/gary_icon.JPG", [SUBJECTS.RUMORS]));
 }
 
 function setUpGame() {
     setUpQuoteBubble();
     setUpMillionDollarQuestionLabel();
-    setUpHelpers();
     gameShow.banker.draw(CANVAS_IDS.BANKER);
     gameShow.moneyDisplay.setUp();
     gameShow.briefcaseDisplay.draw();

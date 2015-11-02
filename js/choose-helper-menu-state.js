@@ -17,8 +17,11 @@
     (i.e. non-textual) parts of the menu will be drawn
     @param textualCanvasId id of the canvas on which the textual
     (i.e. non-graphical) parts of the menu will be drawn
+    @param arrayOfHelpers array of instances of Helper to use to
+    set up the menu
 */
-function ChooseHelperMenuState(graphicalCanvasId, textualCanvasId) {
+function ChooseHelperMenuState(graphicalCanvasId, textualCanvasId,
+    arrayOfHelpers) {
     this.GUIContainer = new GUI.Container();
 
     // To store which component has been activated; should be
@@ -51,7 +54,7 @@ function ChooseHelperMenuState(graphicalCanvasId, textualCanvasId) {
         configurable : true
     });
 
-    this._setUpMenu();
+    this._setUpMenu(arrayOfHelpers);
 
     /*
         Call this function after the canvases indicated by the given
@@ -72,45 +75,29 @@ ChooseHelperMenuState.prototype = {
         @pre this instance hasn't been set up with the proper
         menu components
         @post this instance has been set up
+        @param arrayOfHelpers array of instances of Helper to use to
+        set up the menu
     */
-    _setUpMenu : function() {
-        var button1 = new GUI.Button("Arial");
-        button1.setPosition(200, 200);
-        button1.text = "Button 1";
-        button1.setCallback(function() {
-            alert("Button 1 was pressed");
-        });
+    _setUpMenu : function(arrayOfHelpers) {
+        // For positioning the menu panels
+        var positionX = 50;
+        var positionY = 50;
+        var deltaX = GUI.HelperPanelContainer.iconWidth +
+            (CANVAS_WIDTH - 100 - (GUI.HelperPanelContainer.iconWidth *
+            gameShow.NUMBER_OF_HELPERS)) / (gameShow.NUMBER_OF_HELPERS - 1);
 
-        var button2 = new GUI.Button("Arial");
-        button2.setPosition(200, 300);
-        button2.text = "Button 2";
-        button2.setCallback(function() {
-            alert("Button 2 was pressed");
-        });
+        // Create a HelperPanelContainer for each helper and store it
+        var helperPanelContainer = null;
+        for (var i in arrayOfHelpers) {
+            // Create the instance, position it, and store it
+            helperPanelContainer = new GUI.HelperPanelContainer(
+                arrayOfHelpers[i]);
+            helperPanelContainer.setPosition(positionX, positionY);
+            this.GUIContainer.pack(helperPanelContainer);
 
-        var label1 = new GUI.Label("Label 1", "Arial");
-        label1.setPosition(400, 200);
-
-        var image1 = new Image();
-        image1.src = "media/images/gary_icon.JPG";
-        var icon1 = new GUI.Icon(image1);
-        icon1.setPosition(500, 100);
-        icon1.width = 150;
-        icon1.height = 150;
-
-        var helperName = "Fake Man";
-        var defaultCorrectRate = 0.75;
-        var arrayOfStrengths = [SUBJECTS.ART, SUBJECTS.MAIN_CHARACTERS];
-        var helperPanelContainer = new GUI.HelperPanelContainer(new Helper(
-            helperName, defaultCorrectRate, "Hi!",
-            "media/images/gary_icon.JPG", arrayOfStrengths));
-        helperPanelContainer.setPosition(900, 50);
-
-        this.GUIContainer.pack(button1);
-        this.GUIContainer.pack(button2);
-        this.GUIContainer.pack(label1);
-        this.GUIContainer.pack(icon1);
-        this.GUIContainer.pack(helperPanelContainer);
+            // Update the positional coordinates
+            positionX += deltaX;
+        }
     },
 
     /*
