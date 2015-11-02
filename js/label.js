@@ -74,4 +74,4 @@ GUI.Label.prototype.draw = function(graphicalCanvas, textualCanvas) {
     context.fillText(this.text, this._positionX, this._positionY);
 }
 
-GUI.Label.TEXT_COLOR = "black";
+GUI.Label.TEXT_COLOR = "white";

@@ -505,6 +505,31 @@ QUnit.test("GUI.HelperPanelContainer.prototype.activate()",
         "first child isn't instance of Button");
 });
 
+QUnit.test("GUI.HelperPanelContainer.prototype.setPosition()",
+    function(assert) {
+    // Set up
+    var helperName = "Fake Man";
+    var defaultCorrectRate = 0.75;
+    var arrayOfStrengths = [SUBJECTS.ART, SUBJECTS.MAIN_CHARACTERS];
+    var helperPanelContainer = new GUI.HelperPanelContainer(new Helper(
+        helperName, defaultCorrectRate, "Hi!",
+        "fakeIconSource", arrayOfStrengths));
+
+    // Change the container's position
+    var deltaX = 80;
+    var deltaY = 250;
+    helperPanelContainer.setPosition(deltaX, deltaY);
+
+    // Test the position of its first label
+    assert.deepEqual(helperPanelContainer._children[
+        GUI.HelperPanelContainer.strengthsTitleLabelIndex].getPosition(),
+        { x : deltaX,
+            y : (deltaY +
+                GUI.HelperPanelContainer.distanceBetweenButtonAndIcon +
+                GUI.HelperPanelContainer.distanceBetweenIconAndStrengths)},
+        "Children's positions were correctly adjused");
+});
+
 QUnit.module("icon.js");
 
 QUnit.test("Icon()", function(assert) {

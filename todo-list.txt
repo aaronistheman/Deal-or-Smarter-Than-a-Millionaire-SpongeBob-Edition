@@ -1,12 +1,13 @@
 Next:
 -allow picking of a helper
     --create and display helper icons
-        --make GUI.HelperPanelContainer
-            --relatively position its components appropriately
+        --make the true helper display panels
+        --if desired, make the icons' images' backgrounds' transparent
+        --make the buttons look more different than the labels do
+        --consider making the font of buttons and labels bigger
+    --allow picking of helper at beginning
         --use "ChooseHelperMenuState.activatedComponent", or erase it;
         use the buttons' callbacks
-        --if desired, make the icons' images' backgrounds' transparent
-    --allow picking of helper at beginning
         --that is, store the data regarding this
     --allow repicking of a helper when appropriate
         --un-choose the old helper, and choose the new one
@@ -58,7 +59,7 @@ Before release 0.1:
 After release 0.1:
 -applause sound effect
 -look into that one error that always pops up in the console
-(for both index.html and unit-tests.html)
+(for index.html)
 -consider making my own graphics for some things (e.g. briefcases)
     --could use GIMP, Microsoft Word, etc.
     --in this case, consider resource identifiers for the images
