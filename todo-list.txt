@@ -1,6 +1,6 @@
 Next:
 -allow picking of a helper
-    --allow repicking of a helper when appropriate
+    --make the appropriate music play when repicking a helper
     --remove selected helper both from ChooseHelperMenuState and
     from gameShow.helpers
     --fix GUI.Button's not storing the font face

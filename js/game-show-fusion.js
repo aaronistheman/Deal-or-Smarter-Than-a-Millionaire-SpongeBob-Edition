@@ -823,8 +823,7 @@ function userRejectsDeal() {
 
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
     gameShow.quotesToDraw.add("Let's hope you made the correct decision.")
-        // .deployQuoteChain(haveUserPickHelper);
-        .deployQuoteChain(goToNextTurn);
+        .deployQuoteChain(haveUserPickHelper);
 }
 
 /*
