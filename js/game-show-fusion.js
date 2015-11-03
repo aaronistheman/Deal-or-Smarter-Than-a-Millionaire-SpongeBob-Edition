@@ -1034,9 +1034,12 @@ function presentMillionDollarQuestion() {
     adjustBackgroundMusicBasedOnQuestionsAnswered();
     prepareForNextTurn();
 
+    // Indicate that it's the million dollar question; don't allow
+    // help
     gameShow.millionDollarQuestion = true;
     gameShow.turnVariables.selectedQuestion =
         Questions.MILLION_DOLLAR_QUESTION;
+    gameShow.activeHelper = null;
 
     presentQuestionAndAnswers();
 }

@@ -1,7 +1,4 @@
 Next:
--allow picking of a helper
-    --un-choose the current helper before million dollar question;
-    set gameShow.activeHelper to null
 -edit unit tests' style
     --change the style used in the names of the unit tests
         --e.g. change "type.method()" to "type.prototype.method()"
