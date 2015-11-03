@@ -38,6 +38,15 @@ gameShow.questions = new Questions(
 gameShow.numberOfQuestionsCorrectlyAnswered = 0;
 gameShow.millionDollarQuestion = false;
 
+gameShow.helpers = []; // array of instances of Helper
+gameShow.activeHelper = null; // instance of the current helper
+gameShow.NUMBER_OF_HELPERS = 5;
+setUpHelpers();
+
+gameShow.chooseHelperMenuState = new ChooseHelperMenuState(
+    CANVAS_IDS.CHOOSE_HELPER_GRAPHICS, CANVAS_IDS.CHOOSE_HELPER_TEXT,
+    gameShow.helpers);
+
 gameShow.turnVariables = {
     selectedQuestion : undefined,
     selectedAnswer : undefined,
@@ -390,7 +399,7 @@ function handleCaseSelection() {
         gameShow.selectedBriefcaseNumber + ".")
         .deployQuoteChain(function() {
             gameShow.musicPlayer.play(MUSIC_IDS.QUESTION_1_TO_5);
-            selectQuestion();
+            haveUserPickHelper();
         });
 }
 
@@ -536,9 +545,6 @@ function prepareForNextTurn() {
     gameShow.turnVariables.selectedQuestion = undefined;
     gameShow.turnVariables.selectedAnswer = undefined;
     gameShow.turnVariables.bankerOffer = undefined;
-
-    // Prepare the background music
-    adjustBackgroundMusicBasedOnQuestionsAnswered();
 }
 
 /*
@@ -664,7 +670,10 @@ function handleCorrectAnswerSelection() {
                 if (gameShow.numberOfQuestionsCorrectlyAnswered % 2 === 0)
                     gameShow.quotesToDraw.deployQuoteChain(makeBankerOffer);
                 else
-                    gameShow.quotesToDraw.deployQuoteChain(goToNextTurn);
+                    gameShow.quotesToDraw.deployQuoteChain(function() {
+                        adjustBackgroundMusicBasedOnQuestionsAnswered();
+                        goToNextTurn()
+                    });
             }
             else
                 explainUserChooseMillionOrGoHome();
@@ -706,7 +715,7 @@ function makeBankerOffer() {
                         "Deal or No Deal? (Press the 'y' key to accept " +
                         "the offer of $" +
                         gameShow.turnVariables.bankerOffer.asString() +
-                        ". Press the 'n' key to reject it and continue.")
+                        ". Press the 'n' key to reject it and continue.)")
                         .deployQuoteChain();
             });
         });
@@ -814,7 +823,109 @@ function userRejectsDeal() {
 
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
     gameShow.quotesToDraw.add("Let's hope you made the correct decision.")
-        .deployQuoteChain(goToNextTurn);
+        .deployQuoteChain(function() {
+            // Prepare the background music
+            adjustBackgroundMusicBasedOnQuestionsAnswered();
+
+            haveUserPickHelper();
+        });
+}
+
+/*
+    @post the user has been told to pick a new helper and been
+    given the ability to do so; after he/she does so, the game
+    continues
+*/
+function haveUserPickHelper() {
+    // Don't end up calling goToNextTurn if the user hasn't answered
+    // a question yet
+    var endCallback =
+        (gameShow.numberOfQuestionsCorrectlyAnswered === 0) ?
+        selectQuestion : goToNextTurn;
+
+    /*
+        The user can only pick a helper after having answered an
+        even number of questions (besides the tenth one, and including
+        before the first one). Thus, go to the next question selection
+        if user shouldn't be choosing a helper right now.
+    */
+    if (gameShow.numberOfQuestionsCorrectlyAnswered % 2 === 1)
+        endCallback();
+    else {
+        // Have the host explain the user's job
+        gameShow.chooseHelperMenuState.draw();
+        gameShow.canvasStack.set(CANVAS_IDS.QUOTE.concat(
+            CANVAS_IDS.CHOOSE_HELPER));
+        allowUserPickHelper(true);
+        gameShow.quotesToDraw.add("Use the arrow keys and the Enter " +
+            "key to select a helper for two questions.")
+            .deployQuoteChain(function() {
+                allowUserPickHelper(false);
+                gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.SELECT_HELPER);
+
+                if (gameShow.chooseHelperMenuState
+                    .GUIContainer.hasSelection()) {
+                    selectHelper();
+                }
+                else {
+                    // should never happen!
+                    alertAndThrowException("gameShow.chooseHelperMenuState" +
+                        ".GUIContainer has no selected component");
+                }
+
+                // Announce the user's choice
+                gameShow.quotesToDraw.add("You have selected: " +
+                    gameShow.activeHelper.name + ".")
+                .deployQuoteChain(function() {
+                    // Go to the selection of a question
+                    endCallback();
+                });
+            });
+    }
+}
+
+/*
+    @post the selected helper has been stored in
+    gameShow.activeHelper (and thus removed from gameShow.helpers),
+    and if practical, this helper has
+    been removed from gameShow.chooseHelperMenuState
+*/
+function selectHelper() {
+    var helperIndex =
+        gameShow.chooseHelperMenuState.GUIContainer.getSelectedChild();
+    gameShow.activeHelper = gameShow.helpers.splice(helperIndex, 1).pop();
+
+    // To avoid infinite loop, only remove the helper if he/she
+    // isn't the only remaining helper
+    if (gameShow.chooseHelperMenuState.GUIContainer.
+        getNumberOfChildren() > 1) {
+        gameShow.chooseHelperMenuState.removeSelectedHelper();
+    }
+}
+
+/*
+    @param bool true to allow user to change which helper's icon
+    is selected; false to disable this ability
+*/
+function allowUserPickHelper(bool) {
+    if (bool === true) {
+        gameShow.keyActions.set(KEY_CODES.LEFT_ARROW, function() {
+            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.MOVE_HELPER_SELECTOR);
+            gameShow.chooseHelperMenuState.GUIContainer.selectPrevious(
+                gameShow.chooseHelperMenuState.graphicalCanvas,
+                gameShow.chooseHelperMenuState.textualCanvas);
+        })
+        .set(KEY_CODES.RIGHT_ARROW, function() {
+            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.MOVE_HELPER_SELECTOR);
+            gameShow.chooseHelperMenuState.GUIContainer.selectNext(
+                gameShow.chooseHelperMenuState.graphicalCanvas,
+                gameShow.chooseHelperMenuState.textualCanvas);
+        });
+    }
+    else {
+        gameShow.keyActions.erase(KEY_CODES.LEFT_ARROW)
+            .erase(KEY_CODES.RIGHT_ARROW);
+    }
 }
 
 /*
@@ -920,11 +1031,15 @@ function userTakesCaseHome() {
 */
 function presentMillionDollarQuestion() {
     // Reset the turn-specific variables and canvases; set the music
+    adjustBackgroundMusicBasedOnQuestionsAnswered();
     prepareForNextTurn();
 
+    // Indicate that it's the million dollar question; don't allow
+    // help
     gameShow.millionDollarQuestion = true;
     gameShow.turnVariables.selectedQuestion =
         Questions.MILLION_DOLLAR_QUESTION;
+    gameShow.activeHelper = null;
 
     presentQuestionAndAnswers();
 }
@@ -971,6 +1086,30 @@ function selectQuestion() {
         });
 }
 
+/*
+    @post gameShow.helpers has been filled with an instance of Helper
+    per helper in the game, and each helper has been given its strenghts
+    @hasTest yes (although it isn't comprehensive)
+*/
+function setUpHelpers() {
+    gameShow.helpers.push(new Helper(SPEAKERS.SQUIDWARD, 0.90,
+        "Fortunately, I have enough talent for all of you.",
+        "media/images/squidward_icon.JPG", [SUBJECTS.ART, SUBJECTS.MUSIC]));
+    gameShow.helpers.push(
+        new Helper(SPEAKERS.MERMAID_MAN, 0.80, "EVIL!",
+        "media/images/mermaid_man_icon.JPG",
+        [SUBJECTS.CRIME, SUBJECTS.GEOGRAPHY]));
+    gameShow.helpers.push(
+        new Helper(SPEAKERS.SANDY, 0.95, "Howdy ya'll.",
+        "media/images/sandy_icon.JPG",
+        [SUBJECTS.TECHNOLOGY, SUBJECTS.FITNESS]));
+    gameShow.helpers.push(new Helper(SPEAKERS.LARRY, 0.85,
+        "Hey, this party's finally starting to pick up.",
+        "media/images/larry_icon.JPG", [SUBJECTS.FITNESS]));
+    gameShow.helpers.push(new Helper(SPEAKERS.GARY, 0.90, "Meow.",
+        "media/images/gary_icon.JPG", [SUBJECTS.RUMORS]));
+}
+
 function setUpGame() {
     setUpQuoteBubble();
     setUpMillionDollarQuestionLabel();
@@ -978,6 +1117,7 @@ function setUpGame() {
     gameShow.moneyDisplay.setUp();
     gameShow.briefcaseDisplay.draw();
     gameShow.questions.drawInitialParts();
+    gameShow.chooseHelperMenuState.loadCanvases();
 
     // Show the appropriate canvases
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);

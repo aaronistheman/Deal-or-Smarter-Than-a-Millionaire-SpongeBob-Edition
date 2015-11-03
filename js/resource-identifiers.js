@@ -9,6 +9,8 @@ var SOUND_EFFECTS_IDS = {
     NEXT_QUOTE : "next-quote-sound",
     MOVE_CASE_SELECTOR : "move-case-selector-sound",
     SELECT_CASE : "select-case-sound",
+    MOVE_HELPER_SELECTOR : "move-helper-selector-sound",
+    SELECT_HELPER : "select-helper-sound",
     MOVE_QUESTION_SELECTOR : "move-question-selector-sound",
     SELECT_QUESTION : "select-question-sound",
     PRESENT_QUESTION : "present-question-sound",

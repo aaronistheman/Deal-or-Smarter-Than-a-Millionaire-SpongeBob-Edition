@@ -19,15 +19,15 @@ function Question(grade, subject, text, answerData) {
     if (isGrade(grade))
         this.grade = grade;
     else {
-        alert("Error: invalid grade given to Question constructor");
-        throw "Error: invalid grade given to Question constructor";
+        alertAndThrowException(
+            "Error: invalid grade given to Question constructor");
     }
 
     if (isSubject(subject))
         this.subject = subject;
     else {
-        alert("Error: invalid subject given to Question constructor");
-        throw "Error: invalid subject given to Question constructor";
+        alertAndThrowException(
+            "Error: invalid subject given to Question constructor");
     }
 
     this.text = text;
@@ -48,16 +48,15 @@ function AnswerData(correctIndex, arrayOfAnswers) {
     if (correctIndex >= 0 && correctIndex <= 3)
         this.correctIndex = correctIndex;
     else {
-        alert("Error: invalid correctIndex given to AnswerData constructor");
-        throw "Error: invalid correctIndex given to AnswerData constructor";
+        alertAndThrowException(
+            "Error: invalid correctIndex given to AnswerData constructor");
     }
 
     if (arrayOfAnswers.length === 4)
         this.arrayOfAnswers = arrayOfAnswers;
     else {
-        alert("Error: invalidly-sized arrayOfAnswers given " +
+        alertAndThrowException(
+            "Error: invalidly-sized arrayOfAnswers given " +
             "to AnswerData constructor");
-        throw "Error: invalidly-sized arrayOfAnswers given " +
-            "to AnswerData constructor";
     }
 }

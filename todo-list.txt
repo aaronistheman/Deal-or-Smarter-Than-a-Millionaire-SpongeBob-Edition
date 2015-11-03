@@ -1,5 +1,10 @@
 Next:
--allow picking of a helper
+-edit unit tests' style
+    --change the style used in the names of the unit tests
+        --e.g. change "type.method()" to "type.prototype.method()"
+-remove game web font, or make it optional secretly
+-apply some of what was learned in "Canvas Cookbook"; e.g.
+    --give the quote bubble a border (using stroke)
 -make separate canvas for help options
 -implement peeking
 -implement ask the audience
@@ -21,16 +26,28 @@ Next:
         --take case home
         --lose on million dollar question
         --win a million
-
-At some point:
--applause sound effect
--make sure the game progresses smoothly in all parts (e.g. visually
-    and auditorially)
 -fix SpongeBob's directions about arrow keys and choosing question
     --make sure the introductory directions are all correct
--look into that one error that always pops up in the console
 -make SpongeBob do dramatic pauses before announcing every answer
     and question value
+-more decorated title screen
+    --will probably have to implement image preloading
+	--disclaim that SpongeBob or any of the involved game shows are
+        at all my possession
+
+Before release 0.1:
+-make sure trivial functions that are no longer needed and that were
+ made for the purpose of testing have been erased in game-show-fusion.js
+-make sure readme's number of questions is correct
+-put release number on each file
+
+After release 0.1:
+-applause sound effect
+-look into that one error that always pops up in the console
+(for index.html)
+-consider making my own graphics for some things (e.g. briefcases)
+    --could use GIMP, Microsoft Word, etc.
+    --in this case, consider resource identifiers for the images
 -with WebGL:
     --show opening of briefcase with WebGL
     --show visual briefcase when determining if user took good deal
@@ -38,27 +55,12 @@ At some point:
     --use WebGL to present banker's offer with a rotating rectangle
     --if I decide not to use WebGL, alternative must be used
         (e.g. 2d drawing)
--more decorated title screen
-	--disclaim that SpongeBob or any of the involved game shows are
-        at all my possession
--consider making my own graphics for some things (e.g. briefcases)
-    --could use GIMP, Microsoft Word, etc.
-    --in this case, consider resource identifiers for the images
--having the order of the answers be randomized
-    --could have object prototype Answer with member isCorrect
-    --for Question constructor, the first answer given is made into
-        the correct one; each is made into Answer object (out of the
-        given AnswerData object)
+-make sure the game progresses smoothly in all parts (e.g. visually
+    and auditorially)
 
-Before release 0.1:
--make sure trivial functions that are no longer needed and that were
- made for the purpose of testing have been erased in game-show-fusion.js
--update readme's number of questions
--put release number on each file
-
-After release 0.1:
--Facebook/Twitter integration?
+After final release (whatever that turns out to be):
 -YouTube video; put link in readme
+    --menion secret title screen cheat codes
 
 Considerable:
 -making the game work on Safari 5 for Windows
@@ -73,7 +75,7 @@ Considerable:
 -attaching the playing of sound effects to the class methods (e.g.
     BriefcaseDisplay::EmphasizePreviousCase())
     --this was already done with drawQuoteText()
--(if can still make a difference) applying isUnitTesting() when
+-(if makes enough of a difference) applying isUnitTesting() when
     drawing question labels, so that they won't be drawn if
     unit testing; could apply to drawLabel functions
     --this will make the tests faster (if it matters)
@@ -84,19 +86,34 @@ Considerable:
 -for functions that emphasize things, don't erase and redraw if same thing
     is emphasized
 -more questions
--consider a way to disable questions about "modern" SpongeBob
-    --e.g. pressing the down arrow three times in the title screen
-        --announce how to do it in the YouTube video's ending
-    --make sure the minimum question spread is met
 -see if can align money amounts to the right of their bars
 -adjust banker multiplier based on certain factors
     --e.g. grades of the answered questions
     --multiplier could be adjusted randomly within a range
 -certain sound effects based on how much a question was worth
     --could be good or bad
+    --would have to define "good" and "bad"
 -something unique in situations that would cause a really low bank offer
     --e.g. currently, having only 0.01 and 50 left leads to offer of $0
 -putting something (e.g. game logo) in a blank banker offer bar
 -improving the timing of the good offer sound (that is, show the money
     display during the "dink" part of the sound)
     --would require setTimeout() for the drawing of the offer
+-sprite sheets
+-hidden Saw music/visuals mode
+-image preloading
+    --sound preloading, too? (is this necessary or even a thing?)
+-apply the GUI components to the other menus
+    --e.g. could have subtypes such as QuestionLabelButton
+-function to define a truly private own property
+-make way to disable questions about "modern" SpongeBob
+    --e.g. pressing the down arrow three times in the title screen
+        --announce how to do it in the YouTube video's ending
+    --make sure the minimum question spread is met
+    --for each question about "modern" SpongeBob, make a question
+        of the same subject and grade about old SpongeBob
+-having the order of the answers be randomized
+    --could have object prototype Answer with member isCorrect
+    --for Question constructor, the first answer given is made into
+        the correct one; each is made into Answer object (out of the
+        given AnswerData object)

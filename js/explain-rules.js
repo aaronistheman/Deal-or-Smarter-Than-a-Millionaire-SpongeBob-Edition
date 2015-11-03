@@ -133,41 +133,36 @@ function explainHelp() {
     gameShow.quotesToDraw.add("However, you're not alone.")
         .add("You have helpers.")
         .add("Let's see them.")
-        .deployQuoteChain(showSquidward);
+        .deployQuoteChain(function() {
+            gameShow.musicPlayer.play(MUSIC_IDS.INTRODUCE_HELPERS);
+            introduceEachHelper();
+        });
 }
 
-function showSquidward() {
-    gameShow.musicPlayer.play(MUSIC_IDS.INTRODUCE_HELPERS);
-    drawNewSpeaker(SPEAKERS.SQUIDWARD);
-    gameShow.quotesToDraw.add("Fortunately, I have enough talent " +
-        "for all of you.")
-        .deployQuoteChain(showMermaidMan);
-}
+/*
+    @post a helper represented in gameShow.helpers has been
+    introduced (that is, he/she was drawn and allowed to say his/her
+    introductory quote); the next part of the chain of the functions
+    that either introduces the next helper or explains the rules
+    has been set up
+*/
+function introduceEachHelper() {
+    // Introduce the helper
+    drawNewSpeaker(gameShow.helpers[introduceEachHelper.numberOfCalls].name);
+    gameShow.quotesToDraw.add(
+        gameShow.helpers[introduceEachHelper.numberOfCalls].
+            introductoryQuote);
 
-function showMermaidMan() {
-    drawNewSpeaker(SPEAKERS.MERMAID_MAN);
-    gameShow.quotesToDraw.add("EVIL!")
-        .deployQuoteChain(showSandy);
-}
+    // Update the number of helpers introduced
+    ++introduceEachHelper.numberOfCalls;
 
-function showSandy() {
-    drawNewSpeaker(SPEAKERS.SANDY);
-    gameShow.quotesToDraw.add("Howdy ya'll.")
-        .deployQuoteChain(showLarryTheLobster);
+    // Either introduce the next helper or explain the next set of rules
+    if (introduceEachHelper.numberOfCalls < gameShow.helpers.length)
+        gameShow.quotesToDraw.deployQuoteChain(introduceEachHelper);
+    else
+        gameShow.quotesToDraw.deployQuoteChain(explainSourcesOfHelp);
 }
-
-function showLarryTheLobster() {
-    drawNewSpeaker(SPEAKERS.LARRY);
-    gameShow.quotesToDraw.add("Hey, this party's finally " +
-        "starting to pick up.")
-        .deployQuoteChain(showGary);
-}
-
-function showGary() {
-    drawNewSpeaker(SPEAKERS.GARY);
-    gameShow.quotesToDraw.add("Meow.")
-        .deployQuoteChain(explainSourcesOfHelp);
-}
+introduceEachHelper.numberOfCalls = 0;
 
 function explainSourcesOfHelp() {
     drawNewSpeaker(SPEAKERS.SPONGEBOB);
