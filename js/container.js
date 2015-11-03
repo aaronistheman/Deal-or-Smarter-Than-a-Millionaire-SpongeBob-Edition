@@ -34,6 +34,10 @@ GUI.Container.prototype = Object.create(GUI.Component.prototype, {
     }
 });
 
+GUI.Container.prototype.getSelectedChild = function() {
+    return this._selectedChild;
+};
+
 /*
     @post the given component has been added to this container;
     if none of the elements in the container are selected and

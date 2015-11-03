@@ -35,9 +35,6 @@ function Helper(name, defaultCorrectRate, introductoryQuote, iconSource,
     // advantage with
     this._strengths = arrayOfStrenghts;
 
-    // Is this helper currently the active one?
-    this.isChosen = false;
-
     this.iconSource = iconSource;
 }
 

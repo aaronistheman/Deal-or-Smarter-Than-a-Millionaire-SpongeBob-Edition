@@ -1,9 +1,7 @@
 Next:
 -allow picking of a helper
-    --allow picking of helper at beginning;
-    that is, store the data regarding this
-        --use "ChooseHelperMenuState.activatedComponent", or erase it;
-        use the buttons' callbacks
+    --remove selected helper both from ChooseHelperMenuState and
+    from gameShow.helpers
     --allow repicking of a helper when appropriate
         --un-choose the old helper, and choose the new one
         --make a helper unable to be rechosen (remove it from

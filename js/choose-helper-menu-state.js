@@ -24,10 +24,6 @@ function ChooseHelperMenuState(graphicalCanvasId, textualCanvasId,
     arrayOfHelpers) {
     this.GUIContainer = new GUI.Container();
 
-    // To store which component has been activated; should be
-    // edited in activated component's callback
-    this.activatedComponent = undefined;
-
     // Declare truly private member "_graphicalCanvas"
     var _graphicalCanvas = undefined;
     Object.defineProperty(this, "graphicalCanvas", {

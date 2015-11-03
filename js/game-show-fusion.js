@@ -39,6 +39,7 @@ gameShow.numberOfQuestionsCorrectlyAnswered = 0;
 gameShow.millionDollarQuestion = false;
 
 gameShow.helpers = []; // array of instances of Helper
+gameShow.currentHelperIndex = -1;
 gameShow.NUMBER_OF_HELPERS = 5;
 setUpHelpers();
 
@@ -860,8 +861,7 @@ function haveUserPickHelper() {
 
                 if (gameShow.chooseHelperMenuState
                     .GUIContainer.hasSelection()) {
-                    gameShow.chooseHelperMenuState.GUIContainer
-                        .activateSelectedComponent();
+                    setCurrentHelperIndex();
                 }
                 else {
                     // should never happen!
@@ -869,10 +869,29 @@ function haveUserPickHelper() {
                         ".GUIContainer has no selected component");
                 }
 
-                // Go to the selection of a question
-                endCallback();
+                // Announce the user's choice
+                gameShow.quotesToDraw.add("You have selected: " +
+                    gameShow.helpers[gameShow.currentHelperIndex].name + ".")
+                .deployQuoteChain(function() {
+                    // Go to the selection of a question
+                    endCallback();
+                });
             });
     }
+}
+
+/*
+    @pre gameShow.chooseHelperMenuState has been set up and has
+    a selected component in its container, and that container
+    only stores a HelperPanelContainer instance for each (remaining)
+    helper
+    @post gameShow.currentHelperIndex has been set to the index of
+    the currently selected child of the container in
+    gameShow.chooseHelperMenuState
+*/
+function setCurrentHelperIndex() {
+    gameShow.currentHelperIndex =
+        gameShow.chooseHelperMenuState.GUIContainer.getSelectedChild();
 }
 
 /*
