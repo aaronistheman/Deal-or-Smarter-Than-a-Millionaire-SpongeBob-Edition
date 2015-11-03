@@ -37,6 +37,7 @@ GUI.Button = function(fontFace) {
             configurable : true
         });
 
+        this.fontFace = fontFace;
         this._textColor = GUI.Button.TEXT_COLORS.UNSELECTED;
     }
 };

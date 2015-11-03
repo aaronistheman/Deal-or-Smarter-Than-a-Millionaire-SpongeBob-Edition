@@ -1,7 +1,5 @@
 Next:
 -allow picking of a helper
-    --fix GUI.Button's not storing the font face
-        --test with perhaps, Comic Sans MS
     --un-choose the current helper before million dollar question;
     set gameShow.activeHelper to null
 -edit unit tests' style
