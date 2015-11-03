@@ -545,9 +545,6 @@ function prepareForNextTurn() {
     gameShow.turnVariables.selectedQuestion = undefined;
     gameShow.turnVariables.selectedAnswer = undefined;
     gameShow.turnVariables.bankerOffer = undefined;
-
-    // Prepare the background music
-    adjustBackgroundMusicBasedOnQuestionsAnswered();
 }
 
 /*
@@ -673,7 +670,10 @@ function handleCorrectAnswerSelection() {
                 if (gameShow.numberOfQuestionsCorrectlyAnswered % 2 === 0)
                     gameShow.quotesToDraw.deployQuoteChain(makeBankerOffer);
                 else
-                    gameShow.quotesToDraw.deployQuoteChain(goToNextTurn);
+                    gameShow.quotesToDraw.deployQuoteChain(function() {
+                        adjustBackgroundMusicBasedOnQuestionsAnswered();
+                        goToNextTurn()
+                    });
             }
             else
                 explainUserChooseMillionOrGoHome();
@@ -823,7 +823,12 @@ function userRejectsDeal() {
 
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
     gameShow.quotesToDraw.add("Let's hope you made the correct decision.")
-        .deployQuoteChain(haveUserPickHelper);
+        .deployQuoteChain(function() {
+            // Prepare the background music
+            adjustBackgroundMusicBasedOnQuestionsAnswered();
+
+            haveUserPickHelper();
+        });
 }
 
 /*
@@ -1025,6 +1030,7 @@ function userTakesCaseHome() {
 */
 function presentMillionDollarQuestion() {
     // Reset the turn-specific variables and canvases; set the music
+    adjustBackgroundMusicBasedOnQuestionsAnswered();
     prepareForNextTurn();
 
     gameShow.millionDollarQuestion = true;

@@ -1,8 +1,7 @@
 Next:
 -allow picking of a helper
-    --make the appropriate music play when repicking a helper
-    --remove selected helper both from ChooseHelperMenuState and
-    from gameShow.helpers
+    --remove selected helper from ChooseHelperMenuState
+        --first, consider making a unit test for this purpose
     --fix GUI.Button's not storing the font face
     --un-choose the current helper before million dollar question
 -edit unit tests' style
