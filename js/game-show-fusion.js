@@ -39,7 +39,7 @@ gameShow.numberOfQuestionsCorrectlyAnswered = 0;
 gameShow.millionDollarQuestion = false;
 
 gameShow.helpers = []; // array of instances of Helper
-gameShow.currentHelperIndex = -1;
+gameShow.activeHelper = null; // instance of the current helper
 gameShow.NUMBER_OF_HELPERS = 5;
 setUpHelpers();
 
@@ -861,7 +861,7 @@ function haveUserPickHelper() {
 
                 if (gameShow.chooseHelperMenuState
                     .GUIContainer.hasSelection()) {
-                    setCurrentHelperIndex();
+                    selectHelper();
                 }
                 else {
                     // should never happen!
@@ -871,7 +871,7 @@ function haveUserPickHelper() {
 
                 // Announce the user's choice
                 gameShow.quotesToDraw.add("You have selected: " +
-                    gameShow.helpers[gameShow.currentHelperIndex].name + ".")
+                    gameShow.activeHelper.name + ".")
                 .deployQuoteChain(function() {
                     // Go to the selection of a question
                     endCallback();
@@ -881,17 +881,21 @@ function haveUserPickHelper() {
 }
 
 /*
-    @pre gameShow.chooseHelperMenuState has been set up and has
-    a selected component in its container, and that container
-    only stores a HelperPanelContainer instance for each (remaining)
-    helper
-    @post gameShow.currentHelperIndex has been set to the index of
-    the currently selected child of the container in
-    gameShow.chooseHelperMenuState
+    @post the selected helper has been stored in
+    gameShow.activeHelper (and thus removed from gameShow.helpers),
+    and if practical, this helper has
+    been removed from both gameShow.chooseHelperMenuState
 */
-function setCurrentHelperIndex() {
-    gameShow.currentHelperIndex =
+function selectHelper() {
+    var helperIndex =
         gameShow.chooseHelperMenuState.GUIContainer.getSelectedChild();
+    gameShow.activeHelper = gameShow.helpers.splice(helperIndex, 1).pop();
+
+    // To avoid infinite loop, only remove the helper if he/she
+    // isn't the only remaining helper
+    // if (gameShow.helpers.length > 1) {
+        // gameShow.chooseHelperMenuState.removeSelectedHelper();
+    // }
 }
 
 /*

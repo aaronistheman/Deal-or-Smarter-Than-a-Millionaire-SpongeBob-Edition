@@ -1,11 +1,9 @@
 Next:
 -allow picking of a helper
+    --allow repicking of a helper when appropriate
     --remove selected helper both from ChooseHelperMenuState and
     from gameShow.helpers
-    --allow repicking of a helper when appropriate
-        --un-choose the old helper, and choose the new one
-        --make a helper unable to be rechosen (remove it from
-        the GUI container)
+    --fix GUI.Button's not storing the font face
     --un-choose the current helper before million dollar question
 -edit unit tests' style
     --change the style used in the names of the unit tests

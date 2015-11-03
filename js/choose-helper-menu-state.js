@@ -22,6 +22,7 @@
 */
 function ChooseHelperMenuState(graphicalCanvasId, textualCanvasId,
     arrayOfHelpers) {
+
     this.GUIContainer = new GUI.Container();
 
     // Declare truly private member "_graphicalCanvas"
