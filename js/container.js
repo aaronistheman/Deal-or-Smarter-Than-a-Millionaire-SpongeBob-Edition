@@ -38,6 +38,10 @@ GUI.Container.prototype.getSelectedChild = function() {
     return this._selectedChild;
 };
 
+GUI.Container.prototype.getNumberOfChildren = function() {
+    return this._children.length;
+};
+
 /*
     @post the given component has been added to this container;
     if none of the elements in the container are selected and
@@ -52,6 +56,52 @@ GUI.Container.prototype.pack = function(component) {
     if (!this.hasSelection() && component.isSelectable())
         this.selectChild(this._children.length - 1, undefined, undefined);
 };
+
+/*
+    @pre this container has at least two selectable children (otherwise,
+    an infinite loop will occur)
+    @post this container's currently selected child has been removed,
+    and the next selectable child has been selected
+    @hasTest yes
+*/
+GUI.Container.prototype.removeSelectedComponent = function() {
+    // Remove the currently selected child
+    this._children.splice(this._selectedChild, 1);
+
+    // Select the next selectable child;
+    // make sure this._selectedChild isn't out of bounds
+    if (this._selectedChild >= this._children.length)
+        this._selectedChild = 0;
+    // Select the child indicated by this._selectedChild, if possible,
+    // or find the next child that can be selected
+    if (this._children[this._selectedChild].isSelectable()) {
+        /*
+            Note that this use of this.selectChild may seem redundant
+            since the child indicated by this._selectedChild is already
+            selected, but we need to call this function so that the
+            selected component is redrawn in its state that indicates
+            its being selected
+        */
+        this.selectChild(this._selectedChild, this.graphicalCanvas,
+            this.textualCanvas);
+    }
+    else
+        this.selectNext(this.graphicalCanvas, this.textualCanvas);
+
+    /*
+    if ((this._selectedChild < this._children.length) &&
+        this._children[this._selectedChild].isSelectable())
+        this.selectChild(this._selectedChild, this.graphicalCanvas,
+            this.textualCanvas);
+    else if ((this._selectedChild >= this._children.length) &&
+        this._children[0].isSelectable()) {
+        // Wrap around to select the first component
+        this.selectChild(0, this.graphicalCanvas, this.textualCanvas);
+    }
+    else
+        this.selectNext();
+    */
+}
 
 /*
     @Override

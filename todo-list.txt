@@ -1,9 +1,9 @@
 Next:
 -allow picking of a helper
-    --remove selected helper from ChooseHelperMenuState
-        --first, consider making a unit test for this purpose
     --fix GUI.Button's not storing the font face
-    --un-choose the current helper before million dollar question
+        --test with perhaps, Comic Sans MS
+    --un-choose the current helper before million dollar question;
+    set gameShow.activeHelper to null
 -edit unit tests' style
     --change the style used in the names of the unit tests
         --e.g. change "type.method()" to "type.prototype.method()"

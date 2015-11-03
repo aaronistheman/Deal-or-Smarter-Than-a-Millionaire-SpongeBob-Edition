@@ -321,6 +321,40 @@ QUnit.test("Container.prototype.pack()", function(assert) {
         "Correctly, none of the wrong Components were selected");
 });
 
+QUnit.test("GUI.Container.prototype.removeSelectedComponent()",
+    function(assert) {
+    // Set up a container of four buttons
+    var container = new GUI.Container();
+    var button1 = new GUI.Button();
+    button1.text = "button1";
+    container.pack(button1);
+    var button2 = new GUI.Button();
+    button2.text = "button2";
+    container.pack(button2);
+    var button3 = new GUI.Button();
+    button3.text = "button3";
+    container.pack(button3);
+    var button4 = new GUI.Button();
+    button4.text = "button4";
+    container.pack(button4);
+
+    // Remove the first component
+    container.removeSelectedComponent();
+    assert.deepEqual(container._children.length,
+        3, "A component was removed");
+    assert.deepEqual(container._children[container._selectedChild].text,
+        "button2", "Appropriate component was selected");
+
+    // Select the last component and remove it
+    container.selectPrevious(undefined, undefined);
+    container.removeSelectedComponent();
+    assert.deepEqual(container._children.length, 2,
+        "Another component was removed");
+    // Recall that "button2" is now the name of the "first" button
+    assert.deepEqual(container._children[container._selectedChild].text,
+        "button2", "Appropriate component was selected");
+});
+
 QUnit.test("Container.prototype.selectChild()", function(assert) {
     var container = new GUI.Container();
     container.pack(new GUI.Label());

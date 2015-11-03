@@ -107,4 +107,34 @@ ChooseHelperMenuState.prototype = {
         this.GUIContainer.draw(
             this.graphicalCanvas, this.textualCanvas);
     },
+
+    /*
+        @post this instance's stored canvases have been completely
+        erased
+    */
+    erase : function() {
+        this.graphicalCanvas.getContext('2d')
+            .clearRect(0, 0, this.graphicalCanvas.width,
+                this.graphicalCanvas.height);
+        this.textualCanvas.getContext('2d')
+            .clearRect(0, 0, this.textualCanvas.width,
+                this.textualCanvas.height);
+    },
+
+    /*
+        @pre this.GUIContainer has at least two selectable components
+        (otherwise, an infinite loop will occur)
+        @post this instance's selected helperPanelContainer instance
+        has been removed, the one after it has been selected, and
+        the deleted one has been erased
+    */
+    removeSelectedHelper : function() {
+        this.erase();
+
+        // Remove the currently selected helperPanelContainer instance
+        this.GUIContainer.removeSelectedComponent();
+
+        // Redraw the remaining helperPanelContainer instances
+        this.draw();
+    },
 }

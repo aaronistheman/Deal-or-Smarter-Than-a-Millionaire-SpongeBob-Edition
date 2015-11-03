@@ -888,7 +888,7 @@ function haveUserPickHelper() {
     @post the selected helper has been stored in
     gameShow.activeHelper (and thus removed from gameShow.helpers),
     and if practical, this helper has
-    been removed from both gameShow.chooseHelperMenuState
+    been removed from gameShow.chooseHelperMenuState
 */
 function selectHelper() {
     var helperIndex =
@@ -897,9 +897,10 @@ function selectHelper() {
 
     // To avoid infinite loop, only remove the helper if he/she
     // isn't the only remaining helper
-    // if (gameShow.helpers.length > 1) {
-        // gameShow.chooseHelperMenuState.removeSelectedHelper();
-    // }
+    if (gameShow.chooseHelperMenuState.GUIContainer.
+        getNumberOfChildren() > 1) {
+        gameShow.chooseHelperMenuState.removeSelectedHelper();
+    }
 }
 
 /*
