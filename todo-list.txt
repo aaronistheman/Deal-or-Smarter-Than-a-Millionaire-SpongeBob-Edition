@@ -1,7 +1,4 @@
 Next:
--edit unit tests' style
-    --change the style used in the names of the unit tests
-        --e.g. change "type.method()" to "type.prototype.method()"
 -remove game web font, or make it optional secretly
 -apply some of what was learned in "Canvas Cookbook"; e.g.
     --give the quote bubble a border (using stroke)
