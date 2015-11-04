@@ -153,8 +153,12 @@ function drawQuoteBubble() {
     var canvas = document.getElementById(CANVAS_IDS.QUOTE_BUBBLE);
     var ctx = canvas.getContext('2d');
     var bubble = gameShow.quoteBubble;
+    ctx.rect(bubble.x, bubble.y, bubble.width, bubble.height);
     ctx.fillStyle = "rgba(240, 240, 240, 0.9)";
-    ctx.fillRect(bubble.x, bubble.y, bubble.width, bubble.height);
+    ctx.fill();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = "blue";
+    ctx.stroke();
 }
 
 // @post text in the quote bubble has been cleared
