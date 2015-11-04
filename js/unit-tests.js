@@ -54,7 +54,7 @@ function testConstructorScopeSafety(assert, customType, nameOfType) {
 
 QUnit.module("banker.js");
 
-QUnit.test("Banker.getOffer()", function(assert) {
+QUnit.test("Banker.prototypegetOffer()", function(assert) {
     var banker = new Banker();
 
     // Set up to test for a correct banker offer that's rounded
@@ -132,7 +132,7 @@ QUnit.test("Button.prototype.activate()", function(assert) {
 
 QUnit.module("briefcase-display.js");
 
-QUnit.test("BriefcaseDisplay::getCasePosition()", function(assert) {
+QUnit.test("BriefcaseDisplay.getCasePosition()", function(assert) {
     assert.deepEqual(BriefcaseDisplay.getCasePosition(1),
         BriefcaseDisplay.firstCasePosition,
         "Correct position for first case");
@@ -160,7 +160,7 @@ QUnit.test("BriefcaseDisplay::getCasePosition()", function(assert) {
 
 QUnit.module("canvas-stack.js");
 
-QUnit.test("CanvasStack.set()", function(assert) {
+QUnit.test("CanvasStack.prototype.set()", function(assert) {
     // Create artificial environment
     var canvasStack = new CanvasStack();
     canvasStack.add(CANVAS_IDS.MONEY_DISPLAY);
@@ -174,7 +174,7 @@ QUnit.test("CanvasStack.set()", function(assert) {
         "canvases indicated by the parameter; correct returned object");
 });
 
-QUnit.test("CanvasStack.add()", function(assert) {
+QUnit.test("CanvasStack.prototype.add()", function(assert) {
     // Set up
     var canvasStack = new CanvasStack();
     var idToUse = CANVAS_IDS.TITLE_SCREEN;
@@ -213,7 +213,7 @@ QUnit.test("CanvasStack.add()", function(assert) {
         "indicated by CanvasStack.EFFECTS.FADE_IN were added");
 });
 
-QUnit.test("CanvasStack.remove()", function(assert) {
+QUnit.test("CanvasStack.prototype.remove()", function(assert) {
     // Set up
     var canvasStack = new CanvasStack();
     var comparisonArray = [];
@@ -257,7 +257,7 @@ QUnit.test("CanvasStack.remove()", function(assert) {
         "from the two indicated canvases");
 });
 
-QUnit.test("CanvasStack.clear()", function(assert) {
+QUnit.test("CanvasStack.prototype.clear()", function(assert) {
     // Set up
     var canvasStack = new CanvasStack();
     canvasStack.add(CANVAS_IDS.BRIEFCASE_DISPLAY);
@@ -592,7 +592,7 @@ QUnit.test("Other aspects of Label", function(assert) {
 
 QUnit.module("money-amount.js");
 
-QUnit.test("MoneyAmount.asNumber()", function(assert) {
+QUnit.test("MoneyAmount.prototype.asNumber()", function(assert) {
     var moneyAmount = new MoneyAmount(35000);
     assert.deepEqual(moneyAmount.asNumber(), 35000,
         "Correctly formatted value returned");
@@ -601,7 +601,7 @@ QUnit.test("MoneyAmount.asNumber()", function(assert) {
         "Correctly formatted value returned");
 });
 
-QUnit.test("MoneyAmount.asString()", function(assert) {
+QUnit.test("MoneyAmount.prototype.asString()", function(assert) {
     var moneyAmount = new MoneyAmount(35000);
     assert.deepEqual(moneyAmount.asString(), "35,000",
         "Correctly formatted value returned");
@@ -610,12 +610,12 @@ QUnit.test("MoneyAmount.asString()", function(assert) {
         "Correctly formatted value returned");
 });
 
-QUnit.test("MoneyAmount::_removeCommaFromStringNumber()", function(assert) {
+QUnit.test("MoneyAmount._removeCommaFromStringNumber()", function(assert) {
     assert.deepEqual(MoneyAmount._removeCommaFromStringNumber("15,000.01"),
         "15000.01", "Given value was correctly modified and returned");
 });
 
-QUnit.test("MoneyAmount::_putCommasInStringNumber()", function(assert) {
+QUnit.test("MoneyAmount._putCommasInStringNumber()", function(assert) {
     assert.deepEqual(MoneyAmount._putCommasInStringNumber("0.01"), "0.01",
         "Appropriately, no commas were inserted");
     assert.deepEqual(MoneyAmount._putCommasInStringNumber("400"), "400",
@@ -636,7 +636,7 @@ QUnit.test("MoneyAmount::_putCommasInStringNumber()", function(assert) {
 
 QUnit.module("money-display.js");
 
-QUnit.test("MoneyDisplay.getBarIndex()", function(assert) {
+QUnit.test("MoneyDisplay.prototype.getBarIndex()", function(assert) {
     var moneyDisplay = new MoneyDisplay("trivialId", "trivialId",
         [new MoneyAmount(500), new MoneyAmount(0.01), new MoneyAmount(1000)]);
     assert.deepEqual(moneyDisplay.getBarIndex(new MoneyAmount(500)), 0,
@@ -651,7 +651,7 @@ QUnit.test("MoneyDisplay.getBarIndex()", function(assert) {
         "-1 returned if appropriate bar not found");
 });
 
-QUnit.test("MoneyDisplay::getBarPosition()", function(assert) {
+QUnit.test("MoneyDisplay.getBarPosition()", function(assert) {
     assert.deepEqual(MoneyDisplay.getBarPosition(1),
         MoneyDisplay.firstBarPosition,
         "Correct position for first bar");
@@ -679,7 +679,7 @@ QUnit.test("MoneyDisplay::getBarPosition()", function(assert) {
 
 QUnit.module("questions.js");
 
-QUnit.test("Questions._generateTenQuestions()", function(assert) {
+QUnit.test("Questions.prototype._generateTenQuestions()", function(assert) {
     // Note that this test's effectiveness is slightly up to chance.
 
     // the constructor calls the tested function, so testing
@@ -739,7 +739,8 @@ QUnit.test("Questions._generateTenQuestions()", function(assert) {
         "grade questions having the lowest index in the array of questions.");
 });
 
-QUnit.test("Questions._setMillionDollarQuestion()", function(assert) {
+QUnit.test("Questions.prototype._setMillionDollarQuestion()",
+    function(assert) {
     // the constructor calls the tested function, so testing
     // can already be done
     var questionsObject = new Questions();
@@ -762,7 +763,7 @@ function getArtificialQuestionsInstance(numberOfLabelToEmphasize) {
         numberOfLabelToEmphasize, canvasId, canvasId);
 }
 
-QUnit.test("Questions._getNumberOfLeftwardLabelToEmphasize()",
+QUnit.test("Questions.prototype._getNumberOfLeftwardLabelToEmphasize()",
     function(assert)
 {
     var questions = getArtificialQuestionsInstance(4);
@@ -780,7 +781,7 @@ QUnit.test("Questions._getNumberOfLeftwardLabelToEmphasize()",
         "is already emphasized");
 });
 
-QUnit.test("Questions._getNumberOfRightwardLabelToEmphasize()",
+QUnit.test("Questions.prototype._getNumberOfRightwardLabelToEmphasize()",
     function(assert)
 {
     var questions = getArtificialQuestionsInstance(3);
@@ -798,7 +799,7 @@ QUnit.test("Questions._getNumberOfRightwardLabelToEmphasize()",
         "is already emphasized");
 });
 
-QUnit.test("Questions._getNumberOfLowerLabelToEmphasize()",
+QUnit.test("Questions.prototype._getNumberOfLowerLabelToEmphasize()",
     function(assert)
 {
     var questions = getArtificialQuestionsInstance(6);
@@ -841,7 +842,7 @@ QUnit.test("Questions._getNumberOfLowerLabelToEmphasize()",
             "below the emphasized one are of answered questions");
 });
 
-QUnit.test("Questions._getNumberOfHigherLabelToEmphasize()",
+QUnit.test("Questions.prototype._getNumberOfHigherLabelToEmphasize()",
     function(assert)
 {
     var questions = getArtificialQuestionsInstance(6);
@@ -884,7 +885,7 @@ QUnit.test("Questions._getNumberOfHigherLabelToEmphasize()",
             "above the emphasized one are of answered questions");
 });
 
-QUnit.test("Questions::_getAnswerPosition()", function(assert) {
+QUnit.test("Questions._getAnswerPosition()", function(assert) {
     assert.deepEqual(Questions._getAnswerPosition(1),
         Questions.FIRST_ANSWER_POSITION,
         "Correct position for first answer");
@@ -895,7 +896,7 @@ QUnit.test("Questions::_getAnswerPosition()", function(assert) {
         "Correct position for fourth answer");
 });
 
-QUnit.test("Questions::_getLabelPosition()", function(assert) {
+QUnit.test("Questions._getLabelPosition()", function(assert) {
     assert.deepEqual(Questions._getLabelPosition(1),
         Questions.FIRST_LABEL_POSITION,
         "Correct position for first label");
@@ -916,7 +917,7 @@ QUnit.test("Questions::_getLabelPosition()", function(assert) {
         "Correct position for tenth label");
 });
 
-QUnit.test("Questions::getEntireSupplyOfQuestions()", function(assert) {
+QUnit.test("Questions.getEntireSupplyOfQuestions()", function(assert) {
     var questions = Questions.getEntireSupplyOfQuestions();
 
     // Decide how well the question fits; checking characters
@@ -961,7 +962,7 @@ QUnit.test("Questions::getEntireSupplyOfQuestions()", function(assert) {
 
 QUnit.module("vector2d.js");
 
-QUnit.test("Vector2d.getSum()", function(assert) {
+QUnit.test("Vector2d.prototype.getSum()", function(assert) {
     var v = new Vector2d(20, 30);
     assert.deepEqual(v.getSum(new Vector2d(40, 40)),
         new Vector2d(60, 70),
@@ -969,7 +970,7 @@ QUnit.test("Vector2d.getSum()", function(assert) {
         "sum as a Vector2d object");
 });
 
-QUnit.test("Vector2d.getProduct()", function(assert) {
+QUnit.test("Vector2d.prototype.getProduct()", function(assert) {
     var v = new Vector2d(70, 80);
     assert.deepEqual(v.getProduct(new Vector2d(3, 2)),
         new Vector2d(210, 160),
