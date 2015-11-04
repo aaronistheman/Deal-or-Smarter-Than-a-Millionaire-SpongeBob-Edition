@@ -2,7 +2,7 @@ Next:
 -remove game web font, or make it optional secretly
 -apply some of what was learned in "Canvas Cookbook"; e.g.
     --give the quote bubble a border (using stroke)
--make separate canvas for help options
+-make separate canvas for help options; see my phone's memo
 -implement peeking
 -implement ask the audience
 -implement phone a friend
@@ -15,7 +15,8 @@ Next:
     "The End"
     --EndGame class?
         --could pass the context (i.e. the type of ending) to get
-            the appropriate reaction
+            the appropriate reaction, thus making it more manageable, too
+            (look below for list of endings)
     --play closing theme in all endings
     --individually examine each of the five endings: (e.g. quotes, music)
         --lose one of first ten questions
@@ -60,48 +61,19 @@ After final release (whatever that turns out to be):
     --menion secret title screen cheat codes
 
 Considerable:
--making the game work on Safari 5 for Windows
--put truly private and priviledged members/functions in classes
--CSS classes for manipulating the color of the background of certain
-    canvases
--use more web fonts
--low volume coughing if a certain answer is highlighted (as a
-    reference to the fraud in Who Wants to be a Millionaire)
--allowing up/down keys to be used in choosing briefcase
-    --ensure that SpongeBob explains this
--attaching the playing of sound effects to the class methods (e.g.
-    BriefcaseDisplay::EmphasizePreviousCase())
-    --this was already done with drawQuoteText()
--(if makes enough of a difference) applying isUnitTesting() when
-    drawing question labels, so that they won't be drawn if
-    unit testing; could apply to drawLabel functions
-    --this will make the tests faster (if it matters)
 -unit test to check sufficient subject variety
--replace use of ParameterError() with an alert and the throwing
-    of an unhandled exception
-    --update affected functions' contracts
--for functions that emphasize things, don't erase and redraw if same thing
-    is emphasized
--more questions
--see if can align money amounts to the right of their bars
 -adjust banker multiplier based on certain factors
     --e.g. grades of the answered questions
     --multiplier could be adjusted randomly within a range
--certain sound effects based on how much a question was worth
-    --could be good or bad
-    --would have to define "good" and "bad"
 -something unique in situations that would cause a really low bank offer
     --e.g. currently, having only 0.01 and 50 left leads to offer of $0
 -putting something (e.g. game logo) in a blank banker offer bar
 -improving the timing of the good offer sound (that is, show the money
     display during the "dink" part of the sound)
     --would require setTimeout() for the drawing of the offer
--sprite sheets
 -hidden Saw music/visuals mode
 -image preloading
     --sound preloading, too? (is this necessary or even a thing?)
--apply the GUI components to the other menus
-    --e.g. could have subtypes such as QuestionLabelButton
 -function to define a truly private own property
 -make way to disable questions about "modern" SpongeBob
     --e.g. pressing the down arrow three times in the title screen
