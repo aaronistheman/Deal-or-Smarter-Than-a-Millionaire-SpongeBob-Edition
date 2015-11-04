@@ -848,7 +848,8 @@ Questions.prototype._drawQuestionText = function(questionNumber) {
         this._choosingAnswerCanvases.answersTextCanvasId)
         .getContext('2d');
     ctx.fillStyle = "white";
-    ctx.font = fontSize + "px 'Rock Salt'";
+    // ctx.font = fontSize + "px 'Rock Salt'";
+    ctx.font = fontSize + "px Arial";
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
 

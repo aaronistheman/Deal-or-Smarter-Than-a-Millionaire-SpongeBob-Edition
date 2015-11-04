@@ -1,5 +1,4 @@
 Next:
--remove game web font, or make it optional secretly
 -apply some of what was learned in "Canvas Cookbook"; e.g.
     --give the quote bubble a border (using stroke)
 -make separate canvas for help options; see my phone's memo

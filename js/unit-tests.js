@@ -923,7 +923,6 @@ QUnit.test("Questions.getEntireSupplyOfQuestions()", function(assert) {
     // Decide how well the question fits; checking characters
     // suffices; a question of at most 125 characters should
     // very well fit in its designated space, given the font used
-    // (i.e. Rock Salt)
     var allQuestionsFit = true;
     for (var i = 0; i < questions.length; ++i) {
         if (questions[i].text.length > 125) {
