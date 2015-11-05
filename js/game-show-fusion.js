@@ -643,19 +643,23 @@ function handleCorrectAnswerSelection() {
     // React visually
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
 
-    // Play special sound effect depending on how many questions
-    // user has answered
-    if (gameShow.numberOfQuestionsCorrectlyAnswered >= 5) {
-        if (gameShow.numberOfQuestionsCorrectlyAnswered === 10)
-            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.CORRECT_ANSWER_10);
-        else
-            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.CORRECT_ANSWER);
-    }
-
     // Update what the host says
-    gameShow.quotesToDraw.add("You have selected the correct answer.")
+    gameShow.quotesToDraw.add("That answer is: ")
+    .deployQuoteChain(function() {
+        // Play special sound effect depending on how many questions
+        // user has answered
+        if (gameShow.numberOfQuestionsCorrectlyAnswered >= 5) {
+            if (gameShow.numberOfQuestionsCorrectlyAnswered === 10)
+                gameShow.soundPlayer.play(
+                    SOUND_EFFECTS_IDS.CORRECT_ANSWER_10);
+            else
+                gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.CORRECT_ANSWER);
+        }
+
+        gameShow.quotesToDraw.add("Correct!")
         .deployQuoteChain(function() {
             if (gameShow.numberOfQuestionsCorrectlyAnswered < 10) {
+                // Determine the question's value and tell the user
                 gameShow.canvasStack.set(CANVAS_IDS.MONEY_DISPLAY.concat(
                     CANVAS_IDS.QUOTE));
                 var questionValue =
@@ -663,6 +667,7 @@ function handleCorrectAnswerSelection() {
                     gameShow.moneyDisplay);
                 gameShow.quotesToDraw.add("The question was worth: $" +
                     questionValue.asString() + '.');
+
                 if (gameShow.numberOfQuestionsCorrectlyAnswered === 9) {
                     gameShow.quotesToDraw.add("You now know what your " +
                         "case holds.")
@@ -682,6 +687,7 @@ function handleCorrectAnswerSelection() {
             else
                 explainUserChooseMillionOrGoHome();
         });
+    });
 }
 
 /*
@@ -1054,19 +1060,23 @@ function presentMillionDollarQuestion() {
     auditorily
 */
 function handleWrongAnswerSelection() {
-    // React visually and auditorily
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
-    gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.LOSS);
-    gameShow.musicPlayer.stop();
 
-    // Tell the user what happened
-    gameShow.quotesToDraw.add("You have selected the wrong answer.")
+    gameShow.quotesToDraw.add("That answer is: ")
+    .deployQuoteChain(function() {
+        // Adjust the music and sounds
+        gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.LOSS);
+        gameShow.musicPlayer.stop();
+
+        // Have user explain the loss
+        gameShow.quotesToDraw.add("Wrong!")
         .add("Unfortunately, this means you'll go home with nothing.")
         .add("Good bye.")
         .deployQuoteChain(function() {
             eraseQuoteBubbleText();
             gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.GOOD_BYE);
         });
+    });
 }
 
 /*
