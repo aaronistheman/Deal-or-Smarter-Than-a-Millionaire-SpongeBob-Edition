@@ -1,18 +1,38 @@
 Next:
 -make separate canvas for help options
-    --have map with constants with lifeline names as keys and booleans
-    for availability
-    --could make the activation of a button cause the button's selectable
-    field to be set to false; would need a LifelineButton option
-        --this would easily handle the fading out of a button
-    --figure out a way to determine which button has been activated
-        --could do it the same way it was done with the helpers (i.e.
-        having and editing a separate array (e.g. gameShow.helpers))
-    --can jump to them and back with H key; explain this
+    --function to define a truly private own property
+    --implement setUpContainer, so that it adds the following:
+        --Label instance that says "Lifelines"
+        --Button instance for Peek option
+        --Button instance for Ask the Audience option
+        --Button instance for Phone a Friend option
+        --don't forget about positioning
+            --use unit tests if they can help effectively
+        --their callbacks should edit mostRecentlyActivatedButton
+    --implement LifelineButton type
+        --its activation should make it be erased
+            --if there is at least one button left, call
+            this.container.removeSelectedComponent somewhere
+            --if the final button was selected, only erase that
+            button
+                --allow passing of a parameter findNextChild to
+                GUI.Container.removeSelectedComponent()
+    --draw the help options
+        --consider allowing resizing of instances of LifelineButton
+    --allow jumping to those options with H or L key
+        --make sure SpongeBob explains
+    --using the same way done with helpers, when a lifeline button
+    is activated, store which one was activated, but don't do anything
+    else in response to that activation yet
+-change SpongeBob's dialogue so that all of the options for help are
+called "lifelines", not "cheats"
 -implement peeking
 -implement ask the audience
 -implement phone a friend
 -implement saving
+-once peeking and saving are no longer possible, set current helper
+to null and don't allow picking of anymore helpers
+    --make SpongeBob explain this
 -make sure:
     --SpongeBob explains the controls for using a source of help
     --sources of help can only be used once
@@ -30,7 +50,6 @@ Next:
         --take case home
         --lose on million dollar question
         --win a million
--consider doing stroke for other drawn parts
 -more decorated title screen
     --will probably have to implement image preloading
 	--disclaim that SpongeBob or any of the involved game shows are
@@ -77,7 +96,6 @@ Considerable:
 -hidden Saw music/visuals mode
 -image preloading
     --sound preloading, too? (is this necessary or even a thing?)
--function to define a truly private own property
 -make way to disable questions about "modern" SpongeBob
     --e.g. pressing the down arrow three times in the title screen
         --announce how to do it in the YouTube video's ending
