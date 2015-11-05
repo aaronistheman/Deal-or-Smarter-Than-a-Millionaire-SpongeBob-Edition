@@ -30,8 +30,7 @@ Next:
         --take case home
         --lose on million dollar question
         --win a million
--make SpongeBob do dramatic pauses before announcing every answer
-    and question value
+-consider doing stroke for other drawn parts
 -more decorated title screen
     --will probably have to implement image preloading
 	--disclaim that SpongeBob or any of the involved game shows are
