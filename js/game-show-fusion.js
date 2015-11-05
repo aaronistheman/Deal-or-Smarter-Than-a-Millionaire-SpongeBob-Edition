@@ -878,7 +878,7 @@ function haveUserPickHelper() {
                 }
 
                 // Announce the user's choice
-                gameShow.quotesToDraw.add("You have selected: " +
+                gameShow.quotesToDraw.add("You have selected " +
                     gameShow.activeHelper.name + ".")
                 .deployQuoteChain(function() {
                     // Go to the selection of a question

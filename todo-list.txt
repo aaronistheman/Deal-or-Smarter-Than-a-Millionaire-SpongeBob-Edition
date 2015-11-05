@@ -1,5 +1,14 @@
 Next:
--make separate canvas for help options; see my phone's memo
+-make separate canvas for help options
+    --have map with constants with lifeline names as keys and booleans
+    for availability
+    --could make the activation of a button cause the button's selectable
+    field to be set to false; would need a LifelineButton option
+        --this would easily handle the fading out of a button
+    --figure out a way to determine which button has been activated
+        --could do it the same way it was done with the helpers (i.e.
+        having and editing a separate array (e.g. gameShow.helpers))
+    --can jump to them and back with H key; explain this
 -implement peeking
 -implement ask the audience
 -implement phone a friend
@@ -21,8 +30,6 @@ Next:
         --take case home
         --lose on million dollar question
         --win a million
--fix SpongeBob's directions about arrow keys and choosing question
-    --make sure the introductory directions are all correct
 -make SpongeBob do dramatic pauses before announcing every answer
     and question value
 -more decorated title screen

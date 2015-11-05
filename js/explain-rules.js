@@ -91,8 +91,8 @@ function explainQuestionValue() {
     gameShow.quotesToDraw.add(
         "Answering a question correctly reveals a random " +
         "amount from the money board.")
-        .add("But wait, a twist occurs after every two questions " +
-            "and before your tenth question.")
+        .add("But wait, a twist occurs after the second, fourth, " +
+        "sixth, and eighth questions.")
         .deployQuoteChain(explainBanker);
 }
 
