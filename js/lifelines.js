@@ -91,17 +91,22 @@ Lifelines.prototype = {
         var positionX = 20;
         var positionY = 20;
         var deltaY = 50;
+        var buttonWidth = (300 - (positionX * 2));
+        var buttonHeight = 30;
+        var labelIndentation = buttonWidth / 2;
 
         var that = this;
 
-        // Add Label instance that says "Lifelines"
-        var label = new GUI.Label("Lifelines", "Comic Sans MS");
-        label.setPosition(positionX, positionY);
-        this.container.pack(label);
+        // Add CenteredLabel instance that says "Lifelines"
+        var centeredLabel =
+            new GUI.CenteredLabel("Lifelines", "Comic Sans MS");
+        centeredLabel.setPosition(positionX + labelIndentation, positionY);
+        this.container.pack(centeredLabel);
         positionY += deltaY;
 
         // Add Button instance for Peek option
-        var peekButton = new GUI.Button("Arial");
+        var peekButton = new GUI.LifelineButton("Arial", 25,
+            buttonWidth, buttonHeight);
         peekButton.text = LIFELINES.PEEK;
         peekButton.setPosition(positionX, positionY);
         peekButton.setCallback(function() {
@@ -111,7 +116,8 @@ Lifelines.prototype = {
         positionY += deltaY;
 
         // Add Button instance for Ask the Audience option
-        var askButton = new GUI.Button("Arial");
+        var askButton = new GUI.LifelineButton("Arial", 25,
+            buttonWidth, buttonHeight);
         askButton.text = LIFELINES.ASK_AUDIENCE;
         askButton.setPosition(positionX, positionY);
         askButton.setCallback(function() {
@@ -121,7 +127,8 @@ Lifelines.prototype = {
         positionY += deltaY;
 
         // Add Button instance for Phone a Friend option
-        var phoneButton = new GUI.Button("Arial");
+        var phoneButton = new GUI.LifelineButton("Arial", 25,
+            buttonWidth, buttonHeight);
         phoneButton.text = LIFELINES.PHONE_FRIEND;
         phoneButton.setPosition(positionX, positionY);
         phoneButton.setCallback(function() {

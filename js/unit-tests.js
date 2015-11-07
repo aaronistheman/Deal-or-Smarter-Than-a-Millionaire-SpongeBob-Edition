@@ -267,6 +267,27 @@ QUnit.test("CanvasStack.prototype.clear()", function(assert) {
         "All stored canvases were removed");
 });
 
+QUnit.module("centered-label.js");
+
+QUnit.test("GUI.CenteredLabel()", function(assert) {
+    // Test constructor scope safety
+    var centeredLabel = GUI.CenteredLabel("teehee", "teehee");
+    assert.ok((centeredLabel instanceof GUI.CenteredLabel) &&
+        (typeof centeredLabel === "object"),
+        "Constructor of CenteredLabel is scope-safe");
+
+    // Test inheritance from GUI.Label
+    centeredLabel = new GUI.CenteredLabel("teehee", "teehee");
+    assert.ok(GUI.Label.prototype.isPrototypeOf(centeredLabel),
+        "CenteredLabel inherits the prototype of Label");
+    assert.ok(centeredLabel instanceof GUI.Label,
+        "Instance of CenteredLabel is instance of Label");
+
+    // Test constructor stealing
+    assert.ok(centeredLabel.hasOwnProperty("fontFace"),
+        "CenteredLabel steals Label's constructor in its own");
+});
+
 QUnit.module("component.js");
 
 QUnit.test("Component()", function(assert) {
@@ -603,6 +624,27 @@ QUnit.test("Lifelines.prototype._setUpContainer()", function(assert) {
     assert.deepEqual(lifelines.mostRecentlyActivatedButton,
         LIFELINES.ASK_AUDIENCE, "Buttons are given callbacks that " +
         "edit lifelines.mostRecentlyActivatedButton");
+});
+
+QUnit.module("lifeline-button.js");
+
+QUnit.test("GUI.LifelineButton()", function(assert) {
+    // Test constructor scope safety
+    var lifelineButton = GUI.LifelineButton("Arial", 30, 100, 100);
+    assert.ok((lifelineButton instanceof GUI.LifelineButton) &&
+        (typeof lifelineButton === "object"),
+        "Constructor of LifelineButton is scope-safe");
+
+    // Test inheritance from GUI.Button
+    lifelineButton = new GUI.LifelineButton("Arial", 30, 100, 100);
+    assert.ok(GUI.Button.prototype.isPrototypeOf(lifelineButton),
+        "LifelineButton inherits the prototype of Button");
+    assert.ok(lifelineButton instanceof GUI.Button,
+        "Instance of LifelineButton is instance of Button");
+
+    // Test constructor stealing
+    assert.ok(lifelineButton.hasOwnProperty("_callback"),
+        "LifelineButton steals Button's constructor in its own");
 });
 
 QUnit.module("money-amount.js");

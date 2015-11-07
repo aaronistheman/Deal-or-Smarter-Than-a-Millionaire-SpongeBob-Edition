@@ -1,9 +1,7 @@
 Next:
 -lifeline buttons
     --implement LifelineButton type
-        --should be resizable
-            --default size is GUI.Button's size
-        --consider repositioning some buttons
+        --consider repositioning and recoloring some buttons
         --allow jumping to those options with H or L key
             --make sure SpongeBob explains
         --its activation should make it be erased
