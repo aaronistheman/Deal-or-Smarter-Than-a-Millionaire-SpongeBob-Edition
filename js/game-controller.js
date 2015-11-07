@@ -61,6 +61,12 @@ function getAudioData() {
         "media/sound/present_question.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.MOVE_ANSWER_SELECTOR,
         "media/sound/move_answer_selector.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.ENABLE_ANSWER_SELECTION,
+        "media/sound/enable_answer_selection.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.ENABLE_LIFELINE_SELECTION,
+        "media/sound/enable_lifeline_selection.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.MOVE_LIFELINE_SELECTOR,
+        "media/sound/move_lifeline_selector.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.LOSS,
         "media/sound/loss.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.LOSS_MILLION,

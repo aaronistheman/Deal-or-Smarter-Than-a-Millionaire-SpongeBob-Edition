@@ -1,13 +1,9 @@
 Next:
 -lifeline buttons
-    --implement LifelineButton type
-        --allow jumping to those options with H key
-            --consider making it visually more obvious
-            --get sound effect for moving lifeline selector and
-            picking lifeline
     --activation:
         --put alerts when lifeline buttons activated, but don't
             continue gameplay
+        --get sound effect for picking lifeline
         --its activation should make it be erased
             --if there is at least one button left, call
             this.container.removeSelectedComponent somewhere

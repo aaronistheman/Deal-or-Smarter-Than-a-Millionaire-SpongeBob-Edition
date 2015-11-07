@@ -386,13 +386,15 @@ function allowAnswerSelectorMovement(bool) {
 function allowLifelineSelectorMovement(bool) {
     if (bool === true) {
         gameShow.keyActions.set(KEY_CODES.UP_ARROW, function() {
-            // gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.MOVE_HELPER_SELECTOR);
+            gameShow.soundPlayer.play(
+                SOUND_EFFECTS_IDS.MOVE_LIFELINE_SELECTOR);
             gameShow.lifelines.container.selectPrevious(
                 gameShow.lifelines.graphicalCanvas,
                 gameShow.lifelines.textualCanvas);
         })
         .set(KEY_CODES.DOWN_ARROW, function() {
-            // gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.MOVE_HELPER_SELECTOR);
+            gameShow.soundPlayer.play(
+                SOUND_EFFECTS_IDS.MOVE_LIFELINE_SELECTOR);
             gameShow.lifelines.container.selectNext(
                 gameShow.lifelines.graphicalCanvas,
                 gameShow.lifelines.textualCanvas);
@@ -519,16 +521,18 @@ function allowUserSelectAnswerOrLifeline(booleanValue) {
         allowAnswerSelectorMovement(allowingAnswerSelectorMovement);
 
         gameShow.keyActions.set(KEY_CODES.H, function() {
-            // gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.MOVE_HELPER_SELECTOR);
-
             // Toggle between the allowing of answer selection and
             // the allowing of lifeline selection
             allowingAnswerSelectorMovement = !allowingAnswerSelectorMovement;
             if (allowingAnswerSelectorMovement) {
+                gameShow.soundPlayer.play(
+                    SOUND_EFFECTS_IDS.ENABLE_ANSWER_SELECTION);
                 allowLifelineSelectorMovement(false);
                 allowAnswerSelectorMovement(true);
             }
             else {
+                gameShow.soundPlayer.play(
+                    SOUND_EFFECTS_IDS.ENABLE_LIFELINE_SELECTION);
                 allowAnswerSelectorMovement(false);
                 allowLifelineSelectorMovement(true);
             }
