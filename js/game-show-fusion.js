@@ -43,6 +43,9 @@ gameShow.activeHelper = null; // instance of the current helper
 gameShow.NUMBER_OF_HELPERS = 5;
 setUpHelpers();
 
+gameShow.lifelines = new Lifelines(CANVAS_IDS.LIFELINES_GRAPHICS,
+    CANVAS_IDS.LIFELINES_TEXT);
+
 gameShow.chooseHelperMenuState = new ChooseHelperMenuState(
     CANVAS_IDS.CHOOSE_HELPER_GRAPHICS, CANVAS_IDS.CHOOSE_HELPER_TEXT,
     gameShow.helpers);
@@ -483,7 +486,8 @@ function presentQuestionAndAnswers() {
         gameShow.canvasStack.set(CANVAS_IDS.QUESTIONING,
             CanvasStack.EFFECTS.FADE_IN);
     else
-        gameShow.canvasStack.set(CANVAS_IDS.QUESTIONING);
+        gameShow.canvasStack.set(CANVAS_IDS.QUESTIONING.concat(
+            CANVAS_IDS.LIFELINES));
     gameShow.questions.drawQuestionAndAnswersText(
         gameShow.turnVariables.selectedQuestion);
 
@@ -1132,6 +1136,8 @@ function setUpGame() {
     gameShow.briefcaseDisplay.draw();
     gameShow.questions.drawInitialParts();
     gameShow.chooseHelperMenuState.loadCanvases();
+    gameShow.lifelines.loadCanvases();
+    gameShow.lifelines.draw();
 
     // Show the appropriate canvases
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);

@@ -1,9 +1,11 @@
 Next:
--make separate canvas for help options
-    --draw the help options
-        --consider allowing resizing of instances of LifelineButton
-        --consider repositioning
+-lifeline buttons
     --implement LifelineButton type
+        --should be resizable
+            --default size is GUI.Button's size
+        --consider repositioning some buttons
+        --allow jumping to those options with H or L key
+            --make sure SpongeBob explains
         --its activation should make it be erased
             --if there is at least one button left, call
             this.container.removeSelectedComponent somewhere
@@ -11,13 +13,10 @@ Next:
             button
                 --allow passing of a parameter findNextChild to
                 GUI.Container.removeSelectedComponent()
-    --allow jumping to those options with H or L key
-        --make sure SpongeBob explains
-    --using the same way done with helpers, when a lifeline button
-    is activated, store which one was activated, but don't do anything
-    else in response to that activation yet
--change SpongeBob's dialogue so that all of the options for help are
-called "lifelines", not "cheats"
+    --change SpongeBob's dialogue so that all of the options for help are
+    called "lifelines", not "cheats"
+-see if chooseHelperMenuState is being drawn over itself whenever
+haveUserPickHelper() is called
 -implement peeking
 -implement ask the audience
 -implement phone a friend
