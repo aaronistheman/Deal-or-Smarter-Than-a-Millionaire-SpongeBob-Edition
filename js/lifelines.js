@@ -81,10 +81,53 @@ Lifelines.prototype = {
     /*
         @pre this instance hasn't been set up with the proper GUI
         components
-        @post this instance has been set up with those components
+        @post this instance has been set up with those properly
+        positioned components; the buttons of those components
+        have correct callbacks
+        @hasTest yes
     */
     _setUpContainer : function() {
+        // To help with positioning the components
+        var positionX = 20;
+        var positionY = 20;
+        var deltaY = 50;
 
+        var that = this;
+
+        // Add Label instance that says "Lifelines"
+        var label = new GUI.Label("Lifelines", "Comic Sans MS");
+        label.setPosition(positionX, positionY);
+        this.container.pack(label);
+        positionY += deltaY;
+
+        // Add Button instance for Peek option
+        var peekButton = new GUI.Button("Arial");
+        peekButton.text = LIFELINES.PEEK;
+        peekButton.setPosition(positionX, positionY);
+        peekButton.setCallback(function() {
+            that.mostRecentlyActivatedButton = peekButton.text;
+        });
+        this.container.pack(peekButton);
+        positionY += deltaY;
+
+        // Add Button instance for Ask the Audience option
+        var askButton = new GUI.Button("Arial");
+        askButton.text = LIFELINES.ASK_AUDIENCE;
+        askButton.setPosition(positionX, positionY);
+        askButton.setCallback(function() {
+            that.mostRecentlyActivatedButton = askButton.text;
+        });
+        this.container.pack(askButton);
+        positionY += deltaY;
+
+        // Add Button instance for Phone a Friend option
+        var phoneButton = new GUI.Button("Arial");
+        phoneButton.text = LIFELINES.PHONE_FRIEND;
+        phoneButton.setPosition(positionX, positionY);
+        phoneButton.setCallback(function() {
+            that.mostRecentlyActivatedButton = phoneButton.text;
+        });
+        this.container.pack(phoneButton);
     },
 
     /*

@@ -590,6 +590,21 @@ QUnit.test("Other aspects of Label", function(assert) {
         "The \"_text\" member of custom type Label is private");
 });
 
+QUnit.module("lifelines.js");
+
+QUnit.test("Lifelines.prototype._setUpContainer()", function(assert) {
+    // Indirectly call the method-to-test
+    var lifelines = new Lifelines(undefined, undefined);
+
+    // Activate the Ask the Audience button and confirm that
+    // this.mostRecentlyActivatedButton was given the correct value;
+    // assume that that button is the third component in the container
+    lifelines.container._children[2].activate();
+    assert.deepEqual(lifelines.mostRecentlyActivatedButton,
+        LIFELINES.ASK_AUDIENCE, "Buttons are given callbacks that " +
+        "edit lifelines.mostRecentlyActivatedButton");
+});
+
 QUnit.module("money-amount.js");
 
 QUnit.test("MoneyAmount.prototype.asNumber()", function(assert) {

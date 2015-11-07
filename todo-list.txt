@@ -1,14 +1,8 @@
 Next:
 -make separate canvas for help options
-    --function to define a truly private own property
-    --implement setUpContainer, so that it adds the following:
-        --Label instance that says "Lifelines"
-        --Button instance for Peek option
-        --Button instance for Ask the Audience option
-        --Button instance for Phone a Friend option
-        --don't forget about positioning
-            --use unit tests if they can help effectively
-        --their callbacks should edit mostRecentlyActivatedButton
+    --draw the help options
+        --consider allowing resizing of instances of LifelineButton
+        --consider repositioning
     --implement LifelineButton type
         --its activation should make it be erased
             --if there is at least one button left, call
@@ -17,8 +11,6 @@ Next:
             button
                 --allow passing of a parameter findNextChild to
                 GUI.Container.removeSelectedComponent()
-    --draw the help options
-        --consider allowing resizing of instances of LifelineButton
     --allow jumping to those options with H or L key
         --make sure SpongeBob explains
     --using the same way done with helpers, when a lifeline button
