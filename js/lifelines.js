@@ -89,11 +89,15 @@ Lifelines.prototype = {
     _setUpContainer : function() {
         // To help with positioning the components
         var positionX = 20;
-        var positionY = 20;
+        var positionY = 40;
         var deltaY = 50;
         var buttonWidth = (300 - (positionX * 2));
         var buttonHeight = 30;
         var labelIndentation = buttonWidth / 2;
+
+        // To help with designing the components
+        var buttonFontSize = 25;
+        var buttonFontFace = "Comic Sans MS";
 
         var that = this;
 
@@ -105,8 +109,8 @@ Lifelines.prototype = {
         positionY += deltaY;
 
         // Add Button instance for Peek option
-        var peekButton = new GUI.LifelineButton("Arial", 25,
-            buttonWidth, buttonHeight);
+        var peekButton = new GUI.LifelineButton(buttonFontFace,
+            buttonFontSize, buttonWidth, buttonHeight);
         peekButton.text = LIFELINES.PEEK;
         peekButton.setPosition(positionX, positionY);
         peekButton.setCallback(function() {
@@ -116,8 +120,8 @@ Lifelines.prototype = {
         positionY += deltaY;
 
         // Add Button instance for Ask the Audience option
-        var askButton = new GUI.LifelineButton("Arial", 25,
-            buttonWidth, buttonHeight);
+        var askButton = new GUI.LifelineButton(buttonFontFace,
+            buttonFontSize, buttonWidth, buttonHeight);
         askButton.text = LIFELINES.ASK_AUDIENCE;
         askButton.setPosition(positionX, positionY);
         askButton.setCallback(function() {
@@ -127,8 +131,8 @@ Lifelines.prototype = {
         positionY += deltaY;
 
         // Add Button instance for Phone a Friend option
-        var phoneButton = new GUI.LifelineButton("Arial", 25,
-            buttonWidth, buttonHeight);
+        var phoneButton = new GUI.LifelineButton(buttonFontFace,
+            buttonFontSize, buttonWidth, buttonHeight);
         phoneButton.text = LIFELINES.PHONE_FRIEND;
         phoneButton.setPosition(positionX, positionY);
         phoneButton.setCallback(function() {
