@@ -45,6 +45,7 @@ setUpHelpers();
 
 gameShow.lifelines = new Lifelines(CANVAS_IDS.LIFELINES_GRAPHICS,
     CANVAS_IDS.LIFELINES_TEXT);
+gameShow.isUserSelectingLifeline = false;
 
 gameShow.chooseHelperMenuState = new ChooseHelperMenuState(
     CANVAS_IDS.CHOOSE_HELPER_GRAPHICS, CANVAS_IDS.CHOOSE_HELPER_TEXT,
@@ -517,14 +518,15 @@ function handleQuestionSelection() {
 */
 function allowUserSelectAnswerOrLifeline(booleanValue) {
     if (booleanValue) {
-        var allowingAnswerSelectorMovement = true;
-        allowAnswerSelectorMovement(allowingAnswerSelectorMovement);
+        gameShow.isUserSelectingLifeline = false;
+        allowAnswerSelectorMovement(!gameShow.isUserSelectingLifeline);
 
         gameShow.keyActions.set(KEY_CODES.H, function() {
             // Toggle between the allowing of answer selection and
             // the allowing of lifeline selection
-            allowingAnswerSelectorMovement = !allowingAnswerSelectorMovement;
-            if (allowingAnswerSelectorMovement) {
+            gameShow.isUserSelectingLifeline =
+                !gameShow.isUserSelectingLifeline;
+            if (!gameShow.isUserSelectingLifeline) {
                 gameShow.soundPlayer.play(
                     SOUND_EFFECTS_IDS.ENABLE_ANSWER_SELECTION);
                 allowLifelineSelectorMovement(false);
@@ -549,7 +551,7 @@ function allowUserSelectAnswerOrLifeline(booleanValue) {
 /*
     @pre gameShow.turnVariables.selectedQuestion has been updated
     @post the question, its answers, and the support options
-    have been presented
+    have been presented, and the user is able to respond
 */
 function presentQuestionAndAnswers() {
     // Update what the user sees and hears
@@ -562,9 +564,14 @@ function presentQuestionAndAnswers() {
     gameShow.questions.drawQuestionAndAnswersText(
         gameShow.turnVariables.selectedQuestion);
 
-    // Allow the user to pick an answer
+    // Allow the user to pick an answer or lifeline
     allowUserSelectAnswerOrLifeline(true);
-    gameShow.keyActions.set(KEY_CODES.ENTER, handleAnswerSelection);
+    gameShow.keyActions.set(KEY_CODES.ENTER, function() {
+        if (!gameShow.isUserSelectingLifeline)
+            handleAnswerSelection();
+        else
+            handleLifelineSelection();
+    });
 }
 
 /*
@@ -594,6 +601,25 @@ function handleAnswerSelection() {
         else
             handleWrongAnswerSelection();
     }
+}
+
+/*
+    @post the game has responded appropriately to the user's
+    choosing a lifeline
+*/
+function handleLifelineSelection() {
+    // React auditorily
+    gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.SELECT_LIFELINE);
+
+    // Activate the selected lifeline button in the container so
+    // that we can tell which lifeline was selected
+    gameShow.lifelines.container.activateSelectedComponent();
+
+    alert("Lifeline selected: " +
+        gameShow.lifelines.mostRecentlyActivatedButton);
+
+    // GET RID OF THIS EVENTUALLY: behave as if an answer was selected
+    handleAnswerSelection();
 }
 
 /*

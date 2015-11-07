@@ -1,16 +1,15 @@
 Next:
 -lifeline buttons
     --activation:
-        --put alerts when lifeline buttons activated, but don't
-            continue gameplay
-        --get sound effect for picking lifeline
         --its activation should make it be erased
+            --will have to set mostRecentlyActivatedButton to undefined
             --if there is at least one button left, call
             this.container.removeSelectedComponent somewhere
             --if the final button was selected, only erase that
             button
                 --allow passing of a parameter findNextChild to
                 GUI.Container.removeSelectedComponent()
+        --no longer continue game if lifeline button is selected
     --change SpongeBob's dialogue so that all of the options for help are
     called "lifelines", not "cheats"
 -look into changing the colors of the answer rectangles (e.g. use borders)

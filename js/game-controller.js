@@ -67,6 +67,8 @@ function getAudioData() {
         "media/sound/enable_lifeline_selection.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.MOVE_LIFELINE_SELECTOR,
         "media/sound/move_lifeline_selector.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.SELECT_LIFELINE,
+        "media/sound/select_lifeline.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.LOSS,
         "media/sound/loss.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.LOSS_MILLION,

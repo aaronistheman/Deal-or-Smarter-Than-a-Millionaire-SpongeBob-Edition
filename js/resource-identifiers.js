@@ -18,6 +18,7 @@ var SOUND_EFFECTS_IDS = {
     ENABLE_ANSWER_SELECTION : "enable-answer-selection-sound",
     ENABLE_LIFELINE_SELECTION : "enable-lifeline-selection-sound",
     MOVE_LIFELINE_SELECTOR : "move-lifeline-selector-sound",
+    SELECT_LIFELINE : "select-lifeline-sound",
     LOSS : "loss-sound",
     LOSS_MILLION : "loss-million-sound",
     GOOD_BYE : "good-bye-sound",
