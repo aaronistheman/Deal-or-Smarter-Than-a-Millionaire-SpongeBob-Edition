@@ -380,6 +380,31 @@ function allowAnswerSelectorMovement(bool) {
 }
 
 /*
+    @param bool true to allow user to change which lifeline
+    is selected; false to disable this ability
+*/
+function allowLifelineSelectorMovement(bool) {
+    if (bool === true) {
+        gameShow.keyActions.set(KEY_CODES.UP_ARROW, function() {
+            // gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.MOVE_HELPER_SELECTOR);
+            gameShow.lifelines.container.selectPrevious(
+                gameShow.lifelines.graphicalCanvas,
+                gameShow.lifelines.textualCanvas);
+        })
+        .set(KEY_CODES.DOWN_ARROW, function() {
+            // gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.MOVE_HELPER_SELECTOR);
+            gameShow.lifelines.container.selectNext(
+                gameShow.lifelines.graphicalCanvas,
+                gameShow.lifelines.textualCanvas);
+        });
+    }
+    else {
+        gameShow.keyActions.erase(KEY_CODES.UP_ARROW)
+            .erase(KEY_CODES.DOWN_ARROW);
+    }
+}
+
+/*
     @post the selection of a case has been performed; the
     selection has been set up to be announced by the host; the
     briefcase display has been updated; the
@@ -476,6 +501,40 @@ function handleQuestionSelection() {
 }
 
 /*
+    @param booleanValue true to allow the user to use the 'H' key
+    to switch between being able to select an answer and being able
+    to select a lifeline
+*/
+function allowUserSelectAnswerOrLifeline(booleanValue) {
+    if (booleanValue) {
+        var allowingAnswerSelectorMovement = true;
+        allowAnswerSelectorMovement(allowingAnswerSelectorMovement);
+
+        gameShow.keyActions.set(KEY_CODES.H, function() {
+            // gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.MOVE_HELPER_SELECTOR);
+
+            // Toggle between the allowing of answer selection and
+            // the allowing of lifeline selection
+            allowingAnswerSelectorMovement = !allowingAnswerSelectorMovement;
+            if (allowingAnswerSelectorMovement) {
+                allowLifelineSelectorMovement(false);
+                allowAnswerSelectorMovement(true);
+            }
+            else {
+                allowAnswerSelectorMovement(false);
+                allowLifelineSelectorMovement(true);
+            }
+        });
+    }
+    else {
+        // Remove the user's ability to select answers and lifelines
+        allowAnswerSelectorMovement(false);
+        allowLifelineSelectorMovement(false);
+        gameShow.keyActions.erase(KEY_CODES.H);
+    }
+}
+
+/*
     @pre gameShow.turnVariables.selectedQuestion has been updated
     @post the question, its answers, and the support options
     have been presented
@@ -492,7 +551,7 @@ function presentQuestionAndAnswers() {
         gameShow.turnVariables.selectedQuestion);
 
     // Allow the user to pick an answer
-    allowAnswerSelectorMovement(true);
+    allowUserSelectAnswerOrLifeline(true);
     gameShow.keyActions.set(KEY_CODES.ENTER, handleAnswerSelection);
 }
 
@@ -501,7 +560,7 @@ function presentQuestionAndAnswers() {
     choosing an answer
 */
 function handleAnswerSelection() {
-    allowAnswerSelectorMovement(false);
+    allowUserSelectAnswerOrLifeline(false);
 
     // Save the answer
     gameShow.turnVariables.selectedAnswer =

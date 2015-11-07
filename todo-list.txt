@@ -1,8 +1,14 @@
 Next:
 -lifeline buttons
     --implement LifelineButton type
-        --allow jumping to those options with H or L key
+        --allow jumping to those options with H key
             --make sure SpongeBob explains
+            --consider making it visually more obvious
+            --get sound effect for moving lifeline selector and
+            picking lifeline
+    --activation:
+        --put alerts when lifeline buttons activated, but don't
+            continue gameplay
         --its activation should make it be erased
             --if there is at least one button left, call
             this.container.removeSelectedComponent somewhere
