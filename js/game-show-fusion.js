@@ -496,6 +496,14 @@ function handleQuestionSelection() {
     // Present the question
     gameShow.turnVariables.selectedQuestion =
         gameShow.questions.numberOfLabelToEmphasize;
+    // Explain the use of keys if the user is on the first question
+    if (gameShow.numberOfQuestionsCorrectlyAnswered < 1) {
+        gameShow.quotesToDraw.add("You have selected a question.")
+        .add("Once the question is shown, use the arrow " +
+        "keys and the Enter key to select your answer.")
+        .add("Furthermore, use the 'H' key to jump to or from the " +
+        "lifeline buttons.");
+    }
     gameShow.quotesToDraw.add("Here comes the question.")
         .deployQuoteChain(presentQuestionAndAnswers);
 }

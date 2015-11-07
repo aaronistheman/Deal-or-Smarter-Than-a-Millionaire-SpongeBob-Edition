@@ -2,7 +2,6 @@ Next:
 -lifeline buttons
     --implement LifelineButton type
         --allow jumping to those options with H key
-            --make sure SpongeBob explains
             --consider making it visually more obvious
             --get sound effect for moving lifeline selector and
             picking lifeline
