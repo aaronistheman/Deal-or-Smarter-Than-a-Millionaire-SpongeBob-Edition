@@ -615,6 +615,9 @@ function handleLifelineSelection() {
     // that we can tell which lifeline was selected
     gameShow.lifelines.container.activateSelectedComponent();
 
+    // Don't allow the lifeline to be selected again
+    gameShow.lifelines.removeSelectedLifeline();
+
     alert("Lifeline selected: " +
         gameShow.lifelines.mostRecentlyActivatedButton);
 

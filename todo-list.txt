@@ -1,10 +1,7 @@
 Next:
 -lifeline buttons
     --activation:
-        --its activation should make it be erased
-            --will have to set mostRecentlyActivatedButton to undefined
-            --if there is at least one button left, call
-            this.container.removeSelectedComponent somewhere
+        --its activation should make it be removed
             --if the final button was selected, only erase that
             button
                 --allow passing of a parameter findNextChild to

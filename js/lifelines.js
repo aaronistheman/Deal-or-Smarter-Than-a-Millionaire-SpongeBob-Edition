@@ -22,12 +22,6 @@ var LIFELINES = {
     (i.e. non-graphical) parts of the GUI components will be drawn
 */
 function Lifelines(graphicalCanvasId, textualCanvasId) {
-    // Make map of LIFELINES constants to the availability of the
-    // represented lifeline (as a boolean)
-    this._availability = {};
-    for (var i in LIFELINES)
-        this._availability[LIFELINES[i]] = true;
-
     // Container for the instances that graphically represent
     // the selectable lifelines
     this.container = new GUI.Container();
@@ -149,5 +143,34 @@ Lifelines.prototype = {
     */
     draw : function() {
         this.container.draw(this.graphicalCanvas, this.textualCanvas);
+    },
+
+    /*
+        @post this instance's stored canvases have been completely
+        erased
+    */
+    erase : function() {
+        this.graphicalCanvas.getContext('2d')
+            .clearRect(0, 0, this.graphicalCanvas.width,
+                this.graphicalCanvas.height);
+        this.textualCanvas.getContext('2d')
+            .clearRect(0, 0, this.textualCanvas.width,
+                this.textualCanvas.height);
+    },
+
+    /*
+        @pre this.container has at least two selectable components
+        @post this instance's container's selected LifelineButton
+        instance has been removed, the one after it has been selected,
+        and the removed one has been erased
+    */
+    removeSelectedLifeline : function() {
+        this.erase();
+
+        // Remove the currently selected LifelineButton instance
+        this.container.removeSelectedComponent();
+
+        // Redraw the remaining lifeline buttons
+        this.draw();
     },
 };
