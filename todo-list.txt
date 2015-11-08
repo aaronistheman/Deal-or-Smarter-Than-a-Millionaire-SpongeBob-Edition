@@ -1,7 +1,8 @@
 Next:
 -lifeline buttons
-    --don't allow jumping to the lifelines if no lifeline
-    button remains
+    --remove the label "Lifelines" if no lifelines remain
+    --remove all of the lifelines before the million dollar question;
+    set current helper to null (if not already done)
     --no longer continue game if lifeline button is selected
     --change SpongeBob's dialogue so that all of the options for help are
     called "lifelines", not "cheats"
@@ -13,6 +14,7 @@ haveUserPickHelper() is called
 -implement ask the audience
 -implement phone a friend
 -implement saving
+-remove the alert regarding which lifeline was selected
 -once peeking and saving are no longer possible, set current helper
 to null and don't allow picking of anymore helpers
     --make SpongeBob explain this

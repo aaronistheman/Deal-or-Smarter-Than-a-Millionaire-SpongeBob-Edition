@@ -514,7 +514,8 @@ function handleQuestionSelection() {
 /*
     @param booleanValue true to allow the user to use the 'H' key
     to switch between being able to select an answer and being able
-    to select a lifeline
+    to select a lifeline; false to disable the user's ability to
+    select answers and lifelines
 */
 function allowUserSelectAnswerOrLifeline(booleanValue) {
     if (booleanValue) {
@@ -522,21 +523,24 @@ function allowUserSelectAnswerOrLifeline(booleanValue) {
         allowAnswerSelectorMovement(!gameShow.isUserSelectingLifeline);
 
         gameShow.keyActions.set(KEY_CODES.H, function() {
-            // Toggle between the allowing of answer selection and
+            // If lifeline buttons remain,
+            // toggle between the allowing of answer selection and
             // the allowing of lifeline selection
-            gameShow.isUserSelectingLifeline =
-                !gameShow.isUserSelectingLifeline;
-            if (!gameShow.isUserSelectingLifeline) {
-                gameShow.soundPlayer.play(
-                    SOUND_EFFECTS_IDS.ENABLE_ANSWER_SELECTION);
-                allowLifelineSelectorMovement(false);
-                allowAnswerSelectorMovement(true);
-            }
-            else {
-                gameShow.soundPlayer.play(
-                    SOUND_EFFECTS_IDS.ENABLE_LIFELINE_SELECTION);
-                allowAnswerSelectorMovement(false);
-                allowLifelineSelectorMovement(true);
+            if (gameShow.lifelines.container.getNumberOfChildren() > 1) {
+                gameShow.isUserSelectingLifeline =
+                    !gameShow.isUserSelectingLifeline;
+                if (!gameShow.isUserSelectingLifeline) {
+                    gameShow.soundPlayer.play(
+                        SOUND_EFFECTS_IDS.ENABLE_ANSWER_SELECTION);
+                    allowLifelineSelectorMovement(false);
+                    allowAnswerSelectorMovement(true);
+                }
+                else {
+                    gameShow.soundPlayer.play(
+                        SOUND_EFFECTS_IDS.ENABLE_LIFELINE_SELECTION);
+                    allowAnswerSelectorMovement(false);
+                    allowLifelineSelectorMovement(true);
+                }
             }
         });
     }
