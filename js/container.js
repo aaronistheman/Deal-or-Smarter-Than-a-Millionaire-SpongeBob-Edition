@@ -58,49 +58,52 @@ GUI.Container.prototype.pack = function(component) {
 };
 
 /*
-    @pre this container has at least two selectable children (otherwise,
-    an infinite loop will occur)
+    @pre if shouldSelectNext is true, this container has at least two
+    selectable children (otherwise, an infinite loop will occur)
     @post this container's currently selected child has been removed,
-    and the next selectable child has been selected
+    and if desired, the next selectable child has been selected
     @hasTest yes
+    @param shouldSelectNext true to select the next selectable child;
+    false to have no child be currently selected
+    @throws exception if shouldSelectNext is neither true nor false
 */
-GUI.Container.prototype.removeSelectedComponent = function() {
+GUI.Container.prototype.removeSelectedComponent = function(shouldSelectNext) {
+    // Throw exception if invalid shouldSelectNext value
+    if (shouldSelectNext === undefined)
+        alertAndThrowException("Invalid first parameter given to " +
+            "GUI.Container.prototype.removeSelectedComponent()");
+
     // Remove the currently selected child
     this._children.splice(this._selectedChild, 1);
 
-    // Select the next selectable child;
-    // make sure this._selectedChild isn't out of bounds
-    if (this._selectedChild >= this._children.length)
-        this._selectedChild = 0;
-    // Select the child indicated by this._selectedChild, if possible,
-    // or find the next child that can be selected
-    if (this._children[this._selectedChild].isSelectable()) {
-        /*
-            Note that this use of this.selectChild may seem redundant
-            since the child indicated by this._selectedChild is already
-            selected, but we need to call this function so that the
-            selected component is redrawn in its state that indicates
-            its being selected
-        */
-        this.selectChild(this._selectedChild, this.graphicalCanvas,
-            this.textualCanvas);
+    // Only select the next child if desired; otherwise, don't have
+    // any child be selected
+    if (shouldSelectNext === true) {
+        // Select the next selectable child;
+        // make sure this._selectedChild isn't out of bounds
+        if (this._selectedChild >= this._children.length)
+            this._selectedChild = 0;
+        // Select the child indicated by this._selectedChild, if possible,
+        // or find the next child that can be selected
+        if (this._children[this._selectedChild].isSelectable()) {
+            /*
+                Note that this use of this.selectChild may seem redundant
+                since the child indicated by this._selectedChild is already
+                selected, but we need to call this function so that the
+                selected component is redrawn in its state that indicates
+                its being selected
+            */
+            this.selectChild(this._selectedChild, this.graphicalCanvas,
+                this.textualCanvas);
+        }
+        else
+            this.selectNext(this.graphicalCanvas, this.textualCanvas);
     }
-    else
-        this.selectNext(this.graphicalCanvas, this.textualCanvas);
-
-    /*
-    if ((this._selectedChild < this._children.length) &&
-        this._children[this._selectedChild].isSelectable())
-        this.selectChild(this._selectedChild, this.graphicalCanvas,
-            this.textualCanvas);
-    else if ((this._selectedChild >= this._children.length) &&
-        this._children[0].isSelectable()) {
-        // Wrap around to select the first component
-        this.selectChild(0, this.graphicalCanvas, this.textualCanvas);
+    else {
+        // Since the formerly selected child was removed, we don't
+        // have to worry about deselecting anything
+        this._selectedChild = -1;
     }
-    else
-        this.selectNext();
-    */
 }
 
 /*

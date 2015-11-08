@@ -604,8 +604,11 @@ function handleAnswerSelection() {
 }
 
 /*
+    @pre a newly constructed instance of Lifelines has one
+    instance of Label and three instances of LifelineButton
     @post the game has responded appropriately to the user's
-    choosing a lifeline
+    choosing a lifeline; the selected lifeline has been activated
+    and removed
 */
 function handleLifelineSelection() {
     // React auditorily
@@ -615,8 +618,15 @@ function handleLifelineSelection() {
     // that we can tell which lifeline was selected
     gameShow.lifelines.container.activateSelectedComponent();
 
-    // Don't allow the lifeline to be selected again
-    gameShow.lifelines.removeSelectedLifeline();
+    /*
+        Don't allow the lifeline to be selected again; make sure
+        an infinite loop doesn't occur by only selecting the
+        next lifeline button if there will be a remaining lifeline button
+        (meaning two components, counting the label in the lifelines'
+        container, will remain)
+    */
+    gameShow.lifelines.removeSelectedLifeline(
+        gameShow.lifelines.container.getNumberOfChildren() > 2);
 
     alert("Lifeline selected: " +
         gameShow.lifelines.mostRecentlyActivatedButton);

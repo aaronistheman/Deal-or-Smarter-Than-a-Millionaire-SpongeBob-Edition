@@ -344,7 +344,13 @@ QUnit.test("Container.prototype.pack()", function(assert) {
 
 QUnit.test("GUI.Container.prototype.removeSelectedComponent()",
     function(assert) {
-    // Set up a container of four buttons
+    /*
+        Since the selection within the method is done with other
+        methods of GUI.Container, it's safe to only use selectable
+        components to test
+    */
+
+    // Set up a container of four (selectable) buttons
     var container = new GUI.Container();
     var button1 = new GUI.Button();
     button1.text = "button1";
@@ -359,21 +365,45 @@ QUnit.test("GUI.Container.prototype.removeSelectedComponent()",
     button4.text = "button4";
     container.pack(button4);
 
-    // Remove the first component
-    container.removeSelectedComponent();
+    // Remove the first component and select the selectable component
+    // after it
+    container.removeSelectedComponent(true);
     assert.deepEqual(container._children.length,
         3, "A component was removed");
     assert.deepEqual(container._children[container._selectedChild].text,
         "button2", "Appropriate component was selected");
 
-    // Select the last component and remove it
+    // Select the last component and remove it so that the first
+    // (selectable) component will be selected
     container.selectPrevious(undefined, undefined);
-    container.removeSelectedComponent();
+    container.removeSelectedComponent(true);
     assert.deepEqual(container._children.length, 2,
         "Another component was removed");
     // Recall that "button2" is now the name of the "first" button
     assert.deepEqual(container._children[container._selectedChild].text,
         "button2", "Appropriate component was selected");
+
+    // Test that exception is thrown (and the container isn't changed)
+    // if shouldSelectNext is neither true nor false
+    var exceptionThrown = false;
+    try {
+        container.removeSelectedComponent();
+    }
+    catch (err) {
+        exceptionThrown = true;
+    }
+    assert.deepEqual(container._children.length, 2,
+        "A component isn't removed if invalid first parameter");
+    assert.ok(exceptionThrown, "Exception thrown if invalid parameter");
+
+    // Test that no component is selected if first parameter is given
+    // false value
+    var formerContainerLength = container._children.length;
+    container.removeSelectedComponent(false);
+    assert.deepEqual(container._children.length, formerContainerLength - 1,
+        "A component is removed if first parameter is false");
+    assert.deepEqual(container._selectedChild, -1,
+        "No component is selected if first parameter is false");
 });
 
 QUnit.test("Container.prototype.selectChild()", function(assert) {

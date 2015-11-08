@@ -1,12 +1,8 @@
 Next:
 -lifeline buttons
-    --activation:
-        --its activation should make it be removed
-            --if the final button was selected, only erase that
-            button
-                --allow passing of a parameter findNextChild to
-                GUI.Container.removeSelectedComponent()
-        --no longer continue game if lifeline button is selected
+    --don't allow jumping to the lifelines if no lifeline
+    button remains
+    --no longer continue game if lifeline button is selected
     --change SpongeBob's dialogue so that all of the options for help are
     called "lifelines", not "cheats"
 -look into changing the colors of the answer rectangles (e.g. use borders)

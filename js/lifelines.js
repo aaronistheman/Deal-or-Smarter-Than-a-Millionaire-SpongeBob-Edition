@@ -159,16 +159,20 @@ Lifelines.prototype = {
     },
 
     /*
-        @pre this.container has at least two selectable components
+        @pre if shouldSelectNext is true, this.container must have at
+        least two selectable components (or infinite loop will occur)
         @post this instance's container's selected LifelineButton
         instance has been removed, the one after it has been selected,
         and the removed one has been erased
+        @param shouldSelectNext true to select the next selectable
+        component; false to make no component be currently selected
+        after the removal
     */
-    removeSelectedLifeline : function() {
+    removeSelectedLifeline : function(shouldSelectNext) {
         this.erase();
 
         // Remove the currently selected LifelineButton instance
-        this.container.removeSelectedComponent();
+        this.container.removeSelectedComponent(shouldSelectNext);
 
         // Redraw the remaining lifeline buttons
         this.draw();
