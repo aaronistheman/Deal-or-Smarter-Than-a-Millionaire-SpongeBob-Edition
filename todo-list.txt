@@ -1,13 +1,10 @@
 Next:
--look into changing the colors of the answer rectangles (e.g. use borders)
-    --if you do, you may need to change the lifeline buttons' colors to match
 -implement peeking
 -implement ask the audience
 -implement phone a friend
 -implement saving
     --make sure it isn't used in million dollar question; could edit
     removeAllLifelines()
--remove the alert regarding which lifeline was selected
 -once peeking and saving are no longer possible, set current helper
 to null and don't allow picking of anymore helpers
     --make SpongeBob explain this
