@@ -146,16 +146,23 @@ Lifelines.prototype = {
     },
 
     /*
-        @post this instance's stored canvases have been completely
-        erased
+        @pre this instance of lifelines has defined canvases stored
+        (i.e. (this.graphicalCanvas !== undefined) && (this.textualCanvas
+        !== undefined))
+        @post this instance's stored canvases, if defined, have been
+        completely erased
     */
     erase : function() {
-        this.graphicalCanvas.getContext('2d')
-            .clearRect(0, 0, this.graphicalCanvas.width,
-                this.graphicalCanvas.height);
-        this.textualCanvas.getContext('2d')
-            .clearRect(0, 0, this.textualCanvas.width,
-                this.textualCanvas.height);
+        if (this.graphicalCanvas !== undefined) {
+            this.graphicalCanvas.getContext('2d')
+                .clearRect(0, 0, this.graphicalCanvas.width,
+                    this.graphicalCanvas.height);
+        }
+        if (this.textualCanvas !== undefined) {
+            this.textualCanvas.getContext('2d')
+                .clearRect(0, 0, this.textualCanvas.width,
+                    this.textualCanvas.height);
+        }
     },
 
     /*

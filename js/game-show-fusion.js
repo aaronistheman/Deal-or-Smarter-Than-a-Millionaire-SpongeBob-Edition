@@ -553,6 +553,18 @@ function allowUserSelectAnswerOrLifeline(booleanValue) {
 }
 
 /*
+    @pre the lifeline buttons are stored from the second element onward
+    in gameShow.lifelines.container._chldren
+    @post all stored lifeline buttons have been removed
+    @hasTest yes
+*/
+function removeAllLifelines() {
+    while (gameShow.lifelines.container.getNumberOfChildren() > 1)
+        gameShow.lifelines.removeSelectedLifeline(
+            gameShow.lifelines.container.getNumberOfChildren() > 2);
+}
+
+/*
     @pre gameShow.turnVariables.selectedQuestion has been updated
     @post the question, its answers, and the support options
     have been presented, and the user is able to respond
@@ -1168,6 +1180,7 @@ function presentMillionDollarQuestion() {
     gameShow.turnVariables.selectedQuestion =
         Questions.MILLION_DOLLAR_QUESTION;
     gameShow.activeHelper = null;
+    removeAllLifelines();
 
     presentQuestionAndAnswers();
 }

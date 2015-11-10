@@ -472,6 +472,20 @@ QUnit.test("setUpHelpers()", function(assert) {
             "At least one strength was given to the first helper");
 });
 
+QUnit.test("removeAllLifelines()", function(assert) {
+    // Set up
+    var trivialCanvasId = "foobar";
+    $("#qunit-fixture").append("<canvas id='" + trivialCanvasId +
+        "' width='300' height='300'></canvas>");
+    gameShow.lifelines = new Lifelines(trivialCanvasId, trivialCanvasId);
+    gameShow.lifelines.loadCanvases();
+
+    // Call the function and evaluate the result
+    removeAllLifelines();
+    assert.deepEqual(gameShow.lifelines.container.getNumberOfChildren(),
+        1, "All lifeline buttons were removed");
+});
+
 QUnit.module("helper-panel-container.js");
 
 QUnit.test("GUI.HelperPanelContainer()", function(assert) {
