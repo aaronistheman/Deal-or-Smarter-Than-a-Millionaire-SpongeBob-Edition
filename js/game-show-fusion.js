@@ -434,6 +434,7 @@ function handleCaseSelection() {
         gameShow.selectedBriefcaseNumber + ".")
         .deployQuoteChain(function() {
             gameShow.musicPlayer.play(MUSIC_IDS.QUESTION_1_TO_5);
+            gameShow.chooseHelperMenuState.draw();
             haveUserPickHelper();
         });
 }
@@ -987,7 +988,6 @@ function haveUserPickHelper() {
         endCallback();
     else {
         // Have the host explain the user's job
-        gameShow.chooseHelperMenuState.draw();
         gameShow.canvasStack.set(CANVAS_IDS.QUOTE.concat(
             CANVAS_IDS.CHOOSE_HELPER));
         allowUserPickHelper(true);

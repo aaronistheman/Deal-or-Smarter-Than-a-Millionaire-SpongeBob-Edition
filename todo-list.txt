@@ -1,8 +1,6 @@
 Next:
 -look into changing the colors of the answer rectangles (e.g. use borders)
     --if you do, you may need to change the lifeline buttons' colors to match
--see if chooseHelperMenuState is being drawn over itself whenever
-haveUserPickHelper() is called
 -implement peeking
 -implement ask the audience
 -implement phone a friend
