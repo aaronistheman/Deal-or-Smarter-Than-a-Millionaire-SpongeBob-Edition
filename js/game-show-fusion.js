@@ -643,12 +643,6 @@ function handleLifelineSelection() {
     */
     gameShow.lifelines.removeSelectedLifeline(
         gameShow.lifelines.container.getNumberOfChildren() > 2);
-
-    alert("Lifeline selected: " +
-        gameShow.lifelines.mostRecentlyActivatedButton);
-
-    // GET RID OF THIS EVENTUALLY: behave as if an answer was selected
-    handleAnswerSelection();
 }
 
 /*
@@ -1101,7 +1095,7 @@ function explainUserChooseMillionOrGoHome() {
         .add("If you choose the wrong answer, you go home with nothing.")
         .add("However, if you choose the right answer, you go home " +
             "a millionaire.")
-        .add("Remember: your helpers, lifelines, and cheats can't help " +
+        .add("Remember that your helpers and lifelines can't help " +
             "you on this question.")
         .add("Before I let you choose, I'll tell you the subject of " +
             "the question.")
