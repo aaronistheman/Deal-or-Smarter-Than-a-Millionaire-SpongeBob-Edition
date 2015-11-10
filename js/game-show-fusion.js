@@ -43,6 +43,10 @@ gameShow.activeHelper = null; // instance of the current helper
 gameShow.NUMBER_OF_HELPERS = 5;
 setUpHelpers();
 
+gameShow.lifelines = new Lifelines(CANVAS_IDS.LIFELINES_GRAPHICS,
+    CANVAS_IDS.LIFELINES_TEXT);
+gameShow.isUserSelectingLifeline = false;
+
 gameShow.chooseHelperMenuState = new ChooseHelperMenuState(
     CANVAS_IDS.CHOOSE_HELPER_GRAPHICS, CANVAS_IDS.CHOOSE_HELPER_TEXT,
     gameShow.helpers);
@@ -377,6 +381,33 @@ function allowAnswerSelectorMovement(bool) {
 }
 
 /*
+    @param bool true to allow user to change which lifeline
+    is selected; false to disable this ability
+*/
+function allowLifelineSelectorMovement(bool) {
+    if (bool === true) {
+        gameShow.keyActions.set(KEY_CODES.UP_ARROW, function() {
+            gameShow.soundPlayer.play(
+                SOUND_EFFECTS_IDS.MOVE_LIFELINE_SELECTOR);
+            gameShow.lifelines.container.selectPrevious(
+                gameShow.lifelines.graphicalCanvas,
+                gameShow.lifelines.textualCanvas);
+        })
+        .set(KEY_CODES.DOWN_ARROW, function() {
+            gameShow.soundPlayer.play(
+                SOUND_EFFECTS_IDS.MOVE_LIFELINE_SELECTOR);
+            gameShow.lifelines.container.selectNext(
+                gameShow.lifelines.graphicalCanvas,
+                gameShow.lifelines.textualCanvas);
+        });
+    }
+    else {
+        gameShow.keyActions.erase(KEY_CODES.UP_ARROW)
+            .erase(KEY_CODES.DOWN_ARROW);
+    }
+}
+
+/*
     @post the selection of a case has been performed; the
     selection has been set up to be announced by the host; the
     briefcase display has been updated; the
@@ -468,14 +499,75 @@ function handleQuestionSelection() {
     // Present the question
     gameShow.turnVariables.selectedQuestion =
         gameShow.questions.numberOfLabelToEmphasize;
+    // Explain the use of keys if the user is on the first question
+    if (gameShow.numberOfQuestionsCorrectlyAnswered < 1) {
+        gameShow.quotesToDraw.add("You have selected a question.")
+        .add("Once the question is shown, use the arrow " +
+        "keys and the Enter key to select your answer.")
+        .add("Furthermore, use the 'H' key to jump to or from the " +
+        "lifeline buttons.");
+    }
     gameShow.quotesToDraw.add("Here comes the question.")
         .deployQuoteChain(presentQuestionAndAnswers);
 }
 
 /*
+    @param booleanValue true to allow the user to use the 'H' key
+    to switch between being able to select an answer and being able
+    to select a lifeline; false to disable the user's ability to
+    select answers and lifelines
+*/
+function allowUserSelectAnswerOrLifeline(booleanValue) {
+    if (booleanValue) {
+        gameShow.isUserSelectingLifeline = false;
+        allowAnswerSelectorMovement(!gameShow.isUserSelectingLifeline);
+
+        gameShow.keyActions.set(KEY_CODES.H, function() {
+            // If lifeline buttons remain,
+            // toggle between the allowing of answer selection and
+            // the allowing of lifeline selection
+            if (gameShow.lifelines.container.getNumberOfChildren() > 1) {
+                gameShow.isUserSelectingLifeline =
+                    !gameShow.isUserSelectingLifeline;
+                if (!gameShow.isUserSelectingLifeline) {
+                    gameShow.soundPlayer.play(
+                        SOUND_EFFECTS_IDS.ENABLE_ANSWER_SELECTION);
+                    allowLifelineSelectorMovement(false);
+                    allowAnswerSelectorMovement(true);
+                }
+                else {
+                    gameShow.soundPlayer.play(
+                        SOUND_EFFECTS_IDS.ENABLE_LIFELINE_SELECTION);
+                    allowAnswerSelectorMovement(false);
+                    allowLifelineSelectorMovement(true);
+                }
+            }
+        });
+    }
+    else {
+        // Remove the user's ability to select answers and lifelines
+        allowAnswerSelectorMovement(false);
+        allowLifelineSelectorMovement(false);
+        gameShow.keyActions.erase(KEY_CODES.H);
+    }
+}
+
+/*
+    @pre the lifeline buttons are stored from the second element onward
+    in gameShow.lifelines.container._chldren
+    @post all stored lifeline buttons have been removed
+    @hasTest yes
+*/
+function removeAllLifelines() {
+    while (gameShow.lifelines.container.getNumberOfChildren() > 1)
+        gameShow.lifelines.removeSelectedLifeline(
+            gameShow.lifelines.container.getNumberOfChildren() > 2);
+}
+
+/*
     @pre gameShow.turnVariables.selectedQuestion has been updated
     @post the question, its answers, and the support options
-    have been presented
+    have been presented, and the user is able to respond
 */
 function presentQuestionAndAnswers() {
     // Update what the user sees and hears
@@ -483,13 +575,19 @@ function presentQuestionAndAnswers() {
         gameShow.canvasStack.set(CANVAS_IDS.QUESTIONING,
             CanvasStack.EFFECTS.FADE_IN);
     else
-        gameShow.canvasStack.set(CANVAS_IDS.QUESTIONING);
+        gameShow.canvasStack.set(CANVAS_IDS.QUESTIONING.concat(
+            CANVAS_IDS.LIFELINES));
     gameShow.questions.drawQuestionAndAnswersText(
         gameShow.turnVariables.selectedQuestion);
 
-    // Allow the user to pick an answer
-    allowAnswerSelectorMovement(true);
-    gameShow.keyActions.set(KEY_CODES.ENTER, handleAnswerSelection);
+    // Allow the user to pick an answer or lifeline
+    allowUserSelectAnswerOrLifeline(true);
+    gameShow.keyActions.set(KEY_CODES.ENTER, function() {
+        if (!gameShow.isUserSelectingLifeline)
+            handleAnswerSelection();
+        else
+            handleLifelineSelection();
+    });
 }
 
 /*
@@ -497,7 +595,7 @@ function presentQuestionAndAnswers() {
     choosing an answer
 */
 function handleAnswerSelection() {
-    allowAnswerSelectorMovement(false);
+    allowUserSelectAnswerOrLifeline(false);
 
     // Save the answer
     gameShow.turnVariables.selectedAnswer =
@@ -519,6 +617,32 @@ function handleAnswerSelection() {
         else
             handleWrongAnswerSelection();
     }
+}
+
+/*
+    @pre a newly constructed instance of Lifelines has one
+    instance of Label and three instances of LifelineButton
+    @post the game has responded appropriately to the user's
+    choosing a lifeline; the selected lifeline has been activated
+    and removed
+*/
+function handleLifelineSelection() {
+    // React auditorily
+    gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.SELECT_LIFELINE);
+
+    // Activate the selected lifeline button in the container so
+    // that we can tell which lifeline was selected
+    gameShow.lifelines.container.activateSelectedComponent();
+
+    /*
+        Don't allow the lifeline to be selected again; make sure
+        an infinite loop doesn't occur by only selecting the
+        next lifeline button if there will be a remaining lifeline button
+        (meaning two components, counting the label in the lifelines'
+        container, will remain)
+    */
+    gameShow.lifelines.removeSelectedLifeline(
+        gameShow.lifelines.container.getNumberOfChildren() > 2);
 }
 
 /*
@@ -971,7 +1095,7 @@ function explainUserChooseMillionOrGoHome() {
         .add("If you choose the wrong answer, you go home with nothing.")
         .add("However, if you choose the right answer, you go home " +
             "a millionaire.")
-        .add("Remember: your helpers, lifelines, and cheats can't help " +
+        .add("Remember that your helpers and lifelines can't help " +
             "you on this question.")
         .add("Before I let you choose, I'll tell you the subject of " +
             "the question.")
@@ -1050,6 +1174,7 @@ function presentMillionDollarQuestion() {
     gameShow.turnVariables.selectedQuestion =
         Questions.MILLION_DOLLAR_QUESTION;
     gameShow.activeHelper = null;
+    removeAllLifelines();
 
     presentQuestionAndAnswers();
 }
@@ -1132,6 +1257,8 @@ function setUpGame() {
     gameShow.briefcaseDisplay.draw();
     gameShow.questions.drawInitialParts();
     gameShow.chooseHelperMenuState.loadCanvases();
+    gameShow.lifelines.loadCanvases();
+    gameShow.lifelines.draw();
 
     // Show the appropriate canvases
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);

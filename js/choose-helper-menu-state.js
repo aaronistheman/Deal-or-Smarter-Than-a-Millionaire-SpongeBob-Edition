@@ -132,7 +132,7 @@ ChooseHelperMenuState.prototype = {
         this.erase();
 
         // Remove the currently selected helperPanelContainer instance
-        this.GUIContainer.removeSelectedComponent();
+        this.GUIContainer.removeSelectedComponent(true);
 
         // Redraw the remaining helperPanelContainer instances
         this.draw();

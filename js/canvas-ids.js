@@ -20,6 +20,8 @@ var CANVAS_IDS = {
     BRIEFCASES_TEXT : "briefcase-text-canvas",
     QUESTIONING_GRAPHICS : "questioning-graphics-canvas",
     QUESTIONING_TEXT : "questioning-text-canvas",
+    LIFELINES_GRAPHICS : "lifelines-graphics-canvas",
+    LIFELINES_TEXT : "lifelines-text-canvas",
     MILLION_QUESTION : "million-question-canvas",
     CHOOSE_QUESTION_GRAPHICS : "choose-question-graphics-canvas",
     CHOOSE_QUESTION_TEXT : "choose-question-text-canvas",
@@ -46,3 +48,5 @@ CANVAS_IDS.CHOOSE_QUESTION =
     CANVAS_IDS.CHOOSE_QUESTION_TEXT];
 CANVAS_IDS.QUESTIONING = [CANVAS_IDS.QUESTIONING_GRAPHICS,
     CANVAS_IDS.QUESTIONING_TEXT];
+CANVAS_IDS.LIFELINES = [CANVAS_IDS.LIFELINES_GRAPHICS,
+    CANVAS_IDS.LIFELINES_TEXT];

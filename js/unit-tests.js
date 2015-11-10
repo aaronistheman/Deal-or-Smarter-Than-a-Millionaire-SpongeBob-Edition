@@ -267,6 +267,27 @@ QUnit.test("CanvasStack.prototype.clear()", function(assert) {
         "All stored canvases were removed");
 });
 
+QUnit.module("centered-label.js");
+
+QUnit.test("GUI.CenteredLabel()", function(assert) {
+    // Test constructor scope safety
+    var centeredLabel = GUI.CenteredLabel("teehee", "teehee");
+    assert.ok((centeredLabel instanceof GUI.CenteredLabel) &&
+        (typeof centeredLabel === "object"),
+        "Constructor of CenteredLabel is scope-safe");
+
+    // Test inheritance from GUI.Label
+    centeredLabel = new GUI.CenteredLabel("teehee", "teehee");
+    assert.ok(GUI.Label.prototype.isPrototypeOf(centeredLabel),
+        "CenteredLabel inherits the prototype of Label");
+    assert.ok(centeredLabel instanceof GUI.Label,
+        "Instance of CenteredLabel is instance of Label");
+
+    // Test constructor stealing
+    assert.ok(centeredLabel.hasOwnProperty("fontFace"),
+        "CenteredLabel steals Label's constructor in its own");
+});
+
 QUnit.module("component.js");
 
 QUnit.test("Component()", function(assert) {
@@ -323,7 +344,13 @@ QUnit.test("Container.prototype.pack()", function(assert) {
 
 QUnit.test("GUI.Container.prototype.removeSelectedComponent()",
     function(assert) {
-    // Set up a container of four buttons
+    /*
+        Since the selection within the method is done with other
+        methods of GUI.Container, it's safe to only use selectable
+        components to test
+    */
+
+    // Set up a container of four (selectable) buttons
     var container = new GUI.Container();
     var button1 = new GUI.Button();
     button1.text = "button1";
@@ -338,21 +365,45 @@ QUnit.test("GUI.Container.prototype.removeSelectedComponent()",
     button4.text = "button4";
     container.pack(button4);
 
-    // Remove the first component
-    container.removeSelectedComponent();
+    // Remove the first component and select the selectable component
+    // after it
+    container.removeSelectedComponent(true);
     assert.deepEqual(container._children.length,
         3, "A component was removed");
     assert.deepEqual(container._children[container._selectedChild].text,
         "button2", "Appropriate component was selected");
 
-    // Select the last component and remove it
+    // Select the last component and remove it so that the first
+    // (selectable) component will be selected
     container.selectPrevious(undefined, undefined);
-    container.removeSelectedComponent();
+    container.removeSelectedComponent(true);
     assert.deepEqual(container._children.length, 2,
         "Another component was removed");
     // Recall that "button2" is now the name of the "first" button
     assert.deepEqual(container._children[container._selectedChild].text,
         "button2", "Appropriate component was selected");
+
+    // Test that exception is thrown (and the container isn't changed)
+    // if shouldSelectNext is neither true nor false
+    var exceptionThrown = false;
+    try {
+        container.removeSelectedComponent();
+    }
+    catch (err) {
+        exceptionThrown = true;
+    }
+    assert.deepEqual(container._children.length, 2,
+        "A component isn't removed if invalid first parameter");
+    assert.ok(exceptionThrown, "Exception thrown if invalid parameter");
+
+    // Test that no component is selected if first parameter is given
+    // false value
+    var formerContainerLength = container._children.length;
+    container.removeSelectedComponent(false);
+    assert.deepEqual(container._children.length, formerContainerLength - 1,
+        "A component is removed if first parameter is false");
+    assert.deepEqual(container._selectedChild, -1,
+        "No component is selected if first parameter is false");
 });
 
 QUnit.test("Container.prototype.selectChild()", function(assert) {
@@ -419,6 +470,20 @@ QUnit.test("setUpHelpers()", function(assert) {
     if (gameShow.NUMBER_OF_HELPERS > 0)
         assert.ok(gameShow.helpers[0].getStrengths().length > 0,
             "At least one strength was given to the first helper");
+});
+
+QUnit.test("removeAllLifelines()", function(assert) {
+    // Set up
+    var trivialCanvasId = "foobar";
+    $("#qunit-fixture").append("<canvas id='" + trivialCanvasId +
+        "' width='300' height='300'></canvas>");
+    gameShow.lifelines = new Lifelines(trivialCanvasId, trivialCanvasId);
+    gameShow.lifelines.loadCanvases();
+
+    // Call the function and evaluate the result
+    removeAllLifelines();
+    assert.deepEqual(gameShow.lifelines.container.getNumberOfChildren(),
+        1, "All lifeline buttons were removed");
 });
 
 QUnit.module("helper-panel-container.js");
@@ -588,6 +653,42 @@ QUnit.test("Other aspects of Label", function(assert) {
     label._text = "changed";
     assert.deepEqual(label.text, "original",
         "The \"_text\" member of custom type Label is private");
+});
+
+QUnit.module("lifelines.js");
+
+QUnit.test("Lifelines.prototype._setUpContainer()", function(assert) {
+    // Indirectly call the method-to-test
+    var lifelines = new Lifelines(undefined, undefined);
+
+    // Activate the Ask the Audience button and confirm that
+    // this.mostRecentlyActivatedButton was given the correct value;
+    // assume that that button is the third component in the container
+    lifelines.container._children[2].activate();
+    assert.deepEqual(lifelines.mostRecentlyActivatedButton,
+        LIFELINES.ASK_AUDIENCE, "Buttons are given callbacks that " +
+        "edit lifelines.mostRecentlyActivatedButton");
+});
+
+QUnit.module("lifeline-button.js");
+
+QUnit.test("GUI.LifelineButton()", function(assert) {
+    // Test constructor scope safety
+    var lifelineButton = GUI.LifelineButton("Arial", 30, 100, 100);
+    assert.ok((lifelineButton instanceof GUI.LifelineButton) &&
+        (typeof lifelineButton === "object"),
+        "Constructor of LifelineButton is scope-safe");
+
+    // Test inheritance from GUI.Button
+    lifelineButton = new GUI.LifelineButton("Arial", 30, 100, 100);
+    assert.ok(GUI.Button.prototype.isPrototypeOf(lifelineButton),
+        "LifelineButton inherits the prototype of Button");
+    assert.ok(lifelineButton instanceof GUI.Button,
+        "Instance of LifelineButton is instance of Button");
+
+    // Test constructor stealing
+    assert.ok(lifelineButton.hasOwnProperty("_callback"),
+        "LifelineButton steals Button's constructor in its own");
 });
 
 QUnit.module("money-amount.js");

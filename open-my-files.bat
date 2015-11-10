@@ -35,4 +35,7 @@ start Notepad++ js/container.js
 start Notepad++ js/icon.js
 start Notepad++ js/label.js
 start Notepad++ js/helper-panel-container.js
+start Notepad++ js/lifelines.js
+start Notepad++ js/lifeline-button.js
+start Notepad++ js/centered-label.js
 exit
