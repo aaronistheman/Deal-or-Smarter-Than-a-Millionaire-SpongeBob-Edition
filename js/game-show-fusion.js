@@ -571,7 +571,7 @@ function removeAllLifelines() {
     have been presented, and the user is able to respond
 */
 function presentQuestionAndAnswers() {
-    // Update what the user sees and hears
+    // Update what the user sees
     if (gameShow.millionDollarQuestion)
         gameShow.canvasStack.set(CANVAS_IDS.QUESTIONING,
             CanvasStack.EFFECTS.FADE_IN);
