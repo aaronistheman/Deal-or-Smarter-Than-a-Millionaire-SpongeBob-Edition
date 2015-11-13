@@ -1,11 +1,10 @@
 Next:
 -implement peeking
-    -disable the user's ability to pick either an answer or a lifeline
-    (probably in handleLifelineSelection()) if lifeline button is clicked
     --after peek button is clicked:
         --determine the helper's answer
         --show the active helper and have him say his answer
-        --show the question and answer rectangles again
+        --show the question and answer rectangles again; enable user
+        input
         --consider somehow changing the answer rectangle that the helper
         has chosen (but don't do this if it's too hard; it's my fault for
         not planning ahead enough); for terminology's sake, let's
@@ -18,7 +17,8 @@ Next:
         --have the host explain to the audience
         --show the chart; play the appropriate sound effect
         --have the host thank the audience
-        --fix the music and show the question and answer rectangles again
+        --fix the music and show the question and answer rectangles again;
+        enable user input
         --consider somehow changing the answer rectangle that the helper
         has chosen (but don't do this if it's too hard; it's my fault for
         not planning ahead enough)
@@ -34,7 +34,8 @@ Next:
         --play time out sound effect after certain number of quote
         bubbles
         --have the host thank Patrick
-        --fix the music and show the question and answer rectangles again
+        --fix the music and show the question and answer rectangles again;
+        enable user input
         --consider somehow changing the answer rectangle that the helper
         has chosen (but don't do this if it's too hard; it's my fault for
         not planning ahead enough)

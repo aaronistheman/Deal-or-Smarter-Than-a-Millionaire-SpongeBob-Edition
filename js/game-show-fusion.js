@@ -631,6 +631,8 @@ function handleAnswerSelection() {
     and removed
 */
 function handleLifelineSelection() {
+    allowUserSelectAnswerOrLifeline(false);
+
     // React auditorily
     gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.SELECT_LIFELINE);
 
