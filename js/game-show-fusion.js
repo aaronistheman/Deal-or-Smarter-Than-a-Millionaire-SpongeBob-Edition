@@ -509,7 +509,12 @@ function handleQuestionSelection() {
         "lifeline buttons.");
     }
     gameShow.quotesToDraw.add("Here comes the question.")
-        .deployQuoteChain(presentQuestionAndAnswers);
+    .deployQuoteChain(function() {
+        // Draw and present the questions and answers
+        gameShow.questions.drawQuestionAndAnswersText(
+            gameShow.turnVariables.selectedQuestion);
+        presentQuestionAndAnswers();
+    });
 }
 
 /*
@@ -578,8 +583,6 @@ function presentQuestionAndAnswers() {
     else
         gameShow.canvasStack.set(CANVAS_IDS.QUESTIONING.concat(
             CANVAS_IDS.LIFELINES));
-    gameShow.questions.drawQuestionAndAnswersText(
-        gameShow.turnVariables.selectedQuestion);
 
     // Allow the user to pick an answer or lifeline
     allowUserSelectAnswerOrLifeline(true);
@@ -1176,6 +1179,9 @@ function presentMillionDollarQuestion() {
     gameShow.activeHelper = null;
     removeAllLifelines();
 
+    // Draw and present the question and answers
+    gameShow.questions.drawQuestionAndAnswersText(
+        gameShow.turnVariables.selectedQuestion);
     presentQuestionAndAnswers();
 }
 

@@ -1,9 +1,5 @@
 Next:
 -implement peeking
-    --move the drawing of the question and answers outside of presentQu...()
-    for both regular and million dollar questions (this way, they won't
-    be redrawn when the question and answers are presented again after
-    a lifeline selection)
     -disable the user's ability to pick either an answer or a lifeline
     (probably in handleLifelineSelection()) if lifeline button is clicked
     --after peek button is clicked:
