@@ -571,8 +571,8 @@ function removeAllLifelines() {
 }
 
 /*
-    @pre gameShow.turnVariables.selectedQuestion has been updated
-    @post the question, its answers, and the support options
+    @pre question, answers, and lifeline buttons have been drawn
+    @post the question, its answers, and the lifeline buttons
     have been presented, and the user is able to respond
 */
 function presentQuestionAndAnswers() {
@@ -640,6 +640,18 @@ function handleLifelineSelection() {
     // that we can tell which lifeline was selected
     gameShow.lifelines.container.activateSelectedComponent();
 
+    // Respond, depending on which lifeline was selected
+    var lifeline = gameShow.lifelines.mostRecentlyActivatedButton;
+    if (lifeline === LIFELINES.PEEK)
+        respondToPeekButtonActivation();
+    else if (lifeline === LIFELINES.ASK_AUDIENCE)
+        ; // respondToAskAudienceButtonActivation();
+    else if (lifeline === LIFELINES.PHONE_FRIEND)
+        ; // respondToPhoneFriendButtonActivation();
+    else /* should never happen */
+        alertAndThrowException("Most recently activated lifeline button " +
+            "isn't button for appropriate lifeline");
+
     /*
         Don't allow the lifeline to be selected again; make sure
         an infinite loop doesn't occur by only selecting the
@@ -653,15 +665,54 @@ function handleLifelineSelection() {
 
 /*
     @pre gameShow.activeHelper !== null; user has requested use
-    of his "Peek" lifeline
+    of his "Peek" lifeline; SpongeBob is the currently drawn speaker
     @post helper's answer has been determined and presented to the
     user, after which the user has been allowed to choose his answer
-    (or another lifeline) again
+    (or another lifeline) again; SpongeBob is the currently drawn
+    speaker
 */
 function respondToPeekButtonActivation() {
-    // var question = gameShow.questions.getQuestion(
-        // gameShow.turnVariables.selectedQuestion);
-    // var answerLetter = getHelperAnswer();
+    var helper = gameShow.activeHelper;
+
+    // Determine the helper's answer
+    var question = gameShow.questions.getQuestion(
+        gameShow.turnVariables.selectedQuestion);
+    var answerNumber = getHelperAnswer(helper, question);
+    var answerLetters = ['A', 'B', 'C', 'D'];
+    var helperAnswer = answerLetters[answerNumber - 1];
+
+    // Have the host explain; keep helper's gender in mind; have
+    // the host say Gary's answer, if necessary
+    gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
+    if (helper.name === SPEAKERS.SANDY)
+        gameShow.quotesToDraw.add("Your helper will now tell you " +
+            "the letter of the answer that she has chosen.");
+    else if (helper.name === SPEAKERS.GARY)
+        gameShow.quotesToDraw.add("Unfortunately, your helper can't " +
+            "say his answer, so I'll say it for him.")
+        .add("Your helper chose (" + helperAnswer + ").");
+    else
+        gameShow.quotesToDraw.add("Your helper will now tell you " +
+            "the letter of the answer that he has chosen.");
+    gameShow.quotesToDraw.deployQuoteChain(function() {
+        // Show the active helper
+        drawNewSpeaker(helper.name);
+
+        // Have the helper say his/her answer (unless it's Gary, in
+        // which case the answer should've already been said)
+        if (helper.name === SPEAKERS.GARY)
+            gameShow.quotesToDraw.add("Meow.");
+        else
+            gameShow.quotesToDraw.add("I chose (" + helperAnswer + ").");
+        gameShow.quotesToDraw.deployQuoteChain(function() {
+            // Draw the host as the speaker again
+            drawNewSpeaker(SPEAKERS.SPONGEBOB);
+
+            // Show the (unchanged) question and answers,
+            // and enable user input
+            presentQuestionAndAnswers();
+        });
+    });
 }
 
 /*
