@@ -1,7 +1,6 @@
 Next:
 -implement peeking
     --after peek button is clicked:
-        --determine the helper's answer
         --show the active helper and have him say his answer
         --show the question and answer rectangles again; enable user
         input

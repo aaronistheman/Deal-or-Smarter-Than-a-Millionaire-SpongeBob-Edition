@@ -35,8 +35,6 @@ function Question(grade, subject, text, answerData) {
     this.answerData = answerData;
 
     this.answered = false;
-
-    // ask the audience data
 }
 
 /*

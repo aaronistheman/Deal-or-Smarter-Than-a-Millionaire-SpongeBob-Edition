@@ -605,11 +605,11 @@ function handleAnswerSelection() {
     gameShow.turnVariables.selectedAnswer =
         gameShow.questions.numberOfAnswerToEmphasize;
 
-    // React to whether or not the answer was correct
+    // Determine whether or not the correct answer was selected;
+    // react to this judgment
     var question = gameShow.questions.getQuestion(
         gameShow.turnVariables.selectedQuestion);
-    if (selectedCorrectAnswer(question,
-        gameShow.turnVariables.selectedAnswer)) {
+    if (isCorrectAnswer(question, gameShow.turnVariables.selectedAnswer)) {
         if (gameShow.millionDollarQuestion)
             handleCorrectMillionAnswerSelection();
         else
@@ -652,16 +652,80 @@ function handleLifelineSelection() {
 }
 
 /*
-    @pre gameShow.turnVariables.selectedQuestion and
-    gameShow.turnVariables.selectedAnswer are updated;
-    1 <= numberOfAnswer <= 4
-    @hasTest yes
-    @param question instance of Question that the user gave
-    an answer for
-    @param numberOfAnswer number of the answer selected by the user
-    @returns true if user game correct answer; false, otherwise
+    @pre gameShow.activeHelper !== null; user has requested use
+    of his "Peek" lifeline
+    @post helper's answer has been determined and presented to the
+    user, after which the user has been allowed to choose his answer
+    (or another lifeline) again
 */
-function selectedCorrectAnswer(question, numberOfAnswer) {
+function respondToPeekButtonActivation() {
+    // var question = gameShow.questions.getQuestion(
+        // gameShow.turnVariables.selectedQuestion);
+    // var answerLetter = getHelperAnswer();
+}
+
+/*
+    @hasTest yes
+    @param helper the instance of Helper whose data will be used
+    to determine an answer that that helper could give
+    @param question instance of Question to use
+    @returns returns a number in range [1, 4]; this number indicates
+    the answer chosen by the given helper (there is probability
+    involved, since the helper may not always choose correct answer)
+    @throws exception if fail to determine the helper's answer
+    (although this should never happen)
+*/
+function getHelperAnswer(helper, question) {
+    var correctAnswerNumber = question.answerData.correctIndex + 1;
+    var gaveCorrectAnswer = undefined;
+
+    /*
+        Determine if helper "answered" the question correctly
+    */
+    // If helper specializes in the subject, helper automatically
+    // answers correctly
+    if (helper.getStrengths().indexOf(question.subject) !== -1)
+        gaveCorrectAnswer = true;
+    // Otherwise, use probability to decide, based on the helper's
+    // default correct rate
+    else
+        gaveCorrectAnswer = Math.random() < helper.defaultCorrectRate;
+
+    /*
+        Return appropriate answer number depending on whether
+        or not the helper gave the correct answer
+    */
+    // If helper "answered" the question correctly, return
+    // the correct answer number as his choice
+    if (gaveCorrectAnswer === true)
+        return correctAnswerNumber;
+    // Otherwise, randomly choose a wrong answer and return that
+    // answer's number as his choice
+    else if (gaveCorrectAnswer === false) {
+        // Create an array of the wrong answer numbers
+        var wrongAnswerNumbers = [];
+        for (var i = 1; i <= 4; ++i) {
+            if (i !== correctAnswerNumber)
+                wrongAnswerNumbers.push(i);
+        }
+        // Randomly return one of the wrong answer numbers
+        var randomIndex =
+            Math.floor(Math.random() * wrongAnswerNumbers.length);
+        return wrongAnswerNumbers[randomIndex];
+    }
+    else // should never happen
+        alertAndThrowException("Unable to determine helper's " +
+            "answer in getHelperAnswer()");
+}
+
+/*
+    @pre 1 <= numberOfAnswer <= 4
+    @hasTest yes
+    @param question instance of Question to check
+    @param numberOfAnswer number of the selected answer
+    @returns true if correct answer given; false, otherwise
+*/
+function isCorrectAnswer(question, numberOfAnswer) {
     return (question.answerData.correctIndex === (numberOfAnswer - 1));
 }
 

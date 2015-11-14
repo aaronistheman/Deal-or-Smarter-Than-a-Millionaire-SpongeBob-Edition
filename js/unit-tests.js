@@ -450,14 +450,58 @@ QUnit.test("getRandomMoneyAmount()", function(assert) {
         "Correctly, one bar was given a grey fade");
 });
 
-QUnit.test("selectedCorrectAnswer()", function(assert) {
+QUnit.test("getHelperAnswer()", function(assert) {
+    // Set up fake question and other variables
+    var answerIndex = 2;
+    var answerNumber = answerIndex + 1;
+    var questionSubject = SUBJECTS.MUSIC;
+    var otherSubject1 = SUBJECTS.VIDEO_GAMES;
+    var otherSubject2 = SUBJECTS.ART;
+    var fakeQuestion = new Question(GRADES.THIRD, questionSubject,
+        "What grade is Devin Sigley in?",
+        new AnswerData(answerIndex, ["a", "b", "c", "d"]));
+
+    /*
+        Confirm that correct answer is given by helper with 100%
+        correct rate
+    */
+    var smartHelper = new Helper("Smart Dude", 1, "...",
+        "fakeIconSource", []);
+    assert.deepEqual(getHelperAnswer(smartHelper, fakeQuestion),
+        answerNumber, "Always correct helper chose correct answer");
+
+    /*
+        Confirm that wrong answer is given by helper with 0%
+        correct rate
+    */
+    var stupidHelper = new Helper("Stupid Dude", 0, "...",
+        "fakeIconSource", []);
+    var stupidHelperAnswer = getHelperAnswer(stupidHelper, fakeQuestion);
+    assert.ok(stupidHelperAnswer !== answerNumber,
+        "Always wrong helper didn't choose correct answer");
+    assert.ok(1 <= stupidHelperAnswer && stupidHelperAnswer <= 4,
+        "Always wrong helper's answer number is within correct range");
+
+    /*
+        Confirm that correct answer is always given by helper
+        who specializes in the question's subject, regardless
+        of correct answer rate
+    */
+    var talentedHelper = new Helper("Talented Dude", 0, "...",
+        "fakeIconSource", [otherSubject1, questionSubject, otherSubject2]);
+    assert.deepEqual(getHelperAnswer(talentedHelper, fakeQuestion),
+        answerNumber, "Correct answer is always given by helper who " +
+            "specializes in question's subject");
+});
+
+QUnit.test("isCorrectAnswer()", function(assert) {
     var answerIndex = 3;
     var fakeQuestion = new Question(GRADES.FIRST, SUBJECTS.ART,
         "This is a fake question.",
         new AnswerData(answerIndex, ["a", "b", "c", "d"]));
-    assert.deepEqual(selectedCorrectAnswer(fakeQuestion, 1),
+    assert.deepEqual(isCorrectAnswer(fakeQuestion, 1),
         false, "Wrong answer was detected");
-    assert.deepEqual(selectedCorrectAnswer(fakeQuestion, (answerIndex + 1)),
+    assert.deepEqual(isCorrectAnswer(fakeQuestion, (answerIndex + 1)),
         true, "Correct answer was detected");
 });
 
