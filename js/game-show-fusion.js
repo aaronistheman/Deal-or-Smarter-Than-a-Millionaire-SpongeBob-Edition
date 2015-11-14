@@ -509,7 +509,12 @@ function handleQuestionSelection() {
         "lifeline buttons.");
     }
     gameShow.quotesToDraw.add("Here comes the question.")
-        .deployQuoteChain(presentQuestionAndAnswers);
+    .deployQuoteChain(function() {
+        // Draw and present the questions and answers
+        gameShow.questions.drawQuestionAndAnswersText(
+            gameShow.turnVariables.selectedQuestion);
+        presentQuestionAndAnswers();
+    });
 }
 
 /*
@@ -566,20 +571,18 @@ function removeAllLifelines() {
 }
 
 /*
-    @pre gameShow.turnVariables.selectedQuestion has been updated
-    @post the question, its answers, and the support options
+    @pre question, answers, and lifeline buttons have been drawn
+    @post the question, its answers, and the lifeline buttons
     have been presented, and the user is able to respond
 */
 function presentQuestionAndAnswers() {
-    // Update what the user sees and hears
+    // Update what the user sees
     if (gameShow.millionDollarQuestion)
         gameShow.canvasStack.set(CANVAS_IDS.QUESTIONING,
             CanvasStack.EFFECTS.FADE_IN);
     else
         gameShow.canvasStack.set(CANVAS_IDS.QUESTIONING.concat(
             CANVAS_IDS.LIFELINES));
-    gameShow.questions.drawQuestionAndAnswersText(
-        gameShow.turnVariables.selectedQuestion);
 
     // Allow the user to pick an answer or lifeline
     allowUserSelectAnswerOrLifeline(true);
@@ -602,11 +605,11 @@ function handleAnswerSelection() {
     gameShow.turnVariables.selectedAnswer =
         gameShow.questions.numberOfAnswerToEmphasize;
 
-    // React to whether or not the answer was correct
+    // Determine whether or not the correct answer was selected;
+    // react to this judgment
     var question = gameShow.questions.getQuestion(
         gameShow.turnVariables.selectedQuestion);
-    if (selectedCorrectAnswer(question,
-        gameShow.turnVariables.selectedAnswer)) {
+    if (isCorrectAnswer(question, gameShow.turnVariables.selectedAnswer)) {
         if (gameShow.millionDollarQuestion)
             handleCorrectMillionAnswerSelection();
         else
@@ -628,12 +631,26 @@ function handleAnswerSelection() {
     and removed
 */
 function handleLifelineSelection() {
+    allowUserSelectAnswerOrLifeline(false);
+
     // React auditorily
     gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.SELECT_LIFELINE);
 
     // Activate the selected lifeline button in the container so
     // that we can tell which lifeline was selected
     gameShow.lifelines.container.activateSelectedComponent();
+
+    // Respond, depending on which lifeline was selected
+    var lifeline = gameShow.lifelines.mostRecentlyActivatedButton;
+    if (lifeline === LIFELINES.PEEK)
+        respondToPeekButtonActivation();
+    else if (lifeline === LIFELINES.ASK_AUDIENCE)
+        ; // respondToAskAudienceButtonActivation();
+    else if (lifeline === LIFELINES.PHONE_FRIEND)
+        ; // respondToPhoneFriendButtonActivation();
+    else /* should never happen */
+        alertAndThrowException("Most recently activated lifeline button " +
+            "isn't button for appropriate lifeline");
 
     /*
         Don't allow the lifeline to be selected again; make sure
@@ -647,16 +664,119 @@ function handleLifelineSelection() {
 }
 
 /*
-    @pre gameShow.turnVariables.selectedQuestion and
-    gameShow.turnVariables.selectedAnswer are updated;
-    1 <= numberOfAnswer <= 4
-    @hasTest yes
-    @param question instance of Question that the user gave
-    an answer for
-    @param numberOfAnswer number of the answer selected by the user
-    @returns true if user game correct answer; false, otherwise
+    @pre gameShow.activeHelper !== null; user has requested use
+    of his "Peek" lifeline; SpongeBob is the currently drawn speaker
+    @post helper's answer has been determined and presented to the
+    user, after which the user has been allowed to choose his answer
+    (or another lifeline) again; SpongeBob is the currently drawn
+    speaker
 */
-function selectedCorrectAnswer(question, numberOfAnswer) {
+function respondToPeekButtonActivation() {
+    var helper = gameShow.activeHelper;
+
+    // Determine the helper's answer
+    var question = gameShow.questions.getQuestion(
+        gameShow.turnVariables.selectedQuestion);
+    var answerNumber = getHelperAnswer(helper, question);
+    var answerLetters = ['A', 'B', 'C', 'D'];
+    var helperAnswer = answerLetters[answerNumber - 1];
+
+    // Have the host explain; keep helper's gender in mind; have
+    // the host say Gary's answer, if necessary
+    gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
+    if (helper.name === SPEAKERS.SANDY)
+        gameShow.quotesToDraw.add("Your helper will now tell you " +
+            "the letter of the answer that she has chosen.");
+    else if (helper.name === SPEAKERS.GARY)
+        gameShow.quotesToDraw.add("Unfortunately, your helper can't " +
+            "say his answer, so I'll say it for him.")
+        .add("Your helper chose (" + helperAnswer + ").");
+    else
+        gameShow.quotesToDraw.add("Your helper will now tell you " +
+            "the letter of the answer that he has chosen.");
+    gameShow.quotesToDraw.deployQuoteChain(function() {
+        // Show the active helper
+        drawNewSpeaker(helper.name);
+
+        // Have the helper say his/her answer (unless it's Gary, in
+        // which case the answer should've already been said)
+        if (helper.name === SPEAKERS.GARY)
+            gameShow.quotesToDraw.add("Meow.");
+        else
+            gameShow.quotesToDraw.add("I chose (" + helperAnswer + ").");
+        gameShow.quotesToDraw.deployQuoteChain(function() {
+            // Draw the host as the speaker again
+            drawNewSpeaker(SPEAKERS.SPONGEBOB);
+
+            // Show the (unchanged) question and answers,
+            // and enable user input
+            presentQuestionAndAnswers();
+        });
+    });
+}
+
+/*
+    @hasTest yes
+    @param helper the instance of Helper whose data will be used
+    to determine an answer that that helper could give
+    @param question instance of Question to use
+    @returns returns a number in range [1, 4]; this number indicates
+    the answer chosen by the given helper (there is probability
+    involved, since the helper may not always choose correct answer)
+    @throws exception if fail to determine the helper's answer
+    (although this should never happen)
+*/
+function getHelperAnswer(helper, question) {
+    var correctAnswerNumber = question.answerData.correctIndex + 1;
+    var gaveCorrectAnswer = undefined;
+
+    /*
+        Determine if helper "answered" the question correctly
+    */
+    // If helper specializes in the subject, helper automatically
+    // answers correctly
+    if (helper.getStrengths().indexOf(question.subject) !== -1)
+        gaveCorrectAnswer = true;
+    // Otherwise, use probability to decide, based on the helper's
+    // default correct rate
+    else
+        gaveCorrectAnswer = Math.random() < helper.defaultCorrectRate;
+
+    /*
+        Return appropriate answer number depending on whether
+        or not the helper gave the correct answer
+    */
+    // If helper "answered" the question correctly, return
+    // the correct answer number as his choice
+    if (gaveCorrectAnswer === true)
+        return correctAnswerNumber;
+    // Otherwise, randomly choose a wrong answer and return that
+    // answer's number as his choice
+    else if (gaveCorrectAnswer === false) {
+        // Create an array of the wrong answer numbers
+        var wrongAnswerNumbers = [];
+        for (var i = 1; i <= 4; ++i) {
+            if (i !== correctAnswerNumber)
+                wrongAnswerNumbers.push(i);
+        }
+        // Randomly return one of the wrong answer numbers
+        var randomIndex =
+            Math.floor(Math.random() * wrongAnswerNumbers.length);
+        return wrongAnswerNumbers[randomIndex];
+    }
+    else // should never happen
+        alertAndThrowException("Unable to determine helper's " +
+            "answer in getHelperAnswer()");
+}
+
+/*
+    @pre 1 <= numberOfAnswer <= 4
+    @hasTest yes
+    @param question instance of Question to check
+    @param numberOfAnswer number of the selected answer
+    @returns true if correct answer given; false, otherwise
+*/
+function isCorrectAnswer(question, numberOfAnswer) {
     return (question.answerData.correctIndex === (numberOfAnswer - 1));
 }
 
@@ -1176,6 +1296,9 @@ function presentMillionDollarQuestion() {
     gameShow.activeHelper = null;
     removeAllLifelines();
 
+    // Draw and present the question and answers
+    gameShow.questions.drawQuestionAndAnswersText(
+        gameShow.turnVariables.selectedQuestion);
     presentQuestionAndAnswers();
 }
 

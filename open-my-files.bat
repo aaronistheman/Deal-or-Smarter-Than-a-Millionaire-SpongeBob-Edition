@@ -8,7 +8,7 @@ start Notepad++ js/unit-tests.js
 REM start Notepad++ js/game-controller.js
 REM start Notepad++ js/canvas-stack.js
 REM start Notepad++ js/error-handling.js
-REM start Notepad++ js/utility.js
+start Notepad++ js/utility.js
 REM start Notepad++ js/money-display.js
 REM start Notepad++ js/briefcase-display.js
 REM start Notepad++ js/key-actions.js

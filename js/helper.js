@@ -6,7 +6,7 @@
 */
 
 /*
-    @pre 0 < defaultCorrectRate <= 1
+    @pre 0 <= defaultCorrectRate <= 1
     @post instance of Helper has been created without any strengths
     @param name of the helper; should be a value in SPEAKERS
     @param defaultCorrectRate the rate at which the helper answers
@@ -22,7 +22,7 @@
 function Helper(name, defaultCorrectRate, introductoryQuote, iconSource,
     arrayOfStrenghts) {
     // Confirm valid parameters
-    if (defaultCorrectRate <= 0 || defaultCorrectRate > 1) {
+    if (defaultCorrectRate < 0 || defaultCorrectRate > 1) {
         alertAndThrowException(
             "Invalid defaultCorrectRate given to Helper constructor");
     }
