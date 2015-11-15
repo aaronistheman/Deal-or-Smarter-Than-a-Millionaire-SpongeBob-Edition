@@ -1,7 +1,15 @@
 Next:
--get rid of the stash
 -implement ask the audience
     --after "ask the audience" button is clicked:
+        --audience data
+            --throw exception if any given percentage is less than 0
+            or above 1
+                --make test for this
+            --have Question constructor throw exception if wrong number
+            of parameters given
+            --perhaps have Question constructor throw exception if AudienceData
+            or AnswerData aren't of those types
+            --create audience data for each question
         --determine the audience's answers
         --change the music (to the "ask the audience" music segment, which
         will loop if necessary)

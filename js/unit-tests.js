@@ -822,6 +822,62 @@ QUnit.test("MoneyDisplay.getBarPosition()", function(assert) {
         "Correct position for tenth bar");
 });
 
+QUnit.module("question.js");
+
+QUnit.test("Question()", function(assert) {
+    // Confirm exception thrown if invalid grade
+    var question = null;
+    var exceptionThrown = false;
+    try {
+        question = new Question("fakeGrade", SUBJECTS.ART,
+            "What grade is Devin Sigley in?",
+            new AnswerData(2, ["yolo", "swag", "meh", "5"]),
+            [0.25, 0.25, 0.25, 0.25]);
+    }
+    catch (err) {
+        exceptionThrown = true;
+    }
+    assert.ok(exceptionThrown, "Exception thrown if invalid grade");
+
+    // Confirm exception thrown if invalid subject
+    exceptionThrown = false;
+    try {
+        question = new Question(GRADES.SECOND, "fakeSubject",
+            "What grade is Devin Sigley in?",
+            new AnswerData(2, ["yolo", "swag", "meh", "5"]),
+            [0.25, 0.25, 0.25, 0.25]);
+    }
+    catch (err) {
+        exceptionThrown = true;
+    }
+    assert.ok(exceptionThrown, "Exception thrown if invalid subject");
+});
+
+QUnit.test("AnswerData()", function(assert) {
+    // Confirm exception thrown if correctIndex is in wrong range
+    var answerData = null;
+    var exceptionThrown = false;
+    try {
+        answerData = new AnswerData(4, ["", "", "", ""]);
+    }
+    catch (err) {
+        exceptionThrown = true;
+    }
+    assert.ok(exceptionThrown, "Exception thrown if correctIndex not in " +
+        "correct range");
+
+    // Confirm exception thrown if invalidly-sized arrayOfAnswers
+    var exceptionThrown = false;
+    try {
+        answerData = new AnswerData(2, ["", "", ""]);
+    }
+    catch (err) {
+        exceptionThrown = true;
+    }
+    assert.ok(exceptionThrown, "Exception thrown if wrong number of " +
+        "answers given");
+});
+
 QUnit.module("questions.js");
 
 QUnit.test("Questions.prototype._generateTenQuestions()", function(assert) {
