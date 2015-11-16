@@ -24,7 +24,8 @@
     (1) invalid grade
     (2) invalid subject
     (3) answerData isn't instance of AnswerData
-    (4) audienceData isn't instance of AudienceData
+    (4) audienceData isn't instance of AudienceData and grade isn't
+    GRADES.MILLION
 */
 function Question(grade, subject, text, answerData, audienceData) {
     if (isGrade(grade))
@@ -51,7 +52,7 @@ function Question(grade, subject, text, answerData, audienceData) {
 
     this.answered = false;
 
-    if (audienceData instanceof AudienceData)
+    if ((grade === GRADES.MILLION) || audienceData instanceof AudienceData)
         this.audienceData = audienceData;
     else
         alertAndThrowException("Error: audienceData given to Question " +
@@ -116,7 +117,6 @@ function AudienceData(percentageA, percentageB, percentageC, percentageD) {
                 "Error: at least one of the four percentages given to " +
                 "AudienceData constructor aren't in range [0, 1]");
     }
-
 
     this.A = percentageA;
     this.B = percentageB;

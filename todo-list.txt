@@ -2,8 +2,11 @@ Next:
 -implement ask the audience
     --after "ask the audience" button is clicked:
         --audience data
+            --give text of question when throw exception about it
             --create audience data for each question
-            --fix other unit tests' use of Question constructor, if necessary
+            --physically look at the audience data to check correctness
+            --without using unit tests, check that exceptions are
+            thrown when appropriate if bad audience data in questions
         --determine the audience's answers
             --simply read the question's AudienceData instance
         --change the music (to the "ask the audience" music segment, which
@@ -34,6 +37,7 @@ Next:
 -implement saving
     --make sure it isn't used in million dollar question; could edit
     removeAllLifelines()
+-say correct answer letter if wrong answer is picked
 -once peeking and saving are no longer possible, set current helper
 to null and don't allow picking of anymore helpers
     --make SpongeBob explain this

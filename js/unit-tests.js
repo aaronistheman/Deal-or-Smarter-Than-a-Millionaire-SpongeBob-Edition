@@ -889,6 +889,24 @@ QUnit.test("Question()", function(assert) {
     }
     assert.ok(exceptionThrown, "Exception thrown if not given " +
         "instance of AudienceData");
+
+    /*
+        Confirm no exception thrown if undefined audienceData for
+        a million dollar question
+    */
+    var noExceptionThrown = true;
+    try {
+        // Note that no AudienceData instance is given
+        question = new Question(GRADES.MILLION, SUBJECTS.MUSIC,
+            "What grade is Devin Sigley in?",
+            new AnswerData(2, ["yolo", "swag", "meh", "5"]));
+    }
+    catch (err) {
+        noExceptionThrown = false;
+    }
+    assert.ok(noExceptionThrown, "Exception is NOT thrown if million " +
+        "dollar question isn't given " +
+        "instance of AudienceData");
 });
 
 QUnit.test("AnswerData()", function(assert) {
