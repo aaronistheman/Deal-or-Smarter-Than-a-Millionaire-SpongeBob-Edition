@@ -48,15 +48,17 @@ function Question(grade, subject, text, answerData, audienceData) {
         this.answerData = answerData;
     else
         alertAndThrowException("Error: answerData given to Question " +
-            "constructor isn't instance of AnswerData");
+            "constructor isn't instance of AnswerData; " +
+            "Question has following text: " + this.text);
 
     this.answered = false;
 
-    if ((grade === GRADES.MILLION) || audienceData instanceof AudienceData)
+    if ((grade === GRADES.MILLION) || (audienceData instanceof AudienceData))
         this.audienceData = audienceData;
     else
         alertAndThrowException("Error: audienceData given to Question " +
-            "constructor isn't instance of AudienceData");
+            "constructor isn't instance of AudienceData; " +
+            "Question has following text: " + this.text);
 }
 
 /*
@@ -104,18 +106,41 @@ function AnswerData(correctIndex, arrayOfAnswers) {
 function AudienceData(percentageA, percentageB, percentageC, percentageD) {
     // throw exception if the four percentages in audienceData don't
     // add up to 1
-    if ((percentageA + percentageB + percentageC + percentageD) !== 1)
+    if (parseFloat((percentageA + percentageB + percentageC +
+        percentageD).toPrecision(3)) !== 1) {
+        // output the percentages for the debugger's convenience
+        console.log("These four percentages together are invalid when " +
+            "given to AudienceData constructor because they don't " +
+            "add up to 1");
+        console.log("percentageA: " + percentageA);
+        console.log("percentageB: " + percentageB);
+        console.log("percentageC: " + percentageC);
+        console.log("percentageD: " + percentageD);
+
         alertAndThrowException(
             "Error: four percentages given to AudienceData " +
-            "constructor don't add up to exactly 1");
+            "constructor don't add up to exactly 1; " +
+            "the four percentages have been output to console");
+    }
 
     // throw exception if any of the four percentages in audienceData
     // aren't in range [0, 1]
     for (var i in arguments) {
-        if (arguments[i] < 0 || arguments[i] > 1)
+        if (arguments[i] < 0 || arguments[i] > 1) {
+            // output the percentages for the debugger's convenience
+            console.log("These four percentages together are invalid when " +
+                "given to AudienceData constructor because at least " +
+                "one of them is not in range [0, 1]");
+            console.log("percentageA: " + percentageA);
+            console.log("percentageB: " + percentageB);
+            console.log("percentageC: " + percentageC);
+            console.log("percentageD: " + percentageD);
+
             alertAndThrowException(
                 "Error: at least one of the four percentages given to " +
-                "AudienceData constructor aren't in range [0, 1]");
+                "AudienceData constructor aren't in range [0, 1]; " +
+                "the four percentages have been output to console");
+        }
     }
 
     this.A = percentageA;
