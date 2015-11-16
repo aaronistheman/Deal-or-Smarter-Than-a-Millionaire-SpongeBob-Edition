@@ -1,12 +1,6 @@
 Next:
 -implement ask the audience
     --after "ask the audience" button is clicked:
-        --audience data
-            --give text of question when throw exception about it
-            --create audience data for each question
-            --physically look at the audience data to check correctness
-            --without using unit tests, check that exceptions are
-            thrown when appropriate if bad audience data in questions
         --determine the audience's answers
             --simply read the question's AudienceData instance
         --change the music (to the "ask the audience" music segment, which

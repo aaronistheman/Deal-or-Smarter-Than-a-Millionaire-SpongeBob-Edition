@@ -459,7 +459,8 @@ QUnit.test("getHelperAnswer()", function(assert) {
     var otherSubject2 = SUBJECTS.ART;
     var fakeQuestion = new Question(GRADES.THIRD, questionSubject,
         "What grade is Devin Sigley in?",
-        new AnswerData(answerIndex, ["a", "b", "c", "d"]));
+        new AnswerData(answerIndex, ["a", "b", "c", "d"]),
+        new AudienceData(0.25, 0.25, 0.25, 0.25));
 
     /*
         Confirm that correct answer is given by helper with 100%
@@ -498,7 +499,8 @@ QUnit.test("isCorrectAnswer()", function(assert) {
     var answerIndex = 3;
     var fakeQuestion = new Question(GRADES.FIRST, SUBJECTS.ART,
         "This is a fake question.",
-        new AnswerData(answerIndex, ["a", "b", "c", "d"]));
+        new AnswerData(answerIndex, ["a", "b", "c", "d"]),
+        new AudienceData(0.25, 0.25, 0.25, 0.25));
     assert.deepEqual(isCorrectAnswer(fakeQuestion, 1),
         false, "Wrong answer was detected");
     assert.deepEqual(isCorrectAnswer(fakeQuestion, (answerIndex + 1)),
@@ -834,7 +836,7 @@ QUnit.test("Question()", function(assert) {
         question = new Question("fakeGrade", SUBJECTS.ART,
             "What grade is Devin Sigley in?",
             new AnswerData(2, ["yolo", "swag", "meh", "5"]),
-            [0.25, 0.25, 0.25, 0.25]);
+            new AudienceData(0.25, 0.25, 0.25, 0.25));
     }
     catch (err) {
         exceptionThrown = true;
@@ -849,7 +851,7 @@ QUnit.test("Question()", function(assert) {
         question = new Question(GRADES.SECOND, "fakeSubject",
             "What grade is Devin Sigley in?",
             new AnswerData(2, ["yolo", "swag", "meh", "5"]),
-            [0.25, 0.25, 0.25, 0.25]);
+            new AudienceData(0.25, 0.25, 0.25, 0.25));
     }
     catch (err) {
         exceptionThrown = true;
@@ -940,8 +942,8 @@ QUnit.test("AudienceData()", function(assert) {
     var audienceData = null;
     var exceptionThrown = false;
     try {
-        // Note that the given four percentages add up to 1.01, not 1
-        audienceData = new AudienceData(0.25, 0.25, 0.26, 0.25);
+        // Note that the given four percentages add up to 0.99, not 1
+        audienceData = new AudienceData(0.25, 0.25, 0.24, 0.25);
     }
     catch (err) {
         exceptionThrown = true;
