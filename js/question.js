@@ -23,6 +23,8 @@
     that the given question appears):
     (1) invalid grade
     (2) invalid subject
+    (3) answerData isn't instance of AnswerData
+    (4) audienceData isn't instance of AudienceData
 */
 function Question(grade, subject, text, answerData, audienceData) {
     if (isGrade(grade))
@@ -41,10 +43,19 @@ function Question(grade, subject, text, answerData, audienceData) {
 
     this.text = text;
 
-    this.answerData = answerData;
+    if (answerData instanceof AnswerData)
+        this.answerData = answerData;
+    else
+        alertAndThrowException("Error: answerData given to Question " +
+            "constructor isn't instance of AnswerData");
+
     this.answered = false;
 
-    this.audienceData = audienceData;
+    if (audienceData instanceof AudienceData)
+        this.audienceData = audienceData;
+    else
+        alertAndThrowException("Error: audienceData given to Question " +
+            "constructor isn't instance of AudienceData");
 }
 
 /*

@@ -2,12 +2,10 @@ Next:
 -implement ask the audience
     --after "ask the audience" button is clicked:
         --audience data
-            --have Question constructor throw exception if wrong number
-            of parameters given
-            --perhaps have Question constructor throw exception if AudienceData
-            or AnswerData aren't of those types
             --create audience data for each question
+            --fix other unit tests' use of Question constructor, if necessary
         --determine the audience's answers
+            --simply read the question's AudienceData instance
         --change the music (to the "ask the audience" music segment, which
         will loop if necessary)
         --have the host explain to the audience
@@ -15,6 +13,7 @@ Next:
         --have the host thank the audience
         --fix the music and show the question and answer rectangles again;
         enable user input
+-have alertAndThrowException insert "Error: " in front of given message
 -implement phone a friend
     --after "phone a friend" button is clicked:
         --determine Patrick's answer

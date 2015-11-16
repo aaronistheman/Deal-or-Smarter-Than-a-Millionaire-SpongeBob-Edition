@@ -825,7 +825,9 @@ QUnit.test("MoneyDisplay.getBarPosition()", function(assert) {
 QUnit.module("question.js");
 
 QUnit.test("Question()", function(assert) {
-    // Confirm exception thrown if invalid grade
+    /*
+        Confirm exception thrown if invalid grade
+    */
     var question = null;
     var exceptionThrown = false;
     try {
@@ -839,7 +841,9 @@ QUnit.test("Question()", function(assert) {
     }
     assert.ok(exceptionThrown, "Exception thrown if invalid grade");
 
-    // Confirm exception thrown if invalid subject
+    /*
+        Confirm exception thrown if invalid subject
+    */
     exceptionThrown = false;
     try {
         question = new Question(GRADES.SECOND, "fakeSubject",
@@ -851,6 +855,40 @@ QUnit.test("Question()", function(assert) {
         exceptionThrown = true;
     }
     assert.ok(exceptionThrown, "Exception thrown if invalid subject");
+
+    /*
+        Confirm exception thrown if answerData given to constructor
+        isn't of type AnswerData
+    */
+    exceptionThrown = false;
+    try {
+        question = new Question(GRADES.SECOND, SUBJECTS.MAIN_CHARACTERS,
+            "What grade is Devin Sigley in?",
+            new AudienceData(0.25, 0.25, 0.25, 0.25),
+            new AudienceData(0.25, 0.25, 0.25, 0.25));
+    }
+    catch (err) {
+        exceptionThrown = true;
+    }
+    assert.ok(exceptionThrown, "Exception thrown if not given " +
+        "instance of AnswerData");
+
+    /*
+        Confirm exception thrown if audienceData given to constructor
+        isn't of type AudienceData
+    */
+    exceptionThrown = false;
+    try {
+        question = new Question(GRADES.SECOND, SUBJECTS.MAIN_CHARACTERS,
+            "What grade is Devin Sigley in?",
+            new AnswerData(2, ["yolo", "swag", "meh", "5"]),
+            new AnswerData(2, ["yolo", "swag", "meh", "5"]));
+    }
+    catch (err) {
+        exceptionThrown = true;
+    }
+    assert.ok(exceptionThrown, "Exception thrown if not given " +
+        "instance of AudienceData");
 });
 
 QUnit.test("AnswerData()", function(assert) {
