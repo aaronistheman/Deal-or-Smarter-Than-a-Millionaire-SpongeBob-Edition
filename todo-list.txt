@@ -2,9 +2,6 @@ Next:
 -implement ask the audience
     --after "ask the audience" button is clicked:
         --audience data
-            --throw exception if any given percentage is less than 0
-            or above 1
-                --make test for this
             --have Question constructor throw exception if wrong number
             of parameters given
             --perhaps have Question constructor throw exception if AudienceData

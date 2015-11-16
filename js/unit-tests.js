@@ -878,6 +878,36 @@ QUnit.test("AnswerData()", function(assert) {
         "answers given");
 });
 
+QUnit.test("AudienceData()", function(assert) {
+    // Confirm exception is thrown if four percentages in given audience
+    // data don't add up to 1
+    var audienceData = null;
+    var exceptionThrown = false;
+    try {
+        // Note that the given four percentages add up to 1.01, not 1
+        audienceData = new AudienceData(0.25, 0.25, 0.26, 0.25);
+    }
+    catch (err) {
+        exceptionThrown = true;
+    }
+    assert.ok(exceptionThrown, "Exception thrown if four percentages " +
+        "given to constructor don't add up to 1");
+
+    // Confirm exception thrown if any of the four percentages given
+    // to constructor aren't in range [0, 1]
+    exceptionThrown = false;
+    try {
+        // Given percentages must still add up to 1 to prevent
+        // triggering the exception that is triggered otherwise
+        audienceData = new AudienceData(0, 1.01, -0.01, 0);
+    }
+    catch (err) {
+        exceptionThrown = true;
+    }
+    assert.ok(exceptionThrown, "Exception thrown if any of the percentages " +
+        "aren't in range [0, 1]");
+});
+
 QUnit.module("questions.js");
 
 QUnit.test("Questions.prototype._generateTenQuestions()", function(assert) {
