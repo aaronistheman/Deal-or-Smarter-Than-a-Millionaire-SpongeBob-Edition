@@ -1,19 +1,9 @@
 Next:
 -implement ask the audience
     --after "ask the audience" button is clicked:
-        --determine the audience's answers
-            --simply read the question's AudienceData instance
-        --have the host explain to the audience
-            --perhaps have him say enough so that, to a user who reads
-            at a typical rate, a good amount of the music will play
         --present result
-            --show the chart (with quote bubble under it)
-            --play the appropriate sound effect
-            --return to appropriate question background music (after enough
-            delay, if necessary, to let sound effect play)
-        --have the host thank the audience
-        --fix the music and show the question and answer rectangles again;
-        enable user input
+            --adjust the positions of the chart and its aspects
+            and colors as desired
 -have alertAndThrowException insert "Error: " in front of given message
 -implement phone a friend
     --after "phone a friend" button is clicked:

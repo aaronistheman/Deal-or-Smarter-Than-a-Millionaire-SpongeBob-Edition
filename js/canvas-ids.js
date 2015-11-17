@@ -22,6 +22,7 @@ var CANVAS_IDS = {
     QUESTIONING_TEXT : "questioning-text-canvas",
     LIFELINES_GRAPHICS : "lifelines-graphics-canvas",
     LIFELINES_TEXT : "lifelines-text-canvas",
+    AUDIENCE_CHART : "ask-the-audience-chart-canvas",
     MILLION_QUESTION : "million-question-canvas",
     CHOOSE_QUESTION_GRAPHICS : "choose-question-graphics-canvas",
     CHOOSE_QUESTION_TEXT : "choose-question-text-canvas",

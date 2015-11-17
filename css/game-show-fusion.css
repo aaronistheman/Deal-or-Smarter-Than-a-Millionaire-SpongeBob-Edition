@@ -62,7 +62,8 @@ canvas.fade-in {
 
 #speaker-canvas.show, #money-display-bars-canvas.show,
     #briefcase-display-canvas.show,
-    #choose-helper-graphics-canvas.show {
+    #choose-helper-graphics-canvas.show,
+    #ask-the-audience-chart-canvas.show {
     background-color: black;
 }
 
