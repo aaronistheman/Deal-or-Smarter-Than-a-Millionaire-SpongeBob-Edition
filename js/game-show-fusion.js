@@ -645,7 +645,7 @@ function handleLifelineSelection() {
     if (lifeline === LIFELINES.PEEK)
         respondToPeekButtonActivation();
     else if (lifeline === LIFELINES.ASK_AUDIENCE)
-        ; // respondToAskAudienceButtonActivation();
+        respondToAskAudienceButtonActivation();
     else if (lifeline === LIFELINES.PHONE_FRIEND)
         ; // respondToPhoneFriendButtonActivation();
     else /* should never happen */
@@ -713,6 +713,29 @@ function respondToPeekButtonActivation() {
             presentQuestionAndAnswers();
         });
     });
+}
+
+/*
+    @pre user has requested use of his "Ask the Audience" lifeline
+    @post audience's answer has been determined and presented to the
+    user, after which the user has been allowed to choose his answer
+    (or another lifeline) again
+*/
+function respondToAskAudienceButtonActivation() {
+    // Play appropriate background music
+    gameShow.musicPlayer.play(MUSIC_IDS.WAITING_FOR_AUDIENCE_ANSWER);
+
+    // For testing purposes
+    setTimeout(presentAudienceAnswers, 5000);
+}
+
+/*
+    @post a chart showing the audience's answers has been drawn
+    and presented; appropriate sound effect has been played;
+    background music has been set to one appropriate for the question
+*/
+function presentAudienceAnswers() {
+    gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.AUDIENCE_ANSWERED);
 }
 
 /*

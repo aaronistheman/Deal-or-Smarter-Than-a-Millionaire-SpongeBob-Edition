@@ -3,10 +3,14 @@ Next:
     --after "ask the audience" button is clicked:
         --determine the audience's answers
             --simply read the question's AudienceData instance
-        --change the music (to the "ask the audience" music segment, which
-        will loop if necessary)
         --have the host explain to the audience
-        --show the chart; play the appropriate sound effect
+            --perhaps have him say enough so that, to a user who reads
+            at a typical rate, a good amount of the music will play
+        --present result
+            --show the chart (with quote bubble under it)
+            --play the appropriate sound effect
+            --return to appropriate question background music (after enough
+            delay, if necessary, to let sound effect play)
         --have the host thank the audience
         --fix the music and show the question and answer rectangles again;
         enable user input
