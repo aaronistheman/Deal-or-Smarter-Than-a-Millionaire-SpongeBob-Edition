@@ -545,7 +545,7 @@ Questions.prototype.emphasizeDifferentLabel = function(direction) {
         labelToEmphasize = this._getNumberOfLowerLabelToEmphasize();
     else {
         alertAndThrowException(
-            "Error: invalid parameter passed to emphasizeDifferentLabel()");
+            "Invalid parameter passed to emphasizeDifferentLabel()");
     }
 
     if (labelToEmphasize !== undefined) {
@@ -866,7 +866,7 @@ Questions.prototype._drawQuestionText = function(questionNumber) {
         // Throw exception if question is too big
         if (y >= (275 - (fontSize + verticalSpaceBetweenWords))) {
             alertAndThrowException(
-                "Error: question can't be fit in its designated space");
+                "Question can't be fit in its designated space");
         }
 
         ctx.fillText(textPieces[i], x, y);
@@ -974,7 +974,7 @@ Questions.prototype._drawAnswerText =
         Questions.ANSWER_DIMENSIONS.x)
     {
         alertAndThrowException(
-            "Error: answer #" + answerNumber + " of 4 can't " +
+            "answer #" + answerNumber + " of 4 can't " +
             "be fit in its designated space");
     }
 
