@@ -1,5 +1,4 @@
 Next:
--have alertAndThrowException insert "Error: " in front of given message
 -implement phone a friend
     --after "phone a friend" button is clicked:
         --determine Patrick's answer

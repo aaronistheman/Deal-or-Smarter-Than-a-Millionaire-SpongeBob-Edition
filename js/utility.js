@@ -27,6 +27,7 @@ function isUnitTesting() {
     @param message
 */
 function alertAndThrowException(message) {
+    message = "Error: " + message;
     if (!isUnitTesting())
         alert(message);
     throw message;

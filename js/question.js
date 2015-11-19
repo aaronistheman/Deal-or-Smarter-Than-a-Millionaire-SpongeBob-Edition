@@ -32,14 +32,14 @@ function Question(grade, subject, text, answerData, audienceData) {
         this.grade = grade;
     else {
         alertAndThrowException(
-            "Error: invalid grade given to Question constructor");
+            "Invalid grade given to Question constructor");
     }
 
     if (isSubject(subject))
         this.subject = subject;
     else {
         alertAndThrowException(
-            "Error: invalid subject given to Question constructor");
+            "Invalid subject given to Question constructor");
     }
 
     this.text = text;
@@ -47,7 +47,7 @@ function Question(grade, subject, text, answerData, audienceData) {
     if (answerData instanceof AnswerData)
         this.answerData = answerData;
     else
-        alertAndThrowException("Error: answerData given to Question " +
+        alertAndThrowException("answerData given to Question " +
             "constructor isn't instance of AnswerData; " +
             "Question has following text: " + this.text);
 
@@ -56,7 +56,7 @@ function Question(grade, subject, text, answerData, audienceData) {
     if ((grade === GRADES.MILLION) || (audienceData instanceof AudienceData))
         this.audienceData = audienceData;
     else
-        alertAndThrowException("Error: audienceData given to Question " +
+        alertAndThrowException("audienceData given to Question " +
             "constructor isn't instance of AudienceData; " +
             "Question has following text: " + this.text);
 }
@@ -75,14 +75,14 @@ function AnswerData(correctIndex, arrayOfAnswers) {
         this.correctIndex = correctIndex;
     else {
         alertAndThrowException(
-            "Error: invalid correctIndex given to AnswerData constructor");
+            "invalid correctIndex given to AnswerData constructor");
     }
 
     if (arrayOfAnswers.length === 4)
         this.arrayOfAnswers = arrayOfAnswers;
     else {
         alertAndThrowException(
-            "Error: invalidly-sized arrayOfAnswers given " +
+            "invalidly-sized arrayOfAnswers given " +
             "to AnswerData constructor");
     }
 }
@@ -118,7 +118,7 @@ function AudienceData(percentageA, percentageB, percentageC, percentageD) {
         console.log("percentageD: " + percentageD);
 
         alertAndThrowException(
-            "Error: four percentages given to AudienceData " +
+            "four percentages given to AudienceData " +
             "constructor don't add up to exactly 1; " +
             "the four percentages have been output to console");
     }
@@ -137,7 +137,7 @@ function AudienceData(percentageA, percentageB, percentageC, percentageD) {
             console.log("percentageD: " + percentageD);
 
             alertAndThrowException(
-                "Error: at least one of the four percentages given to " +
+                "at least one of the four percentages given to " +
                 "AudienceData constructor aren't in range [0, 1]; " +
                 "the four percentages have been output to console");
         }
