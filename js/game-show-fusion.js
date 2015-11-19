@@ -795,11 +795,16 @@ function drawAudienceDataChart() {
     chartData.rightMarginForPercentages = 20;
     chartData.leftMarginForBar = 120;
     chartData.distanceBetweenBars = 10; // is also top and bottom margin
-    chartData.addtionalVerticalTextIndent = 0;
-    chartData.additionalVerticalPercentageIndent = 0;
+    chartData.fontSize = 30; // should be less than chartData.barHeight
     chartData.maxBarWidth = 460;
     chartData.barHeight = (chartData.height -
         (5 * chartData.distanceBetweenBars)) / 4;
+    // Have each answer letter and percentage be centered vertically
+    // in relation to the respective bar
+    chartData.additionalVerticalTextIndent =
+        (chartData.barHeight - chartData.fontSize) / 2;
+    chartData.additionalVerticalPercentageIndent =
+        chartData.additionalVerticalTextIndent;
     var deltaY = chartData.distanceBetweenBars +
         chartData.barHeight;
 
@@ -808,12 +813,12 @@ function drawAudienceDataChart() {
     */
     var positionX = chartData.x + chartData.leftMarginForAnswerLetters;
     var positionY = chartData.y + chartData.distanceBetweenBars +
-        chartData.addtionalVerticalTextIndent;
+        chartData.additionalVerticalTextIndent;
     // Treat the position as the letter's top-left point
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
-    ctx.font = "30px Arial";
-    ctx.fillStyle = "white";
+    ctx.font = chartData.fontSize + "px Arial";
+    ctx.fillStyle = "#99cc00";
     // Iterate and draw
     for (var i in letters) {
         ctx.fillText(letters[i], positionX, positionY);
@@ -825,7 +830,7 @@ function drawAudienceDataChart() {
     */
     positionX = chartData.x + chartData.leftMarginForBar;
     positionY = chartData.y + chartData.distanceBetweenBars;
-    ctx.fillStyle = "white";
+    ctx.fillStyle = "#0099cc";
     // Iterate and draw
     for (var i in letters) {
         ctx.fillRect(positionX, positionY,
