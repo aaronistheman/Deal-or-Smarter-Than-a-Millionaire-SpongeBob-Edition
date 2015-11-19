@@ -459,7 +459,8 @@ QUnit.test("getHelperAnswer()", function(assert) {
     var otherSubject2 = SUBJECTS.ART;
     var fakeQuestion = new Question(GRADES.THIRD, questionSubject,
         "What grade is Devin Sigley in?",
-        new AnswerData(answerIndex, ["a", "b", "c", "d"]));
+        new AnswerData(answerIndex, ["a", "b", "c", "d"]),
+        new AudienceData(0.25, 0.25, 0.25, 0.25));
 
     /*
         Confirm that correct answer is given by helper with 100%
@@ -498,7 +499,8 @@ QUnit.test("isCorrectAnswer()", function(assert) {
     var answerIndex = 3;
     var fakeQuestion = new Question(GRADES.FIRST, SUBJECTS.ART,
         "This is a fake question.",
-        new AnswerData(answerIndex, ["a", "b", "c", "d"]));
+        new AnswerData(answerIndex, ["a", "b", "c", "d"]),
+        new AudienceData(0.25, 0.25, 0.25, 0.25));
     assert.deepEqual(isCorrectAnswer(fakeQuestion, 1),
         false, "Wrong answer was detected");
     assert.deepEqual(isCorrectAnswer(fakeQuestion, (answerIndex + 1)),
@@ -820,6 +822,148 @@ QUnit.test("MoneyDisplay.getBarPosition()", function(assert) {
             MoneyDisplay.marginalBarPosition.getProduct(
                 new Vector2d(1, 4))),
         "Correct position for tenth bar");
+});
+
+QUnit.module("question.js");
+
+QUnit.test("Question()", function(assert) {
+    /*
+        Confirm exception thrown if invalid grade
+    */
+    var question = null;
+    var exceptionThrown = false;
+    try {
+        question = new Question("fakeGrade", SUBJECTS.ART,
+            "What grade is Devin Sigley in?",
+            new AnswerData(2, ["yolo", "swag", "meh", "5"]),
+            new AudienceData(0.25, 0.25, 0.25, 0.25));
+    }
+    catch (err) {
+        exceptionThrown = true;
+    }
+    assert.ok(exceptionThrown, "Exception thrown if invalid grade");
+
+    /*
+        Confirm exception thrown if invalid subject
+    */
+    exceptionThrown = false;
+    try {
+        question = new Question(GRADES.SECOND, "fakeSubject",
+            "What grade is Devin Sigley in?",
+            new AnswerData(2, ["yolo", "swag", "meh", "5"]),
+            new AudienceData(0.25, 0.25, 0.25, 0.25));
+    }
+    catch (err) {
+        exceptionThrown = true;
+    }
+    assert.ok(exceptionThrown, "Exception thrown if invalid subject");
+
+    /*
+        Confirm exception thrown if answerData given to constructor
+        isn't of type AnswerData
+    */
+    exceptionThrown = false;
+    try {
+        question = new Question(GRADES.SECOND, SUBJECTS.MAIN_CHARACTERS,
+            "What grade is Devin Sigley in?",
+            new AudienceData(0.25, 0.25, 0.25, 0.25),
+            new AudienceData(0.25, 0.25, 0.25, 0.25));
+    }
+    catch (err) {
+        exceptionThrown = true;
+    }
+    assert.ok(exceptionThrown, "Exception thrown if not given " +
+        "instance of AnswerData");
+
+    /*
+        Confirm exception thrown if audienceData given to constructor
+        isn't of type AudienceData
+    */
+    exceptionThrown = false;
+    try {
+        question = new Question(GRADES.SECOND, SUBJECTS.MAIN_CHARACTERS,
+            "What grade is Devin Sigley in?",
+            new AnswerData(2, ["yolo", "swag", "meh", "5"]),
+            new AnswerData(2, ["yolo", "swag", "meh", "5"]));
+    }
+    catch (err) {
+        exceptionThrown = true;
+    }
+    assert.ok(exceptionThrown, "Exception thrown if not given " +
+        "instance of AudienceData");
+
+    /*
+        Confirm no exception thrown if undefined audienceData for
+        a million dollar question
+    */
+    var noExceptionThrown = true;
+    try {
+        // Note that no AudienceData instance is given
+        question = new Question(GRADES.MILLION, SUBJECTS.MUSIC,
+            "What grade is Devin Sigley in?",
+            new AnswerData(2, ["yolo", "swag", "meh", "5"]));
+    }
+    catch (err) {
+        noExceptionThrown = false;
+    }
+    assert.ok(noExceptionThrown, "Exception is NOT thrown if million " +
+        "dollar question isn't given " +
+        "instance of AudienceData");
+});
+
+QUnit.test("AnswerData()", function(assert) {
+    // Confirm exception thrown if correctIndex is in wrong range
+    var answerData = null;
+    var exceptionThrown = false;
+    try {
+        answerData = new AnswerData(4, ["", "", "", ""]);
+    }
+    catch (err) {
+        exceptionThrown = true;
+    }
+    assert.ok(exceptionThrown, "Exception thrown if correctIndex not in " +
+        "correct range");
+
+    // Confirm exception thrown if invalidly-sized arrayOfAnswers
+    var exceptionThrown = false;
+    try {
+        answerData = new AnswerData(2, ["", "", ""]);
+    }
+    catch (err) {
+        exceptionThrown = true;
+    }
+    assert.ok(exceptionThrown, "Exception thrown if wrong number of " +
+        "answers given");
+});
+
+QUnit.test("AudienceData()", function(assert) {
+    // Confirm exception is thrown if four percentages in given audience
+    // data don't add up to 1
+    var audienceData = null;
+    var exceptionThrown = false;
+    try {
+        // Note that the given four percentages add up to 0.99, not 1
+        audienceData = new AudienceData(0.25, 0.25, 0.24, 0.25);
+    }
+    catch (err) {
+        exceptionThrown = true;
+    }
+    assert.ok(exceptionThrown, "Exception thrown if four percentages " +
+        "given to constructor don't add up to 1");
+
+    // Confirm exception thrown if any of the four percentages given
+    // to constructor aren't in range [0, 1]
+    exceptionThrown = false;
+    try {
+        // Given percentages must still add up to 1 to prevent
+        // triggering the exception that is triggered otherwise
+        audienceData = new AudienceData(0, 1.01, -0.01, 0);
+    }
+    catch (err) {
+        exceptionThrown = true;
+    }
+    assert.ok(exceptionThrown, "Exception thrown if any of the percentages " +
+        "aren't in range [0, 1]");
 });
 
 QUnit.module("questions.js");

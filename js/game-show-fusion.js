@@ -645,7 +645,7 @@ function handleLifelineSelection() {
     if (lifeline === LIFELINES.PEEK)
         respondToPeekButtonActivation();
     else if (lifeline === LIFELINES.ASK_AUDIENCE)
-        ; // respondToAskAudienceButtonActivation();
+        respondToAskAudienceButtonActivation();
     else if (lifeline === LIFELINES.PHONE_FRIEND)
         ; // respondToPhoneFriendButtonActivation();
     else /* should never happen */
@@ -665,7 +665,8 @@ function handleLifelineSelection() {
 
 /*
     @pre gameShow.activeHelper !== null; user has requested use
-    of his "Peek" lifeline; SpongeBob is the currently drawn speaker
+    of his "Peek" lifeline; SpongeBob is the currently drawn speaker;
+    the question can't be the million dollar question
     @post helper's answer has been determined and presented to the
     user, after which the user has been allowed to choose his answer
     (or another lifeline) again; SpongeBob is the currently drawn
@@ -708,11 +709,149 @@ function respondToPeekButtonActivation() {
             // Draw the host as the speaker again
             drawNewSpeaker(SPEAKERS.SPONGEBOB);
 
-            // Show the (unchanged) question and answers,
-            // and enable user input
-            presentQuestionAndAnswers();
+            gameShow.quotesToDraw.add("Okay. Your helper chose (" +
+                helperAnswer + "). Now, let's return to the question.")
+            .deployQuoteChain(function() {
+                // Show the (unchanged) question and answers,
+                // and enable user input
+                presentQuestionAndAnswers();
+            });
         });
     });
+}
+
+/*
+    @pre user has requested use of his "Ask the Audience" lifeline;
+    the question can't be the million dollar question
+    @post the music has been changed appropriately; the host has
+    explained to the audience; a function has been called that will
+    handle the presentation of the audience's votes
+*/
+function respondToAskAudienceButtonActivation() {
+    // Play appropriate background music
+    gameShow.musicPlayer.play(MUSIC_IDS.WAITING_FOR_AUDIENCE_ANSWER);
+
+    gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
+    gameShow.quotesToDraw.add("All right. Audience, the question is " +
+        "coming to you.")
+    .add("It's a serious one. Here it comes to your keypads.")
+    .add("Select an answer A, B, C, or D.")
+    .add("Those of you at home can also vote online, with the " +
+        "Game Show Fusion app, or on Facebook...")
+    .add("...just kidding. Servers are expensive.")
+    .deployQuoteChain(presentAudienceAnswers);
+}
+
+/*
+    @post a chart showing the audience's answers has been drawn
+    and presented; appropriate sound effect has been played;
+    background music has been set to one appropriate for the question;
+    after which the user has been allowed to choose his answer
+    (or another lifeline) again
+*/
+function presentAudienceAnswers() {
+    // Draw and show the chart
+    drawAudienceDataChart();
+    gameShow.canvasStack.set(CANVAS_IDS.QUOTE.concat(
+        CANVAS_IDS.AUDIENCE_CHART));
+
+    // Adjust the audio
+    gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.AUDIENCE_ANSWERED);
+    adjustBackgroundMusicBasedOnQuestionsAnswered();
+
+    // Have the (unseen) host explain the chart and thank the audience
+    gameShow.quotesToDraw.add("Here are the audience's votes.")
+    .add("Thank you, audience.")
+    .add("Now, let's get back to the question.")
+    .deployQuoteChain(function() {
+        // Show the (unchanged) question and answers,
+        // and enable user input
+        presentQuestionAndAnswers();
+    });
+}
+
+/*
+    @pre gameShow.turnVariables.selectedQuestion is correct
+    @post the audience's votes have been displayed in a sideways,
+    bar chart
+*/
+function drawAudienceDataChart() {
+    // For making the code clearer
+    var audienceData = gameShow.questions.getQuestion(
+        gameShow.turnVariables.selectedQuestion).audienceData;
+    var canvas = document.getElementById(CANVAS_IDS.AUDIENCE_CHART);
+    var ctx = canvas.getContext('2d');
+    var letters = ['A', 'B', 'C', 'D'];
+
+    // For positioning the chart and its aspects
+    var chartData = {};
+    chartData.width = 700;
+    chartData.height = 300;
+    // Top-left coordinates:
+    chartData.x = (CANVAS_WIDTH - chartData.width) / 2;
+    chartData.y = 100; // this is safe; the chart won't touch the
+                       // quote bubble
+    chartData.leftMarginForAnswerLetters = 20;
+    chartData.rightMarginForPercentages = 20;
+    chartData.leftMarginForBar = 120;
+    chartData.distanceBetweenBars = 10; // is also top and bottom margin
+    chartData.fontSize = 30; // should be less than chartData.barHeight
+    chartData.maxBarWidth = 460;
+    chartData.barHeight = (chartData.height -
+        (5 * chartData.distanceBetweenBars)) / 4;
+    // Have each answer letter and percentage be centered vertically
+    // in relation to the respective bar
+    chartData.additionalVerticalTextIndent =
+        (chartData.barHeight - chartData.fontSize) / 2;
+    chartData.additionalVerticalPercentageIndent =
+        chartData.additionalVerticalTextIndent;
+    var deltaY = chartData.distanceBetweenBars +
+        chartData.barHeight;
+
+    /*
+        Draw the answer letters
+    */
+    var positionX = chartData.x + chartData.leftMarginForAnswerLetters;
+    var positionY = chartData.y + chartData.distanceBetweenBars +
+        chartData.additionalVerticalTextIndent;
+    // Treat the position as the letter's top-left point
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+    ctx.font = chartData.fontSize + "px Arial";
+    ctx.fillStyle = "#99cc00";
+    // Iterate and draw
+    for (var i in letters) {
+        ctx.fillText(letters[i], positionX, positionY);
+        positionY += deltaY;
+    }
+
+    /*
+        Draw the bars
+    */
+    positionX = chartData.x + chartData.leftMarginForBar;
+    positionY = chartData.y + chartData.distanceBetweenBars;
+    ctx.fillStyle = "#0099cc";
+    // Iterate and draw
+    for (var i in letters) {
+        ctx.fillRect(positionX, positionY,
+            audienceData[letters[i]] * chartData.maxBarWidth,
+            chartData.barHeight);
+        positionY += deltaY;
+    }
+
+    /*
+        Draw the percentages
+    */
+    positionX = chartData.x + (700 - chartData.rightMarginForPercentages);
+    positionY = chartData.y + chartData.distanceBetweenBars +
+        chartData.additionalVerticalPercentageIndent;
+    ctx.fillStyle = "white";
+    // Iterate and draw
+    for (var i in letters) {
+        var percentage = Math.round(audienceData[letters[i]] * 100);
+        ctx.fillText(' ' + percentage + '%', positionX, positionY);
+        positionY += deltaY;
+    }
 }
 
 /*
