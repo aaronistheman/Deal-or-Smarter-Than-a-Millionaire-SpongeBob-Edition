@@ -16,7 +16,7 @@ var SOUND_EFFECTS_IDS = {
     MOVE_HELPER_SELECTOR : "move-helper-selector-sound",
     SELECT_HELPER : "select-helper-sound",
 
-    // selection fo question
+    // selection of question
     MOVE_QUESTION_SELECTOR : "move-question-selector-sound",
     SELECT_QUESTION : "select-question-sound",
     PRESENT_QUESTION : "present-question-sound",
@@ -30,7 +30,11 @@ var SOUND_EFFECTS_IDS = {
     MOVE_LIFELINE_SELECTOR : "move-lifeline-selector-sound",
     SELECT_LIFELINE : "select-lifeline-sound",
 
+    // regarding "Ask the Audience" lifeline
     AUDIENCE_ANSWERED : "audience-answered-sound",
+
+    // regarding "Phone a Friend" lifeline
+    PHONE_CALL_ENDED : "phone-call-ended-sound",
 
     // loss
     LOSS : "loss-sound",
@@ -63,9 +67,14 @@ var MUSIC_IDS = {
     QUESTION_10 : "question-10-theme",
     QUESTION_MILLION : "question-million-theme",
 
-    WAITING_FOR_AUDIENCE_ANSWER : "waiting-audience-sound",
+    // Regarding "Ask the Audience" lifeline
+    WAITING_FOR_AUDIENCE_ANSWER : "waiting-audience-theme",
+
+    // Regarding "Phone a Friend" lifeline
+    WAITING_FOR_PHONE_CALL : "waiting-phone-call-theme",
+    PHONE_CALL_OCCURING : "phone-call-occuring-theme",
 
     BANKER : "banker-theme",
-    ACCEPT_OR_REJECT_DEAL : "accept-or-reject-deal-sound",
+    ACCEPT_OR_REJECT_DEAL : "accept-or-reject-deal-theme",
     WAS_A_GOOD_DEAL_ACCEPTED : "was-a-good-deal-accepted-theme",
 };

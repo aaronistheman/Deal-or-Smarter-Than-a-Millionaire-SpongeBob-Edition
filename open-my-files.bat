@@ -5,7 +5,7 @@ start Notepad++ js/game-show-fusion.js
 start Notepad++ todo-list.txt
 REM start Notepad++ unit-tests.html
 start Notepad++ js/unit-tests.js
-REM start Notepad++ js/game-controller.js
+start Notepad++ js/game-controller.js
 REM start Notepad++ js/canvas-stack.js
 REM start Notepad++ js/error-handling.js
 start Notepad++ js/utility.js
