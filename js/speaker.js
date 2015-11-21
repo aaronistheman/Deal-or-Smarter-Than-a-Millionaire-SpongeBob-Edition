@@ -40,12 +40,18 @@ Speaker.prototype.draw = function() {
 
 // Note that the values of these constants are used
 var SPEAKERS = {
+    // The host
     SPONGEBOB : "SpongeBob",
+
+    // Helpers
     SQUIDWARD : "Squidward",
     MERMAID_MAN : "Mermaid Man",
     SANDY : "Sandy",
     LARRY : "Larry",
     GARY : "Gary",
+
+    // The friend used in Phone-a-Friend lifeline
+    PATRICK : "Patrick",
 };
 
 /*
@@ -70,6 +76,8 @@ function getSpeakerObjects() {
         "media/images/larry_the_lobster.png", canvasId, 600, 50, 340, 363);
     objects[SPEAKERS.GARY] = new Speaker(
         "media/images/gary.gif", canvasId, 600, 200, 273, 214);
+    objects[SPEAKERS.PATRICK] = new Speaker(
+        "media/images/patrick.jpg", canvasId, 300, 50, 480, 360);
 
     return objects;
 }

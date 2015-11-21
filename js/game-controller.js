@@ -71,6 +71,8 @@ function getAudioData() {
         "media/sound/select_lifeline.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.AUDIENCE_ANSWERED,
         "media/sound/audience_answered.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.PHONE_CALL_ENDED,
+        "media/sound/phone_call_ended.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.LOSS,
         "media/sound/loss.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.LOSS_MILLION,
@@ -111,6 +113,10 @@ function getAudioData() {
         "media/music/question_million.mp3"));
     audioData.push(new AudioData(MUSIC_IDS.WAITING_FOR_AUDIENCE_ANSWER,
         "media/music/waiting_for_audience.mp3"));
+    audioData.push(new AudioData(MUSIC_IDS.WAITING_FOR_PHONE_CALL,
+        "media/music/waiting_for_phone_call.mp3"));
+    audioData.push(new AudioData(MUSIC_IDS.PHONE_CALL_OCCURING,
+        "media/music/phone_call_occuring.mp3"));
     audioData.push(new AudioData(MUSIC_IDS.BANKER,
         "media/music/banker_theme.mp3"));
     audioData.push(new AudioData(MUSIC_IDS.ACCEPT_OR_REJECT_DEAL,

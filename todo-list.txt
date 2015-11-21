@@ -1,17 +1,4 @@
 Next:
--implement phone a friend
-    --after "phone a friend" button is clicked:
-        --determine Patrick's answer
-        --play different music as host explains what'll happen
-        --play different music during the call
-        --show Patrick and the quote bubble; have Patrick speak, originally
-        mistaking you for Mario; have Patrick say his answer; don't
-        show any timer
-        --play time out sound effect after certain number of quote
-        bubbles
-        --have the host thank Patrick
-        --fix the music and show the question and answer rectangles again;
-        enable user input
 -implement saving
     --make sure it isn't used in million dollar question; could edit
     removeAllLifelines()

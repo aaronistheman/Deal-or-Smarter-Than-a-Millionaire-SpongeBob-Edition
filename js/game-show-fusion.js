@@ -647,7 +647,7 @@ function handleLifelineSelection() {
     else if (lifeline === LIFELINES.ASK_AUDIENCE)
         respondToAskAudienceButtonActivation();
     else if (lifeline === LIFELINES.PHONE_FRIEND)
-        ; // respondToPhoneFriendButtonActivation();
+        respondToPhoneFriendButtonActivation();
     else /* should never happen */
         alertAndThrowException("Most recently activated lifeline button " +
             "isn't button for appropriate lifeline");
@@ -852,6 +852,71 @@ function drawAudienceDataChart() {
         ctx.fillText(' ' + percentage + '%', positionX, positionY);
         positionY += deltaY;
     }
+}
+
+/*
+    @pre user has requested use of his "Phone a Friend" lifeline;
+    SpongeBob is the currently drawn speaker;
+    the question can't be the million dollar question
+    @post the host has explained what has happened (with
+    appropriate background music), and a function
+    has been called to handle "calling" the friend-to-phone
+*/
+function respondToPhoneFriendButtonActivation() {
+    gameShow.musicPlayer.play(MUSIC_IDS.WAITING_FOR_PHONE_CALL);
+
+    gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
+    gameShow.quotesToDraw.add("Okay. We will now try to make contact " +
+        "with your friend.")
+    .add("Here he is.")
+    .deployQuoteChain(presentPhoneFriendAnswer)
+}
+
+/*
+    @pre the current canvases shown are the ones that show the
+    quote bubble and the speaker; gameShow.turnVariables.selectedQuestion
+    is correct
+    @post the music has been changed to match the phone call,
+    and afterwards changed back to one appropriate for the question;
+    Patrick's answer has been determined, and he has presented it;
+    after the user has gone through all the quotes, he has been
+    given back his ability to pick an answer (or lifeline);
+    SpongeBob is the currently drawn speaker
+*/
+function presentPhoneFriendAnswer() {
+    gameShow.musicPlayer.play(MUSIC_IDS.PHONE_CALL_OCCURING);
+
+    // Determine Patrick's answer by making a temporary Helper
+    // instance for him
+    var patrick = new Helper(SPEAKERS.PATRICK, 0.80, undefined,
+        undefined, []);
+    var question = gameShow.questions.getQuestion(
+        gameShow.turnVariables.selectedQuestion);
+    var answerNumber = getHelperAnswer(patrick, question);
+    var answerLetters = ['A', 'B', 'C', 'D'];
+    var phoneAnswer = answerLetters[answerNumber - 1];
+
+    drawNewSpeaker(SPEAKERS.PATRICK);
+    gameShow.quotesToDraw.add("Hey Mario. Let me get a large double " +
+        "olive...")
+    .add("Oh yeah.")
+    .add("Uhhhhh...")
+    .add("For my answer, I'll pick...")
+    .add("Uhhhhh...")
+    .add("(" + phoneAnswer + ").")
+    .deployQuoteChain(function() {
+        gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.PHONE_CALL_ENDED);
+        adjustBackgroundMusicBasedOnQuestionsAnswered();
+
+        drawNewSpeaker(SPEAKERS.SPONGEBOB);
+        gameShow.quotesToDraw.add("All right. Patrick chose " + "(" +
+            phoneAnswer + "). Let's return to the question.")
+        .deployQuoteChain(function() {
+            // Show the (unchanged) question and answers,
+            // and enable user input
+            presentQuestionAndAnswers();
+        });
+    });
 }
 
 /*
@@ -1493,21 +1558,21 @@ function selectQuestion() {
     @hasTest yes (although it isn't comprehensive)
 */
 function setUpHelpers() {
-    gameShow.helpers.push(new Helper(SPEAKERS.SQUIDWARD, 0.90,
+    gameShow.helpers.push(new Helper(SPEAKERS.SQUIDWARD, 0.85,
         "Fortunately, I have enough talent for all of you.",
         "media/images/squidward_icon.JPG", [SUBJECTS.ART, SUBJECTS.MUSIC]));
     gameShow.helpers.push(
-        new Helper(SPEAKERS.MERMAID_MAN, 0.80, "EVIL!",
+        new Helper(SPEAKERS.MERMAID_MAN, 0.55, "EVIL!",
         "media/images/mermaid_man_icon.JPG",
         [SUBJECTS.CRIME, SUBJECTS.GEOGRAPHY]));
     gameShow.helpers.push(
-        new Helper(SPEAKERS.SANDY, 0.95, "Howdy ya'll.",
+        new Helper(SPEAKERS.SANDY, 0.90, "Howdy ya'll.",
         "media/images/sandy_icon.JPG",
         [SUBJECTS.TECHNOLOGY, SUBJECTS.FITNESS]));
-    gameShow.helpers.push(new Helper(SPEAKERS.LARRY, 0.85,
+    gameShow.helpers.push(new Helper(SPEAKERS.LARRY, 0.70,
         "Hey, this party's finally starting to pick up.",
         "media/images/larry_icon.JPG", [SUBJECTS.FITNESS]));
-    gameShow.helpers.push(new Helper(SPEAKERS.GARY, 0.90, "Meow.",
+    gameShow.helpers.push(new Helper(SPEAKERS.GARY, 0.80, "Meow.",
         "media/images/gary_icon.JPG", [SUBJECTS.RUMORS]));
 }
 
