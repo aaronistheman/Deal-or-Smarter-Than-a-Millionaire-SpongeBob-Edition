@@ -1,7 +1,8 @@
 Next:
--implement saving
-    --make sure it isn't used in million dollar question; could edit
-    removeAllLifelines()
+-look into having the host say the text of the answer that corresponds
+    to the said letter (I think this should be easy, but I'll have to
+    look into how well the answers fit, which I don't anticipate will
+    be a problem)
 -say correct answer letter if wrong answer is picked
 -once peeking and saving are no longer possible, set current helper
 to null and don't allow picking of anymore helpers

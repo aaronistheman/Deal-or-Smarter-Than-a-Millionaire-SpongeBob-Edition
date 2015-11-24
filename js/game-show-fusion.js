@@ -46,6 +46,7 @@ setUpHelpers();
 gameShow.lifelines = new Lifelines(CANVAS_IDS.LIFELINES_GRAPHICS,
     CANVAS_IDS.LIFELINES_TEXT);
 gameShow.isUserSelectingLifeline = false;
+gameShow.canBeSaved = true; // note that saving isn't a selectable lifeline
 
 gameShow.chooseHelperMenuState = new ChooseHelperMenuState(
     CANVAS_IDS.CHOOSE_HELPER_GRAPHICS, CANVAS_IDS.CHOOSE_HELPER_TEXT,
@@ -53,8 +54,19 @@ gameShow.chooseHelperMenuState = new ChooseHelperMenuState(
 
 gameShow.turnVariables = {
     selectedQuestion : undefined,
-    selectedAnswer : undefined,
+    selectedAnswerNumber : undefined,
     bankerOffer : undefined,
+
+    // Store in case the helper's answer is demanded more than once
+    // in a certain turn
+    helperAnswerNumber : undefined,
+
+    reset : function() {
+        this.selectedQuestion = undefined;
+        this.selectedAnswerNumber = undefined;
+        this.bankerOffer = undefined;
+        this.helperAnswerNumber = undefined;
+    },
 };
 
 gameShow.keyActions = new KeyActions();
@@ -561,13 +573,16 @@ function allowUserSelectAnswerOrLifeline(booleanValue) {
 /*
     @pre the lifeline buttons are stored from the second element onward
     in gameShow.lifelines.container._chldren
-    @post all stored lifeline buttons have been removed
+    @post all stored lifeline buttons have been removed; saving
+    has been disallowed
     @hasTest yes
 */
 function removeAllLifelines() {
     while (gameShow.lifelines.container.getNumberOfChildren() > 1)
         gameShow.lifelines.removeSelectedLifeline(
             gameShow.lifelines.container.getNumberOfChildren() > 2);
+
+    gameShow.canBeSaved = false;
 }
 
 /*
@@ -602,14 +617,15 @@ function handleAnswerSelection() {
     allowUserSelectAnswerOrLifeline(false);
 
     // Save the answer
-    gameShow.turnVariables.selectedAnswer =
+    gameShow.turnVariables.selectedAnswerNumber =
         gameShow.questions.numberOfAnswerToEmphasize;
 
     // Determine whether or not the correct answer was selected;
     // react to this judgment
     var question = gameShow.questions.getQuestion(
         gameShow.turnVariables.selectedQuestion);
-    if (isCorrectAnswer(question, gameShow.turnVariables.selectedAnswer)) {
+    if (isCorrectAnswer(question,
+        gameShow.turnVariables.selectedAnswerNumber)) {
         if (gameShow.millionDollarQuestion)
             handleCorrectMillionAnswerSelection();
         else
@@ -681,6 +697,10 @@ function respondToPeekButtonActivation() {
     var answerNumber = getHelperAnswer(helper, question);
     var answerLetters = ['A', 'B', 'C', 'D'];
     var helperAnswer = answerLetters[answerNumber - 1];
+
+    // Store the helper's answer so that he/she gives the same
+    // answer if the user both peeks and saves
+    gameShow.turnVariables.helperAnswerNumber = answerNumber;
 
     // Have the host explain; keep helper's gender in mind; have
     // the host say Gary's answer, if necessary
@@ -926,11 +946,21 @@ function presentPhoneFriendAnswer() {
     @param question instance of Question to use
     @returns returns a number in range [1, 4]; this number indicates
     the answer chosen by the given helper (there is probability
-    involved, since the helper may not always choose correct answer)
+    involved, since the helper may not always choose correct answer);
+    however, if the given helper is the active helper and has already
+    shown his/her answer, then that answer is returned
     @throws exception if fail to determine the helper's answer
     (although this should never happen)
 */
 function getHelperAnswer(helper, question) {
+    /*
+        If given helper is active helper and has already shown his/her
+        answer, return that answer number
+    */
+    if ((helper === gameShow.activeHelper) &&
+        (gameShow.turnVariables.helperAnswerNumber !== undefined))
+        return gameShow.turnVariables.helperAnswerNumber;
+
     var correctAnswerNumber = question.answerData.correctIndex + 1;
     var gaveCorrectAnswer = undefined;
 
@@ -995,9 +1025,7 @@ function prepareForNextTurn() {
     gameShow.questions.setAnswered(gameShow.turnVariables.selectedQuestion);
 
     // Prepare gameShow members
-    gameShow.turnVariables.selectedQuestion = undefined;
-    gameShow.turnVariables.selectedAnswer = undefined;
-    gameShow.turnVariables.bankerOffer = undefined;
+    gameShow.turnVariables.reset();
 }
 
 /*
@@ -1106,6 +1134,7 @@ function handleCorrectAnswerSelection() {
         }
 
         gameShow.quotesToDraw.add("Correct!")
+        // Next, react depending on how many questions have been answered
         .deployQuoteChain(function() {
             if (gameShow.numberOfQuestionsCorrectlyAnswered < 10) {
                 // Determine the question's value and tell the user
@@ -1507,27 +1536,101 @@ function presentMillionDollarQuestion() {
 }
 
 /*
-    @post the host has told the user that he/she has lost and has
-    thus earned no money; the game has reacted visually and
-    auditorily
+    @pre SpongeBob is currently drawn speaker;
+    gameShow.turnVariables.selectedQuestion is correct;
+    gameShow.activeHelper !== null
+    @post helper's answer has been determined and presented;
+    game progresses to next part determined by whether or not
+    the user was saved; using the saving lifeline (again) has
+    been prohibited
+*/
+function handleSavingLifeline() {
+    // Don't let this lifeline be used again
+    gameShow.canBeSaved = false;
+
+    var helper = gameShow.activeHelper;
+
+    // Determine the helper's answer
+    var question = gameShow.questions.getQuestion(
+        gameShow.turnVariables.selectedQuestion);
+    var answerNumber = getHelperAnswer(helper, question);
+    var answerLetters = ['A', 'B', 'C', 'D'];
+    var helperAnswer = answerLetters[answerNumber - 1];
+
+    gameShow.quotesToDraw.add("It is now up to your helper.")
+    .add("If your helper chose the right answer, you get to continue " +
+        "the game.")
+    .add("Otherwise, you leave with nothing.")
+    .add("I will now tell you what your helper chose.")
+    .add("Your helper chose (" + helperAnswer + ").")
+    .deployQuoteChain(function() {
+        if (isCorrectAnswer(question, answerNumber))
+            handleCorrectAnswerSelection();
+        else
+            handleWrongAnswerSelection();
+    });
+}
+
+/*
+    @post the host has told the user that he/she has answered
+    incorrectly; if possible, the user's helper attempts to save
+    him; otherwise, a function is called to resolve the game
 */
 function handleWrongAnswerSelection() {
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
 
     gameShow.quotesToDraw.add("That answer is: ")
     .deployQuoteChain(function() {
-        // Adjust the music and sounds
+        gameShow.quotesToDraw.add("Wrong!");
         gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.LOSS);
-        gameShow.musicPlayer.stop();
 
-        // Have user explain the loss
-        gameShow.quotesToDraw.add("Wrong!")
-        .add("Unfortunately, this means you'll go home with nothing.")
-        .add("Good bye.")
-        .deployQuoteChain(function() {
-            eraseQuoteBubbleText();
-            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.GOOD_BYE);
-        });
+        /*
+            React differently, depending on whether or not the user
+            can be saved (note that the user can't be saved if
+            he picked the same wrong answer that the helper
+            revealed in the handling of the Peek lifeline)
+        */
+        if (gameShow.turnVariables.selectedAnswerNumber ===
+            gameShow.turnVariables.helperAnswerNumber) {
+            // User can't be saved by helper because user knowingly
+            // picked the same answer; end game
+
+            gameShow.musicPlayer.stop();
+
+            // Have host explain
+            gameShow.quotesToDraw.add("As shown by your peek, " +
+                "your helper picked the same answer and can't save you.")
+            .deployQuoteChain(handleUserGoingHomeWithNothing);
+        }
+        else if (gameShow.canBeSaved) {
+            // User can be saved; trigger "Save" lifeline
+            gameShow.quotesToDraw.add(
+                "However, your helper can still save you.")
+            .deployQuoteChain(handleSavingLifeline);
+        }
+        else {
+            // User has already been saved and thus can't be
+            // saved this time; end game
+            gameShow.musicPlayer.stop();
+
+            gameShow.quotesToDraw.deployQuoteChain(
+                handleUserGoingHomeWithNothing);
+        }
+    });
+}
+
+/*
+    @pre SpongeBob is currently drawn speaker
+    @post host has told the user that he/she has earned no money;
+    game has reacted visually and auditorily
+*/
+function handleUserGoingHomeWithNothing() {
+    gameShow.quotesToDraw.add(
+        "Unfortunately, this means you'll go home with nothing.")
+    .add("Good bye.")
+    .deployQuoteChain(function() {
+        eraseQuoteBubbleText();
+        gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.GOOD_BYE);
     });
 }
 
