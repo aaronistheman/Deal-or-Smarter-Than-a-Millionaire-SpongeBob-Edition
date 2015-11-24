@@ -56,6 +56,17 @@ gameShow.turnVariables = {
     selectedQuestion : undefined,
     selectedAnswer : undefined,
     bankerOffer : undefined,
+
+    // Store in case the helper's answer is demanded more than once
+    // in a certain turn
+    helperAnswerNumber : undefined,
+
+    reset : function() {
+        this.selectedQuestion = undefined;
+        this.selectedAnswer = undefined;
+        this.bankerOffer = undefined;
+        this.helperAnswerNumber = undefined;
+    },
 };
 
 gameShow.keyActions = new KeyActions();
@@ -686,6 +697,10 @@ function respondToPeekButtonActivation() {
     var answerLetters = ['A', 'B', 'C', 'D'];
     var helperAnswer = answerLetters[answerNumber - 1];
 
+    // Store the helper's answer so that he/she gives the same
+    // answer if the user both peeks and saves
+    gameShow.turnVariables.helperAnswerNumber = answerNumber;
+
     // Have the host explain; keep helper's gender in mind; have
     // the host say Gary's answer, if necessary
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
@@ -930,11 +945,21 @@ function presentPhoneFriendAnswer() {
     @param question instance of Question to use
     @returns returns a number in range [1, 4]; this number indicates
     the answer chosen by the given helper (there is probability
-    involved, since the helper may not always choose correct answer)
+    involved, since the helper may not always choose correct answer);
+    however, if the given helper is the active helper and has already
+    shown his/her answer, then that answer is returned
     @throws exception if fail to determine the helper's answer
     (although this should never happen)
 */
 function getHelperAnswer(helper, question) {
+    /*
+        If given helper is active helper and has already shown his/her
+        answer, return that answer number
+    */
+    if ((helper === gameShow.activeHelper) &&
+        (gameShow.turnVariables.helperAnswerNumber !== undefined))
+        return gameShow.turnVariables.helperAnswerNumber;
+
     var correctAnswerNumber = question.answerData.correctIndex + 1;
     var gaveCorrectAnswer = undefined;
 
@@ -999,9 +1024,7 @@ function prepareForNextTurn() {
     gameShow.questions.setAnswered(gameShow.turnVariables.selectedQuestion);
 
     // Prepare gameShow members
-    gameShow.turnVariables.selectedQuestion = undefined;
-    gameShow.turnVariables.selectedAnswer = undefined;
-    gameShow.turnVariables.bankerOffer = undefined;
+    gameShow.turnVariables.reset();
 }
 
 /*
