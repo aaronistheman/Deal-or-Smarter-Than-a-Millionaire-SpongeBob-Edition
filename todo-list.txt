@@ -1,8 +1,4 @@
 Next:
--implement saving
-    --don't allow saving if user picked the same answer as the helper
-    after peeking
-    --fix Squidward's correct rate
 -look into having the host say the text of the answer that corresponds
     to the said letter (I think this should be easy, but I'll have to
     look into how well the answers fit, which I don't anticipate will

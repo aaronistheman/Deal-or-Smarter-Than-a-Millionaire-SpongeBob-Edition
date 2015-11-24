@@ -54,7 +54,7 @@ gameShow.chooseHelperMenuState = new ChooseHelperMenuState(
 
 gameShow.turnVariables = {
     selectedQuestion : undefined,
-    selectedAnswer : undefined,
+    selectedAnswerNumber : undefined,
     bankerOffer : undefined,
 
     // Store in case the helper's answer is demanded more than once
@@ -63,7 +63,7 @@ gameShow.turnVariables = {
 
     reset : function() {
         this.selectedQuestion = undefined;
-        this.selectedAnswer = undefined;
+        this.selectedAnswerNumber = undefined;
         this.bankerOffer = undefined;
         this.helperAnswerNumber = undefined;
     },
@@ -617,14 +617,15 @@ function handleAnswerSelection() {
     allowUserSelectAnswerOrLifeline(false);
 
     // Save the answer
-    gameShow.turnVariables.selectedAnswer =
+    gameShow.turnVariables.selectedAnswerNumber =
         gameShow.questions.numberOfAnswerToEmphasize;
 
     // Determine whether or not the correct answer was selected;
     // react to this judgment
     var question = gameShow.questions.getQuestion(
         gameShow.turnVariables.selectedQuestion);
-    if (isCorrectAnswer(question, gameShow.turnVariables.selectedAnswer)) {
+    if (isCorrectAnswer(question,
+        gameShow.turnVariables.selectedAnswerNumber)) {
         if (gameShow.millionDollarQuestion)
             handleCorrectMillionAnswerSelection();
         else
@@ -1580,22 +1581,40 @@ function handleWrongAnswerSelection() {
 
     gameShow.quotesToDraw.add("That answer is: ")
     .deployQuoteChain(function() {
-        // React differently, depending on whether or not the user
-        // can be saved; play the appropriate sound effect
+        gameShow.quotesToDraw.add("Wrong!");
         gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.LOSS);
-        if (gameShow.canBeSaved) {
-            gameShow.quotesToDraw.add("Wrong!")
-            .add("However, your helper can still save you.")
+
+        /*
+            React differently, depending on whether or not the user
+            can be saved (note that the user can't be saved if
+            he picked the same wrong answer that the helper
+            revealed in the handling of the Peek lifeline)
+        */
+        if (gameShow.turnVariables.selectedAnswerNumber ===
+            gameShow.turnVariables.helperAnswerNumber) {
+            // User can't be saved by helper because user knowingly
+            // picked the same answer; end game
+
+            gameShow.musicPlayer.stop();
+
+            // Have host explain
+            gameShow.quotesToDraw.add("As shown by your peek, " +
+                "your helper picked the same answer and can't save you.")
+            .deployQuoteChain(handleUserGoingHomeWithNothing);
+        }
+        else if (gameShow.canBeSaved) {
+            // User can be saved; trigger "Save" lifeline
+            gameShow.quotesToDraw.add(
+                "However, your helper can still save you.")
             .deployQuoteChain(handleSavingLifeline);
         }
         else {
-            // Adjust the music and sounds
-            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.LOSS);
+            // User has already been saved and thus can't be
+            // saved this time; end game
             gameShow.musicPlayer.stop();
 
-            // Have user explain the loss
-            gameShow.quotesToDraw.add("Wrong!")
-            .deployQuoteChain(handleUserGoingHomeWithNothing);
+            gameShow.quotesToDraw.deployQuoteChain(
+                handleUserGoingHomeWithNothing);
         }
     });
 }
