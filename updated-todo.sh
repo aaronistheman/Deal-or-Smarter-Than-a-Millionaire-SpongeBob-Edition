@@ -8,4 +8,4 @@
 
 # Make the commit
 git add todo-list.txt
-git commit -m "Updated todo list"
+git commit -m "Severely updated todo list"
