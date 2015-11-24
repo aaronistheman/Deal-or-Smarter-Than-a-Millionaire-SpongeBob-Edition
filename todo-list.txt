@@ -1,18 +1,20 @@
 Next:
--look into having the host say the text of the answer that corresponds
+-once peeking and saving are no longer possible, set current helper
+to null and don't allow picking of anymore helpers
+    --make SpongeBob explain this inability to pick a helper?
+-check information given to user:
+    --say correct answer letter if game over
+    --look into having the host say the text of the answer that corresponds
     to the said letter (I think this should be easy, but I'll have to
     look into how well the answers fit, which I don't anticipate will
     be a problem)
--say correct answer letter if wrong answer is picked
--once peeking and saving are no longer possible, set current helper
-to null and don't allow picking of anymore helpers
-    --make SpongeBob explain this
--make sure:
-    --SpongeBob explains the controls for using a source of help
-    --sources of help can only be used once (esp. saving)
-    --sources of help can't be used on million dollar question
+        --see if can do this when say helper or friend's answer
+        --see if can do this when saying correct answer after game over
+    --make sure SpongeBob explains the controls for using a source of help
 -put more to the ending? perhaps some graphical thing or words
     "The End"
+    --consider having handleWrongMillion...() end with the
+    handleUserGoingHome...() function too
     --EndGame class?
         --could pass the context (i.e. the type of ending) to get
             the appropriate reaction, thus making it more manageable, too
@@ -30,8 +32,6 @@ to null and don't allow picking of anymore helpers
         at all my possession
 
 Before release 0.1:
--make sure trivial functions that are no longer needed and that were
- made for the purpose of testing have been erased in game-show-fusion.js
 -make sure readme's number of questions is correct
 -put release number on each file
 
@@ -54,7 +54,6 @@ After release 0.1:
 
 After final release (whatever that turns out to be):
 -YouTube video; put link in readme
-    --menion secret title screen cheat codes
 
 Considerable:
 -unit test to check sufficient subject variety
