@@ -2,7 +2,6 @@ Next:
 -implement saving
     --don't allow the helper to have different answers for peek and save;
     answer will have to be stored as a turn variable
-    --shorten "loss" audio clip
 -say correct answer letter if wrong answer is picked
 -once peeking and saving are no longer possible, set current helper
 to null and don't allow picking of anymore helpers
