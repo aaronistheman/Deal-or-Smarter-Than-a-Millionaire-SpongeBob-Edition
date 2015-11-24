@@ -1542,6 +1542,8 @@ function handleSavingLifeline() {
     .deployQuoteChain(function() {
         if (isCorrectAnswer(question, answerNumber))
             handleCorrectAnswerSelection();
+        else
+            handleWrongAnswerSelection();
     });
 }
 
