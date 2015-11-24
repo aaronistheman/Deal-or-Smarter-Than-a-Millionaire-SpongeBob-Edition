@@ -530,6 +530,8 @@ QUnit.test("removeAllLifelines()", function(assert) {
     removeAllLifelines();
     assert.deepEqual(gameShow.lifelines.container.getNumberOfChildren(),
         1, "All lifeline buttons were removed");
+    assert.deepEqual(gameShow.canBeSaved, false,
+        "Saving was disallowed");
 });
 
 QUnit.module("helper-panel-container.js");

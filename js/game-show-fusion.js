@@ -46,6 +46,7 @@ setUpHelpers();
 gameShow.lifelines = new Lifelines(CANVAS_IDS.LIFELINES_GRAPHICS,
     CANVAS_IDS.LIFELINES_TEXT);
 gameShow.isUserSelectingLifeline = false;
+gameShow.canBeSaved = true; // note that saving isn't a selectable lifeline
 
 gameShow.chooseHelperMenuState = new ChooseHelperMenuState(
     CANVAS_IDS.CHOOSE_HELPER_GRAPHICS, CANVAS_IDS.CHOOSE_HELPER_TEXT,
@@ -561,13 +562,16 @@ function allowUserSelectAnswerOrLifeline(booleanValue) {
 /*
     @pre the lifeline buttons are stored from the second element onward
     in gameShow.lifelines.container._chldren
-    @post all stored lifeline buttons have been removed
+    @post all stored lifeline buttons have been removed; saving
+    has been disallowed
     @hasTest yes
 */
 function removeAllLifelines() {
     while (gameShow.lifelines.container.getNumberOfChildren() > 1)
         gameShow.lifelines.removeSelectedLifeline(
             gameShow.lifelines.container.getNumberOfChildren() > 2);
+
+    gameShow.canBeSaved = false;
 }
 
 /*
@@ -1106,6 +1110,7 @@ function handleCorrectAnswerSelection() {
         }
 
         gameShow.quotesToDraw.add("Correct!")
+        // Next, react depending on how many questions have been answered
         .deployQuoteChain(function() {
             if (gameShow.numberOfQuestionsCorrectlyAnswered < 10) {
                 // Determine the question's value and tell the user
@@ -1507,27 +1512,81 @@ function presentMillionDollarQuestion() {
 }
 
 /*
-    @post the host has told the user that he/she has lost and has
-    thus earned no money; the game has reacted visually and
-    auditorily
+    @pre SpongeBob is currently drawn speaker;
+    gameShow.turnVariables.selectedQuestion is correct;
+    gameShow.activeHelper !== null
+    @post helper's answer has been determined and presented;
+    game progresses to next part determined by whether or not
+    the user was saved; using the saving lifeline (again) has
+    been prohibited
+*/
+function handleSavingLifeline() {
+    // Don't let this lifeline be used again
+    gameShow.canBeSaved = false;
+
+    var helper = gameShow.activeHelper;
+
+    // Determine the helper's answer
+    var question = gameShow.questions.getQuestion(
+        gameShow.turnVariables.selectedQuestion);
+    var answerNumber = getHelperAnswer(helper, question);
+    var answerLetters = ['A', 'B', 'C', 'D'];
+    var helperAnswer = answerLetters[answerNumber - 1];
+
+    gameShow.quotesToDraw.add("It is now up to your helper.")
+    .add("If your helper chose the right answer, you get to continue " +
+        "the game.")
+    .add("Otherwise, you leave with nothing.")
+    .add("I will now tell you what your helper chose.")
+    .add("Your helper chose (" + helperAnswer + ").")
+    .deployQuoteChain(function() {
+        if (isCorrectAnswer(question, answerNumber))
+            handleCorrectAnswerSelection();
+    });
+}
+
+/*
+    @post the host has told the user that he/she has answered
+    incorrectly; if possible, the user's helper attempts to save
+    him; otherwise, a function is called to resolve the game
 */
 function handleWrongAnswerSelection() {
     gameShow.canvasStack.set(CANVAS_IDS.SPEAKER_QUOTE);
 
     gameShow.quotesToDraw.add("That answer is: ")
     .deployQuoteChain(function() {
-        // Adjust the music and sounds
+        // React differently, depending on whether or not the user
+        // can be saved; play the appropriate sound effect
         gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.LOSS);
-        gameShow.musicPlayer.stop();
+        if (gameShow.canBeSaved) {
+            gameShow.quotesToDraw.add("Wrong!")
+            .add("However, your helper can still save you.")
+            .deployQuoteChain(handleSavingLifeline);
+        }
+        else {
+            // Adjust the music and sounds
+            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.LOSS);
+            gameShow.musicPlayer.stop();
 
-        // Have user explain the loss
-        gameShow.quotesToDraw.add("Wrong!")
-        .add("Unfortunately, this means you'll go home with nothing.")
-        .add("Good bye.")
-        .deployQuoteChain(function() {
-            eraseQuoteBubbleText();
-            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.GOOD_BYE);
-        });
+            // Have user explain the loss
+            gameShow.quotesToDraw.add("Wrong!")
+            .deployQuoteChain(handleUserGoingHomeWithNothing);
+        }
+    });
+}
+
+/*
+    @pre SpongeBob is currently drawn speaker
+    @post host has told the user that he/she has earned no money;
+    game has reacted visually and auditorily
+*/
+function handleUserGoingHomeWithNothing() {
+    gameShow.quotesToDraw.add(
+        "Unfortunately, this means you'll go home with nothing.")
+    .add("Good bye.")
+    .deployQuoteChain(function() {
+        eraseQuoteBubbleText();
+        gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.GOOD_BYE);
     });
 }
 

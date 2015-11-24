@@ -1242,7 +1242,7 @@ Questions.getEntireSupplyOfQuestions = function() {
             "seaweed", "barnacle chips", "anchor arms"]),
         new AudienceData(0.33, 0.03, 0.25, 0.39)));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.QUOTATIONS,
-        "Who said the following quote: 'We should take Bikini" +
+        "Who said the following quote: 'We should take Bikini " +
         "Bottom, and push it somewhere else'?",
         new AnswerData(ANSWERS.FIRST, ["Patrick", "Sandy",
             "Mr. Krabs", "Squidward"]),
