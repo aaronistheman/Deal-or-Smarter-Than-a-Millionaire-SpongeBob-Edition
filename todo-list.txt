@@ -1,6 +1,7 @@
 Next:
 -check information given to user:
     --say correct answer letter if game over
+        --also do this for million dollar question
     --look into having the host say the text of the answer that corresponds
     to the said letter (I think this should be easy, but I'll have to
     look into how well the answers fit, which I don't anticipate will

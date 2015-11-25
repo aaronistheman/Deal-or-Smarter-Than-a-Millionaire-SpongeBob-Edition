@@ -1635,12 +1635,21 @@ function handleWrongAnswerSelection() {
 
 /*
     @pre SpongeBob is currently drawn speaker
-    @post host has told the user that he/she has earned no money;
-    game has reacted visually and auditorily
+    @post host has told the user the correct answer and
+    that he/she has earned no money;
+    game has reacted auditorily
 */
 function handleUserGoingHomeWithNothing() {
-    gameShow.quotesToDraw.add(
-        "Unfortunately, this means you'll go home with nothing.")
+    // Get the correct answer
+    var answerLetters = ['A', 'B', 'C', 'D'];
+    var question = gameShow.questions.getQuestion(
+        gameShow.turnVariables.selectedQuestion);
+    var correctAnswerIndex = question.answerData.correctIndex;
+    var correctAnswerLetter = answerLetters[correctAnswerIndex];
+
+    gameShow.quotesToDraw.add("The correct answer was (" +
+        correctAnswerLetter + ").")
+    .add("Unfortunately, this means you'll go home with nothing.")
     .add("Good bye.")
     .deployQuoteChain(function() {
         eraseQuoteBubbleText();
