@@ -1651,9 +1651,11 @@ function handleUserGoingHomeWithNothing() {
         gameShow.turnVariables.selectedQuestion);
     var correctAnswerIndex = question.answerData.correctIndex;
     var correctAnswerLetter = answerLetters[correctAnswerIndex];
+    var correctAnswerText = question.answerData.arrayOfAnswers[
+        correctAnswerIndex];
 
     gameShow.quotesToDraw.add("The correct answer was (" +
-        correctAnswerLetter + ").")
+        correctAnswerLetter + ") " + correctAnswerText + ".")
     .add("Unfortunately, this means you'll go home with nothing.")
     .add("Good bye.")
     .deployQuoteChain(function() {

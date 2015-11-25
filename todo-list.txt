@@ -4,8 +4,12 @@ Next:
     to the said letter (I think this should be easy, but I'll have to
     look into how well the answers fit, which I don't anticipate will
     be a problem)
-        --see if can do this when say helper or friend's answer
-        --see if can do this when saying correct answer after game over
+        --create function that returns object with correct answer letter
+        and correct answer text
+        --say answer text when show:
+            --helper's answer in Peek
+            --helper's answer in Save
+            --Patrick's answer in Phone a Friend
     --make sure SpongeBob explains the controls for using a source of help
 -consider adding any helper strengths, questions, and question subjects
     --add subject "Pets" and add question about egg Roger?
