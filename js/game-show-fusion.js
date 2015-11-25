@@ -1108,10 +1108,10 @@ function handleWrongMillionAnswerSelection() {
         .deployQuoteChain(function() {
             gameShow.soundPlayer.play(
                 SOUND_EFFECTS_IDS.LOSS_MILLION);
-            gameShow.quotesToDraw.add("INCORRECT!")
-                .add("Now, you must leave with nothing.")
-                .add("Good bye.")
-                .deployQuoteChain(eraseQuoteBubbleText);
+
+            // Have the host explain further
+            gameShow.quotesToDraw.add("INCORRECT!");
+            handleUserGoingHomeWithNothing();
         });
 }
 
