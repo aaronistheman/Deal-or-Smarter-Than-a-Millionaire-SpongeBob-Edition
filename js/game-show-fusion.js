@@ -1066,6 +1066,11 @@ function adjustBackgroundMusicBasedOnQuestionsAnswered() {
             case 10:
                 gameShow.musicPlayer.play(MUSIC_IDS.QUESTION_MILLION);
                 break;
+            default: // should never happen
+                alertAndThrowException("Invalid value of " +
+                    "gameShow.numberOfQuestionsCorrectlyAnswered " +
+                    "in adjustBackgroundMusicBasedOnQuestionsAnswered(): " +
+                    gameShow.numberOfQuestionsCorrectlyAnswered);
         }
     }
     else
