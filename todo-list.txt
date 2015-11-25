@@ -1,7 +1,4 @@
 Next:
--once peeking and saving are no longer possible, set current helper
-to null and don't allow picking of anymore helpers
-    --make SpongeBob explain this inability to pick a helper?
 -check information given to user:
     --say correct answer letter if game over
     --look into having the host say the text of the answer that corresponds
@@ -84,3 +81,4 @@ Considerable:
     has chosen (but don't do this if it's too hard; it's my fault for
     not planning ahead enough); for terminology's sake, let's
     call such a rectangle a "favored" answer rectangle
+-secret main menu key code to change the lifelines
