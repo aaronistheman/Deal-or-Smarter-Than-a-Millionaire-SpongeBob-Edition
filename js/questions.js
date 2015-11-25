@@ -1569,8 +1569,12 @@ Questions.getEntireSupplyOfQuestions = function() {
     supply.push(new Question(gradeOfQuestion, SUBJECTS.DRIVING,
         "Which of the following things has SpongeBob never truly hit with " +
         "a boat?",
-        new AnswerData(ANSWERS.FIRST, ["Johnny Elaine", "the narrator",
-            "lighthouse", "boat"])));
+        new AnswerData(ANSWERS.FIRST, ["the main fish announcer",
+            "the narrator", "lighthouse", "boat"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.DRIVING,
+        "At the beginning of \"New Student Starfish,\" how many " +
+        "good noodle stars did SpongeBob have?",
+        new AnswerData(ANSWERS.THIRD, ["24", "64", "74", "78"])));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.VIDEO_GAMES,
         "Which of the following SpongeBob video games cannot be played " +
         "on the Nintendo DS?",
