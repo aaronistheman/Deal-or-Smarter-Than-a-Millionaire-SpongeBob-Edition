@@ -46,6 +46,8 @@ setUpHelpers();
 gameShow.lifelines = new Lifelines(CANVAS_IDS.LIFELINES_GRAPHICS,
     CANVAS_IDS.LIFELINES_TEXT);
 gameShow.isUserSelectingLifeline = false;
+gameShow.canPeek = true; // to make it easier to determine whether or
+                         // not the user can still use his helper
 gameShow.canBeSaved = true; // note that saving isn't a selectable lifeline
 
 gameShow.chooseHelperMenuState = new ChooseHelperMenuState(
@@ -570,6 +572,10 @@ function allowUserSelectAnswerOrLifeline(booleanValue) {
     }
 }
 
+function canHelperStillHelp() {
+    return (gameShow.canPeek || gameShow.canBeSaved);
+}
+
 /*
     @pre the lifeline buttons are stored from the second element onward
     in gameShow.lifelines.container._chldren
@@ -689,6 +695,9 @@ function handleLifelineSelection() {
     speaker
 */
 function respondToPeekButtonActivation() {
+    // Make it easier to check that the peek lifeline has been used
+    gameShow.canPeek = false;
+
     var helper = gameShow.activeHelper;
 
     // Determine the helper's answer
@@ -1315,7 +1324,12 @@ function userRejectsDeal() {
             // Prepare the background music
             adjustBackgroundMusicBasedOnQuestionsAnswered();
 
-            haveUserPickHelper();
+            // If useful, have the user pick a helper
+            gameShow.activeHelper = null;
+            if (canHelperStillHelp())
+                haveUserPickHelper();
+            else
+                goToNextTurn();
         });
 }
 
