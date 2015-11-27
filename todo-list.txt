@@ -3,40 +3,29 @@ Next:
     --will probably have to implement image preloading
 	--disclaim that SpongeBob or any of the involved game shows are
         at all my possession
-
-Before release 0.1:
 -make sure readme's number of questions is correct
--put release number on each file
--check readme
-
-After release 0.1:
--applause sound effect
--look into that one error that always pops up in the console
-(for index.html)
--consider making my own graphics for some things (e.g. briefcases)
-    --could use GIMP, Microsoft Word, etc.
-    --in this case, consider resource identifiers for the images
--with WebGL:
-    --show opening of briefcase with WebGL
-    --show visual briefcase when determining if user took good deal
-    --show updating of money display with WebGL
-    --use WebGL to present banker's offer with a rotating rectangle
-    --if I decide not to use WebGL, alternative must be used
-        (e.g. 2d drawing)
--make sure the game progresses smoothly in all parts (e.g. visually
-    and auditorially)
-
-After final release (whatever that turns out to be):
--YouTube video; put link in readme
+-make sure release number is on each file
+-proofread readme
+-video
+-put video link in readme
+-RELEASE 0.1
 
 Video:
--show each ending
-    --lose one of first ten questions
-    --take good deal
-    --take bad deal
-    --take case home
-    --lose on million dollar question
-    --win a million
+-make sure:
+    --to temporarily adjust helper data to make recording easier
+    --to go slow enough for reading, but keep in mind that video
+    can be paused
+    --to show each ending:
+        --lose one of first ten questions
+        --take good deal
+        --take bad deal
+        --take case home
+        --lose on million dollar question
+        --win a million
+    --to show a deal that is at least $100,000
+    --to peek at Gary's answer
+    --to show each of the four lifelines
+    --to have "I Was a Teenage Gary" as the ending music
 
 Considerable:
 -unit test to check sufficient subject variety
@@ -68,3 +57,16 @@ Considerable:
     not planning ahead enough); for terminology's sake, let's
     call such a rectangle a "favored" answer rectangle
 -secret main menu key code to change the lifelines
+-applause sound effect
+-look into that one error that always pops up in the console
+(for index.html)
+-consider making my own graphics for some things (e.g. briefcases)
+    --could use GIMP, Microsoft Word, etc.
+    --in this case, consider resource identifiers for the images
+-with WebGL:
+    --show opening of briefcase with WebGL
+    --show visual briefcase when determining if user took good deal
+    --show updating of money display with WebGL
+    --use WebGL to present banker's offer with a rotating rectangle
+    --if I decide not to use WebGL, alternative must be used
+        (e.g. 2d drawing)
