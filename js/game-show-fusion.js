@@ -1639,23 +1639,48 @@ function handleWrongAnswerSelection() {
 }
 
 /*
+    @pre 1 <= answerLetterNumber <= 4, or answerLetterNumber = "correct";
+    gameShow.turnVariables.selectedQuestion is updated
+    @returns an object containing the corresponding answer letter
+    and the text of the answer regarding the current question
+    @throws exception if answerLetterNumber is in wrong range
+*/
+function getAnswerLetterAndText(answerLetterNumber) {
+    // Check parameter validity
+    if (!(1 <= answerLetterNumber && answerLetterNumber <= 4) &&
+        answerLetterNumber != "correct")
+        alertAndThrowException("answerLetterNumber given to " +
+            "getAnswerLetterAndText(...) isn't valid");
+
+    var answer = {};
+    var answerLetters = ['A', 'B', 'C', 'D'];
+    var question = gameShow.questions.getQuestion(
+        gameShow.turnVariables.selectedQuestion);
+    // Set parameter to correct answer index if desired
+    if (answerLetterNumber === "correct")
+        answerLetterNumber = question.answerData.correctIndex + 1;
+
+    // Get the answer letter
+    answer.letter = answerLetters[answerLetterNumber - 1];
+
+    // Get answer text
+    answer.text =
+        question.answerData.arrayOfAnswers[answerLetterNumber - 1];
+
+    return answer;
+}
+
+/*
     @pre SpongeBob is currently drawn speaker
     @post host has told the user the correct answer and
     that he/she has earned no money;
     game has reacted auditorily
 */
 function handleUserGoingHomeWithNothing() {
-    // Get the correct answer
-    var answerLetters = ['A', 'B', 'C', 'D'];
-    var question = gameShow.questions.getQuestion(
-        gameShow.turnVariables.selectedQuestion);
-    var correctAnswerIndex = question.answerData.correctIndex;
-    var correctAnswerLetter = answerLetters[correctAnswerIndex];
-    var correctAnswerText = question.answerData.arrayOfAnswers[
-        correctAnswerIndex];
+    var answer = getAnswerLetterAndText("correct");
 
     gameShow.quotesToDraw.add("The correct answer was (" +
-        correctAnswerLetter + ") " + correctAnswerText + ".")
+        answer.letter + ") " + answer.text + ".")
     .add("Unfortunately, this means you'll go home with nothing.")
     .add("Good bye.")
     .deployQuoteChain(function() {

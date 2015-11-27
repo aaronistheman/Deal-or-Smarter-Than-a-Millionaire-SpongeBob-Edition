@@ -4,8 +4,6 @@ Next:
     to the said letter (I think this should be easy, but I'll have to
     look into how well the answers fit, which I don't anticipate will
     be a problem)
-        --create function that returns object with correct answer letter
-        and correct answer text
         --say answer text when show:
             --helper's answer in Peek
             --helper's answer in Save
