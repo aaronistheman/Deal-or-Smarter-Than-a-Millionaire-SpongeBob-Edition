@@ -1087,15 +1087,17 @@ function handleCorrectMillionAnswerSelection() {
 
     // Tell the user what happened
     gameShow.quotesToDraw.add("That answer is: ")
-        .deployQuoteChain(function() {
-            gameShow.soundPlayer.play(
-                SOUND_EFFECTS_IDS.CORRECT_ANSWER_MILLION);
-            gameShow.quotesToDraw.add("CORRECT!")
-                .add("Congratulations!")
-                .add("You've beat the banker!")
-                .add("And you go home a millionaire!")
-                .deployQuoteChain(eraseQuoteBubbleText);
-        });
+    .deployQuoteChain(function() {
+        gameShow.soundPlayer.play(
+            SOUND_EFFECTS_IDS.CORRECT_ANSWER_MILLION);
+        gameShow.quotesToDraw.add("CORRECT!")
+        .add("Congratulations!")
+        .add("You've beat the banker!")
+        .add("And you go home a millionaire!")
+        .add("You've won this game.")
+        .add("Good bye.")
+        .deployQuoteChain(presentEndingScreen);
+    });
 }
 
 /*
@@ -1284,13 +1286,13 @@ function userAcceptedGoodDeal() {
     gameShow.musicPlayer.stop();
 
     gameShow.quotesToDraw.add('$' + gameShow.briefcaseValue.asString() + '.')
-        .deployQuoteChain(function() {
-            gameShow.quotesToDraw.add("You got a good deal.")
-                .add("Congratulations!")
-                .add("That concludes this game.")
-                .add("Good bye.")
-                .deployQuoteChain(eraseQuoteBubbleText);
-        });
+    .deployQuoteChain(function() {
+        gameShow.quotesToDraw.add("You got a good deal.")
+        .add("Congratulations!")
+        .add("That concludes this game.")
+        .add("Good bye.")
+        .deployQuoteChain(presentEndingScreen);
+    });
 }
 
 /*
@@ -1310,7 +1312,7 @@ function userAcceptedBadDeal() {
             .add("Good bye.")
             .deployQuoteChain(function() {
                 gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.GOOD_BYE);
-                eraseQuoteBubbleText()
+                presentEndingScreen();
             });
         });
 }
@@ -1521,13 +1523,13 @@ function userTakesCaseHome() {
 
     // Make the host explain
     gameShow.quotesToDraw.add("Then, congratulations.")
-        .add("You're going home with $" +
-            gameShow.briefcaseValue.asString() + '.')
-        .add("Good bye.")
-        .deployQuoteChain(function() {
-            eraseQuoteBubbleText();
-            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.GOOD_BYE);
-        });
+    .add("You're going home with $" +
+        gameShow.briefcaseValue.asString() + '.')
+    .add("Good bye.")
+    .deployQuoteChain(function() {
+        gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.GOOD_BYE);
+        presentEndingScreen();
+    });
 }
 
 /*

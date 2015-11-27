@@ -1,6 +1,4 @@
 Next:
--make an ending image
-    --apply to other endings
 -more decorated title screen
     --will probably have to implement image preloading
 	--disclaim that SpongeBob or any of the involved game shows are
