@@ -1,8 +1,11 @@
 Next:
 -more decorated title screen
-    --will probably have to implement image preloading
-	--disclaim that SpongeBob or any of the involved game shows are
-        at all my possession
+    --apply image preloading to title screen images
+        --perhaps add resource identifiers for images (these would be
+        constans for the urls)
+    --make basic loading screen
+    --start the audio before starting preloading
+    --consider apply images preloading to other images, if easy
 -make sure readme's number of questions is correct
 -make sure release number is on each file
 -proofread readme
@@ -26,6 +29,9 @@ Video:
     --to peek at Gary's answer
     --to show each of the four lifelines
     --to have "I Was a Teenage Gary" as the ending music
+-in description:
+	--disclaim that SpongeBob or any of the involved game shows are
+        at all my possession
 
 Considerable:
 -unit test to check sufficient subject variety

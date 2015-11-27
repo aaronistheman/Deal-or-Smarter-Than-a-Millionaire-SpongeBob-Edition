@@ -7,6 +7,7 @@
 
 var gameShow = {};
 gameShow.speakers = getSpeakerObjects();
+gameShow.imagesToPreload = [];
 
 gameShow.canvasStack = new CanvasStack();
 
@@ -135,17 +136,6 @@ gameShow.quotesToDraw = {
         }
     }
 };
-
-// @post title screen has been set up with prompt for user
-function drawTitleScreenText() {
-    var canvas = document.getElementById(CANVAS_IDS.TITLE_SCREEN);
-    var ctx = canvas.getContext('2d');
-    ctx.font = "30px Arial";
-    ctx.fillStyle = "black";
-    ctx.textAlign = "center";
-    ctx.fillText("Press Enter to play", canvas.width / 2,
-        canvas.height / 2);
-}
 
 // This is currently a trivial function made for the purpose of
 // testing.
@@ -1787,9 +1777,38 @@ function setUpGame() {
         .deployQuoteChain(explainRules);
 }
 
+// @post title screen has been set up with prompt for user
+function drawTitleScreenText() {
+    var canvas = document.getElementById(CANVAS_IDS.TITLE_SCREEN);
+    var ctx = canvas.getContext('2d');
+    ctx.font = "30px Arial";
+    ctx.fillStyle = "black";
+    ctx.textAlign = "center";
+    ctx.fillText("Press Enter to play", canvas.width / 2,
+        canvas.height / 2);
+}
+
+/*
+    @post title screen has been completely prepared
+*/
+function drawTitleScreen() {
+    var canvas = document.getElementById(CANVAS_IDS.TITLE_SCREEN);
+    var ctx = canvas.getContext('2d');
+    var image = new Image();
+    image.src = "media/images/logo_deal_or_no_deal.png";
+    ctx.drawImage(image, 20, 30);
+}
+
+function preloadTitleScreenImages() {
+    addImage("media/images/logo_deal_or_no_deal.png");
+    startPreloading(function() {
+        setUpTitleScreen();
+    });
+}
+
 function setUpTitleScreen() {
+    drawTitleScreen();
     gameShow.canvasStack.set(CANVAS_IDS.TITLE_SCREEN);
-    drawTitleScreenText();
     gameShow.musicPlayer.play(MUSIC_IDS.OPENING);
 
     // Set up the user's ability to go to the game
@@ -1802,9 +1821,65 @@ function setUpAudio() {
     gameShow.musicPlayer.storeElements();
 }
 
+/*
+    From page 28 of "jQuery Game Development Essentials" by
+    Selim Arsever
+
+    @post image indicated by the given url has been added to the
+    list of images to preload
+    @param url location of the image
+*/
+function addImage(url) {
+    if ($.inArray(url, gameShow.imagesToPreload) < 0) {
+        gameShow.imagesToPreload.push();
+    }
+    gameShow.imagesToPreload.push(url);
+}
+
+/*
+    From pages 28 and 29 of "jQuery Game Development Essentials" by
+    Selim Arsever
+
+    @post the preloading of the images has begun
+    @param endCallback to call once all the images are loaded
+    @param progressCallback (optional) is called with the current
+    progress as a percentage
+*/
+function startPreloading(endCallback, progressCallback) {
+    var images = [];
+    var total = gameShow.imagesToPreload.length;
+
+    for (var i = 0; i < total; i++) {
+        var image = new Image();
+        images.push(image);
+        image.src = gameShow.imagesToPreload[i];
+    }
+    var preloadingPoller = setInterval(function() {
+        var counter = 0;
+        var total = gameShow.imagesToPreload.length;
+        for (var i = 0; i < total; i++) {
+            if (images[i].complete) {
+                counter++;
+            }
+        }
+        if (counter == total) {
+            // we are done!
+            clearInterval(preloadingPoller);
+            endCallback();
+        }
+        else {
+            if (progressCallback) {
+                count++;
+                progressCallback((count / total) * 100);
+            }
+        }
+    }, 100);
+};
+
+
 $(document).ready(function() {
     if (!isUnitTesting()) {
         setUpAudio();
-        setUpTitleScreen();
+        preloadTitleScreenImages();
     }
 });
