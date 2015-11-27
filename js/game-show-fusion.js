@@ -1639,28 +1639,25 @@ function handleWrongAnswerSelection() {
 }
 
 /*
-    @pre 1 <= answerLetterNumber <= 4, or answerLetterNumber = "correct";
-    gameShow.turnVariables.selectedQuestion is updated
+    @pre 1 <= answerLetterNumber <= 4
+    @param question instance of Question to get the answer text of
+    @param answerLetterNumber the number of the answer letter to
+    get the character letter and string text of
     @returns an object containing the corresponding answer letter
-    and the text of the answer regarding the current question
+    and the text of the answer regarding the given question
     @throws exception if answerLetterNumber is in wrong range
 */
-function getAnswerLetterAndText(answerLetterNumber) {
+function getAnswerLetterAndText(question, answerLetterNumber) {
     // Check parameter validity
-    if (!(1 <= answerLetterNumber && answerLetterNumber <= 4) &&
-        answerLetterNumber != "correct")
+    if (!(1 <= answerLetterNumber && answerLetterNumber <= 4))
         alertAndThrowException("answerLetterNumber given to " +
-            "getAnswerLetterAndText(...) isn't valid");
+            "getAnswerLetterAndText(...) isn't in valid range: " +
+            answerLetterNumber);
 
     var answer = {};
-    var answerLetters = ['A', 'B', 'C', 'D'];
-    var question = gameShow.questions.getQuestion(
-        gameShow.turnVariables.selectedQuestion);
-    // Set parameter to correct answer index if desired
-    if (answerLetterNumber === "correct")
-        answerLetterNumber = question.answerData.correctIndex + 1;
 
     // Get the answer letter
+    var answerLetters = ['A', 'B', 'C', 'D'];
     answer.letter = answerLetters[answerLetterNumber - 1];
 
     // Get answer text
@@ -1671,13 +1668,24 @@ function getAnswerLetterAndText(answerLetterNumber) {
 }
 
 /*
+    @pre gameShow.turnVariables.selectedQuestion is correct
+    @returns instance of the currently active question
+*/
+function getCurrentQuestion() {
+    return gameShow.questions.getQuestion(
+        gameShow.turnVariables.selectedQuestion);
+}
+
+/*
     @pre SpongeBob is currently drawn speaker
     @post host has told the user the correct answer and
     that he/she has earned no money;
     game has reacted auditorily
 */
 function handleUserGoingHomeWithNothing() {
-    var answer = getAnswerLetterAndText("correct");
+    var question = getCurrentQuestion();
+    var answer = getAnswerLetterAndText(question,
+        question.answerData.correctIndex + 1);
 
     gameShow.quotesToDraw.add("The correct answer was (" +
         answer.letter + ") " + answer.text + ".")
