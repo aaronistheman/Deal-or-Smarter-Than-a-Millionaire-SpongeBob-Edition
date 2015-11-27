@@ -1,8 +1,8 @@
 Next:
 -more decorated title screen
     --apply image preloading to title screen images
-        --confirm preload callback works
         --draw and properly position the title screen images
+    --make sure background color is okay
     --make basic loading screen?
 -make sure readme's number of questions is correct
 -make sure release number is on each file

@@ -1794,13 +1794,33 @@ function drawTitleScreenText() {
 function drawTitleScreen() {
     var canvas = document.getElementById(CANVAS_IDS.TITLE_SCREEN);
     var ctx = canvas.getContext('2d');
-    var image = new Image();
-    image.src = "media/images/logo_deal_or_no_deal.png";
-    ctx.drawImage(image, 20, 30);
+
+    // Position and draw the Deal or No Deal logo
+    var logoDeal = new Image();
+    logoDeal.src = "media/images/logo_deal_or_no_deal.png";
+    ctx.drawImage(logoDeal, 500, 30, 200, 200);
+
+    // Position and draw the Are You Smarter Than a 5th Grader logo
+    var logoFifth = new Image();
+    logoFifth.src = "media/images/logo_are_you_smarter.png";
+    ctx.drawImage(logoFifth, 30, 30, 200, 200);
+
+    // Position and draw the Who Wants to Be a Millionaire logo
+    var logoWho = new Image();
+    logoWho.src = "media/images/logo_who_wants_to_be_millionaire.jpg";
+    ctx.drawImage(logoWho, 500, 300, 200, 200);
+
+    // Position and draw the SpongeBob Squarepants logo
+    var logoSponge = new Image();
+    logoSponge.src = "media/images/logo_spongebob.png";
+    ctx.drawImage(logoSponge, 30, 300, 200, 200);
 }
 
 function preloadTitleScreenImages() {
+    addImage("media/images/logo_are_you_smarter.jpg");
     addImage("media/images/logo_deal_or_no_deal.png");
+    addImage("media/images/logo_who_wants_to_be_millionaire.jpg");
+    addImage("media/images/logo_spongebob.png");
     startPreloading(function() {
         setUpTitleScreen();
     });
@@ -1809,7 +1829,6 @@ function preloadTitleScreenImages() {
 function setUpTitleScreen() {
     drawTitleScreen();
     gameShow.canvasStack.set(CANVAS_IDS.TITLE_SCREEN);
-    gameShow.musicPlayer.play(MUSIC_IDS.OPENING);
 
     // Set up the user's ability to go to the game
     gameShow.keyActions.setUpEventHandler()
@@ -1879,6 +1898,7 @@ function startPreloading(endCallback, progressCallback) {
 $(document).ready(function() {
     if (!isUnitTesting()) {
         setUpAudio();
+        gameShow.musicPlayer.play(MUSIC_IDS.OPENING);
         preloadTitleScreenImages();
     }
 });

@@ -5,7 +5,9 @@ About
 
 This is the web version of the SpongeBob edition of a fusion of
 "Deal or No Deal", "Are You Smarter Than a Fifth Grader", and
-"Who Wants to Be a Millionaire".
+"Who Wants to Be a Millionaire". (Note that none of "SpongeBob Squarepants,"
+"Deal or No Deal," "Are You Smarter Than a Fifth Grader," or "Who
+Wants to Be a Millionaire" are owned by me.)
 
 Regarding languages, I used HTML5, CSS, and JavaScript.
 
