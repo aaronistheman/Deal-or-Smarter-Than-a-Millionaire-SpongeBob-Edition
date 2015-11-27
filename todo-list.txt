@@ -1,13 +1,10 @@
 Next:
 -put more to the ending? perhaps some graphical thing or words
     "The End"
-    --consider having handleWrongMillion...() end with the
-    handleUserGoingHome...() function too
-    --EndGame class?
+    --EndGame class? in end-game.js?
         --could pass the context (i.e. the type of ending) to get
             the appropriate reaction, thus making it more manageable, too
             (look below for list of endings)
-    --play closing theme in all endings
     --individually examine each of the five endings: (e.g. quotes, music)
         --lose one of first ten questions
         --take deal
