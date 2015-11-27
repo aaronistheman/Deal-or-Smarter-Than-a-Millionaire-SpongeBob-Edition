@@ -31,6 +31,7 @@ var CANVAS_IDS = {
     SPEAKER : "speaker-canvas",
     QUOTE_BUBBLE : "quote-bubble-canvas",
     QUOTE_TEXT : "quote-text-canvas",
+    ENDING_SCREEN : "ending-screen-canvas",
     TITLE_SCREEN : "title-screen-canvas",
 };
 

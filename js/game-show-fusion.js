@@ -1698,6 +1698,7 @@ function handleUserGoingHomeWithNothing() {
     .deployQuoteChain(function() {
         eraseQuoteBubbleText();
         gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.GOOD_BYE);
+        presentEndingScreen();
     });
 }
 
@@ -1720,6 +1721,15 @@ function selectQuestion() {
                 SOUND_EFFECTS_IDS.SELECT_QUESTION);
             handleQuestionSelection()
         });
+}
+
+/*
+    @post ending screen has been shown
+*/
+function presentEndingScreen() {
+    // Show the ending screen
+    gameShow.canvasStack.set(CANVAS_IDS.ENDING_SCREEN,
+        CanvasStack.EFFECTS.FADE_IN);
 }
 
 /*
