@@ -701,11 +701,9 @@ function respondToPeekButtonActivation() {
     var helper = gameShow.activeHelper;
 
     // Determine the helper's answer
-    var question = gameShow.questions.getQuestion(
-        gameShow.turnVariables.selectedQuestion);
+    var question = getCurrentQuestion();
     var answerNumber = getHelperAnswer(helper, question);
-    var answerLetters = ['A', 'B', 'C', 'D'];
-    var helperAnswer = answerLetters[answerNumber - 1];
+    var answer = getAnswerLetterAndText(question, answerNumber);
 
     // Store the helper's answer so that he/she gives the same
     // answer if the user both peeks and saves
@@ -720,7 +718,8 @@ function respondToPeekButtonActivation() {
     else if (helper.name === SPEAKERS.GARY)
         gameShow.quotesToDraw.add("Unfortunately, your helper can't " +
             "say his answer, so I'll say it for him.")
-        .add("Your helper chose (" + helperAnswer + ").");
+        .add("Your helper chose (" + answer.letter + ") " +
+            answer.text + ".");
     else
         gameShow.quotesToDraw.add("Your helper will now tell you " +
             "the letter of the answer that he has chosen.");
@@ -733,13 +732,14 @@ function respondToPeekButtonActivation() {
         if (helper.name === SPEAKERS.GARY)
             gameShow.quotesToDraw.add("Meow.");
         else
-            gameShow.quotesToDraw.add("I chose (" + helperAnswer + ").");
+            gameShow.quotesToDraw.add("I chose (" + answer.letter + ") " +
+                answer.text + ".");
         gameShow.quotesToDraw.deployQuoteChain(function() {
             // Draw the host as the speaker again
             drawNewSpeaker(SPEAKERS.SPONGEBOB);
 
             gameShow.quotesToDraw.add("Okay. Your helper chose (" +
-                helperAnswer + "). Now, let's return to the question.")
+                answer.letter + "). Now, let's return to the question.")
             .deployQuoteChain(function() {
                 // Show the (unchanged) question and answers,
                 // and enable user input
