@@ -1,13 +1,4 @@
 Next:
--check information given to user:
-    --look into having the host say the text of the answer that corresponds
-    to the said letter (I think this should be easy, but I'll have to
-    look into how well the answers fit, which I don't anticipate will
-    be a problem)
-        --say answer text when show:
-            --helper's answer in Save
-            --Patrick's answer in Phone a Friend
-    --make sure SpongeBob explains the controls for using a source of help
 -make a separate sound effect for question loss if can't be saved
 -consider adding any helper strengths, questions, and question subjects
     --add subject "Pets" and add question about egg Roger?

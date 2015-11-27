@@ -922,8 +922,7 @@ function presentPhoneFriendAnswer() {
     var question = gameShow.questions.getQuestion(
         gameShow.turnVariables.selectedQuestion);
     var answerNumber = getHelperAnswer(patrick, question);
-    var answerLetters = ['A', 'B', 'C', 'D'];
-    var phoneAnswer = answerLetters[answerNumber - 1];
+    var answer = getAnswerLetterAndText(question, answerNumber);
 
     drawNewSpeaker(SPEAKERS.PATRICK);
     gameShow.quotesToDraw.add("Hey Mario. Let me get a large double " +
@@ -932,14 +931,14 @@ function presentPhoneFriendAnswer() {
     .add("Uhhhhh...")
     .add("For my answer, I'll pick...")
     .add("Uhhhhh...")
-    .add("(" + phoneAnswer + ").")
+    .add("(" + answer.letter + ") " + answer.text + ".")
     .deployQuoteChain(function() {
         gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.PHONE_CALL_ENDED);
         adjustBackgroundMusicBasedOnQuestionsAnswered();
 
         drawNewSpeaker(SPEAKERS.SPONGEBOB);
         gameShow.quotesToDraw.add("All right. Patrick chose " + "(" +
-            phoneAnswer + "). Let's return to the question.")
+            answer.letter + "). Let's return to the question.")
         .deployQuoteChain(function() {
             // Show the (unchanged) question and answers,
             // and enable user input
@@ -1570,18 +1569,17 @@ function handleSavingLifeline() {
     var helper = gameShow.activeHelper;
 
     // Determine the helper's answer
-    var question = gameShow.questions.getQuestion(
-        gameShow.turnVariables.selectedQuestion);
+    var question = getCurrentQuestion();
     var answerNumber = getHelperAnswer(helper, question);
-    var answerLetters = ['A', 'B', 'C', 'D'];
-    var helperAnswer = answerLetters[answerNumber - 1];
+    var answer = getAnswerLetterAndText(question, answerNumber);
 
     gameShow.quotesToDraw.add("It is now up to your helper.")
     .add("If your helper chose the right answer, you get to continue " +
         "the game.")
     .add("Otherwise, you leave with nothing.")
     .add("I will now tell you what your helper chose.")
-    .add("Your helper chose (" + helperAnswer + ").")
+    .add("Your helper chose (" + answer.letter + ") " +
+        answer.text + ".")
     .deployQuoteChain(function() {
         if (isCorrectAnswer(question, answerNumber))
             handleCorrectAnswerSelection();
