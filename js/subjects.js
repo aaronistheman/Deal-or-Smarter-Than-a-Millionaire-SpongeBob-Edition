@@ -26,6 +26,9 @@ var SUBJECTS = {
     QUOTATIONS : "Quotations",
     EPISODES : "Episodes",
     MUSIC : "Music",
+    PETS : "Pets",
+    ANIMALS : "Animals",
+    ASTRONOMY : "Astronomy",
 };
 
 /*

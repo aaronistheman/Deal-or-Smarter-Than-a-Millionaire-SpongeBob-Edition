@@ -1728,20 +1728,23 @@ function selectQuestion() {
 function setUpHelpers() {
     gameShow.helpers.push(new Helper(SPEAKERS.SQUIDWARD, 0.85,
         "Fortunately, I have enough talent for all of you.",
-        "media/images/squidward_icon.JPG", [SUBJECTS.ART, SUBJECTS.MUSIC]));
+        "media/images/squidward_icon.JPG",
+        [SUBJECTS.ART, SUBJECTS.MUSIC]));
     gameShow.helpers.push(
         new Helper(SPEAKERS.MERMAID_MAN, 0.55, "EVIL!",
         "media/images/mermaid_man_icon.JPG",
-        [SUBJECTS.CRIME, SUBJECTS.GEOGRAPHY]));
+        [SUBJECTS.CRIME, SUBJECTS.GEOGRAPHY, SUBJECTS.HISTORY]));
     gameShow.helpers.push(
-        new Helper(SPEAKERS.SANDY, 0.90, "Howdy ya'll.",
+        new Helper(SPEAKERS.SANDY, 0.85, "Howdy ya'll.",
         "media/images/sandy_icon.JPG",
         [SUBJECTS.TECHNOLOGY, SUBJECTS.FITNESS]));
     gameShow.helpers.push(new Helper(SPEAKERS.LARRY, 0.70,
         "Hey, this party's finally starting to pick up.",
-        "media/images/larry_icon.JPG", [SUBJECTS.FITNESS]));
+        "media/images/larry_icon.JPG",
+        [SUBJECTS.FITNESS, SUBJECTS.RUMORS]));
     gameShow.helpers.push(new Helper(SPEAKERS.GARY, 0.80, "Meow.",
-        "media/images/gary_icon.JPG", [SUBJECTS.RUMORS]));
+        "media/images/gary_icon.JPG",
+        [SUBJECTS.PETS, SUBJECTS.ANIMALS]));
 }
 
 function setUpGame() {

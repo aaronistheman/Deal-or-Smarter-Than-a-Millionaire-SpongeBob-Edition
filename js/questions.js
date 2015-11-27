@@ -1135,6 +1135,16 @@ Questions.getEntireSupplyOfQuestions = function() {
     */
     var gradeOfQuestion = GRADES.FIRST;
 
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.PETS,
+        "Who owns Gary?",
+        new AnswerData(ANSWERS.THIRD, ["Patrick", "Squidward",
+            "SpongeBob", "Sandy"]),
+        new AudienceData(0.08, 0.03, 0.88, 0.01)));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.PETS,
+        "What is the name of SpongeBob's snail?",
+        new AnswerData(ANSWERS.FOURTH, ["Sheldon", "Jerry",
+            "Cornelius", "Gary"]),
+        new AudienceData(0.02, 0.06, 0.01, 0.91)));
     supply.push(new Question(gradeOfQuestion, SUBJECTS.CRIME,
         "Which of the following characters has tried to steal " +
         "a recipe from Mr. Krabs?",
@@ -1356,6 +1366,11 @@ Questions.getEntireSupplyOfQuestions = function() {
         new AnswerData(ANSWERS.FOURTH, ["F.U.N.", "Ripped Pants",
             "Band Geeks", "As Seen on TV"]),
         new AudienceData(0.18, 0.29, 0.23, 0.30)));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.ASTRONOMY,
+        "Who owned the rocket that allowed SpongeBob to go to the moon?",
+        new AnswerData(ANSWERS.FIRST, ["Sandy", "SpongeBob",
+            "Mermaid Man", "Plankton"]),
+        new AudienceData(0.36, 0.05, 0.28, 0.31)));
 
     /*
         Fourth grade questions
@@ -1538,6 +1553,18 @@ Questions.getEntireSupplyOfQuestions = function() {
         new AnswerData(ANSWERS.FOURTH, ["one cent", "twenty-five cents",
             "fourty-two cents", "sixty-two cents"]),
         new AudienceData(0.32, 0.20, 0.18, 0.30)));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.ANIMALS,
+        "In the episode \"New Student Starfish,\" what was the name of " +
+            "Mrs. Puff's egg?",
+        new AnswerData(ANSWERS.FIRST, ["Roger", "Patar",
+            "Franklin", "Benjamin"]),
+        new AudienceData(0.32, 0.15, 0.26, 0.27)));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.TECHNOLOGY,
+        "Which of the following has Sandy's net guns been used " +
+        "to capture?",
+        new AnswerData(ANSWERS.FOURTH, ["SpongeBob", "moon rocks",
+            "aliens", "Sandy"]),
+        new AudienceData(0.26, 0.23, 0.22, 0.29)));
 
     /*
         Million dollar questions
@@ -1619,6 +1646,16 @@ Questions.getEntireSupplyOfQuestions = function() {
         "drawings that come to life?",
         new AnswerData(ANSWERS.SECOND, ["paintbrush", "pencil",
             "clay", "pen"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.PETS,
+        "What was the name of the snail that Squidward entered " +
+        "in the Bikini Bottom Snail Race?",
+        new AnswerData(ANSWERS.THIRD, ["Rocky", "Shellie",
+            "Snellie", "Snaillie"])));
+    supply.push(new Question(gradeOfQuestion, SUBJECTS.PETS,
+        "What was the name of the \"snail\" that Patrick entered " +
+        "in the Bikini Bottom Snail Race?",
+        new AnswerData(ANSWERS.FOURTH, ["Benjamin", "Shellie",
+            "Rock", "Rocky"])));
 
     return supply;
 }
