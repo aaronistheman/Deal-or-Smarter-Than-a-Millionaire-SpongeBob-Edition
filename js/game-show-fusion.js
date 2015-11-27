@@ -1288,8 +1288,7 @@ function userAcceptedGoodDeal() {
             gameShow.quotesToDraw.add("You got a good deal.")
                 .add("Congratulations!")
                 .add("That concludes this game.")
-                .add("This is SpongeBob Squarepants signing off.")
-                .add("See you next time.")
+                .add("Good bye.")
                 .deployQuoteChain(eraseQuoteBubbleText);
         });
 }
@@ -1306,11 +1305,13 @@ function userAcceptedBadDeal() {
         .deployQuoteChain(function() {
             gameShow.quotesToDraw.add("Oh! The banker " +
                 "one-upped you this time.")
-                .add("How unfortunate.")
-                .add("That concludes this game.")
-                .add("This is SpongeBob Squarepants signing off.")
-                .add("See you next time.")
-                .deployQuoteChain(eraseQuoteBubbleText);
+            .add("How unfortunate.")
+            .add("That concludes this game.")
+            .add("Good bye.")
+            .deployQuoteChain(function() {
+                gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.GOOD_BYE);
+                eraseQuoteBubbleText()
+            });
         });
 }
 
@@ -1522,6 +1523,7 @@ function userTakesCaseHome() {
     gameShow.quotesToDraw.add("Then, congratulations.")
         .add("You're going home with $" +
             gameShow.briefcaseValue.asString() + '.')
+        .add("Good bye.")
         .deployQuoteChain(function() {
             eraseQuoteBubbleText();
             gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.GOOD_BYE);
