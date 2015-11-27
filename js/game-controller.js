@@ -73,8 +73,10 @@ function getAudioData() {
         "media/sound/audience_answered.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.PHONE_CALL_ENDED,
         "media/sound/phone_call_ended.mp3"));
-    audioData.push(new AudioData(SOUND_EFFECTS_IDS.LOSS,
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.LOSS_BUT_CAN_BE_SAVED,
         "media/sound/loss.mp3"));
+    audioData.push(new AudioData(SOUND_EFFECTS_IDS.LOSS_BUT_CANNOT_BE_SAVED,
+        "media/sound/loss_and_no_save.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.LOSS_MILLION,
         "media/sound/loss_million.mp3"));
     audioData.push(new AudioData(SOUND_EFFECTS_IDS.GOOD_BYE,

@@ -1599,7 +1599,6 @@ function handleWrongAnswerSelection() {
     gameShow.quotesToDraw.add("That answer is: ")
     .deployQuoteChain(function() {
         gameShow.quotesToDraw.add("Wrong!");
-        gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.LOSS);
 
         /*
             React differently, depending on whether or not the user
@@ -1613,6 +1612,8 @@ function handleWrongAnswerSelection() {
             // picked the same answer; end game
 
             gameShow.musicPlayer.stop();
+            gameShow.soundPlayer.play(
+                SOUND_EFFECTS_IDS.LOSS_BUT_CANNOT_BE_SAVED);
 
             // Have host explain
             gameShow.quotesToDraw.add("As shown by your peek, " +
@@ -1621,6 +1622,7 @@ function handleWrongAnswerSelection() {
         }
         else if (gameShow.canBeSaved) {
             // User can be saved; trigger "Save" lifeline
+            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.LOSS_BUT_CAN_BE_SAVED);
             gameShow.quotesToDraw.add(
                 "However, your helper can still save you.")
             .deployQuoteChain(handleSavingLifeline);
@@ -1629,6 +1631,8 @@ function handleWrongAnswerSelection() {
             // User has already been saved and thus can't be
             // saved this time; end game
             gameShow.musicPlayer.stop();
+            gameShow.soundPlayer.play(
+                SOUND_EFFECTS_IDS.LOSS_BUT_CANNOT_BE_SAVED);
 
             gameShow.quotesToDraw.deployQuoteChain(
                 handleUserGoingHomeWithNothing);
