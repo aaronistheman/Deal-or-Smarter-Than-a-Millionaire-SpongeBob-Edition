@@ -1,6 +1,6 @@
 Next:
--consider adding any helper strengths, questions, and question subjects
-    --add subject "Pets" and add question about egg Roger?
+-consider adding any:
+    --helper strengths
 -put more to the ending? perhaps some graphical thing or words
     "The End"
     --consider having handleWrongMillion...() end with the
