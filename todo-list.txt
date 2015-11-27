@@ -1,13 +1,7 @@
 Next:
--check information given to user:
-    --say correct answer letter if game over
-    --look into having the host say the text of the answer that corresponds
-    to the said letter (I think this should be easy, but I'll have to
-    look into how well the answers fit, which I don't anticipate will
-    be a problem)
-        --see if can do this when say helper or friend's answer
-        --see if can do this when saying correct answer after game over
-    --make sure SpongeBob explains the controls for using a source of help
+-make a separate sound effect for question loss if can't be saved
+-consider adding any helper strengths, questions, and question subjects
+    --add subject "Pets" and add question about egg Roger?
 -put more to the ending? perhaps some graphical thing or words
     "The End"
     --consider having handleWrongMillion...() end with the

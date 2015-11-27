@@ -701,11 +701,9 @@ function respondToPeekButtonActivation() {
     var helper = gameShow.activeHelper;
 
     // Determine the helper's answer
-    var question = gameShow.questions.getQuestion(
-        gameShow.turnVariables.selectedQuestion);
+    var question = getCurrentQuestion();
     var answerNumber = getHelperAnswer(helper, question);
-    var answerLetters = ['A', 'B', 'C', 'D'];
-    var helperAnswer = answerLetters[answerNumber - 1];
+    var answer = getAnswerLetterAndText(question, answerNumber);
 
     // Store the helper's answer so that he/she gives the same
     // answer if the user both peeks and saves
@@ -720,7 +718,8 @@ function respondToPeekButtonActivation() {
     else if (helper.name === SPEAKERS.GARY)
         gameShow.quotesToDraw.add("Unfortunately, your helper can't " +
             "say his answer, so I'll say it for him.")
-        .add("Your helper chose (" + helperAnswer + ").");
+        .add("Your helper chose (" + answer.letter + ") " +
+            answer.text + ".");
     else
         gameShow.quotesToDraw.add("Your helper will now tell you " +
             "the letter of the answer that he has chosen.");
@@ -733,13 +732,14 @@ function respondToPeekButtonActivation() {
         if (helper.name === SPEAKERS.GARY)
             gameShow.quotesToDraw.add("Meow.");
         else
-            gameShow.quotesToDraw.add("I chose (" + helperAnswer + ").");
+            gameShow.quotesToDraw.add("I chose (" + answer.letter + ") " +
+                answer.text + ".");
         gameShow.quotesToDraw.deployQuoteChain(function() {
             // Draw the host as the speaker again
             drawNewSpeaker(SPEAKERS.SPONGEBOB);
 
             gameShow.quotesToDraw.add("Okay. Your helper chose (" +
-                helperAnswer + "). Now, let's return to the question.")
+                answer.letter + "). Now, let's return to the question.")
             .deployQuoteChain(function() {
                 // Show the (unchanged) question and answers,
                 // and enable user input
@@ -922,8 +922,7 @@ function presentPhoneFriendAnswer() {
     var question = gameShow.questions.getQuestion(
         gameShow.turnVariables.selectedQuestion);
     var answerNumber = getHelperAnswer(patrick, question);
-    var answerLetters = ['A', 'B', 'C', 'D'];
-    var phoneAnswer = answerLetters[answerNumber - 1];
+    var answer = getAnswerLetterAndText(question, answerNumber);
 
     drawNewSpeaker(SPEAKERS.PATRICK);
     gameShow.quotesToDraw.add("Hey Mario. Let me get a large double " +
@@ -932,14 +931,14 @@ function presentPhoneFriendAnswer() {
     .add("Uhhhhh...")
     .add("For my answer, I'll pick...")
     .add("Uhhhhh...")
-    .add("(" + phoneAnswer + ").")
+    .add("(" + answer.letter + ") " + answer.text + ".")
     .deployQuoteChain(function() {
         gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.PHONE_CALL_ENDED);
         adjustBackgroundMusicBasedOnQuestionsAnswered();
 
         drawNewSpeaker(SPEAKERS.SPONGEBOB);
         gameShow.quotesToDraw.add("All right. Patrick chose " + "(" +
-            phoneAnswer + "). Let's return to the question.")
+            answer.letter + "). Let's return to the question.")
         .deployQuoteChain(function() {
             // Show the (unchanged) question and answers,
             // and enable user input
@@ -1066,6 +1065,11 @@ function adjustBackgroundMusicBasedOnQuestionsAnswered() {
             case 10:
                 gameShow.musicPlayer.play(MUSIC_IDS.QUESTION_MILLION);
                 break;
+            default: // should never happen
+                alertAndThrowException("Invalid value of " +
+                    "gameShow.numberOfQuestionsCorrectlyAnswered " +
+                    "in adjustBackgroundMusicBasedOnQuestionsAnswered(): " +
+                    gameShow.numberOfQuestionsCorrectlyAnswered);
         }
     }
     else
@@ -1108,10 +1112,10 @@ function handleWrongMillionAnswerSelection() {
         .deployQuoteChain(function() {
             gameShow.soundPlayer.play(
                 SOUND_EFFECTS_IDS.LOSS_MILLION);
-            gameShow.quotesToDraw.add("INCORRECT!")
-                .add("Now, you must leave with nothing.")
-                .add("Good bye.")
-                .deployQuoteChain(eraseQuoteBubbleText);
+
+            // Have the host explain further
+            gameShow.quotesToDraw.add("INCORRECT!");
+            handleUserGoingHomeWithNothing();
         });
 }
 
@@ -1565,18 +1569,17 @@ function handleSavingLifeline() {
     var helper = gameShow.activeHelper;
 
     // Determine the helper's answer
-    var question = gameShow.questions.getQuestion(
-        gameShow.turnVariables.selectedQuestion);
+    var question = getCurrentQuestion();
     var answerNumber = getHelperAnswer(helper, question);
-    var answerLetters = ['A', 'B', 'C', 'D'];
-    var helperAnswer = answerLetters[answerNumber - 1];
+    var answer = getAnswerLetterAndText(question, answerNumber);
 
     gameShow.quotesToDraw.add("It is now up to your helper.")
     .add("If your helper chose the right answer, you get to continue " +
         "the game.")
     .add("Otherwise, you leave with nothing.")
     .add("I will now tell you what your helper chose.")
-    .add("Your helper chose (" + helperAnswer + ").")
+    .add("Your helper chose (" + answer.letter + ") " +
+        answer.text + ".")
     .deployQuoteChain(function() {
         if (isCorrectAnswer(question, answerNumber))
             handleCorrectAnswerSelection();
@@ -1634,13 +1637,57 @@ function handleWrongAnswerSelection() {
 }
 
 /*
+    @pre 1 <= answerLetterNumber <= 4
+    @param question instance of Question to get the answer text of
+    @param answerLetterNumber the number of the answer letter to
+    get the character letter and string text of
+    @returns an object containing the corresponding answer letter
+    and the text of the answer regarding the given question
+    @throws exception if answerLetterNumber is in wrong range
+*/
+function getAnswerLetterAndText(question, answerLetterNumber) {
+    // Check parameter validity
+    if (!(1 <= answerLetterNumber && answerLetterNumber <= 4))
+        alertAndThrowException("answerLetterNumber given to " +
+            "getAnswerLetterAndText(...) isn't in valid range: " +
+            answerLetterNumber);
+
+    var answer = {};
+
+    // Get the answer letter
+    var answerLetters = ['A', 'B', 'C', 'D'];
+    answer.letter = answerLetters[answerLetterNumber - 1];
+
+    // Get answer text
+    answer.text =
+        question.answerData.arrayOfAnswers[answerLetterNumber - 1];
+
+    return answer;
+}
+
+/*
+    @pre gameShow.turnVariables.selectedQuestion is correct
+    @returns instance of the currently active question
+*/
+function getCurrentQuestion() {
+    return gameShow.questions.getQuestion(
+        gameShow.turnVariables.selectedQuestion);
+}
+
+/*
     @pre SpongeBob is currently drawn speaker
-    @post host has told the user that he/she has earned no money;
-    game has reacted visually and auditorily
+    @post host has told the user the correct answer and
+    that he/she has earned no money;
+    game has reacted auditorily
 */
 function handleUserGoingHomeWithNothing() {
-    gameShow.quotesToDraw.add(
-        "Unfortunately, this means you'll go home with nothing.")
+    var question = getCurrentQuestion();
+    var answer = getAnswerLetterAndText(question,
+        question.answerData.correctIndex + 1);
+
+    gameShow.quotesToDraw.add("The correct answer was (" +
+        answer.letter + ") " + answer.text + ".")
+    .add("Unfortunately, this means you'll go home with nothing.")
     .add("Good bye.")
     .deployQuoteChain(function() {
         eraseQuoteBubbleText();
