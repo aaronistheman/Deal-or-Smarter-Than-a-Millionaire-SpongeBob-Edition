@@ -76,3 +76,9 @@ canvas.fade-in {
 #banker-canvas.show {
     background-image: url(../media/images/banker_background.jpg);
 }
+
+#ending-screen-canvas.show {
+    background-image: url(../media/images/ending_screen.png);
+    background-repeat: no-repeat;
+    background-position: center;
+}

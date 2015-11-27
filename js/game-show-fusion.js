@@ -1087,15 +1087,17 @@ function handleCorrectMillionAnswerSelection() {
 
     // Tell the user what happened
     gameShow.quotesToDraw.add("That answer is: ")
-        .deployQuoteChain(function() {
-            gameShow.soundPlayer.play(
-                SOUND_EFFECTS_IDS.CORRECT_ANSWER_MILLION);
-            gameShow.quotesToDraw.add("CORRECT!")
-                .add("Congratulations!")
-                .add("You've beat the banker!")
-                .add("And you go home a millionaire!")
-                .deployQuoteChain(eraseQuoteBubbleText);
-        });
+    .deployQuoteChain(function() {
+        gameShow.soundPlayer.play(
+            SOUND_EFFECTS_IDS.CORRECT_ANSWER_MILLION);
+        gameShow.quotesToDraw.add("CORRECT!")
+        .add("Congratulations!")
+        .add("You've beat the banker!")
+        .add("And you go home a millionaire!")
+        .add("You've won this game.")
+        .add("Good bye.")
+        .deployQuoteChain(presentEndingScreen);
+    });
 }
 
 /*
@@ -1284,14 +1286,13 @@ function userAcceptedGoodDeal() {
     gameShow.musicPlayer.stop();
 
     gameShow.quotesToDraw.add('$' + gameShow.briefcaseValue.asString() + '.')
-        .deployQuoteChain(function() {
-            gameShow.quotesToDraw.add("You got a good deal.")
-                .add("Congratulations!")
-                .add("That concludes this game.")
-                .add("This is SpongeBob Squarepants signing off.")
-                .add("See you next time.")
-                .deployQuoteChain(eraseQuoteBubbleText);
-        });
+    .deployQuoteChain(function() {
+        gameShow.quotesToDraw.add("You got a good deal.")
+        .add("Congratulations!")
+        .add("That concludes this game.")
+        .add("Good bye.")
+        .deployQuoteChain(presentEndingScreen);
+    });
 }
 
 /*
@@ -1306,11 +1307,13 @@ function userAcceptedBadDeal() {
         .deployQuoteChain(function() {
             gameShow.quotesToDraw.add("Oh! The banker " +
                 "one-upped you this time.")
-                .add("How unfortunate.")
-                .add("That concludes this game.")
-                .add("This is SpongeBob Squarepants signing off.")
-                .add("See you next time.")
-                .deployQuoteChain(eraseQuoteBubbleText);
+            .add("How unfortunate.")
+            .add("That concludes this game.")
+            .add("Good bye.")
+            .deployQuoteChain(function() {
+                gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.GOOD_BYE);
+                presentEndingScreen();
+            });
         });
 }
 
@@ -1520,12 +1523,13 @@ function userTakesCaseHome() {
 
     // Make the host explain
     gameShow.quotesToDraw.add("Then, congratulations.")
-        .add("You're going home with $" +
-            gameShow.briefcaseValue.asString() + '.')
-        .deployQuoteChain(function() {
-            eraseQuoteBubbleText();
-            gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.GOOD_BYE);
-        });
+    .add("You're going home with $" +
+        gameShow.briefcaseValue.asString() + '.')
+    .add("Good bye.")
+    .deployQuoteChain(function() {
+        gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.GOOD_BYE);
+        presentEndingScreen();
+    });
 }
 
 /*
@@ -1696,6 +1700,7 @@ function handleUserGoingHomeWithNothing() {
     .deployQuoteChain(function() {
         eraseQuoteBubbleText();
         gameShow.soundPlayer.play(SOUND_EFFECTS_IDS.GOOD_BYE);
+        presentEndingScreen();
     });
 }
 
@@ -1718,6 +1723,15 @@ function selectQuestion() {
                 SOUND_EFFECTS_IDS.SELECT_QUESTION);
             handleQuestionSelection()
         });
+}
+
+/*
+    @post ending screen has been shown
+*/
+function presentEndingScreen() {
+    // Show the ending screen
+    gameShow.canvasStack.set(CANVAS_IDS.ENDING_SCREEN,
+        CanvasStack.EFFECTS.FADE_IN);
 }
 
 /*
