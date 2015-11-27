@@ -37,7 +37,8 @@ var SOUND_EFFECTS_IDS = {
     PHONE_CALL_ENDED : "phone-call-ended-sound",
 
     // loss
-    LOSS : "loss-sound",
+    LOSS_BUT_CAN_BE_SAVED : "loss-but-can-be-saved-sound",
+    LOSS_BUT_CANNOT_BE_SAVED : "loss-but-cannot-be-saved-sound",
     LOSS_MILLION : "loss-million-sound",
 
     GOOD_BYE : "good-bye-sound",

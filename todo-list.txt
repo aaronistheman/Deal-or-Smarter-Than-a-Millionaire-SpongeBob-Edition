@@ -1,5 +1,4 @@
 Next:
--make a separate sound effect for question loss if can't be saved
 -consider adding any helper strengths, questions, and question subjects
     --add subject "Pets" and add question about egg Roger?
 -put more to the ending? perhaps some graphical thing or words
