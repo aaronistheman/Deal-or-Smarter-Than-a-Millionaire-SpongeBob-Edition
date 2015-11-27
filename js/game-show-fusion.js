@@ -1869,8 +1869,7 @@ function startPreloading(endCallback, progressCallback) {
         }
         else {
             if (progressCallback) {
-                count++;
-                progressCallback((count / total) * 100);
+                progressCallback((counter / total) * 100);
             }
         }
     }, 100);

@@ -1,11 +1,9 @@
 Next:
 -more decorated title screen
     --apply image preloading to title screen images
-        --perhaps add resource identifiers for images (these would be
-        constans for the urls)
-    --make basic loading screen
-    --start the audio before starting preloading
-    --consider apply images preloading to other images, if easy
+        --confirm preload callback works
+        --draw and properly position the title screen images
+    --make basic loading screen?
 -make sure readme's number of questions is correct
 -make sure release number is on each file
 -proofread readme
