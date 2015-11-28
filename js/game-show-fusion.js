@@ -1857,6 +1857,16 @@ function setUpTitleScreen() {
         .set(KEY_CODES.ENTER, setUpGame);
 }
 
+function setUpLoadingScreen() {
+    var canvas = document.getElementById(CANVAS_IDS.LOADING_SCREEN);
+    var ctx = canvas.getContext('2d');
+    ctx.textBaseline = "middle";
+    ctx.textAlign = "center";
+    ctx.font = "60px Arial";
+    ctx.fillStyle = "purple";
+    ctx.fillText("Loading...", CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+}
+
 function setUpAudio() {
     gameShow.soundPlayer.storeElements();
     gameShow.musicPlayer.storeElements();
@@ -1921,6 +1931,9 @@ $(document).ready(function() {
     if (!isUnitTesting()) {
         setUpAudio();
         gameShow.musicPlayer.play(MUSIC_IDS.OPENING);
+
+        setUpLoadingScreen();
+        gameShow.canvasStack.set(CANVAS_IDS.LOADING_SCREEN);
         preloadTitleScreenImages();
     }
 });

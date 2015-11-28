@@ -1,5 +1,4 @@
 Next:
--make basic loading screen; since it's sometimes needed
 -make sure readme's number of questions is correct
 -make sure release number is on each file
 -put scans of each planning page in repository (so I can physically trash
