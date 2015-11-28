@@ -1,9 +1,10 @@
 Next:
--make sure readme's number of questions is correct
--make sure release number is on each file
 -put scans of each planning page in repository (so I can physically trash
 them); mention in readme
--proofread readme
+-finishing touches of readme:
+    --make sure readme's number of questions is correct
+    --proofread readme
+-make sure release number is on each file
 -video
 -put video link in readme
 -RELEASE 0.1
