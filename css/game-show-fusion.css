@@ -56,8 +56,11 @@ canvas.fade-in {
     transition: opacity 2.0s linear;
 }
 
+#loading-screen-canvas.show {
+    background-color: #eee;
+}
+
 #title-screen-canvas.show {
-    /* background-color: #eee; */
     background-color: black;
 }
 
