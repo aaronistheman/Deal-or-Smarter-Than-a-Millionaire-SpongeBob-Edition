@@ -1,11 +1,13 @@
 Next:
 -more decorated title screen
     --apply image preloading to title screen images
-        --draw and properly position the title screen images
+        --draw and properly position and size the title screen images
     --make sure background color is okay
-    --make basic loading screen?
+    --make basic loading screen; since it's sometimes needed
 -make sure readme's number of questions is correct
 -make sure release number is on each file
+-put scans of each planning page in repository (so I can physically trash
+them); mention in readme
 -proofread readme
 -video
 -put video link in readme

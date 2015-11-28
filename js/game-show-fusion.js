@@ -1817,7 +1817,7 @@ function drawTitleScreen() {
 }
 
 function preloadTitleScreenImages() {
-    addImage("media/images/logo_are_you_smarter.jpg");
+    addImage("media/images/logo_are_you_smarter.png");
     addImage("media/images/logo_deal_or_no_deal.png");
     addImage("media/images/logo_who_wants_to_be_millionaire.jpg");
     addImage("media/images/logo_spongebob.png");
