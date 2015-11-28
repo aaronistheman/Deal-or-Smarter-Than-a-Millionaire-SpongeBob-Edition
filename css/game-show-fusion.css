@@ -57,7 +57,8 @@ canvas.fade-in {
 }
 
 #title-screen-canvas.show {
-    background-color: #eee;
+    /* background-color: #eee; */
+    background-color: black;
 }
 
 #speaker-canvas.show, #money-display-bars-canvas.show,

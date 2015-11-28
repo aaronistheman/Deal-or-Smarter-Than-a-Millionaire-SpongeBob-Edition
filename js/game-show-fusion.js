@@ -8,6 +8,15 @@
 var gameShow = {};
 gameShow.speakers = getSpeakerObjects();
 
+gameShow.imagesToPreload = [];
+gameShow.titleScreenImageUrls = {
+    SPONGEBOB_CHARACTER : "media/images/spongebob.png",
+    ARE_YOU_SMARTER : "media/images/logo_are_you_smarter.jpg",
+    DEAL_OR : "media/images/logo_deal_or_no_deal.png",
+    WHO_WANTS : "media/images/logo_who_wants_to_be_millionaire.jpg",
+    SPONGEBOB_SHOW : "media/images/logo_spongebob.png",
+};
+
 gameShow.canvasStack = new CanvasStack();
 
 gameShow.banker = new Banker("media/images/banker.png");
@@ -135,17 +144,6 @@ gameShow.quotesToDraw = {
         }
     }
 };
-
-// @post title screen has been set up with prompt for user
-function drawTitleScreenText() {
-    var canvas = document.getElementById(CANVAS_IDS.TITLE_SCREEN);
-    var ctx = canvas.getContext('2d');
-    ctx.font = "30px Arial";
-    ctx.fillStyle = "black";
-    ctx.textAlign = "center";
-    ctx.fillText("Press Enter to play", canvas.width / 2,
-        canvas.height / 2);
-}
 
 // This is currently a trivial function made for the purpose of
 // testing.
@@ -1787,10 +1785,72 @@ function setUpGame() {
         .deployQuoteChain(explainRules);
 }
 
+// @post title screen has been set up with prompt for user
+function drawTitleScreenText() {
+    var canvas = document.getElementById(CANVAS_IDS.TITLE_SCREEN);
+    var ctx = canvas.getContext('2d');
+    ctx.font = "30px Arial";
+    ctx.fillStyle = "black";
+    ctx.textAlign = "center";
+    ctx.fillText("Press Enter to play", canvas.width / 2,
+        canvas.height / 2);
+}
+
+/*
+    @post title screen has been completely prepared
+*/
+function drawTitleScreen() {
+    var canvas = document.getElementById(CANVAS_IDS.TITLE_SCREEN);
+    var ctx = canvas.getContext('2d');
+
+    // Position and draw SpongeBob
+    var spongeBob = new Image();
+    spongeBob.src = gameShow.titleScreenImageUrls.SPONGEBOB_CHARACTER;
+    ctx.drawImage(spongeBob, 80, 50, 207, 250);
+
+    // Position and draw the Deal or No Deal logo
+    var logoDeal = new Image();
+    logoDeal.src = gameShow.titleScreenImageUrls.DEAL_OR;
+    ctx.drawImage(logoDeal, 510, 215, 555, 115);
+
+    // Position and draw the Are You Smarter Than a 5th Grader logo
+    var logoFifth = new Image();
+    logoFifth.src = gameShow.titleScreenImageUrls.ARE_YOU_SMARTER;
+    ctx.drawImage(logoFifth, 500, 340, 232, 180);
+
+    // Position and draw the Who Wants to Be a Millionaire logo
+    var logoWho = new Image();
+    logoWho.src = gameShow.titleScreenImageUrls.WHO_WANTS;
+    ctx.drawImage(logoWho, 800, 340, 198, 180);
+
+    // Position and draw the SpongeBob Squarepants logo
+    var logoSponge = new Image();
+    logoSponge.src = gameShow.titleScreenImageUrls.SPONGEBOB_SHOW;
+    ctx.drawImage(logoSponge, 30, 340, 338, 180);
+
+    // Draw some descriptive words
+    ctx.textBaseline = "top";
+    ctx.textAlign = "start";
+    ctx.font = "60px Arial";
+    ctx.fillStyle = "purple";
+    ctx.fillText("FUSION OF:", 600, 160);
+
+    // Draw directions
+    ctx.fillStyle = "#FFDF00";
+    ctx.fillText("Press Enter to Play", 530, 50);
+}
+
+function preloadTitleScreenImages() {
+    for (var i in gameShow.titleScreenImageUrls)
+        addImage(gameShow.titleScreenImageUrls[i]);
+    startPreloading(function() {
+        setUpTitleScreen();
+    });
+}
+
 function setUpTitleScreen() {
+    drawTitleScreen();
     gameShow.canvasStack.set(CANVAS_IDS.TITLE_SCREEN);
-    drawTitleScreenText();
-    gameShow.musicPlayer.play(MUSIC_IDS.OPENING);
 
     // Set up the user's ability to go to the game
     gameShow.keyActions.setUpEventHandler()
@@ -1802,9 +1862,65 @@ function setUpAudio() {
     gameShow.musicPlayer.storeElements();
 }
 
+/*
+    From page 28 of "jQuery Game Development Essentials" by
+    Selim Arsever
+
+    @post image indicated by the given url has been added to the
+    list of images to preload
+    @param url location of the image
+*/
+function addImage(url) {
+    if ($.inArray(url, gameShow.imagesToPreload) < 0) {
+        gameShow.imagesToPreload.push();
+    }
+    gameShow.imagesToPreload.push(url);
+}
+
+/*
+    From pages 28 and 29 of "jQuery Game Development Essentials" by
+    Selim Arsever
+
+    @post the preloading of the images has begun
+    @param endCallback to call once all the images are loaded
+    @param progressCallback (optional) is called with the current
+    progress as a percentage
+*/
+function startPreloading(endCallback, progressCallback) {
+    var images = [];
+    var total = gameShow.imagesToPreload.length;
+
+    for (var i = 0; i < total; i++) {
+        var image = new Image();
+        images.push(image);
+        image.src = gameShow.imagesToPreload[i];
+    }
+    var preloadingPoller = setInterval(function() {
+        var counter = 0;
+        var total = gameShow.imagesToPreload.length;
+        for (var i = 0; i < total; i++) {
+            if (images[i].complete) {
+                counter++;
+            }
+        }
+        if (counter == total) {
+            // we are done!
+            clearInterval(preloadingPoller);
+            endCallback();
+        }
+        else {
+            if (progressCallback) {
+                progressCallback((counter / total) * 100);
+            }
+        }
+    }, 100);
+};
+
+
 $(document).ready(function() {
     if (!isUnitTesting()) {
         setUpAudio();
-        setUpTitleScreen();
+        gameShow.musicPlayer.play(MUSIC_IDS.OPENING);
+        preloadTitleScreenImages();
     }
 });

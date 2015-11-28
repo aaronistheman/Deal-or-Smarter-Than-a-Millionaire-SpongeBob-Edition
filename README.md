@@ -5,7 +5,9 @@ About
 
 This is the web version of the SpongeBob edition of a fusion of
 "Deal or No Deal", "Are You Smarter Than a Fifth Grader", and
-"Who Wants to Be a Millionaire".
+"Who Wants to Be a Millionaire". (Note that none of "SpongeBob Squarepants,"
+"Deal or No Deal," "Are You Smarter Than a Fifth Grader," or "Who
+Wants to Be a Millionaire" are owned by me.)
 
 Regarding languages, I used HTML5, CSS, and JavaScript.
 
@@ -96,12 +98,14 @@ Hansson, and Jan Haller indirectly helped me by providing me
 with C++ versions of those aforementioned GUI custom types and of the
 custom types MusicPlayer and SoundPlayer.
 
+The book "jQuery Game Development Essentials" taught me a few things
+that I applied to this game, such as image preloading.
+
 The first few chapters of the book "Pro Git" by Scott Chacon and
 Ben Straub taught me how to use Git Bash, which proved convenient
 as I wrote this application.
 
-The book "The Pragmatic Programmer" by Andy Hunt and Dave Thomas and
-the book "jQuery Game Development Essentials" helped
+The book "The Pragmatic Programmer" by Andy Hunt and Dave Thomas helped
 me make better decisions with this program.
 
 I made the background of many of the images transparent with the

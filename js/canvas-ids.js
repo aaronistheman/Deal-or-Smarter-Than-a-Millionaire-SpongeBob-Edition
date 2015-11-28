@@ -32,6 +32,7 @@ var CANVAS_IDS = {
     QUOTE_BUBBLE : "quote-bubble-canvas",
     QUOTE_TEXT : "quote-text-canvas",
     ENDING_SCREEN : "ending-screen-canvas",
+    LOADING_SCREEN : "loading-screen-canvas",
     TITLE_SCREEN : "title-screen-canvas",
 };
 

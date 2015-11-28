@@ -1,10 +1,9 @@
 Next:
--more decorated title screen
-    --will probably have to implement image preloading
-	--disclaim that SpongeBob or any of the involved game shows are
-        at all my possession
+-make basic loading screen; since it's sometimes needed
 -make sure readme's number of questions is correct
 -make sure release number is on each file
+-put scans of each planning page in repository (so I can physically trash
+them); mention in readme
 -proofread readme
 -video
 -put video link in readme
@@ -26,6 +25,9 @@ Video:
     --to peek at Gary's answer
     --to show each of the four lifelines
     --to have "I Was a Teenage Gary" as the ending music
+-in description:
+	--disclaim that SpongeBob or any of the involved game shows are
+        at all my possession
 
 Considerable:
 -unit test to check sufficient subject variety
