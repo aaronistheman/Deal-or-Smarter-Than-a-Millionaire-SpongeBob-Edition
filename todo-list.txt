@@ -1,14 +1,13 @@
 Next:
--finishing touches of readme:
-    --proofread readme
--make sure release number is on each file
 -video
 -put video link in readme
 -merge into master; RELEASE 0.1; "git push origin master"
 
 Video:
--make sure:
-    --to temporarily adjust helper data to make recording easier
+-while recording, make sure:
+    --to make recording easier by:
+        --temporarily adjusting helper data
+        --adjusting supply of questions
     --to go slow enough for reading, but keep in mind that video
     can be paused
     --to show each ending:
@@ -26,6 +25,7 @@ Video:
 	--disclaim that SpongeBob or any of the involved game shows are
         at all my possession
     --say number of questions and subjects
+    --state some of the features
 
 Considerable:
 -unit test to check sufficient subject variety
