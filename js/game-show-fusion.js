@@ -7,7 +7,15 @@
 
 var gameShow = {};
 gameShow.speakers = getSpeakerObjects();
+
 gameShow.imagesToPreload = [];
+gameShow.titleScreenImageUrls = {
+    SPONGEBOB_CHARACTER : "media/images/spongebob.png",
+    ARE_YOU_SMARTER : "media/images/logo_are_you_smarter.jpg",
+    DEAL_OR : "media/images/logo_deal_or_no_deal.png",
+    WHO_WANTS : "media/images/logo_who_wants_to_be_millionaire.jpg",
+    SPONGEBOB_SHOW : "media/images/logo_spongebob.png",
+};
 
 gameShow.canvasStack = new CanvasStack();
 
@@ -1795,32 +1803,46 @@ function drawTitleScreen() {
     var canvas = document.getElementById(CANVAS_IDS.TITLE_SCREEN);
     var ctx = canvas.getContext('2d');
 
+    // Position and draw SpongeBob
+    var spongeBob = new Image();
+    spongeBob.src = gameShow.titleScreenImageUrls.SPONGEBOB_CHARACTER;
+    ctx.drawImage(spongeBob, 80, 50, 207, 250);
+
     // Position and draw the Deal or No Deal logo
     var logoDeal = new Image();
-    logoDeal.src = "media/images/logo_deal_or_no_deal.png";
-    ctx.drawImage(logoDeal, 500, 30, 200, 200);
+    logoDeal.src = gameShow.titleScreenImageUrls.DEAL_OR;
+    ctx.drawImage(logoDeal, 510, 215, 555, 115);
 
     // Position and draw the Are You Smarter Than a 5th Grader logo
     var logoFifth = new Image();
-    logoFifth.src = "media/images/logo_are_you_smarter.png";
-    ctx.drawImage(logoFifth, 30, 30, 200, 200);
+    logoFifth.src = gameShow.titleScreenImageUrls.ARE_YOU_SMARTER;
+    ctx.drawImage(logoFifth, 500, 340, 232, 180);
 
     // Position and draw the Who Wants to Be a Millionaire logo
     var logoWho = new Image();
-    logoWho.src = "media/images/logo_who_wants_to_be_millionaire.jpg";
-    ctx.drawImage(logoWho, 500, 300, 200, 200);
+    logoWho.src = gameShow.titleScreenImageUrls.WHO_WANTS;
+    ctx.drawImage(logoWho, 800, 340, 198, 180);
 
     // Position and draw the SpongeBob Squarepants logo
     var logoSponge = new Image();
-    logoSponge.src = "media/images/logo_spongebob.png";
-    ctx.drawImage(logoSponge, 30, 300, 200, 200);
+    logoSponge.src = gameShow.titleScreenImageUrls.SPONGEBOB_SHOW;
+    ctx.drawImage(logoSponge, 30, 340, 338, 180);
+
+    // Draw some descriptive words
+    ctx.textBaseline = "top";
+    ctx.textAlign = "start";
+    ctx.font = "60px Arial";
+    ctx.fillStyle = "purple";
+    ctx.fillText("FUSION OF:", 600, 160);
+
+    // Draw directions
+    ctx.fillStyle = "#FFDF00";
+    ctx.fillText("Press Enter to Play", 530, 50);
 }
 
 function preloadTitleScreenImages() {
-    addImage("media/images/logo_are_you_smarter.png");
-    addImage("media/images/logo_deal_or_no_deal.png");
-    addImage("media/images/logo_who_wants_to_be_millionaire.jpg");
-    addImage("media/images/logo_spongebob.png");
+    for (var i in gameShow.titleScreenImageUrls)
+        addImage(gameShow.titleScreenImageUrls[i]);
     startPreloading(function() {
         setUpTitleScreen();
     });
