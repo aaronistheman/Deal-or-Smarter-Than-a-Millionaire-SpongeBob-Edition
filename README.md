@@ -21,6 +21,9 @@ Regarding libraries, I used jQuery, AngularJS, and QUnit. The former
 two libraries are included through CDNs (Content Delivery Networks),
 whereas the latter library's two files are included in the repository.
 
+The following YouTube video contains a demonstration:
+https://www.youtube.com/watch?v=I0Gk82HD09I
+
 Features
 --------
 
